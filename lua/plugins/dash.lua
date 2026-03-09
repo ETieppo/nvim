@@ -8,9 +8,9 @@ return {
       sections = {
         {
           section = 'terminal',
-          cmd = 'pixterm -s 1 -d 2 -nobg ~/.config/nvim/dash.png',
+          cmd = 'pixterm -s 1 -d 2 -nobg ~/.config/nvim/assets/dash.png',
           height = 30,
-          padding = 1,
+          padding = 0,
         },
         {
           section = 'projects',
