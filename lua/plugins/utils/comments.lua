@@ -7,3 +7,4 @@ return {
   ---@diagnostic disable-next-line: missing-fields
   opts = { signs = false },
 }
+-- TODO: teste

@@ -15,6 +15,8 @@ return {
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
+    hide_root_node = true,
+    close_if_last_window = true,
     clipboard = {
       sync = 'global',
     },
@@ -44,6 +46,7 @@ return {
       },
       group_empty_dirs = false,
       use_libuv_file_watcher = false,
+      follow_current_file = { enabled = true },
     },
     buffers = {
       group_empty_dirs = false,

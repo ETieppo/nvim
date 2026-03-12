@@ -76,7 +76,9 @@ return {
         -- WARN: This is not Goto Definition, this is Goto Declaration.
         --  For example, in C this would take you to the header.
         map('grD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
-
+        map('gd', require('telescope.builtin').lsp_definitions, 'Goto Definition')
+        map('gr', require('telescope.builtin').lsp_references, 'Goto References')
+        map('gi', require('telescope.builtin').lsp_implementations, 'Goto Impl')
         -- The following two autocommands are used to highlight references of the
         -- word under your cursor when your cursor rests there for a little while.
         --    See `:help CursorHold` for information about when this is executed
@@ -121,9 +123,41 @@ return {
     --  See `:help lsp-config` for information about keys and how to configure
     ---@type table<string, vim.lsp.Config>
     local servers = {
-      rust_analyzer = {},
       ts_ls = {},
       stylua = {},
+      taplo = {},
+      marksman = {},
+      clangd = {},
+      rust_analyzer = {
+        cmd = { '/Users/tieppo/.cargo/bin/rust-analyzer' },
+        settings = {
+          ['rust-analyzer'] = {
+            checkOnSave = true,
+            check = {
+              command = 'clippy',
+              workspace = true,
+            },
+            cargo = {
+              allTargets = true,
+              features = 'all',
+            },
+            procMacro = {
+              enable = true,
+              attributes = {
+                enable = true,
+              },
+            },
+            diagnostics = {
+              styleLints = {
+                enable = true,
+              },
+              experimental = {
+                enable = true,
+              },
+            },
+          },
+        },
+      },
 
       lua_ls = {
         on_init = function(client)
@@ -149,7 +183,44 @@ return {
           })
         end,
         settings = {
-          Lua = {},
+          Lua = {
+            diagnostics = {
+              globals = { 'vim' },
+              disable = { 'missing-fields' },
+
+              groupSeverity = {
+                strong = 'Warning',
+                strict = 'Warning',
+              },
+
+              groupFileStatus = {
+                ambiguity = 'Opened',
+                await = 'Opened',
+                codestyle = 'Opened',
+                duplicate = 'Opened',
+                global = 'Opened',
+                luadoc = 'Opened',
+                redefined = 'Opened',
+                strict = 'Opened',
+                strong = 'Opened',
+                typecheck = 'Opened',
+                unbalanced = 'Opened',
+                unused = 'Opened',
+              },
+            },
+
+            hint = {
+              enable = true,
+            },
+
+            workspace = {
+              checkThirdParty = false,
+            },
+
+            telemetry = {
+              enable = false,
+            },
+          },
         },
       },
     }
