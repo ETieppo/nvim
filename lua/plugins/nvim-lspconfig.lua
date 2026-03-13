@@ -128,6 +128,7 @@ return {
       taplo = {},
       marksman = {},
       clangd = {},
+
       rust_analyzer = {
         cmd = { '/Users/tieppo/.cargo/bin/rust-analyzer' },
         settings = {
