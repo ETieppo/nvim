@@ -6,22 +6,55 @@ return {
     local alpha = require 'alpha'
     local dashboard = require 'alpha.themes.dashboard'
     local image_win = nil
+    local waiting_real_file = false
 
     local function close_alpha_image()
       if image_win and vim.api.nvim_win_is_valid(image_win) then pcall(vim.api.nvim_win_close, image_win, true) end
       image_win = nil
     end
 
+    local function is_real_file_target(buf, win)
+      if not buf or not vim.api.nvim_buf_is_valid(buf) then return false end
+
+      win = win or vim.api.nvim_get_current_win()
+      if not win or not vim.api.nvim_win_is_valid(win) then return false end
+
+      local bt = vim.bo[buf].buftype
+      local ft = vim.bo[buf].filetype
+      local name = vim.api.nvim_buf_get_name(buf)
+      local cfg = vim.api.nvim_win_get_config(win)
+
+      if cfg.relative ~= '' then return false end
+      if bt ~= '' then return false end
+      if
+        ft == 'alpha'
+        or ft == 'alpha_pixterm'
+        or ft == 'TelescopePrompt'
+        or ft == 'TelescopeResults'
+        -- or ft == 'neo-tree'
+        -- or ft == 'neo-tree-popup'
+        -- or ft == 'neo-tree-preview'
+      then
+        return false
+      end
+      if not vim.bo[buf].buflisted then return false end
+      if name == '' then return false end
+
+      return true
+    end
+
     local function alpha_pixterm()
       close_alpha_image()
+
       local image_path = vim.fs.abspath '~/.config/nvim/assets/pacman.jpg'
       local width = vim.o.columns
       local height = math.floor(vim.o.lines * 0.75)
       local buf = vim.api.nvim_create_buf(false, true)
 
       vim.bo[buf].bufhidden = 'wipe'
+
       vim.api.nvim_set_hl(0, 'AlphaImageBg', {
-        bg = '#000000',
+        link = 'Normal',
       })
 
       local win = vim.api.nvim_open_win(buf, false, {
@@ -38,6 +71,7 @@ return {
       })
 
       vim.api.nvim_set_option_value('winhighlight', 'Normal:AlphaImageBg,NormalFloat:AlphaImageBg,EndOfBuffer:AlphaImageBg', { win = win })
+
       image_win = win
 
       vim.api.nvim_buf_call(buf, function()
@@ -50,11 +84,12 @@ return {
           image_path,
         }, {
           term = true,
-          on_exit = function() vim.api.nvim_set_option_value('winblend', 0, { win = image_win }) end,
+          on_exit = function()
+            vim.schedule(function() waiting_real_file = true end)
+          end,
         })
       end)
     end
-
     local function get_project_root(path)
       local file = vim.fs.normalize(vim.fn.fnamemodify(path, ':p'))
       if vim.fn.filereadable(file) ~= 1 then return nil end
@@ -68,6 +103,7 @@ return {
       })[1]
 
       if git_dir then return vim.fs.dirname(git_dir) end
+
       return nil
     end
 
@@ -147,6 +183,7 @@ return {
     local function make_two_column_section()
       local left = get_recent_project_lines(5)
       local cwd, entries = get_cwd_entries(30)
+
       local right_items = {
         '',
         string.upper(vim.fn.fnamemodify(cwd, ':t')),
@@ -167,6 +204,7 @@ return {
       for i = header_lines + 1, #right_items do
         table.insert(body, right_items[i])
       end
+
       local right_chunks = chunk_list(body, 5)
       local right_lines = {}
 
@@ -227,9 +265,23 @@ return {
     })
 
     vim.api.nvim_create_autocmd({ 'BufEnter', 'WinEnter' }, {
-      callback = function(args)
-        local ft = vim.bo[args.buf].filetype
-        if ft ~= 'alpha' and ft ~= 'alpha_pixterm' then close_alpha_image() end
+      callback = function()
+        vim.schedule(function()
+          local win = vim.api.nvim_get_current_win()
+          if not win or not vim.api.nvim_win_is_valid(win) then return end
+
+          local buf = vim.api.nvim_win_get_buf(win)
+          if not buf or not vim.api.nvim_buf_is_valid(buf) then return end
+
+          if waiting_real_file and is_real_file_target(buf, win) then
+            waiting_real_file = false
+
+            if image_win and vim.api.nvim_win_is_valid(image_win) then vim.api.nvim_set_option_value('winblend', 0, { win = image_win }) end
+            return
+          end
+
+          if is_real_file_target(buf, win) then close_alpha_image() end
+        end)
       end,
     })
 
@@ -257,6 +309,7 @@ return {
     }
 
     alpha.setup(dashboard.config)
+
     if vim.fn.argc() == 0 then vim.schedule(alpha_pixterm) end
   end,
 }

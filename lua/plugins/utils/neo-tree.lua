@@ -15,6 +15,7 @@ return {
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
+    zindex = 100,
     hide_root_node = true,
     close_if_last_window = true,
     clipboard = {
@@ -23,6 +24,7 @@ return {
     window = {
       position = 'left',
       width = 32,
+      zindex = 100,
     },
     nesting_rules = {
       ['package.json'] = { pattern = '^package%.json$', files = { 'yarn*' } },
