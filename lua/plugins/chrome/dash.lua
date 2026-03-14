@@ -20,8 +20,11 @@ return {
       local width = vim.o.columns
       local height = math.floor(vim.o.lines * 0.75)
       local buf = vim.api.nvim_create_buf(false, true)
-      vim.bo[buf].bufhidden = 'wipe'
 
+      vim.bo[buf].bufhidden = 'wipe'
+      vim.api.nvim_set_hl(0, 'AlphaImageBg', {
+        bg = '#000000',
+      })
       local win = vim.api.nvim_open_win(buf, false, {
         relative = 'editor',
         width = width,
@@ -31,7 +34,11 @@ return {
         style = 'minimal',
         border = 'none',
         zindex = 10,
+        focusable = false,
+        mouse = false,
       })
+
+      vim.api.nvim_set_option_value('winhighlight', 'Normal:AlphaImageBg,NormalFloat:AlphaImageBg,EndOfBuffer:AlphaImageBg', { win = win })
 
       image_buf = buf
       image_win = win
@@ -46,9 +53,7 @@ return {
           image_path,
         }, {
           term = true,
-          on_exit = function()
-            if image_win and vim.api.nvim_win_is_valid(image_win) then vim.api.nvim_win_set_option(image_win, 'winblend', 0) end
-          end,
+          on_exit = function() vim.api.nvim_set_option_value('winblend', 0, { win = image_win }) end,
         })
       end)
     end
@@ -87,17 +92,17 @@ return {
 
     local function make_projects_section()
       local projects = get_recent_projects(5)
-      local lines = { '󰉋  Projetos recentes', '' }
+      local lines = { '', '󰉋  Projetos recentes', '' }
 
       if #projects == 0 then
-        table.insert(lines, 'Nenhum projeto recente encontrado')
+        table.insert(lines, '--')
       else
         for i, path in ipairs(projects) do
           local name = vim.fn.fnamemodify(path, ':t')
           local pretty = vim.fn.fnamemodify(path, ':~')
-          table.insert(lines, string.format('%d. %s', i, name))
-          table.insert(lines, '   ' .. pretty)
-          if i < #projects then table.insert(lines, '') end
+
+          table.insert(lines, (string.format('%d. %s', i, (name .. '   ' .. pretty))))
+          -- if i < #projects then table.insert(lines, '') end
         end
       end
 

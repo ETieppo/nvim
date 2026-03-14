@@ -127,7 +127,11 @@ return {
       stylua = {},
       taplo = {},
       marksman = {},
-      clangd = {},
+      clangd = {
+        cmd = {
+          '--log=error',
+        },
+      },
 
       rust_analyzer = {
         cmd = { '/Users/tieppo/.cargo/bin/rust-analyzer' },
