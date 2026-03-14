@@ -6,12 +6,10 @@ return {
     local alpha = require 'alpha'
     local dashboard = require 'alpha.themes.dashboard'
     local image_win = nil
-    local image_buf = nil
 
     local function close_alpha_image()
       if image_win and vim.api.nvim_win_is_valid(image_win) then pcall(vim.api.nvim_win_close, image_win, true) end
       image_win = nil
-      image_buf = nil
     end
 
     local function alpha_pixterm()
@@ -25,6 +23,7 @@ return {
       vim.api.nvim_set_hl(0, 'AlphaImageBg', {
         bg = '#000000',
       })
+
       local win = vim.api.nvim_open_win(buf, false, {
         relative = 'editor',
         width = width,
@@ -39,8 +38,6 @@ return {
       })
 
       vim.api.nvim_set_option_value('winhighlight', 'Normal:AlphaImageBg,NormalFloat:AlphaImageBg,EndOfBuffer:AlphaImageBg', { win = win })
-
-      image_buf = buf
       image_win = win
 
       vim.api.nvim_buf_call(buf, function()
@@ -74,6 +71,31 @@ return {
       return nil
     end
 
+    local function get_cwd_entries(limit)
+      local cwd = vim.fn.getcwd()
+      local entries = {}
+
+      for name, typ in vim.fs.dir(cwd) do
+        table.insert(entries, {
+          name = name,
+          type = typ,
+        })
+      end
+
+      table.sort(entries, function(a, b)
+        if a.type ~= b.type then return a.type == 'directory' end
+        return a.name:lower() < b.name:lower()
+      end)
+
+      if limit and #entries > limit then
+        while #entries > limit do
+          table.remove(entries)
+        end
+      end
+
+      return cwd, entries
+    end
+
     local function get_recent_projects(limit)
       local seen = {}
       local projects = {}
@@ -90,9 +112,9 @@ return {
       return projects
     end
 
-    local function make_projects_section()
-      local projects = get_recent_projects(5)
-      local lines = { '', '󰉋  Projetos recentes', '' }
+    local function get_recent_project_lines(limit)
+      local projects = get_recent_projects(limit)
+      local lines = { '', '󰉋  RECENT', '' }
 
       if #projects == 0 then
         table.insert(lines, '--')
@@ -100,17 +122,88 @@ return {
         for i, path in ipairs(projects) do
           local name = vim.fn.fnamemodify(path, ':t')
           local pretty = vim.fn.fnamemodify(path, ':~')
-
-          table.insert(lines, (string.format('%d. %s', i, (name .. '   ' .. pretty))))
-          -- if i < #projects then table.insert(lines, '') end
+          table.insert(lines, string.format('%d. %s', i, (name .. ' - ' .. pretty)))
         end
+      end
+
+      return lines
+    end
+
+    local function pad_right(str, width)
+      str = str or ''
+      local display_width = vim.fn.strdisplaywidth(str)
+      if display_width >= width then return str end
+      return str .. string.rep(' ', width - display_width)
+    end
+
+    local function chunk_list(list, chunk_size)
+      local chunks = {}
+      for i = 1, #list, chunk_size do
+        table.insert(chunks, vim.list_slice(list, i, math.min(i + chunk_size - 1, #list)))
+      end
+      return chunks
+    end
+
+    local function make_two_column_section()
+      local left = get_recent_project_lines(5)
+      local cwd, entries = get_cwd_entries(30)
+      local right_items = {
+        '',
+        string.upper(vim.fn.fnamemodify(cwd, ':t')),
+        '',
+      }
+
+      if #entries == 0 then
+        table.insert(right_items, '--')
+      else
+        for _, item in ipairs(entries) do
+          local icon = item.type == 'directory' and '' or '󰈔'
+          table.insert(right_items, string.format('%s %s', icon, item.name))
+        end
+      end
+
+      local header_lines = 3
+      local body = {}
+      for i = header_lines + 1, #right_items do
+        table.insert(body, right_items[i])
+      end
+      local right_chunks = chunk_list(body, 5)
+      local right_lines = {}
+
+      for row = 1, math.max(5, #body) do
+        local line = ''
+
+        for col, chunk in ipairs(right_chunks) do
+          local text = chunk[row] or ''
+          line = line .. pad_right(text, 18)
+          if col < #right_chunks then line = line .. '   ' end
+        end
+
+        table.insert(right_lines, line)
+      end
+
+      right_lines = {
+        right_items[1],
+        right_items[2],
+        right_items[3],
+        unpack(right_lines),
+      }
+
+      local lines = {}
+      local left_width = math.floor(vim.o.columns * 0.28)
+      local total = math.max(#left, #right_lines)
+
+      for i = 1, total do
+        local l = left[i] or ''
+        local r = right_lines[i] or ''
+        table.insert(lines, pad_right(l, left_width) .. '   ' .. r)
       end
 
       return {
         type = 'text',
         val = lines,
         opts = {
-          position = 'center',
+          position = 'left',
           hl = 'AlphaButtons',
         },
       }
@@ -154,7 +247,7 @@ return {
     })
 
     dashboard.section.header.val = {}
-    local projects_section = make_projects_section()
+    local projects_section = make_two_column_section()
 
     dashboard.config.layout = {
       { type = 'padding', val = 38 },
