@@ -73,7 +73,7 @@ vim.keymap.set('n', '<leader>fm', function()
   vim.cmd 'bdelete! #'
 end, { desc = '[F]ile [M]ove' })
 
-vim.keymap.set({ 'n', 'x' }, 'j', 'gj', { silent = true })
-vim.keymap.set({ 'n', 'x' }, 'k', 'gk', { silent = true })
-vim.keymap.set({ 'n', 'x' }, '<Down>', 'gj', { silent = true })
-vim.keymap.set({ 'n', 'x' }, '<Up>', 'gk', { silent = true })
+-- vim.keymap.set({ 'n', 'x' }, 'j', 'gj', { silent = true })
+-- vim.keymap.set({ 'n', 'x' }, 'k', 'gk', { silent = true })
+-- vim.keymap.set({ 'n', 'x' }, '<Down>', 'gj', { silent = true })
+-- vim.keymap.set({ 'n', 'x' }, '<Up>', 'gk', { silent = true })

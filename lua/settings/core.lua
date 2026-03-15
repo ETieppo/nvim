@@ -20,6 +20,7 @@ vim.o.confirm = true
 vim.o.messagesopt = 'wait:500,history:500'
 vim.o.cmdheight = 1
 
+vim.opt.formatoptions:remove { 'c', 'r', 'o' }
 vim.opt.termguicolors = true
 vim.opt.showbreak = '↪ '
 vim.opt.tabstop = 2
@@ -28,7 +29,7 @@ vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.wrap = true
 vim.opt.relativenumber = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 vim.opt.fillchars:append { eob = ' ' }
 vim.opt.shortmess:append 'W'
 
