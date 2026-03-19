@@ -1,19 +1,17 @@
 math.randomseed(os.time())
 
 local path = vim.fn.expand '~/.config/nvim/assets/'
-local files = vim.fn.readdir(path)
-local allowed_file_types = { 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp' }
-local limit = 3
-local wall_selection
-local f_iterator = 0
+local dir_files = vim.fn.readdir(path)
+local images = {}
+local allowed_file_types = { 'jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff', 'webp' }
 local function is_allowed_file(fname) return vim.tbl_contains(allowed_file_types, vim.fn.fnamemodify(fname, ':e'):lower()) end
+local wall_selection
 
-while f_iterator <= limit do
-  local file_i = math.random(1, #files)
-  wall_selection = files[file_i]
-  if is_allowed_file(wall_selection) then break end
-  f_iterator = f_iterator + 1
+for _, f in ipairs(dir_files) do
+  if is_allowed_file(f) then table.insert(images, f) end
 end
+
+wall_selection = images[math.random(1, #images)]
 
 return {
   'folke/snacks.nvim',
