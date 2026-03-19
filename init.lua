@@ -19,6 +19,6 @@ require('lazy').setup {
   spec = imp,
   change_detection = {
     enable = true,
-    notify = true,
+    notify = false,
   },
 }

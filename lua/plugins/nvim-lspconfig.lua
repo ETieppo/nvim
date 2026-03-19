@@ -1,10 +1,6 @@
 return {
-  -- Main LSP Configuration
   'neovim/nvim-lspconfig',
   dependencies = {
-    -- Automatically install LSPs and related tools to stdpath for Neovim
-    -- Mason must be loaded before its dependents so we need to set it up here.
-    -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
     {
       'mason-org/mason.nvim',
       ---@module 'mason.settings'
@@ -12,14 +8,9 @@ return {
       ---@diagnostic disable-next-line: missing-fields
       opts = {},
     },
-    -- Maps LSP server names between nvim-lspconfig and Mason package names.
     'mason-org/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-    -- Useful status updates for LSP.
     { 'j-hui/fidget.nvim', opts = {} },
-
-    -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',
   },
   config = function()
@@ -127,9 +118,22 @@ return {
       stylua = {},
       taplo = {},
       marksman = {},
+      cssls = {},
+      jdtls = {
+        cmd = {
+          'jdtls',
+          '--jvm-arg=-javaagent:' .. vim.fn.expand '$MASON/share/jdtls/lombok.jar',
+        },
+      },
+      kotlin_lsp = {},
+
       clangd = {
         cmd = {
-          '--log=error',
+          'clangd',
+          '--header-insertion-decorators=0',
+          '--background-index',
+          '--clang-tidy',
+          '--clang-tidy-checks=-llvm-header-guard,-llvm-copyright',
         },
       },
 

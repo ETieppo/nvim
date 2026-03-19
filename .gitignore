@@ -3,6 +3,7 @@ test.sh
 .luarc.json
 nvim
 
+lua/plugins/lsp/
 spell/
 
 # You likely want to comment this, since it's recommended to track lazy-lock.json in version

@@ -17,7 +17,6 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
-vim.o.messagesopt = 'wait:500,history:500'
 vim.o.cmdheight = 1
 
 vim.opt.formatoptions:remove { 'c', 'r', 'o' }
@@ -34,3 +33,9 @@ vim.opt.fillchars:append { eob = ' ' }
 vim.opt.shortmess:append 'W'
 
 vim.api.nvim_set_hl(0, 'Comment', { italic = true })
+
+vim.cmd("syntax on")
+vim.cmd("filetype plugin indent on")
+vim.cmd("autocmd BufRead,BufNewFile *.hurl setfiletype sh")
+
+vim.o.cmdheight = 0
