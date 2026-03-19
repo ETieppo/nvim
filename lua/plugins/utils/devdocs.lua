@@ -1,9 +1,6 @@
 return {
   'maskudo/devdocs.nvim',
   lazy = false,
-  dependencies = {
-    'folke/snacks.nvim',
-  },
   cmd = { 'DevDocs' },
   keys = {
     {
