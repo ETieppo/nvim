@@ -138,7 +138,7 @@ return {
       },
 
       rust_analyzer = {
-        cmd = { '/Users/tieppo/.cargo/bin/rust-analyzer' },
+        cmd = { vim.fn.expand '~' .. '/.cargo/bin/rust-analyzer' },
         settings = {
           ['rust-analyzer'] = {
             checkOnSave = true,
