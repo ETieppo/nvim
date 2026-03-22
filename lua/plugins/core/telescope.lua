@@ -15,7 +15,22 @@ return {
   },
   config = function()
     require('telescope').setup {
-      defaults = { file_ignore_patterns = { 'node_modules/', '.git/', 'dist/', 'target/', 'Cargo.lock', '.DS_Store', 'bin/', 'build/' } },
+      defaults = {
+        file_ignore_patterns = {
+          'node_modules/',
+          '.git/',
+          'dist/',
+          'target/',
+          'Cargo.lock',
+          '.DS_Store',
+          'bin/',
+          'build/',
+          '.gradle/',
+          '.metadata/',
+          'gradle/',
+          'jdt.ls-java-project/',
+        },
+      },
       extensions = {
         ['ui-select'] = { require('telescope.themes').get_dropdown() },
       },

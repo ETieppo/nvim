@@ -4,37 +4,22 @@ return {
   cmd = { 'DevDocs' },
   keys = {
     {
-      '<leader>ho',
+      '<leader>ds',
       mode = 'n',
       '<cmd>DevDocs get<cr>',
-      desc = 'Get Devdocs',
+      desc = '[D]evdocs [S]earch',
     },
     {
-      '<leader>hi',
+      '<leader>di',
       mode = 'n',
       '<cmd>DevDocs install<cr>',
-      desc = 'Install Devdocs',
+      desc = '[D]evdocs [I]nstall',
     },
     {
-      '<leader>hv',
-      mode = 'n',
-      function()
-        local devdocs = require 'devdocs'
-        local installedDocs = devdocs.GetInstalledDocs()
-        vim.ui.select(installedDocs, {}, function(selected)
-          if not selected then return end
-          local docDir = devdocs.GetDocDir(selected)
-          -- prettify the filename as you wish
-          Snacks.picker.files { cwd = docDir }
-        end)
-      end,
-      desc = 'Get Devdocs',
-    },
-    {
-      '<leader>hd',
+      '<leader>dd',
       mode = 'n',
       '<cmd>DevDocs delete<cr>',
-      desc = 'Delete Devdoc',
+      desc = '[D]evdoc [D]elete',
     },
   },
   opts = {

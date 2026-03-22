@@ -6,7 +6,7 @@ return {
       local notify = require 'notify'
       notify.setup {
         stages = 'fade',
-        timeout = 5000,
+        timeout = 1500,
         render = 'wrapped-compact',
       }
       vim.notify = notify

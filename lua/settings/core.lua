@@ -18,7 +18,11 @@ vim.o.cursorline = true
 vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.cmdheight = 1
+vim.o.cmdheight = 0
 
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.virtualedit = "onemore"
 vim.opt.formatoptions:remove { 'c', 'r', 'o' }
 vim.opt.termguicolors = true
 vim.opt.showbreak = '↪ '
@@ -38,4 +42,3 @@ vim.cmd("syntax on")
 vim.cmd("filetype plugin indent on")
 vim.cmd("autocmd BufRead,BufNewFile *.hurl setfiletype sh")
 
-vim.o.cmdheight = 0

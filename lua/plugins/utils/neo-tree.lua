@@ -23,7 +23,7 @@ return {
     },
     window = {
       position = 'left',
-      width = 32,
+      width = 26,
       zindex = 100,
     },
     nesting_rules = {
