@@ -12,7 +12,7 @@ local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
 local scan = require('utils.scan_modules_imports').scan_modules_imports
-local imp =  scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
+local imp = scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
 
 require('lazy').setup {
   spec = imp,
