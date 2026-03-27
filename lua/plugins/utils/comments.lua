@@ -1,10 +1,8 @@
 return {
   'folke/todo-comments.nvim',
-  event = 'VimEnter',
-  dependencies = { 'nvim-lua/plenary.nvim' },
+  event = { 'BufReadPost', 'BufNewFile' },
   ---@module 'todo-comments'
   ---@type TodoOptions
   ---@diagnostic disable-next-line: missing-fields
   opts = { signs = false },
 }
--- TODO: teste

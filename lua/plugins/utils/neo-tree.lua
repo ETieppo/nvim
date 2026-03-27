@@ -2,13 +2,9 @@
 ---@type LazySpec
 return {
   'nvim-neo-tree/neo-tree.nvim',
+  dependencies = { 'MunifTanjim/nui.nvim' },
   version = '*',
-  dependencies = {
-    'nvim-lua/plenary.nvim',
-    'nvim-tree/nvim-web-devicons',
-    'MunifTanjim/nui.nvim',
-  },
-  lazy = false,
+  cmd = 'Neotree',
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },

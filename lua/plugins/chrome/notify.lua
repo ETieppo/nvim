@@ -1,23 +1,22 @@
 return {
   {
-    'rcarriga/nvim-notify',
-    lazy = false,
-    config = function()
-      local notify = require 'notify'
-      notify.setup {
-        stages = 'fade',
-        timeout = 1500,
-        render = 'wrapped-compact',
-      }
-      vim.notify = notify
-    end,
-  },
-  {
     'folke/noice.nvim',
     event = 'VeryLazy',
     dependencies = {
       'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
+      {
+        'rcarriga/nvim-notify',
+        opts = {
+          stages = 'fade',
+          timeout = 1500,
+          render = 'wrapped-compact',
+        },
+        config = function(_, opts)
+          local notify = require 'notify'
+          notify.setup(opts)
+          vim.notify = notify
+        end,
+      },
     },
     opts = {
       messages = { enabled = true },
@@ -25,7 +24,11 @@ return {
         enabled = true,
         view = 'notify',
       },
-
+      popupmenu = { enabled = true },
+      presets = {
+        long_message_to_split = true,
+        command_palette = true,
+      },
       cmdline = {
         enabled = true,
         format = {
@@ -34,7 +37,7 @@ return {
             icon = ' ',
             lang = 'vim',
             conceal = false,
-            title=""
+            title = '',
           },
           search_down = {
             kind = 'search',
@@ -42,7 +45,7 @@ return {
             icon = '  ',
             lang = 'regex',
             conceal = false,
-            title=""
+            title = '',
           },
           search_up = {
             kind = 'search',
@@ -50,15 +53,14 @@ return {
             icon = '  ',
             lang = 'regex',
             conceal = false,
-                        title=""
-
+            title = '',
           },
           filter = {
             pattern = '^:%s*!',
             icon = '$ ',
             lang = 'bash',
             conceal = false,
-            title=""
+            title = '',
           },
           lua = {
             pattern = {
@@ -69,26 +71,20 @@ return {
             icon = ' ',
             lang = 'lua',
             conceal = false,
-            title=""
+            title = '',
           },
           help = {
             pattern = '^:%s*he?l?p?%s+',
             icon = ' ',
             conceal = false,
-            title=""
+            title = '',
           },
           input = {
             view = 'cmdline_input',
             icon = '󰥻 ',
-            title=""
+            title = '',
           },
         },
-      },
-
-      popupmenu = { enabled = true },
-      presets = {
-        long_message_to_split = true,
-        command_palette = true,
       },
     },
   },

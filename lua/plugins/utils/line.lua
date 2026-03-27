@@ -1,5 +1,6 @@
 return {
   'sschleemilch/slimline.nvim',
+  event = 'VeryLazy',
   opts = {
     spaces = {
       components = '',

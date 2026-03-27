@@ -22,7 +22,7 @@ vim.o.cmdheight = 0
 
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
-vim.opt.virtualedit = "onemore"
+vim.opt.virtualedit = 'onemore'
 vim.opt.formatoptions:remove { 'c', 'r', 'o' }
 vim.opt.termguicolors = true
 vim.opt.showbreak = '↪ '
@@ -38,7 +38,8 @@ vim.opt.shortmess:append 'W'
 
 vim.api.nvim_set_hl(0, 'Comment', { italic = true })
 
-vim.cmd("syntax on")
-vim.cmd("filetype plugin indent on")
-vim.cmd("autocmd BufRead,BufNewFile *.hurl setfiletype sh")
+vim.cmd 'syntax on'
+vim.cmd 'filetype plugin indent on'
+vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 
+vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })

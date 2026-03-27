@@ -1,5 +1,6 @@
 return {
   'gen740/SmoothCursor.nvim',
+  event = 'VeryLazy',
   config = function()
     vim.api.nvim_set_hl(0, 'SmoothCursorYellow1', { fg = '#FFD400' })
     vim.api.nvim_set_hl(0, 'SmoothCursorYellow2', { fg = '#FFC000' })

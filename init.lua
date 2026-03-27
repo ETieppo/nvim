@@ -17,7 +17,7 @@ local imp = scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
 require('lazy').setup {
   spec = imp,
   change_detection = {
-    enable = true,
+    enable = false,
     notify = false,
   },
 }

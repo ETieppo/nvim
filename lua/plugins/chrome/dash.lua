@@ -7,6 +7,9 @@ local wall_selection = dir_files[math.random(2, #dir_files)]
 return {
   'folke/snacks.nvim',
   opts = {
+    image = {
+      enabled = true,
+    },
     dashboard = {
       row = 0,
       preset = {

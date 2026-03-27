@@ -1,6 +1,5 @@
 return {
   'maskudo/devdocs.nvim',
-  lazy = false,
   cmd = { 'DevDocs' },
   keys = {
     {

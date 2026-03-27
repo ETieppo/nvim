@@ -2,7 +2,7 @@
 ---@type LazySpec
 return {
 
-  { -- Linting
+  {
     'mfussenegger/nvim-lint',
     event = { 'BufReadPre', 'BufNewFile' },
     config = function()
@@ -12,6 +12,7 @@ return {
         c = {},
         cpp = { 'cpplint' },
         kotlin = { 'ktlint' },
+        lua = { 'selene' },
       }
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
