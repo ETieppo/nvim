@@ -17,6 +17,7 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', ';', ':')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Open lazy' })
+vim.keymap.set('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -72,6 +73,25 @@ vim.keymap.set('n', '<leader>fm', function()
   vim.cmd('edit ' .. vim.fn.fnameescape(new))
   vim.cmd 'bdelete! #'
 end, { desc = '[F]ile [M]ove' })
+
+vim.keymap.set('n', '<leader>fc', function()
+  local old = vim.fn.expand '%:p'
+  local name = vim.fn.expand '%:t'
+  local move_cursor = #name
+
+  vim.schedule(function() vim.api.nvim_feedkeys(string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), move_cursor), 'n', false) end)
+
+  local new = vim.fn.input('Copy to: ', old, 'file')
+  if new == '' or new == old then return end
+  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
+
+  local success = vim.loop.fs_copyfile(old, new)
+  if success then
+    vim.cmd('edit ' .. vim.fn.fnameescape(new))
+  else
+    print '\nError at file clone.'
+  end
+end, { desc = '[F]ile [C]opy' })
 
 -- vim.keymap.set({ 'n', 'x' }, 'j', 'gj', { silent = true })
 -- vim.keymap.set({ 'n', 'x' }, 'k', 'gk', { silent = true })
