@@ -3,22 +3,22 @@ return {
   cmd = { 'DevDocs' },
   keys = {
     {
-      '<leader>ds',
+      '<leader>dds',
       mode = 'n',
       '<cmd>DevDocs get<cr>',
-      desc = '[D]evdocs [S]earch',
+      desc = '[D]ev[D]ocs [S]earch',
     },
     {
-      '<leader>di',
+      '<leader>ddi',
       mode = 'n',
       '<cmd>DevDocs install<cr>',
-      desc = '[D]evdocs [I]nstall',
+      desc = '[D]ev[D]ocs [I]nstall',
     },
     {
-      '<leader>dd',
+      '<leader>ddd',
       mode = 'n',
       '<cmd>DevDocs delete<cr>',
-      desc = '[D]evdoc [D]elete',
+      desc = '[D]ev[D]ocs [D]elete',
     },
   },
   opts = {

@@ -19,7 +19,9 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.cmdheight = 1
 vim.o.cmdheight = 0
+vim.o.background = 'dark'
 
+vim.opt.statuscolumn = '%s%{v:lnum} %{v:relnum} '
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.virtualedit = 'onemore'

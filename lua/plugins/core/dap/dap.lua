@@ -9,13 +9,13 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
   },
   keys = {
-    { '<F5>', function() require('dap').continue() end, desc = 'Debug: Start/Continue' },
-    { '<F1>', function() require('dap').step_into() end, desc = 'Debug: Step Into' },
-    { '<F2>', function() require('dap').step_over() end, desc = 'Debug: Step Over' },
-    { '<F3>', function() require('dap').step_out() end, desc = 'Debug: Step Out' },
-    { '<leader>bt', function() require('dap').toggle_breakpoint() end, desc = 'Debug: Toggle Breakpoint' },
-    { '<leader>B', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, desc = 'Debug: Set Breakpoint' },
-    { '<F7>', function() require('dapui').toggle() end, desc = 'Debug: See last session result.' },
+    { '<leader>da', function() require('dap').continue() end, desc = '[D]ebugger [A]ttach' },
+    { '<leader>dsi', function() require('dap').step_into() end, desc = '[D]ebug: [S]tep [I]nto' },
+    { '<leader>dsj', function() require('dap').step_over() end, desc = '[D]ebug: [S]tep [J]ump' },
+    { '<leader>dso', function() require('dap').step_out() end, desc = '[D]ebug: [S]tep [O]ut' },
+    { '<leader>bt', function() require('dap').toggle_breakpoint() end, desc = 'Debugger: Toggle Breakpoint' },
+    { '<leader>bT', function() require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ') end, desc = '[D]ebugger: [T]oggle condition [B]reakpoint' },
+    { '<leader>dsr', function() require('dapui').toggle() end, desc = '[D]ebugger: See last session result.' },
   },
   config = function()
     local dap = require 'dap'
@@ -51,7 +51,7 @@ return {
     vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
     local breakpoint_icons = vim.g.have_nerd_font
         and { Breakpoint = '', BreakpointCondition = '', BreakpointRejected = '', LogPoint = '', Stopped = '' }
-      or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆', Stopped = '⭔' }
+      or { Breakpoint = '●', BreakpointCondition = '⊜', BreakpointRejected = '⊘', LogPoint = '◆ ', Stopped = '⭔ ' }
     for type, icon in pairs(breakpoint_icons) do
       local tp = 'Dap' .. type
       local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'

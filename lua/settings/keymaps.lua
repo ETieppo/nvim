@@ -93,6 +93,25 @@ vim.keymap.set('n', '<leader>fc', function()
   end
 end, { desc = '[F]ile [C]opy' })
 
+vim.keymap.set('n', '<leader>cn', function()
+  local config_lua_path = vim.fn.stdpath('config') .. '/lua/'
+  local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
+  if path == '' then return end
+  if not path:match('%.lua$') then
+    path = path .. '.lua'
+  end
+  vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
+  vim.cmd('edit ' .. path)
+end, { desc = '[C]onfig [N]ew' })
+
+
+vim.keymap.set('n', '<leader>cg', function()
+  require('telescope.builtin').live_grep({
+    cwd = vim.fn.stdpath('config'),
+    prompt_title = 'Live grep in neovim config',
+  })
+end, { desc = '[C]onfig [G]rep' })
+
 -- vim.keymap.set({ 'n', 'x' }, 'j', 'gj', { silent = true })
 -- vim.keymap.set({ 'n', 'x' }, 'k', 'gk', { silent = true })
 -- vim.keymap.set({ 'n', 'x' }, '<Down>', 'gj', { silent = true })

@@ -1,4 +1,6 @@
 return {
+  -- 'rockerBOO/boo-colorscheme-nvim',
+  -- 'protesilaos/prot16-vim',
   -- 'uhs-robert/oasis.nvim',
   -- 'craftzdog/solarized-osaka.nvim',
   -- 'DonJulve/NeoCyberVim',
