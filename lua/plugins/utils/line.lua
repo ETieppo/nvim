@@ -13,10 +13,14 @@ return {
           spinner.count = spinner.count + 1
           if not spinner.timer then
             spinner.timer = vim.uv.new_timer()
-            spinner.timer:start(0, 80, vim.schedule_wrap(function()
-              spinner.frame = (spinner.frame % #frames) + 1
-              vim.cmd('redrawstatus!')
-            end))
+            spinner.timer:start(
+              0,
+              80,
+              vim.schedule_wrap(function()
+                spinner.frame = (spinner.frame % #frames) + 1
+                vim.cmd 'redrawstatus!'
+              end)
+            )
           end
         elseif kind == 'end' then
           spinner.count = math.max(0, spinner.count - 1)
@@ -24,36 +28,36 @@ return {
             spinner.timer:stop()
             spinner.timer:close()
             spinner.timer = nil
-            vim.cmd('redrawstatus!')
+            vim.cmd 'redrawstatus!'
           end
         end
       end,
     })
 
-    require('slimline').setup({
+    require('slimline').setup {
       spaces = {
         components = '',
         left = '',
         right = '',
       },
       sep = {
+        left = '',
+        right = '',
         hide = {
           first = true,
           last = true,
         },
-        left = '',
-        right = '',
+        -- left = '',
+        -- right = '',
       },
       components = {
         center = {
           function()
-            if spinner.count > 0 then
-              return frames[spinner.frame]
-            end
+            if spinner.count > 0 then return frames[spinner.frame] end
             return ''
           end,
         },
       },
-    })
+    }
   end,
 }
