@@ -2,7 +2,38 @@ return {
   'sschleemilch/slimline.nvim',
   event = 'VeryLazy',
   config = function()
-    local frames = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' }
+    local frames = {
+      'ᗧ• • •🍒      ',
+      'ᗧ• • •🍒      ',
+      'ᗧ• • •🍒      ',
+
+      '  ᗧ • 🍒       ',
+      '  ᗧ • 🍒       ',
+      '  ᗧ • 🍒       ',
+
+      '    ᗧ 🍒      ᗣ',
+      '    ᗧ 🍒      ᗣ',
+      '    ᗧ 🍒      ᗣ',
+      '    ᗧ 🍒      ᗣ',
+      '    ᗧ 🍒      ᗣ',
+
+      '    ᗧ 🍒     ᗣ ',
+      '    ᗧ 🍒     ᗣ ',
+      '    ᗧ 🍒     ᗣ ',
+      '    ᗧ 🍒     ᗣ ',
+      '    ᗧ 🍒     ᗣ ',
+
+      '  ᗤ  🍒    ᗣ  ',
+      '  ᗤ  🍒    ᗣ  ',
+      '  ᗤ  🍒    ᗣ  ',
+
+      ' ᗤ    🍒    ᗣ  ',
+      ' ᗤ    🍒    ᗣ  ',
+      ' ᗤ    🍒    ᗣ  ',
+      'ᗤ     🍒    ᗣ  ',
+      'ᗤ     🍒    ᗣ  ',
+      'ᗤ     🍒    ᗣ  ',
+    }
     local spinner = { count = 0, frame = 1, timer = nil }
 
     vim.api.nvim_create_autocmd('LspProgress', {
