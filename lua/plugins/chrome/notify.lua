@@ -25,6 +25,10 @@ return {
         view = 'notify',
       },
       popupmenu = { enabled = true },
+      lsp = {
+        progress = { enabled = false },
+        message = { enabled = false },
+      },
       presets = {
         long_message_to_split = true,
         command_palette = true,
