@@ -8,7 +8,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
   callback = function()
     local bt = vim.bo.buftype
     local ft = vim.bo.filetype
-    local excluded_ft = { 'neo-tree', 'minimap', 'aerial', 'dashboard' }
+    local excluded_ft = { 'neo-tree', 'minimap', 'neominimap', 'aerial', 'dashboard' }
     local excluded_bt = { 'terminal', 'nofile', 'prompt', 'quickfix' }
     local is_excluded_ft = vim.tbl_contains(excluded_ft, ft)
     local is_excluded_bt = vim.tbl_contains(excluded_bt, bt)

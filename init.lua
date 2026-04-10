@@ -14,6 +14,10 @@ rtp:prepend(lazypath)
 local scan = require('utils.scan_modules_imports').scan_modules_imports
 local imp = scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
 
+if vim.g.neovide then
+    vim.g.neovide_frame = "none"
+end
+
 require('lazy').setup {
   spec = imp,
   change_detection = {

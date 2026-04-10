@@ -16,6 +16,11 @@ return {
         minimap_width = mapsize,
         close_if_last_window = false,
       },
+      win_opt = {
+        number = false,
+        relativenumber = false,
+        statuscolumn = '',
+      },
     }
   end,
 }

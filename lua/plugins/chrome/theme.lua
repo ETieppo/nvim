@@ -1,18 +1,6 @@
 return {
-  -- 'rockerBOO/boo-colorscheme-nvim',
-  -- 'protesilaos/prot16-vim',
-  -- 'uhs-robert/oasis.nvim',
-  -- 'craftzdog/solarized-osaka.nvim',
-  -- 'DonJulve/NeoCyberVim',
-  'EdenEast/nightfox.nvim',
+  'rockerBOO/boo-colorscheme-nvim',
+  lazy = false,
   priority = 1000,
-  config = function()
-    --@diagnostic disable-next-line: missing-fields
-    -- vim.cmd.colorscheme 'moonfly'
-    -- vim.cmd.colorscheme 'solarized-osaka'
-    -- vim.cmd.colorscheme 'NeoCyberVim-dark'
-    vim.cmd.colorscheme 'carbonfox'
-
-    vim.o.background = 'dark'
-  end,
+  config = function() vim.cmd 'colorscheme boo' end,
 }
