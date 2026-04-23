@@ -45,3 +45,4 @@ vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 
 vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })
+vim.cmd.colorscheme 'bluecherry'

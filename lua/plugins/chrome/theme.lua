@@ -1,6 +1,5 @@
 return {
-  'rockerBOO/boo-colorscheme-nvim',
+  "mohseenrm/brutus",
   lazy = false,
   priority = 1000,
-  config = function() vim.cmd 'colorscheme boo' end,
 }

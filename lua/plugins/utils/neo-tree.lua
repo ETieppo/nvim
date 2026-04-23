@@ -13,7 +13,7 @@ return {
   opts = {
     zindex = 100,
     hide_root_node = true,
-    close_if_last_window = true,
+    close_if_last_window = false,
     clipboard = {
       sync = 'global',
     },
@@ -24,12 +24,6 @@ return {
     },
     nesting_rules = {
       ['package.json'] = { pattern = '^package%.json$', files = { 'yarn*' } },
-      ['Cargo.toml'] = { '*.toml' },
-      ['docker'] = {
-        pattern = '^dockerfile$',
-        ignore_case = true,
-        files = { '.dockerignore', 'docker-compose.*', 'dockerfile*' },
-      },
     },
     filesystem = {
       filtered_items = {
