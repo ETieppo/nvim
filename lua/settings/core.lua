@@ -45,4 +45,5 @@ vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 
 vim.fn.sign_define('DapBreakpoint', { text = '🔴', texthl = '', linehl = '', numhl = '' })
-vim.cmd.colorscheme 'bluecherry'
+vim.cmd.colorscheme 'blackberry'
+vim.g.neovide_line_height_plus = 15

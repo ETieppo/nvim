@@ -1,5 +1,5 @@
 vim.o.termguicolors = true
-vim.g.colors_name = 'blue_cherry'
+vim.g.colors_name = 'pattern'
 
 -- ============================================================================
 -- Palette
