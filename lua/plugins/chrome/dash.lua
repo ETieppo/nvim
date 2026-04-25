@@ -18,7 +18,7 @@ return {
       sections = {
         {
           section = 'terminal',
-          cmd = 'sleep 0.02 && pixterm -d 2 -s 1 ' .. path .. wall_selection,
+          cmd = 'bash -c "pixterm -d 2 -s 1 ' .. path .. wall_selection .. '; cat"',
           width = vim.o.columns,
           height = math.floor(vim.o.lines * 0.75),
           padding = 0,
