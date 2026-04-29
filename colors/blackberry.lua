@@ -6,6 +6,7 @@ vim.g.colors_name = 'blackberry'
 -- ============================================================================
 local p = {
   -- Backgrounds
+  transparent  = '#000000',
   bg0          = '#060609',   -- mais fundo ainda (janelas inativas)
   bg1          = '#0a0a0d',   -- fundo principal (editor)
   bg2          = '#08080b',   -- painéis, sidebar, statusbar
@@ -86,7 +87,8 @@ local set = vim.api.nvim_set_hl
 -- ============================================================================
 -- UI / Editor
 -- ============================================================================
-set(0, 'Normal',             { fg = p.fg,         bg = p.bg1 })
+set(0, 'WinSeparator',       { fg = p.transparent})
+set(0, 'Normal',             { fg = p.fg,         bg = p.bg0 })
 set(0, 'NormalNC',           { fg = p.fg,         bg = p.bg0 })
 set(0, 'NormalFloat',        { fg = p.fg,         bg = p.bg3 })
 set(0, 'CursorLine',         { bg = p.bg3 })

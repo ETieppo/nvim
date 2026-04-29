@@ -47,6 +47,7 @@ local set = vim.api.nvim_set_hl
 -- ============================================================================
 -- UI / Editor
 -- ============================================================================
+set(0, 'WinSeparator',      { fg = p.sumiInk2 })
 set(0, 'Normal',            { fg = p.oldWhite,   bg = p.sumiInk0 })
 set(0, 'NormalNC',          { fg = p.oldWhite,   bg = p.darkBlue })
 set(0, 'NormalFloat',       { fg = p.oldWhite,   bg = p.sumiInk2 })
