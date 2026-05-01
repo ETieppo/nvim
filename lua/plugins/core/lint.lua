@@ -17,7 +17,9 @@ return {
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
       group = lint_augroup,
       callback = function()
-        if vim.bo.modifiable then lint.try_lint() end
+        if vim.bo.modifiable then
+          lint.try_lint()
+        end
       end,
     })
   end,

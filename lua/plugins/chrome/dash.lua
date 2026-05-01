@@ -1,6 +1,6 @@
 math.randomseed(os.time())
 
-local path = vim.fn.expand '~/.config/nvim/assets/'
+local path = vim.fn.stdpath 'config' .. '/assets/'
 local dir_files = vim.fn.readdir(path)
 local wall_selection = dir_files[math.random(2, #dir_files)]
 
