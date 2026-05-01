@@ -15,6 +15,7 @@ return {
         'cpplint',
         --- formatters
         'stylua',
+        'prettier',
       },
     }
 
