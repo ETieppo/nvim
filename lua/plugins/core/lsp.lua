@@ -13,12 +13,20 @@ return {
         'selene',
         'markdownlint-cli2',
         'cpplint',
+        --- formatters
+        'stylua',
       },
     }
 
     local mason_packages = vim.fn.stdpath 'data' .. '/mason/packages'
     local angular_pkg = mason_packages .. '/angular-language-server/node_modules/@angular/language-server'
     local ts_lib = mason_packages .. '/angular-language-server/node_modules/typescript/lib'
+
+    vim.filetype.add {
+      pattern = {
+        ['.*%.component%.html'] = 'htmlangular',
+      },
+    }
 
 
     vim.lsp.config('emmet_language_server', {

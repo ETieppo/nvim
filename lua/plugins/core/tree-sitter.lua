@@ -4,7 +4,7 @@ return {
   build = ':TSUpdate',
   config = function()
     require('nvim-treesitter').setup()
-    require('nvim-treesitter').install { 'html', 'css', 'sql' }
+    require('nvim-treesitter').install { 'html', 'angular', 'css', 'sql' }
 
     vim.api.nvim_create_autocmd('FileType', {
       callback = function()
