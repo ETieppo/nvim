@@ -27,7 +27,8 @@ return {
           '.metadata/',
           'gradle/',
           'jdt.ls-java-project/',
-          '.godot/'
+          '.godot/',
+          '.angular'
         },
       },
       extensions = {
