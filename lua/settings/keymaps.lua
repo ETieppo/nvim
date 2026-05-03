@@ -121,6 +121,10 @@ vim.keymap.set('n', '<leader>cn', function()
   vim.cmd('edit ' .. path)
 end, { desc = '[C]onfig [N]ew' })
 
+-- buffer navigation (mirrors Zed alt+super+arrow)
+vim.keymap.set('n', '<A-D-Right>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<A-D-Left>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+
 
 vim.keymap.set('n', '<leader>cg', function()
   require('telescope.builtin').live_grep({
