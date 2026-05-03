@@ -17,7 +17,24 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', ';', ':')
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Open lazy' })
-vim.keymap.set('n', '<leader>bd', '<cmd>bdelete<CR>', { desc = '[B]uffer [D]elete' })
+vim.keymap.set('n', '<leader>bd', function()
+  local cur = vim.api.nvim_get_current_buf()
+  local next_buf = nil
+  local alt = vim.fn.bufnr '#'
+  if alt > 0 and alt ~= cur and vim.fn.buflisted(alt) == 1 then
+    next_buf = alt
+  end
+  if not next_buf then
+    for _, info in ipairs(vim.fn.getbufinfo { buflisted = 1 }) do
+      if info.bufnr ~= cur then
+        next_buf = info.bufnr
+        break
+      end
+    end
+  end
+  if next_buf then vim.api.nvim_set_current_buf(next_buf) end
+  vim.cmd('bdelete ' .. cur)
+end, { desc = '[B]uffer [D]elete' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
