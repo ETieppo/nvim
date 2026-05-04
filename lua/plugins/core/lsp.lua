@@ -9,6 +9,7 @@ return {
         'typescript-language-server',
         'angular-language-server',
         'emmet-language-server',
+        'taplo',
         --- linters
         'selene',
         'markdownlint-cli2',
@@ -28,7 +29,6 @@ return {
         ['.*%.component%.html'] = 'htmlangular',
       },
     }
-
 
     vim.lsp.config('emmet_language_server', {
       cmd = { 'emmet-language-server', '--stdio' },
@@ -54,8 +54,10 @@ return {
       cmd = {
         'ngserver',
         '--stdio',
-        '--tsProbeLocations', ts_lib,
-        '--ngProbeLocations', angular_pkg,
+        '--tsProbeLocations',
+        ts_lib,
+        '--ngProbeLocations',
+        angular_pkg,
       },
       filetypes = { 'html', 'htmlangular' },
       root_markers = { 'angular.json' },

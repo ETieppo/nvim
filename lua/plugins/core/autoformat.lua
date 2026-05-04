@@ -26,6 +26,7 @@ return {
       css = { 'prettier' },
       scss = { 'prettier' },
       json = { 'prettier' },
+      toml = { 'taplo' },
     },
   },
 }
