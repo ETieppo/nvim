@@ -30,6 +30,12 @@ return {
       },
     }
 
+    vim.lsp.config('taplo', {
+      cmd = { 'taplo', 'lsp', 'stdio' },
+      filetypes = { 'toml' },
+      root_markers = { '.taplo.toml', 'taplo.toml', '.git', 'Cargo.toml' },
+    })
+
     vim.lsp.config('emmet_language_server', {
       cmd = { 'emmet-language-server', '--stdio' },
       filetypes = {
@@ -76,6 +82,6 @@ return {
       root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
     })
 
-    vim.lsp.enable { 'ts_ls', 'angularls', 'emmet_language_server' }
+    vim.lsp.enable { 'ts_ls', 'angularls', 'emmet_language_server', 'taplo' }
   end,
 }
