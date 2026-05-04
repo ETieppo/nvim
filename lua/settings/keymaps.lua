@@ -36,10 +36,21 @@ vim.keymap.set('n', '<leader>bd', function()
   vim.cmd('bdelete ' .. cur)
 end, { desc = '[B]uffer [D]elete' })
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+
+if vim.g.neovide then
+  vim.keymap.set("v", "<D-c>", '"+y')
+  vim.keymap.set("n", "<D-v>", '"+P')
+  vim.keymap.set("v", "<D-v>", '"+P')
+  vim.keymap.set("i", "<D-v>", '<C-r>+')
+  vim.keymap.set("c", "<D-v>", '<C-r>+')
+  vim.keymap.set("t", "<D-v>", [[<C-\><C-n>"+pi]])
+  vim.keymap.set("n", "<D-a>", "ggVG")
+end
+
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
@@ -122,8 +133,8 @@ vim.keymap.set('n', '<leader>cn', function()
 end, { desc = '[C]onfig [N]ew' })
 
 -- buffer navigation (mirrors Zed alt+super+arrow)
-vim.keymap.set('n', '<A-D-Right>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
-vim.keymap.set('n', '<A-D-Left>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set('n', '<D-M-Right>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<D-M-Left>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
 
 
 vim.keymap.set('n', '<leader>cg', function()
