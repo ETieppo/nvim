@@ -2,3 +2,9 @@ std = "vim"
 
 [lints]
 mixed_table = "allow"
+
+[checks]
+line_length = true
+
+[checks.multiple_statements_on_same_line]
+enabled = false
