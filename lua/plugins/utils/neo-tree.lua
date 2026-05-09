@@ -18,9 +18,9 @@ return {
       sync = 'global',
     },
     window = {
-      position = 'left',
-      width = 26,
-      zindex = 100,
+      position = 'float',
+      width = 30,
+      zindex = 10000,
     },
     nesting_rules = {
       ['package.json'] = { pattern = '^package%.json$', files = { 'yarn*' } },
@@ -32,12 +32,14 @@ return {
         hide_gitignored = false,
         hide_ignored = false,
         never_show = {
+          'dist',
+          'node_modules',
           '.DS_Store',
           '.git',
         },
       },
       group_empty_dirs = false,
-      use_libuv_file_watcher = false,
+      use_libuv_file_watcher = true,
       follow_current_file = { enabled = true },
     },
     buffers = {
