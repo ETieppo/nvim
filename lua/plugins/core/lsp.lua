@@ -10,6 +10,7 @@ return {
         'angular-language-server',
         'emmet-language-server',
         'taplo',
+        'zls',
         --- linters
         'selene',
         'markdownlint-cli2',
@@ -80,6 +81,12 @@ return {
         'typescript.tsx',
       },
       root_markers = { 'tsconfig.json', 'jsconfig.json', 'package.json', '.git' },
+    })
+
+    vim.lsp.config('zls', {
+      cmd = { 'zls' },
+      filetypes = { 'zig', 'zon' },
+      root_markers = { 'build.zig' },
     })
 
     vim.lsp.enable { 'ts_ls', 'angularls', 'emmet_language_server', 'taplo' }
