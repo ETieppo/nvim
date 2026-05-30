@@ -13,7 +13,6 @@ return {
   opts = {
     notify_on_error = false,
     format_on_save = nil,
-
     formatters_by_ft = {
       lua = { 'stylua' },
       markdown = { 'markdownlint-cli2' },
