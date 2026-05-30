@@ -6,7 +6,7 @@ return { -- Autocompletion
   ---@type blink.cmp.Config
   opts = {
     keymap = {
-      preset = 'default',
+      preset = 'enter',
     },
     appearance = {
       nerd_font_variant = 'mono',
@@ -20,7 +20,7 @@ return { -- Autocompletion
               text = function(ctx)
                 local detail = ctx.item.detail
                 if not detail or detail == '' then return '' end
-                return detail:match('^[^\n]+') or ''
+                return detail:match '^[^\n]+' or ''
               end,
               highlight = 'NonText',
             },

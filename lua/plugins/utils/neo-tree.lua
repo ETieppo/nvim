@@ -13,7 +13,7 @@ return {
   opts = {
     zindex = 100,
     hide_root_node = true,
-    close_if_last_window = false,
+    close_if_last_window = true,
     clipboard = {
       sync = 'global',
     },

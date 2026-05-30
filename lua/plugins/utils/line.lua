@@ -70,21 +70,6 @@ return {
     })
 
     require('slimline').setup {
-      spaces = {
-        components = '',
-        left = '',
-        right = '',
-      },
-      sep = {
-        left = '',
-        right = '',
-        hide = {
-          first = true,
-          last = true,
-        },
-        -- left = '',
-        -- right = '',
-      },
       components = {
         center = {
           function()
