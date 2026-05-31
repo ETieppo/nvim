@@ -25,12 +25,12 @@ vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
 
 -- Mover linhas (Alt + j/k) ----------------------------------------------------
-vim.keymap.set('n', '<A-k>', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
-vim.keymap.set('n', '<A-j>', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
-vim.keymap.set('i', '<A-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
-vim.keymap.set('i', '<A-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
-vim.keymap.set('v', '<A-k>', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
-vim.keymap.set('v', '<A-j>', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move selection down' })
+vim.keymap.set('n', '<D-k>', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
+vim.keymap.set('n', '<D-j>', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
+vim.keymap.set('i', '<D-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
+vim.keymap.set('i', '<D-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
+vim.keymap.set('v', '<D-k>', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
+vim.keymap.set('v', '<D-j>', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move selection down' })
 
 -- Diversos --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
