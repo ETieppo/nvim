@@ -1,7 +1,7 @@
 return {
-  cmd = { vim.fn.expand '~/.zvm/bin/zls' },
+  cmd = { vim.fn.expand '~/.cargo/bin/rust-analyzer' },
   settings = {
-    zls = {
+    rust_analyzer= {
       enable_build_on_save = true,
       build_on_save_step = 'check',
       enable_ast_check_diagnostics = true,

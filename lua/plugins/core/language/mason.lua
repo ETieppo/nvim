@@ -20,13 +20,12 @@ return {
     opts = {
       ensure_installed = {
         'lua_ls',
-        'rust-analyzer',
         'selene',
         'ts_ls',
         'jsonls',
         'stylua',
         'prettier',
-        'zls',
+        'emmet-language-server',
       },
     },
   },

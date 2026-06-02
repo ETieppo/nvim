@@ -1,3 +1,8 @@
+vim.lsp.enable {
+  'zls',
+  'rust_analyzer',
+}
+
 vim.g.have_nerd_font = true
 vim.g.neovide_line_height_plus = 15
 

@@ -1,6 +1,4 @@
 -- =============================================================================
--- keymaps.lua  —  todos os keymaps "de verdade" ficam aqui.
---
 -- NÃO ficam aqui (são gatilhos de lazy-loading, vivem na spec do plugin):
 --   • DAP        (core/dap/dap.lua)
 --   • Trouble    (utils/trouble.lua)
@@ -24,13 +22,16 @@ vim.keymap.set('n', '<right>', '<nop>')
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
 
+local mod = vim.fn.has 'macunix' == 1 and 'A' or 'D'
+local function map(mode, key, rhs, opts) vim.keymap.set(mode, ('<%s-%s>'):format(mod, key), rhs, opts) end
+
 -- Mover linhas (Alt + j/k) ----------------------------------------------------
-vim.keymap.set('n', '<D-k>', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
-vim.keymap.set('n', '<D-j>', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
-vim.keymap.set('i', '<D-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
-vim.keymap.set('i', '<D-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
-vim.keymap.set('v', '<D-k>', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
-vim.keymap.set('v', '<D-j>', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move selection down' })
+map('n', 'k', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
+map('n', 'j', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
+map('i', 'k', '<Esc>:m .-2<CR>==gi', { silent = true })
+map('i', 'j', '<Esc>:m .+1<CR>==gi', { silent = true })
+map('v', 'k', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
+map('v', 'j', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move selection down' })
 
 -- Diversos --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -45,8 +46,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffers ---------------------------------------------------------------------
-vim.keymap.set('n', '<D-M-Right>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
-vim.keymap.set('n', '<D-M-Left>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set('n', '<D-M-l>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<D-M-h>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
 
 vim.keymap.set('n', '<leader>bd', function()
   local cur = vim.api.nvim_get_current_buf()
@@ -137,16 +138,19 @@ vim.keymap.set('n', '<leader>cn', function()
   vim.cmd('edit ' .. path)
 end, { desc = '[C]onfig [N]ew' })
 
-vim.keymap.set('n', '<leader>cs', function()
-  require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
-end, { desc = '[C]onfig [S]earch files' })
+vim.keymap.set('n', '<leader>cs', function() require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[C]onfig [S]earch files' })
 
-vim.keymap.set('n', '<leader>cg', function()
-  require('telescope.builtin').live_grep {
-    cwd = vim.fn.stdpath 'config',
-    prompt_title = 'Live grep in neovim config',
-  }
-end, { desc = '[C]onfig [G]rep' })
+vim.keymap.set(
+  'n',
+  '<leader>cg',
+  function()
+    require('telescope.builtin').live_grep {
+      cwd = vim.fn.stdpath 'config',
+      prompt_title = 'Live grep in neovim config',
+    }
+  end,
+  { desc = '[C]onfig [G]rep' }
+)
 
 -- Telescope (busca) -----------------------------------------------------------
 vim.keymap.set('n', '<leader>sh', function() require('telescope.builtin').help_tags() end, { desc = '[S]earch [H]elp' })
@@ -160,29 +164,40 @@ vim.keymap.set('n', '<leader>sc', function() require('telescope.builtin').comman
 vim.keymap.set('n', '<leader>sf', function() require('telescope.builtin').buffers() end, { desc = '[S]earch open buffers' })
 vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() require('telescope.builtin').grep_string() end, { desc = '[S]earch current [W]ord' })
 
-vim.keymap.set('n', '<leader><leader>', function()
-  require('telescope.builtin').find_files { hidden = true, no_ignore = true }
-end, { desc = '[S]earch Files' })
+vim.keymap.set('n', '<leader><leader>', function() require('telescope.builtin').find_files { hidden = true, no_ignore = true } end, { desc = '[S]earch Files' })
 
-vim.keymap.set('n', '<leader>/', function()
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
+vim.keymap.set(
+  'n',
+  '<leader>/',
+  function()
+    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+      winblend = 10,
+      previewer = false,
+    })
+  end,
+  { desc = '[/] Fuzzily search in current buffer' }
+)
 
-vim.keymap.set('n', '<leader>s/', function()
-  require('telescope.builtin').live_grep {
-    grep_open_files = true,
-    prompt_title = 'Live Grep in Open Files',
-  }
-end, { desc = '[S]earch [/] in Open Files' })
+vim.keymap.set(
+  'n',
+  '<leader>s/',
+  function()
+    require('telescope.builtin').live_grep {
+      grep_open_files = true,
+      prompt_title = 'Live Grep in Open Files',
+    }
+  end,
+  { desc = '[S]earch [/] in Open Files' }
+)
 
 -- Neovide ---------------------------------------------------------------------
 if vim.g.neovide then
-  vim.keymap.set('n', '<D-n>', function()
-    vim.fn.jobstart('neovide --new-window --reuse-instance --chdir ' .. vim.fn.getcwd(), { detach = true })
-  end, { desc = 'Nova janela Neovide no cwd' })
+  vim.keymap.set(
+    'n',
+    '<D-n>',
+    function() vim.fn.jobstart('neovide --new-window --reuse-instance --chdir ' .. vim.fn.getcwd(), { detach = true }) end,
+    { desc = 'Nova janela Neovide no cwd' }
+  )
   vim.keymap.set('v', '<D-c>', '"+y')
   vim.keymap.set('n', '<D-v>', '"+P')
   vim.keymap.set('v', '<D-v>', '"+P')
@@ -202,9 +217,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local buf = event.buf
     local tb = function() return require 'telescope.builtin' end
-    local map = function(keys, func, desc, mode)
-      vim.keymap.set(mode or 'n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc })
-    end
+    local map = function(keys, func, desc, mode) vim.keymap.set(mode or 'n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc }) end
 
     -- Navegação (references / impl / type / symbols via Telescope)
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -245,9 +258,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Toggle inlay hints (se o servidor suportar)
     if client and client:supports_method('textDocument/inlayHint', buf) then
-      map('<leader>th', function()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = buf })
-      end, '[T]oggle Inlay [H]ints')
+      map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = buf }) end, '[T]oggle Inlay [H]ints')
     end
 
     -- Realçar referências ao parar o cursor (comportamento, não keymap)
