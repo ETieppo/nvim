@@ -1,6 +1,8 @@
 vim.lsp.enable {
   'zls',
   'rust_analyzer',
+  'java',
+  'jdtls'
 }
 
 vim.g.have_nerd_font = true
