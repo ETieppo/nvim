@@ -20,6 +20,24 @@ return {
       '<cmd>DevDocs delete<cr>',
       desc = '[D]ev[D]ocs [D]elete',
     },
+    {
+      '<leader>ddg',
+      mode = 'n',
+      function()
+        local devdocs = require 'devdocs'
+        local installed = devdocs.GetInstalledDocs()
+        vim.ui.select(
+          installed,
+          { prompt = 'Grep em qual doc?' },
+          function(selected)
+            if not selected then return end
+            local doc_dir = devdocs.GetDocDir(selected)
+            require('telescope.builtin').live_grep { cwd = doc_dir }
+          end
+        )
+      end,
+      desc = '[D]ev[D]ocs [G]rep',
+    },
   },
   opts = {
     ensure_installed = {
