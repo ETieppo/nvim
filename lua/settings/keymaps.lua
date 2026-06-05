@@ -22,7 +22,7 @@ vim.keymap.set('n', '<right>', '<nop>')
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
 
-local mod = vim.fn.has 'macunix' == 1 and 'A' or 'D'
+local mod = vim.fn.has 'macunix' == 1 and 'C-M' or 'D'
 local function map(mode, key, rhs, opts) vim.keymap.set(mode, ('<%s-%s>'):format(mod, key), rhs, opts) end
 
 -- Mover linhas (Alt + j/k) ----------------------------------------------------
@@ -46,8 +46,8 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffers ---------------------------------------------------------------------
-vim.keymap.set('n', '<D-M-l>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
-vim.keymap.set('n', '<D-M-h>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set('n', '<C-M-l>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
+vim.keymap.set('n', '<C-M-h>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
 
 vim.keymap.set('n', '<leader>bd', function()
   local cur = vim.api.nvim_get_current_buf()
