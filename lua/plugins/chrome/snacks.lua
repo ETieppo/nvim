@@ -7,7 +7,17 @@ local wall_selection = dir_files[math.random(#dir_files)]
 return {
   'folke/snacks.nvim',
   opts = {
+    animate = { enabled = true },
     notifier = { enabled = true, timeout = 5000 },
+    bigfile = { enabled = true },
+    bufdelete = { enabled = true },
+    debug = { enabled = true },
+    indent = { enabled = true },
+    input = { enabled = true },
+    picker = { enabled = true },
+    profiler = { enabled = true },
+    scroll = { enabled = true },
+    terminal = { enabled = true },
     image = {
       enabled = true,
     },

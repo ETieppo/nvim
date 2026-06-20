@@ -23,7 +23,9 @@ vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
 
 local mod = vim.fn.has 'macunix' == 1 and 'C-M' or 'D'
-local function map(mode, key, rhs, opts) vim.keymap.set(mode, ('<%s-%s>'):format(mod, key), rhs, opts) end
+local function map(mode, key, rhs, opts)
+  vim.keymap.set(mode, ('<%s-%s>'):format(mod, key), rhs, opts)
+end
 
 -- Mover linhas (Alt + j/k) ----------------------------------------------------
 map('n', 'k', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
@@ -31,11 +33,21 @@ map('n', 'j', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
 map('i', 'k', '<Esc>:m .-2<CR>==gi', { silent = true })
 map('i', 'j', '<Esc>:m .+1<CR>==gi', { silent = true })
 map('v', 'k', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
-map('v', 'j', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move selection down' })
+map(
+  'v',
+  'j',
+  ":m '>+1<CR>gv=gv",
+  { silent = true, desc = 'Move selection down' }
+)
 
 -- Diversos --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Diagnostic [Q]uickfix list' })
+vim.keymap.set(
+  'n',
+  '<leader>q',
+  vim.diagnostic.setloclist,
+  { desc = 'Diagnostic [Q]uickfix list' }
+)
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -46,14 +58,26 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffers ---------------------------------------------------------------------
-vim.keymap.set('n', '<C-M-l>', '<cmd>BufferLineCycleNext<CR>', { silent = true, desc = 'Next buffer' })
-vim.keymap.set('n', '<C-M-h>', '<cmd>BufferLineCyclePrev<CR>', { silent = true, desc = 'Previous buffer' })
+vim.keymap.set(
+  'n',
+  '<C-M-l>',
+  '<cmd>BufferLineCycleNext<CR>',
+  { silent = true, desc = 'Next buffer' }
+)
+vim.keymap.set(
+  'n',
+  '<C-M-h>',
+  '<cmd>BufferLineCyclePrev<CR>',
+  { silent = true, desc = 'Previous buffer' }
+)
 
 vim.keymap.set('n', '<leader>bd', function()
   local cur = vim.api.nvim_get_current_buf()
   local next_buf = nil
   local alt = vim.fn.bufnr '#'
-  if alt > 0 and alt ~= cur and vim.fn.buflisted(alt) == 1 then next_buf = alt end
+  if alt > 0 and alt ~= cur and vim.fn.buflisted(alt) == 1 then
+    next_buf = alt
+  end
   if not next_buf then
     for _, info in ipairs(vim.fn.getbufinfo { buflisted = 1 }) do
       if info.bufnr ~= cur then
@@ -77,12 +101,34 @@ end, { desc = '[F]ile [N]ew' })
 
 vim.keymap.set('n', '<leader>fd', function()
   local file = vim.fn.expand '%:p'
-  if vim.fn.confirm('Delete file?\n' .. file, '&Yes\n&No', 2) == 1 then
-    vim.fn.delete(file)
-    vim.cmd 'bdelete!'
-    print('Deleted ' .. file)
+  if file == '' then
+    vim.notify('No file to trash', vim.log.levels.WARN)
+    return
   end
-end, { desc = '[F]ile [D]elete current' })
+  if vim.fn.confirm('Trash file?\n' .. file, '&Yes\n&No', 2) ~= 1 then
+    return
+  end
+  local cmd
+  if vim.fn.has 'mac' == 1 then
+    cmd = {
+      'osascript',
+      '-e',
+      string.format('tell application "Finder" to delete POSIX file %q', file),
+    }
+  else
+    cmd = { 'gio', 'trash', '--', file }
+  end
+  local result = vim.system(cmd, { text = true }):wait()
+  if result.code ~= 0 then
+    vim.notify(
+      'Trash failed: ' .. (result.stderr or 'unknown error'),
+      vim.log.levels.ERROR
+    )
+    return
+  end
+  vim.cmd 'bdelete!'
+  vim.notify('Trashed ' .. file)
+end, { desc = '[F]ile [D]elete (trash) current' })
 
 vim.keymap.set('n', '<leader>fr', function()
   local old = vim.fn.expand '%:p'
@@ -90,7 +136,18 @@ vim.keymap.set('n', '<leader>fr', function()
   local ext = vim.fn.expand '%:e'
   local default = dir .. '/.' .. ext
   local move = #ext + 1
-  vim.schedule(function() vim.api.nvim_feedkeys(string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), move), 'n', false) end)
+  vim.schedule(
+    function()
+      vim.api.nvim_feedkeys(
+        string.rep(
+          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
+          move
+        ),
+        'n',
+        false
+      )
+    end
+  )
   local new = vim.fn.input('Rename to: ', default, 'file')
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
@@ -103,7 +160,18 @@ vim.keymap.set('n', '<leader>fm', function()
   local old = vim.fn.expand '%:p'
   local name = vim.fn.expand '%:t'
   local move = #name
-  vim.schedule(function() vim.api.nvim_feedkeys(string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), move), 'n', false) end)
+  vim.schedule(
+    function()
+      vim.api.nvim_feedkeys(
+        string.rep(
+          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
+          move
+        ),
+        'n',
+        false
+      )
+    end
+  )
   local new = vim.fn.input('Move to: ', old, 'file')
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
@@ -116,7 +184,18 @@ vim.keymap.set('n', '<leader>fc', function()
   local old = vim.fn.expand '%:p'
   local name = vim.fn.expand '%:t'
   local move_cursor = #name
-  vim.schedule(function() vim.api.nvim_feedkeys(string.rep(vim.api.nvim_replace_termcodes('<Left>', true, false, true), move_cursor), 'n', false) end)
+  vim.schedule(
+    function()
+      vim.api.nvim_feedkeys(
+        string.rep(
+          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
+          move_cursor
+        ),
+        'n',
+        false
+      )
+    end
+  )
   local new = vim.fn.input('Copy to: ', old, 'file')
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
@@ -138,7 +217,14 @@ vim.keymap.set('n', '<leader>cn', function()
   vim.cmd('edit ' .. path)
 end, { desc = '[C]onfig [N]ew' })
 
-vim.keymap.set('n', '<leader>cs', function() require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[C]onfig [S]earch files' })
+vim.keymap.set(
+  'n',
+  '<leader>cs',
+  function()
+    require('telescope.builtin').find_files { cwd = vim.fn.stdpath 'config' }
+  end,
+  { desc = '[C]onfig [S]earch files' }
+)
 
 vim.keymap.set(
   'n',
@@ -153,27 +239,86 @@ vim.keymap.set(
 )
 
 -- Telescope (busca) -----------------------------------------------------------
-vim.keymap.set('n', '<leader>sh', function() require('telescope.builtin').help_tags() end, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sk', function() require('telescope.builtin').keymaps() end, { desc = '[S]earch [K]eymaps' })
-vim.keymap.set('n', '<leader>ss', function() require('telescope.builtin').builtin() end, { desc = '[S]earch [S]elect Telescope' })
-vim.keymap.set('n', '<leader>sg', function() require('telescope.builtin').live_grep() end, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sd', function() require('telescope.builtin').diagnostics() end, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', function() require('telescope.builtin').resume() end, { desc = '[S]earch [R]esume' })
-vim.keymap.set('n', '<leader>s.', function() require('telescope.builtin').oldfiles() end, { desc = '[S]earch Recent Files' })
-vim.keymap.set('n', '<leader>sc', function() require('telescope.builtin').commands() end, { desc = '[S]earch [C]ommands' })
-vim.keymap.set('n', '<leader>sf', function() require('telescope.builtin').buffers() end, { desc = '[S]earch open buffers' })
-vim.keymap.set({ 'n', 'v' }, '<leader>sw', function() require('telescope.builtin').grep_string() end, { desc = '[S]earch current [W]ord' })
+vim.keymap.set(
+  'n',
+  '<leader>sh',
+  function() require('telescope.builtin').help_tags() end,
+  { desc = '[S]earch [H]elp' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sk',
+  function() require('telescope.builtin').keymaps() end,
+  { desc = '[S]earch [K]eymaps' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>ss',
+  function() require('telescope.builtin').builtin() end,
+  { desc = '[S]earch [S]elect Telescope' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sg',
+  function() require('telescope.builtin').live_grep() end,
+  { desc = '[S]earch by [G]rep' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sd',
+  function() require('telescope.builtin').diagnostics() end,
+  { desc = '[S]earch [D]iagnostics' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sr',
+  function() require('telescope.builtin').resume() end,
+  { desc = '[S]earch [R]esume' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>s.',
+  function() require('telescope.builtin').oldfiles() end,
+  { desc = '[S]earch Recent Files' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sc',
+  function() require('telescope.builtin').commands() end,
+  { desc = '[S]earch [C]ommands' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>sf',
+  function() require('telescope.builtin').buffers() end,
+  { desc = '[S]earch open buffers' }
+)
+vim.keymap.set(
+  { 'n', 'v' },
+  '<leader>sw',
+  function() require('telescope.builtin').grep_string() end,
+  { desc = '[S]earch current [W]ord' }
+)
 
-vim.keymap.set('n', '<leader><leader>', function() require('telescope.builtin').find_files { hidden = true, no_ignore = true } end, { desc = '[S]earch Files' })
+vim.keymap.set(
+  'n',
+  '<leader><leader>',
+  function()
+    require('telescope.builtin').find_files { hidden = true, no_ignore = true }
+  end,
+  { desc = '[S]earch Files' }
+)
 
 vim.keymap.set(
   'n',
   '<leader>/',
   function()
-    require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-      winblend = 10,
-      previewer = false,
-    })
+    require('telescope.builtin').current_buffer_fuzzy_find(
+      require('telescope.themes').get_dropdown {
+        winblend = 10,
+        previewer = false,
+      }
+    )
   end,
   { desc = '[/] Fuzzily search in current buffer' }
 )
@@ -195,7 +340,12 @@ if vim.g.neovide then
   vim.keymap.set(
     'n',
     '<D-n>',
-    function() vim.fn.jobstart('neovide --new-window --reuse-instance --chdir ' .. vim.fn.getcwd(), { detach = true }) end,
+    function()
+      vim.fn.jobstart(
+        'neovide --new-window --reuse-instance --chdir ' .. vim.fn.getcwd(),
+        { detach = true }
+      )
+    end,
     { desc = 'Nova janela Neovide no cwd' }
   )
   vim.keymap.set('v', '<D-c>', '"+y')
@@ -217,17 +367,36 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local buf = event.buf
     local tb = function() return require 'telescope.builtin' end
-    local map = function(keys, func, desc, mode) vim.keymap.set(mode or 'n', keys, func, { buffer = buf, desc = 'LSP: ' .. desc }) end
+    local map = function(keys, func, desc, mode)
+      vim.keymap.set(
+        mode or 'n',
+        keys,
+        func,
+        { buffer = buf, desc = 'LSP: ' .. desc }
+      )
+    end
 
     -- Navegação (references / impl / type / symbols via Telescope)
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
     map('gra', vim.lsp.buf.code_action, 'Code [A]ction', { 'n', 'x' })
     map('grD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
     map('grr', function() tb().lsp_references() end, 'Goto [R]eferences')
-    map('gri', function() tb().lsp_implementations() end, 'Goto [I]mplementation')
-    map('grt', function() tb().lsp_type_definitions() end, 'Goto [T]ype Definition')
+    map(
+      'gri',
+      function() tb().lsp_implementations() end,
+      'Goto [I]mplementation'
+    )
+    map(
+      'grt',
+      function() tb().lsp_type_definitions() end,
+      'Goto [T]ype Definition'
+    )
     map('gO', function() tb().lsp_document_symbols() end, 'Document Symbols')
-    map('gW', function() tb().lsp_dynamic_workspace_symbols() end, 'Workspace Symbols')
+    map(
+      'gW',
+      function() tb().lsp_dynamic_workspace_symbols() end,
+      'Workspace Symbols'
+    )
 
     -- Goto Definition com dedup: pula direto se houver 1 resultado, senão Telescope
     map('gd', function()
@@ -235,7 +404,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
         on_list = function(options)
           local seen, unique = {}, {}
           for _, item in ipairs(options.items) do
-            local key = (item.filename or '') .. ':' .. (item.lnum or 0) .. ':' .. (item.col or 0)
+            local key = (item.filename or '')
+              .. ':'
+              .. (item.lnum or 0)
+              .. ':'
+              .. (item.col or 0)
             if not seen[key] then
               seen[key] = true
               table.insert(unique, item)
@@ -244,7 +417,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
           options.items = unique
           if #unique == 1 then
             vim.cmd('e ' .. vim.fn.fnameescape(unique[1].filename))
-            vim.api.nvim_win_set_cursor(0, { unique[1].lnum, (unique[1].col or 1) - 1 })
+            vim.api.nvim_win_set_cursor(
+              0,
+              { unique[1].lnum, (unique[1].col or 1) - 1 }
+            )
             vim.cmd 'normal! zz'
           elseif #unique > 1 then
             vim.fn.setqflist({}, ' ', options)
@@ -258,12 +434,23 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
     -- Toggle inlay hints (se o servidor suportar)
     if client and client:supports_method('textDocument/inlayHint', buf) then
-      map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = buf }) end, '[T]oggle Inlay [H]ints')
+      map(
+        '<leader>th',
+        function()
+          vim.lsp.inlay_hint.enable(
+            not vim.lsp.inlay_hint.is_enabled { bufnr = buf }
+          )
+        end,
+        '[T]oggle Inlay [H]ints'
+      )
     end
 
     -- Realçar referências ao parar o cursor (comportamento, não keymap)
-    if client and client:supports_method('textDocument/documentHighlight', buf) then
-      local hl = vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
+    if
+      client and client:supports_method('textDocument/documentHighlight', buf)
+    then
+      local hl =
+        vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = buf,
         group = hl,
@@ -275,10 +462,16 @@ vim.api.nvim_create_autocmd('LspAttach', {
         callback = vim.lsp.buf.clear_references,
       })
       vim.api.nvim_create_autocmd('LspDetach', {
-        group = vim.api.nvim_create_augroup('user-lsp-detach', { clear = true }),
+        group = vim.api.nvim_create_augroup(
+          'user-lsp-detach',
+          { clear = true }
+        ),
         callback = function(e2)
           vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds { group = 'user-lsp-highlight', buffer = e2.buf }
+          vim.api.nvim_clear_autocmds {
+            group = 'user-lsp-highlight',
+            buffer = e2.buf,
+          }
         end,
       })
     end
@@ -307,16 +500,81 @@ vim.keymap.set('n', '[c', function()
   end
 end, { desc = 'Prev git [c]hange' })
 
-vim.keymap.set('v', '<leader>hs', function() gs().stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [s]tage hunk' })
-vim.keymap.set('v', '<leader>hr', function() gs().reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end, { desc = 'git [r]eset hunk' })
-vim.keymap.set('n', '<leader>hs', function() gs().stage_hunk() end, { desc = 'git [s]tage hunk' })
-vim.keymap.set('n', '<leader>hr', function() gs().reset_hunk() end, { desc = 'git [r]eset hunk' })
-vim.keymap.set('n', '<leader>hS', function() gs().stage_buffer() end, { desc = 'git [S]tage buffer' })
-vim.keymap.set('n', '<leader>hu', function() gs().stage_hunk() end, { desc = 'git [u]ndo stage hunk' })
-vim.keymap.set('n', '<leader>hR', function() gs().reset_buffer() end, { desc = 'git [R]eset buffer' })
-vim.keymap.set('n', '<leader>hp', function() gs().preview_hunk() end, { desc = 'git [p]review hunk' })
-vim.keymap.set('n', '<leader>hb', function() gs().blame_line() end, { desc = 'git [b]lame line' })
-vim.keymap.set('n', '<leader>hd', function() gs().diffthis() end, { desc = 'git [d]iff against index' })
-vim.keymap.set('n', '<leader>hD', function() gs().diffthis '@' end, { desc = 'git [D]iff against last commit' })
-vim.keymap.set('n', '<leader>tb', function() gs().toggle_current_line_blame() end, { desc = '[T]oggle git [b]lame line' })
-vim.keymap.set('n', '<leader>tD', function() gs().preview_hunk_inline() end, { desc = '[T]oggle git show [D]eleted' })
+vim.keymap.set(
+  'v',
+  '<leader>hs',
+  function() gs().stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+  { desc = 'git [s]tage hunk' }
+)
+vim.keymap.set(
+  'v',
+  '<leader>hr',
+  function() gs().reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
+  { desc = 'git [r]eset hunk' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hs',
+  function() gs().stage_hunk() end,
+  { desc = 'git [s]tage hunk' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hr',
+  function() gs().reset_hunk() end,
+  { desc = 'git [r]eset hunk' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hS',
+  function() gs().stage_buffer() end,
+  { desc = 'git [S]tage buffer' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hu',
+  function() gs().stage_hunk() end,
+  { desc = 'git [u]ndo stage hunk' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hR',
+  function() gs().reset_buffer() end,
+  { desc = 'git [R]eset buffer' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hp',
+  function() gs().preview_hunk() end,
+  { desc = 'git [p]review hunk' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hb',
+  function() gs().blame_line() end,
+  { desc = 'git [b]lame line' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hd',
+  function() gs().diffthis() end,
+  { desc = 'git [d]iff against index' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>hD',
+  function() gs().diffthis '@' end,
+  { desc = 'git [D]iff against last commit' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>tb',
+  function() gs().toggle_current_line_blame() end,
+  { desc = '[T]oggle git [b]lame line' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>tD',
+  function() gs().preview_hunk_inline() end,
+  { desc = '[T]oggle git show [D]eleted' }
+)

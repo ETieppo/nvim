@@ -2,7 +2,12 @@ vim.lsp.enable {
   'zls',
   'rust_analyzer',
   'java',
-  'jdtls'
+  'jdtls',
+  'clangd',
+}
+
+vim.filetype.add {
+  pattern = { ['.*%.component%.html'] = 'htmlangular' },
 }
 
 vim.g.have_nerd_font = true
@@ -54,6 +59,4 @@ vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 vim.cmd.colorscheme 'blackberry'
 
-vim.filetype.add {
-  pattern = { ['.*%.component%.html'] = 'htmlangular' },
-}
+vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
