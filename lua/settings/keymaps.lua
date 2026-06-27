@@ -1,46 +1,14 @@
--- =============================================================================
--- NÃO ficam aqui (são gatilhos de lazy-loading, vivem na spec do plugin):
---   • DAP        (core/dap/dap.lua)
---   • Trouble    (utils/trouble.lua)
---   • DevDocs    (utils/devdocs.lua)
---   • GitGraph   (utils/gitgraph.lua)
---   • Neo-tree \ (utils/neo-tree.lua)
---   • <leader>ff (core/autoformat.lua)
---   • Rust K / <leader>r* (lsp/rust_lsp.lua — específicos do rustaceanvim)
---
--- IMPORTANTE: este arquivo carrega ANTES do lazy.nvim. Por isso qualquer
--- require de plugin (telescope, gitsigns) é adiado dentro de uma função.
--- =============================================================================
-
--- Leaders ---------------------------------------------------------------------
+-- Leaders --------------------------------------------------------------------
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Desabilita setas — pensa com hjkl ------------------------------------------
+-- Disable arrows -------------------------------------------------------------
 vim.keymap.set('n', '<left>', '<nop>')
 vim.keymap.set('n', '<right>', '<nop>')
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
 
-local mod = vim.fn.has 'macunix' == 1 and 'C-M' or 'D'
-local function map(mode, key, rhs, opts)
-  vim.keymap.set(mode, ('<%s-%s>'):format(mod, key), rhs, opts)
-end
-
--- Mover linhas (Alt + j/k) ----------------------------------------------------
-map('n', 'k', ':m .-2<CR>==', { silent = true, desc = 'Move line up' })
-map('n', 'j', ':m .+1<CR>==', { silent = true, desc = 'Move line down' })
-map('i', 'k', '<Esc>:m .-2<CR>==gi', { silent = true })
-map('i', 'j', '<Esc>:m .+1<CR>==gi', { silent = true })
-map('v', 'k', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move selection up' })
-map(
-  'v',
-  'j',
-  ":m '>+1<CR>gv=gv",
-  { silent = true, desc = 'Move selection down' }
-)
-
--- Diversos --------------------------------------------------------------------
+-- Several --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set(
   'n',
@@ -51,13 +19,19 @@ vim.keymap.set(
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- Navegação entre janelas -----------------------------------------------------
+-- Window Navigation ----------------------------------------------------------
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
--- Buffers ---------------------------------------------------------------------
+-- Buffer Operations ----------------------------------------------------------
+vim.keymap.set('n', '<C-M-j>', ':m .+1<CR>==', { silent = true })
+vim.keymap.set('n', '<C-M-k>', ':m .-2<CR>==', { silent = true })
+vim.keymap.set('v', '<C-M-j>', ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set('v', '<C-M-k>', ":m '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set('i', '<C-M-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
+vim.keymap.set('i', '<C-M-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
 vim.keymap.set(
   'n',
   '<C-M-l>',
@@ -90,7 +64,7 @@ vim.keymap.set('n', '<leader>bd', function()
   vim.cmd('bdelete ' .. cur)
 end, { desc = '[B]uffer [D]elete' })
 
--- Operações de arquivo --------------------------------------------------------
+-- File Operations --------------------------------------------------------
 vim.keymap.set('n', '<leader>fn', function()
   local dir = vim.fn.expand '%:p:h'
   local path = vim.fn.input('New file: ', dir .. '/', 'file')
@@ -207,7 +181,7 @@ vim.keymap.set('n', '<leader>fc', function()
   end
 end, { desc = '[F]ile [C]opy' })
 
--- Config (edição da própria config do nvim) -----------------------------------
+-- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
   local config_lua_path = vim.fn.stdpath 'config' .. '/lua/'
   local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
@@ -238,7 +212,7 @@ vim.keymap.set(
   { desc = '[C]onfig [G]rep' }
 )
 
--- Telescope (busca) -----------------------------------------------------------
+-- Telescope Operations -----------------------------------------------------------
 vim.keymap.set(
   'n',
   '<leader>sh',
@@ -306,7 +280,7 @@ vim.keymap.set(
   function()
     require('telescope.builtin').find_files { hidden = true, no_ignore = true }
   end,
-  { desc = '[S]earch Files' }
+  { desc = 'Search Files' }
 )
 
 vim.keymap.set(
@@ -335,33 +309,7 @@ vim.keymap.set(
   { desc = '[S]earch [/] in Open Files' }
 )
 
--- Neovide ---------------------------------------------------------------------
-if vim.g.neovide then
-  vim.keymap.set(
-    'n',
-    '<D-n>',
-    function()
-      vim.fn.jobstart(
-        'neovide --new-window --reuse-instance --chdir ' .. vim.fn.getcwd(),
-        { detach = true }
-      )
-    end,
-    { desc = 'Nova janela Neovide no cwd' }
-  )
-  vim.keymap.set('v', '<D-c>', '"+y')
-  vim.keymap.set('n', '<D-v>', '"+P')
-  vim.keymap.set('v', '<D-v>', '"+P')
-  vim.keymap.set('i', '<D-v>', '<C-r>+')
-  vim.keymap.set('c', '<D-v>', '<C-r>+')
-  vim.keymap.set('t', '<D-v>', [[<C-\><C-n>"+pi]])
-  vim.keymap.set('n', '<D-a>', 'ggVG')
-end
-
--- =============================================================================
--- LSP  —  keymaps buffer-local, ligados só quando um servidor anexa ao buffer.
--- (Substitui os blocos LspAttach que estavam em nvim-lspconfig.lua e telescope.lua)
--- Prefixo gr* alinhado com os defaults nativos do Neovim 0.11+.
--- =============================================================================
+-- LSP Operations ------------------------------------------------------------
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('user-lsp-attach', { clear = true }),
   callback = function(event)
@@ -376,7 +324,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       )
     end
 
-    -- Navegação (references / impl / type / symbols via Telescope)
     map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
     map('gra', vim.lsp.buf.code_action, 'Code [A]ction', { 'n', 'x' })
     map('grD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
@@ -398,7 +345,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       'Workspace Symbols'
     )
 
-    -- Goto Definition com dedup: pula direto se houver 1 resultado, senão Telescope
     map('gd', function()
       vim.lsp.buf.definition {
         on_list = function(options)
@@ -431,8 +377,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, 'Goto Definition')
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-
-    -- Toggle inlay hints (se o servidor suportar)
     if client and client:supports_method('textDocument/inlayHint', buf) then
       map(
         '<leader>th',
@@ -445,7 +389,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       )
     end
 
-    -- Realçar referências ao parar o cursor (comportamento, não keymap)
     if
       client and client:supports_method('textDocument/documentHighlight', buf)
     then
@@ -478,19 +421,15 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
--- =============================================================================
--- Gitsigns  —  mapas globais com require adiado.
--- (Substitui o on_attach que estava em core/gitsigns.lua)
--- =============================================================================
+-- Git Operations ---------------------------------------------------------
 local gs = function() return require 'gitsigns' end
-
 vim.keymap.set('n', ']c', function()
   if vim.wo.diff then
     vim.cmd.normal { ']c', bang = true }
   else
     gs().nav_hunk 'next'
   end
-end, { desc = 'Next git [c]hange' })
+end, { desc = 'Next git [C]hange' })
 
 vim.keymap.set('n', '[c', function()
   if vim.wo.diff then
@@ -498,31 +437,31 @@ vim.keymap.set('n', '[c', function()
   else
     gs().nav_hunk 'prev'
   end
-end, { desc = 'Prev git [c]hange' })
+end, { desc = 'Prev git [C]hange' })
 
 vim.keymap.set(
   'v',
   '<leader>hs',
   function() gs().stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
-  { desc = 'git [s]tage hunk' }
+  { desc = 'git [S]tage hunk' }
 )
 vim.keymap.set(
   'v',
   '<leader>hr',
   function() gs().reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
-  { desc = 'git [r]eset hunk' }
+  { desc = 'git [R]eset hunk' }
 )
 vim.keymap.set(
   'n',
   '<leader>hs',
   function() gs().stage_hunk() end,
-  { desc = 'git [s]tage hunk' }
+  { desc = 'git [S]tage hunk' }
 )
 vim.keymap.set(
   'n',
   '<leader>hr',
   function() gs().reset_hunk() end,
-  { desc = 'git [r]eset hunk' }
+  { desc = 'git [R]eset hunk' }
 )
 vim.keymap.set(
   'n',
@@ -534,7 +473,7 @@ vim.keymap.set(
   'n',
   '<leader>hu',
   function() gs().stage_hunk() end,
-  { desc = 'git [u]ndo stage hunk' }
+  { desc = 'git [U]ndo stage hunk' }
 )
 vim.keymap.set(
   'n',
@@ -546,19 +485,19 @@ vim.keymap.set(
   'n',
   '<leader>hp',
   function() gs().preview_hunk() end,
-  { desc = 'git [p]review hunk' }
+  { desc = 'git [P]review hunk' }
 )
 vim.keymap.set(
   'n',
   '<leader>hb',
   function() gs().blame_line() end,
-  { desc = 'git [b]lame line' }
+  { desc = 'git [B]lame line' }
 )
 vim.keymap.set(
   'n',
   '<leader>hd',
   function() gs().diffthis() end,
-  { desc = 'git [d]iff against index' }
+  { desc = 'git [D]iff against index' }
 )
 vim.keymap.set(
   'n',
@@ -570,7 +509,7 @@ vim.keymap.set(
   'n',
   '<leader>tb',
   function() gs().toggle_current_line_blame() end,
-  { desc = '[T]oggle git [b]lame line' }
+  { desc = '[T]oggle git [B]lame line' }
 )
 vim.keymap.set(
   'n',

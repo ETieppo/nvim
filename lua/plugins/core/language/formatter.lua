@@ -5,7 +5,9 @@ return {
   keys = {
     {
       '<leader>ff',
-      function() require('conform').format { async = true, lsp_fallback = true } end,
+      function()
+        require('conform').format { async = true, lsp_fallback = true }
+      end,
       mode = '',
       desc = '[F]ormat [F]ile',
     },
@@ -22,6 +24,7 @@ return {
       typescript = { 'prettier' },
       typescriptreact = { 'prettier' },
       html = { 'prettier' },
+      htmlangular = { 'prettier' },
       css = { 'prettier' },
       scss = { 'prettier' },
       json = { 'prettier' },
