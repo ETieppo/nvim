@@ -26,21 +26,21 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffer Operations ----------------------------------------------------------
-vim.keymap.set('n', '<C-M-j>', ':m .+1<CR>==', { silent = true })
-vim.keymap.set('n', '<C-M-k>', ':m .-2<CR>==', { silent = true })
-vim.keymap.set('v', '<C-M-j>', ":m '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set('v', '<C-M-k>', ":m '<-2<CR>gv=gv", { silent = true })
-vim.keymap.set('i', '<C-M-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
-vim.keymap.set('i', '<C-M-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
+vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
+vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { silent = true })
+vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv", { silent = true })
+vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv", { silent = true })
+vim.keymap.set('i', '<M-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
+vim.keymap.set('i', '<M-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
 vim.keymap.set(
   'n',
-  '<C-M-l>',
+  '<M-l>',
   '<cmd>BufferLineCycleNext<CR>',
   { silent = true, desc = 'Next buffer' }
 )
 vim.keymap.set(
   'n',
-  '<C-M-h>',
+  '<M-h>',
   '<cmd>BufferLineCyclePrev<CR>',
   { silent = true, desc = 'Previous buffer' }
 )
