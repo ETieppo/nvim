@@ -23,7 +23,7 @@ return {
     window = {
       position = 'left',
       width = 30,
-      zindex = 10000,
+      zindex = 100,
     },
     nesting_rules = {
       ['package.json'] = { pattern = '^package%.json$', files = { 'yarn*' } },

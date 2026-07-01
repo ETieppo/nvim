@@ -13,6 +13,12 @@ return {
       { '<leader>t', group = '[T]oggle' },
       { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
       { 'gr', group = 'LSP Actions', mode = { 'n' } },
+      { '<leader>k', group = 'kanban' },
+      { '<leader>kb', group = 'board' },
+      { '<leader>kn', group = 'new' },
+      { '<leader>kc', group = 'card' },
+      { '<leader>kd', group = 'date' },
+      { '<leader>kl', group = 'list' },
     },
   },
 }

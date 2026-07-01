@@ -100,7 +100,7 @@ vim.keymap.set('n', '<leader>fd', function()
     )
     return
   end
-  vim.cmd 'bdelete!'
+  Snacks.bufdelete { force = true }
   vim.notify('Trashed ' .. file)
 end, { desc = '[F]ile [D]elete (trash) current' })
 
