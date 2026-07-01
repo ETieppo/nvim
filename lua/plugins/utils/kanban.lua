@@ -5,6 +5,7 @@ local function act(name, desc)
   }
 end
 
+local kanban_file_name = 'kanban.md'
 return {
   'hasansujon786/super-kanban.nvim',
   dependencies = {
@@ -16,12 +17,12 @@ return {
   keys = {
     {
       '<leader>kbo',
-      '<cmd>SuperKanban open<cr>',
+      '<cmd>SuperKanban open ' .. kanban_file_name .. '<cr>',
       desc = '[K]anban [B]oard [O]pen',
     },
     {
       '<leader>kbc',
-      '<cmd>SuperKanban create<cr>',
+      '<cmd>SuperKanban create ' .. kanban_file_name .. '<cr>',
       desc = '[K]anban [B]oard [C]reate',
     },
   },

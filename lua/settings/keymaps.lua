@@ -16,7 +16,8 @@ vim.keymap.set(
   vim.diagnostic.setloclist,
   { desc = 'Diagnostic [Q]uickfix list' }
 )
-vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = 'Open [L]azy' })
+vim.keymap.set('n', '<leader>dmt', '<cmd>DBUIToggle<CR>', { desc = '[D]atabase [M]anager [T]oggle' })
+vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = '[L]azy [O]pen' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Window Navigation ----------------------------------------------------------
