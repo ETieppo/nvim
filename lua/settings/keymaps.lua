@@ -16,7 +16,12 @@ vim.keymap.set(
   vim.diagnostic.setloclist,
   { desc = 'Diagnostic [Q]uickfix list' }
 )
-vim.keymap.set('n', '<leader>dmt', '<cmd>DBUIToggle<CR>', { desc = '[D]atabase [M]anager [T]oggle' })
+vim.keymap.set(
+  'n',
+  '<leader>dmt',
+  '<cmd>DBUIToggle<CR>',
+  { desc = '[D]atabase [M]anager [T]oggle' }
+)
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = '[L]azy [O]pen' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
@@ -27,19 +32,24 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffer Operations ----------------------------------------------------------
-vim.keymap.set('n', '<M-j>', ':m .+1<CR>==', { silent = true })
-vim.keymap.set('n', '<M-k>', ':m .-2<CR>==', { silent = true })
-vim.keymap.set('v', '<M-j>', ":m '>+1<CR>gv=gv", { silent = true })
-vim.keymap.set('v', '<M-k>', ":m '<-2<CR>gv=gv", { silent = true })
-vim.keymap.set('i', '<M-j>', '<Esc>:m .+1<CR>==gi', { silent = true })
-vim.keymap.set('i', '<M-k>', '<Esc>:m .-2<CR>==gi', { silent = true })
-vim.keymap.set(
+local mod = vim.fn.has 'macunix' == 1 and 'D' or 'M'
+local function map(mode, key, rhs, opts)
+  local final_key = key:gsub('<M%-', '<' .. mod .. '-')
+  vim.keymap.set(mode, final_key, rhs, opts or { silent = true })
+end
+map('n', '<M-j>', ':m .+1<CR>==')
+map('n', '<M-k>', ':m .-2<CR>==')
+map('v', '<M-j>', ":m '>+1<CR>gv=gv")
+map('v', '<M-k>', ":m '<-2<CR>gv=gv")
+map('i', '<M-j>', '<Esc>:m .+1<CR>==gi')
+map('i', '<M-k>', '<Esc>:m .-2<CR>==gi')
+map(
   'n',
   '<M-l>',
   '<cmd>BufferLineCycleNext<CR>',
   { silent = true, desc = 'Next buffer' }
 )
-vim.keymap.set(
+map(
   'n',
   '<M-h>',
   '<cmd>BufferLineCyclePrev<CR>',
