@@ -18,9 +18,15 @@ vim.keymap.set(
 )
 vim.keymap.set(
   'n',
-  '<leader>dmt',
+  '<leader>dbt',
   '<cmd>DBUIToggle<CR>',
-  { desc = '[D]atabase [M]anager [T]oggle' }
+  { desc = '[D]ata[B]ase [T]oggle' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>dbcn',
+  '<cmd>DBUIAddConnection<CR>',
+  { desc = '[D]ata[B]ase [C]onnection [N]ew' }
 )
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = '[L]azy [O]pen' })
 vim.keymap.set('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
