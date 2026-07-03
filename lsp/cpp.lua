@@ -20,6 +20,7 @@ return {
       'meson.build',
       'meson_options.txt',
       'build.ninja',
+
       '.git',
       'main.c',
       'main.cpp',
