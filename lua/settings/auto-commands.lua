@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
       vim.opt_local.number = false
       vim.opt_local.relativenumber = false
     else
-      vim.opt_local.statuscolumn = '%{v:lnum} %{v:relnum}%s'
+      vim.opt_local.statuscolumn = '%{v:lnum} %{v:relnum}%=%s'
       vim.opt_local.number = true
       vim.opt_local.relativenumber = true
     end

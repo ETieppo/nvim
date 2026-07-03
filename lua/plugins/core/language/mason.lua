@@ -19,6 +19,7 @@ return {
     dependencies = { 'mason-org/mason.nvim' },
     opts = {
       ensure_installed = {
+        'css-lsp',
         'lua_ls',
         'selene',
         'ts_ls',
