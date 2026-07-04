@@ -21,7 +21,6 @@ vim.filetype.add {
 }
 
 vim.g.have_nerd_font = true
-vim.g.neovide_line_height_plus = 15
 
 vim.o.number = true
 vim.o.mouse = ''
@@ -42,6 +41,11 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.cmdheight = 1
 vim.o.background = 'dark'
+
+vim.diagnostic.config {
+  virtual_text = false,
+  virtual_lines = { current_line = true, overflow = 'wrap' },
+}
 
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
