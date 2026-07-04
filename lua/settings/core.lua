@@ -12,6 +12,7 @@ vim.g.rustaceanvim = {
 
 vim.lsp.enable {
   'java',
+  'rust_analyzer',
   'jdtls',
   'clangd',
 }
