@@ -4,7 +4,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     'kickstart-highlight-yank',
     { clear = true }
   ),
-  callback = function() vim.hl.on_yank() end,
+  callback = function() vim.hl.hl_op() end,
 })
 
 vim.api.nvim_create_autocmd('BufEnter', {
@@ -25,6 +25,17 @@ vim.api.nvim_create_autocmd('BufEnter', {
       vim.opt_local.statuscolumn = '%{v:lnum} %{v:relnum}%=%s'
       vim.opt_local.number = true
       vim.opt_local.relativenumber = true
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged', 'FocusLost', 'BufLeave' }, {
+  desc = 'Autosave',
+  nested = true,
+  callback = function(args)
+    local buf = args.buf
+    if vim.bo[buf].modified and vim.bo[buf].buftype == '' and vim.api.nvim_buf_get_name(buf) ~= '' then
+      vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
     end
   end,
 })
