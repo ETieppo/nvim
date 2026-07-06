@@ -43,11 +43,6 @@ vim.o.confirm = true
 vim.o.cmdheight = 1
 vim.o.background = 'dark'
 
-vim.diagnostic.config {
-  virtual_text = false,
-  virtual_lines = { current_line = true, overflow = 'wrap' },
-}
-
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.virtualedit = 'onemore'

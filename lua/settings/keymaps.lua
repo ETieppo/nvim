@@ -62,6 +62,7 @@ map(
   { silent = true, desc = 'Previous buffer' }
 )
 
+vim.keymap.set('n', '<leader>bod', '<cmd>BufferLineCloseOthers<CR>', {desc="[B]uffer [O]thers [D]elete"})
 vim.keymap.set('n', '<leader>bd', function()
   local cur = vim.api.nvim_get_current_buf()
   local next_buf = nil
