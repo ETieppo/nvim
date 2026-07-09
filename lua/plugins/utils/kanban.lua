@@ -16,14 +16,14 @@ return {
   cmd = 'SuperKanban',
   keys = {
     {
-      '<leader>kbo',
+      '<leader>ko',
       '<cmd>SuperKanban open ' .. kanban_file_name .. '<cr>',
-      desc = '[K]anban [B]oard [O]pen',
+      desc = '[K]anban [O]pen',
     },
     {
-      '<leader>kbc',
+      '<leader>kfn',
       '<cmd>SuperKanban create ' .. kanban_file_name .. '<cr>',
-      desc = '[K]anban [B]oard [C]reate',
+      desc = '[K]anban [F]ile [N]ew',
     },
   },
 
