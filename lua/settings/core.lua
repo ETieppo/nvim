@@ -1,15 +1,3 @@
-vim.g.rustaceanvim = {
-  server = {
-    default_settings = {
-      ['rust-analyzer'] = {
-        check = { command = 'clippy' },
-        procMacro = { enable = true },
-        cargo = { buildScripts = { enable = true } },
-      },
-    },
-  },
-}
-
 vim.lsp.enable {
   'java',
   'rust_analyzer',
