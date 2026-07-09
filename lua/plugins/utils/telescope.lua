@@ -15,6 +15,7 @@ return {
     require('telescope').setup {
       defaults = {
         file_ignore_patterns = {
+          'assets',
           'node_modules/',
           '%.git/',
           'dist/',
