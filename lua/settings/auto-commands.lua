@@ -7,6 +7,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function() vim.hl.hl_op() end,
 })
 
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'image',
+  callback = function(ev) vim.bo[ev.buf].bufhidden = 'wipe' end,
+})
+
 vim.api.nvim_create_autocmd('BufEnter', {
   callback = function()
     local bt = vim.bo.buftype

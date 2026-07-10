@@ -14,12 +14,10 @@ return {
     debug = { enabled = true },
     indent = { enabled = true },
     input = { enabled = true },
-    picker = { enabled = true },
-    profiler = { enabled = true },
     scroll = { enabled = true },
-    terminal = { enabled = true },
     image = {
       enabled = true,
+      bo = { bufhidden = 'wipe' },
     },
     dashboard = {
       row = 0,
