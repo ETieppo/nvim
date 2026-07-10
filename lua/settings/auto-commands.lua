@@ -29,13 +29,36 @@ vim.api.nvim_create_autocmd('BufEnter', {
   end,
 })
 
-vim.api.nvim_create_autocmd({ 'InsertLeave', 'TextChanged', 'FocusLost', 'BufLeave' }, {
-  desc = 'Autosave',
-  nested = true,
-  callback = function(args)
-    local buf = args.buf
-    if vim.bo[buf].modified and vim.bo[buf].buftype == '' and vim.api.nvim_buf_get_name(buf) ~= '' then
-      vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
-    end
+vim.api.nvim_create_autocmd(
+  { 'InsertLeave', 'TextChanged', 'FocusLost', 'BufLeave' },
+  {
+    desc = 'Autosave',
+    nested = true,
+    callback = function(args)
+      local buf = args.buf
+      if
+        vim.bo[buf].modified
+        and vim.bo[buf].buftype == ''
+        and vim.api.nvim_buf_get_name(buf) ~= ''
+      then
+        vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
+      end
+    end,
+  }
+)
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'neo-tree', 'dbui', 'dbout' },
+  callback = function()
+    vim.schedule(function()
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if
+          vim.api.nvim_buf_is_valid(buf)
+          and vim.bo[buf].filetype == 'snacks_dashboard'
+        then
+          vim.api.nvim_buf_delete(buf, { force = true })
+        end
+      end
+    end)
   end,
 })
