@@ -13,7 +13,7 @@ return {
   opts = {
     zindex = 100,
     hide_root_node = true,
-    -- close_if_last_window = true,
+    close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
     },
