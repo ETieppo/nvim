@@ -27,6 +27,7 @@ return {
         'stylua',
         'prettier',
         'emmet-language-server',
+        'angular-language-server',
       },
     },
   },
