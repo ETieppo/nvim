@@ -38,33 +38,52 @@ return {
       'ᗤ     🍒    ᗣ  ',
       'ᗤ     🍒    ᗣ  ',
     }
-    local spinner = { count = 0, frame = 1, timer = nil }
+    local spinner = { tokens = {}, frame = 1, timer = nil }
+
+    local function stop_timer()
+      if spinner.timer then
+        spinner.timer:stop()
+        spinner.timer:close()
+        spinner.timer = nil
+        vim.cmd 'redrawstatus'
+      end
+    end
 
     vim.api.nvim_create_autocmd('LspProgress', {
-      group = vim.api.nvim_create_augroup('slimline-lsp-progress', { clear = true }),
+      group = vim.api.nvim_create_augroup(
+        'slimline-lsp-progress',
+        { clear = true }
+      ),
       callback = function(ev)
-        local kind = ev.data and ev.data.params and ev.data.params.value and ev.data.params.value.kind
-        if kind == 'begin' then
-          spinner.count = spinner.count + 1
-          if not spinner.timer then
-            spinner.timer = vim.uv.new_timer()
-            spinner.timer:start(
-              0,
-              80,
-              vim.schedule_wrap(function()
-                spinner.frame = (spinner.frame % #frames) + 1
-                vim.cmd 'redrawstatus!'
-              end)
-            )
-          end
-        elseif kind == 'end' then
-          spinner.count = math.max(0, spinner.count - 1)
-          if spinner.count == 0 and spinner.timer then
-            spinner.timer:stop()
-            spinner.timer:close()
-            spinner.timer = nil
-            vim.cmd 'redrawstatus!'
-          end
+        local value = ev.data and ev.data.params and ev.data.params.value
+        local token = ev.data and ev.data.params and ev.data.params.token
+        if not value or not token then return end
+
+        if value.kind == 'begin' then
+          spinner.tokens[token] = true
+        elseif value.kind == 'end' then
+          spinner.tokens[token] = nil
+        end
+
+        local active = next(spinner.tokens) ~= nil
+        if active and not spinner.timer then
+          spinner.timer = vim.uv.new_timer()
+          spinner.timer:start(
+            0,
+            120,
+            vim.schedule_wrap(function()
+              -- válvula de escape: se o cliente LSP sumiu, para tudo
+              if not next(spinner.tokens) or #vim.lsp.get_clients() == 0 then
+                spinner.tokens = {}
+                stop_timer()
+                return
+              end
+              spinner.frame = (spinner.frame % #frames) + 1
+              vim.cmd 'redrawstatus'
+            end)
+          )
+        elseif not active then
+          stop_timer()
         end
       end,
     })
@@ -73,7 +92,7 @@ return {
       components = {
         center = {
           function()
-            if spinner.count > 0 then return frames[spinner.frame] end
+            if next(spinner.tokens) then return frames[spinner.frame] end
             return ''
           end,
         },
