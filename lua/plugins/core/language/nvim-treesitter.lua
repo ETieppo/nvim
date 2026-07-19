@@ -21,6 +21,7 @@ return {
       'vim',
       'vimdoc',
       'query',
+      'python',
     }
     vim.api.nvim_create_autocmd('FileType', {
       callback = function()

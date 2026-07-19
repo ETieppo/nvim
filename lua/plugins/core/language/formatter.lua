@@ -29,6 +29,7 @@ return {
       scss = { 'prettier' },
       json = { 'prettier' },
       toml = { 'taplo' },
+      python = { 'black' },
     },
   },
 }

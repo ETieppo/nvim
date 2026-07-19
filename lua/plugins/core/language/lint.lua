@@ -6,7 +6,8 @@ return {
   config = function()
     local lint = require 'lint'
     local selene_config = vim.fn.stdpath 'config' .. '/selene.toml'
-    require('lint').linters.selene.args = { '--display-style', 'json', '--config', selene_config, '-' }
+    require('lint').linters.selene.args =
+      { '--display-style', 'json', '--config', selene_config, '-' }
 
     lint.linters_by_ft = {
       markdown = { 'markdownlint-cli2' },

@@ -3,6 +3,7 @@ vim.lsp.enable {
   'rust_analyzer',
   'jdtls',
   'clangd',
+  'pyright',
 }
 
 vim.filetype.add {
