@@ -31,6 +31,22 @@ vim.api.nvim_create_autocmd('BufEnter', {
       vim.opt_local.number = true
       vim.opt_local.relativenumber = true
     end
+
+    if vim.api.nvim_buf_get_name(0) == '' then return end
+    vim.schedule(function()
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if
+          vim.api.nvim_buf_is_valid(b)
+          and vim.bo[b].buflisted
+          and vim.bo[b].buftype == ''
+          and vim.api.nvim_buf_get_name(b) == ''
+          and not vim.bo[b].modified
+          and #vim.fn.win_findbuf(b) == 0
+        then
+          pcall(vim.api.nvim_buf_delete, b, { force = true })
+        end
+      end
+    end)
   end,
 })
 

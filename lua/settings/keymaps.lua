@@ -342,6 +342,19 @@ vim.api.nvim_create_autocmd('LspAttach', {
       )
     end
 
+    map('grD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
+    map('grr', function() tb().lsp_references() end, 'Goto [R]eferences')
+    map(
+      'gri',
+      function() tb().lsp_implementations() end,
+      'Goto [I]mplementation'
+    )
+    map(
+      'grt',
+      function() tb().lsp_type_definitions() end,
+      'Goto [T]ype Definition'
+    )
+    map('gO', function() tb().lsp_document_symbols() end, 'Document Symbols')
     map(
       'gW',
       function() tb().lsp_dynamic_workspace_symbols() end,
