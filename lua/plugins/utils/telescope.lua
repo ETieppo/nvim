@@ -16,23 +16,12 @@ return {
       defaults = {
         file_ignore_patterns = {
           'assets',
-          'node_modules/',
-          '%.git/',
-          'dist/',
-          'target/',
           'Cargo%.lock',
-          '%.DS_Store',
-          'bin/',
-          'build/',
           '%.gradle/',
           '%.metadata/',
           'gradle/',
           'jdt%.ls%-java%-project/',
-          '%.godot/',
           '%.angular',
-          '%.zig%-cache/',
-          'zig%-pkg/',
-          'zig%-out/',
         },
       },
       extensions = {

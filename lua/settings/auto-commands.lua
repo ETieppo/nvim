@@ -34,23 +34,20 @@ vim.api.nvim_create_autocmd('BufEnter', {
   end,
 })
 
-vim.api.nvim_create_autocmd(
-  { 'InsertLeave', 'TextChanged', 'FocusLost', 'BufLeave' },
-  {
-    desc = 'Autosave',
-    nested = true,
-    callback = function(args)
-      local buf = args.buf
-      if
-        vim.bo[buf].modified
-        and vim.bo[buf].buftype == ''
-        and vim.api.nvim_buf_get_name(buf) ~= ''
-      then
-        vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
-      end
-    end,
-  }
-)
+vim.api.nvim_create_autocmd({ 'InsertLeave', 'FocusLost', 'BufLeave' }, {
+  desc = 'Autosave',
+  nested = true,
+  callback = function(args)
+    local buf = args.buf
+    if
+      vim.bo[buf].modified
+      and vim.bo[buf].buftype == ''
+      and vim.api.nvim_buf_get_name(buf) ~= ''
+    then
+      vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)
+    end
+  end,
+})
 
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'neo-tree', 'dbui', 'dbout' },

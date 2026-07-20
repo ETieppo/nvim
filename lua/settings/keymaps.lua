@@ -296,7 +296,7 @@ vim.keymap.set(
   'n',
   '<leader><leader>',
   function()
-    require('telescope.builtin').find_files { hidden = true, no_ignore = true }
+    require('telescope.builtin').find_files { hidden = false, no_ignore = false}
   end,
   { desc = 'Search Files' }
 )
