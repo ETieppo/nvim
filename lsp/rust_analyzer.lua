@@ -4,13 +4,14 @@ return {
     ['rust-analyzer'] = {
       checkOnSave = true,
       check = {
-        command = 'clippy',
+        command = 'check',
       },
       procMacro = {
         enable = true,
       },
       cargo = {
         buildScripts = { enable = true },
+        targetDir = true,
       },
       diagnostics = {
         enable = true,
