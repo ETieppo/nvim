@@ -15,12 +15,11 @@ return {
     require('telescope').setup {
       defaults = {
         file_ignore_patterns = {
+          'public',
+          'bun.lock',
+          'package-lock.json',
           'assets',
           'Cargo%.lock',
-          '%.gradle/',
-          '%.metadata/',
-          'gradle/',
-          'jdt%.ls%-java%-project/',
           '%.angular',
         },
       },
