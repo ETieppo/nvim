@@ -39,14 +39,16 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffer Operations ----------------------------------------------------------
 local mod = vim.fn.has 'macunix' == 1 and 'D' or 'M'
+
 local function map(mode, key, rhs, opts)
-  local final_key = key:gsub('<M%-', '<' .. mod .. '-')
-  vim.keymap.set(mode, final_key, rhs, opts or { silent = true })
+  opts = vim.tbl_extend('force', { silent = true }, opts or {})
+  vim.keymap.set(mode, (key:gsub('<M%-', '<' .. mod .. '-')), rhs, opts)
 end
-map('n', '<M-j>', ':m .+1<CR>==')
-map('n', '<M-k>', ':m .-2<CR>==')
-map('v', '<M-j>', ":m '>+1<CR>gv=gv")
-map('v', '<M-k>', ":m '<-2<CR>gv=gv")
+
+map('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move line down' })
+map('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move line up' })
+map('x', '<M-j>', ":silent! m '>+1<CR>gv=gv", { desc = 'Move selection down' })
+map('x', '<M-k>', ":silent! m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 map('i', '<M-j>', '<Esc>:m .+1<CR>==gi')
 map('i', '<M-k>', '<Esc>:m .-2<CR>==gi')
 map(
