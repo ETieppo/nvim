@@ -66,12 +66,15 @@ local p = {
   -- Special
   purple = '#bb9af7',
   salmon = '#e0687a',
+  bgTeal = '#0c1618',
   teal = '#41a6b5',
+  cyanDim = '#00262f',
   cyan = '#7dcfff',
   cyanBright = '#b4f9f8',
   crimson = '#b8003a',
   crimsonBright = '#f7768e',
   darkRed = '#892a3b',
+  darkRedDim = '#290006',
 }
 
 return p

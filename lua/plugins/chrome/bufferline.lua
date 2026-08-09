@@ -1,6 +1,20 @@
 local p = require 'blackberry.palette'
-local activeBg = p.cyan
-local inactiveBg = p.darkRed
+
+-- estados do buffer (sem diagnóstico)
+local activeFg = p.cyan
+local activeBg = p.cyanDim
+local inactiveFg = p.darkRed
+local inactiveBg = p.darkRedDim
+
+-- diagnósticos: fg = cor do nível, bg = fundo escuro do nível
+local errorFg = p.error_
+local errorBg = p.bgRed
+local warnFg = p.warning
+local warnBg = p.bgYellow
+local infoFg = p.info
+local infoBg = p.bgBlue
+local hintFg = p.hint
+local hintBg = p.bgTeal -- << adicionar no palette (ver nota)
 
 return {
   'akinsho/bufferline.nvim',
@@ -9,38 +23,76 @@ return {
   event = 'VeryLazy',
   opts = {
     highlights = {
-      background = { fg = p.bg1, bg = inactiveBg, bold = true },
+      fill = { bg = p.bg0 },
+      background = { fg = inactiveFg, bg = inactiveBg, bold = true },
+      buffer_visible = { fg = inactiveFg, bg = inactiveBg },
       buffer_selected = {
-        fg = p.bg1,
+        fg = activeFg,
         bg = activeBg,
         bold = true,
         italic = true,
       },
-      duplicate = { fg = p.bg1, bg = inactiveBg, italic = true },
-      duplicate_selected = { fg = p.bg1, bg = activeBg, italic = true },
-      duplicate_visible = { fg = p.darkRed, bg = p.bg5, italic = true },
-      buffer_visible = { fg = p.darkRed, bg = p.bg5 },
-      fill = { bg = p.bg0 },
-      separator = { fg = p.bg5, bg = inactiveBg },
-      separator_selected = { fg = p.bg5, bg = activeBg },
-      separator_visible = { fg = p.bg5, bg = p.bg5 },
-      close_button = { fg = p.darkRed, bg = p.bg5 },
-      close_button_selected = { fg = p.bg5, bg = p.darkRed },
-      modified = { fg = p.bg1, bg = inactiveBg },
-      modified_selected = { fg = p.bg1, bg = activeBg },
-      indicator_selected = { fg = p.darkRed, bg = p.darkRed },
-      error = { fg = p.bg1, bg = inactiveBg },
-      error_visible = { fg = p.darkRed, bg = p.bg5 },
-      error_selected = { fg = p.bg1, bg = activeBg },
-      error_diagnostic = { fg = p.bg1, bg = inactiveBg },
-      error_diagnostic_visible = { fg = p.darkRed, bg = p.bg5 },
-      error_diagnostic_selected = { fg = p.bg1, bg = activeBg },
-      warning = { fg = p.bg1, bg = inactiveBg },
-      warning_visible = { fg = p.darkRed, bg = p.bg5 },
-      warning_selected = { fg = p.bg1, bg = activeBg },
-      warning_diagnostic = { fg = p.bg1, bg = inactiveBg },
-      warning_diagnostic_visible = { fg = p.darkRed, bg = p.bg5 },
-      warning_diagnostic_selected = { fg = p.bg1, bg = activeBg },
+      duplicate = { fg = inactiveFg, bg = inactiveBg, italic = true },
+      duplicate_visible = { fg = inactiveFg, bg = inactiveBg, italic = true },
+      duplicate_selected = { fg = activeFg, bg = activeBg, italic = true },
+      separator = { fg = p.bg0, bg = inactiveBg },
+      separator_visible = { fg = p.bg0, bg = inactiveBg },
+      separator_selected = { fg = p.bg0, bg = activeBg },
+      close_button = { fg = inactiveFg, bg = inactiveBg },
+      close_button_visible = { fg = inactiveFg, bg = inactiveBg },
+      close_button_selected = { fg = activeFg, bg = activeBg },
+      modified = { fg = inactiveFg, bg = inactiveBg },
+      modified_visible = { fg = inactiveFg, bg = inactiveBg },
+      modified_selected = { fg = activeFg, bg = activeBg },
+      indicator_selected = { fg = activeFg, bg = activeBg },
+      error = { fg = errorFg, bg = errorBg, bold = true },
+      error_visible = { fg = errorFg, bg = errorBg },
+      error_selected = {
+        fg = errorFg,
+        bg = activeBg,
+        bold = true,
+        italic = true,
+      },
+      error_diagnostic = { fg = errorFg, bg = errorBg },
+      error_diagnostic_visible = { fg = errorFg, bg = errorBg },
+      error_diagnostic_selected = { fg = errorFg, bg = activeBg, italic = true },
+      warning = { fg = warnFg, bg = warnBg, bold = true },
+      warning_visible = { fg = warnFg, bg = warnBg },
+      warning_selected = {
+        fg = warnFg,
+        bg = activeBg,
+        bold = true,
+        italic = true,
+      },
+      warning_diagnostic = { fg = warnFg, bg = warnBg },
+      warning_diagnostic_visible = { fg = warnFg, bg = warnBg },
+      warning_diagnostic_selected = {
+        fg = warnFg,
+        bg = activeBg,
+        italic = true,
+      },
+      info = { fg = infoFg, bg = infoBg, bold = true },
+      info_visible = { fg = infoFg, bg = infoBg },
+      info_selected = {
+        fg = infoFg,
+        bg = activeBg,
+        bold = true,
+        italic = true,
+      },
+      info_diagnostic = { fg = infoFg, bg = infoBg },
+      info_diagnostic_visible = { fg = infoFg, bg = infoBg },
+      info_diagnostic_selected = { fg = infoFg, bg = activeBg, italic = true },
+      hint = { fg = hintFg, bg = hintBg, bold = true },
+      hint_visible = { fg = hintFg, bg = hintBg },
+      hint_selected = {
+        fg = hintFg,
+        bg = activeBg,
+        bold = true,
+        italic = true,
+      },
+      hint_diagnostic = { fg = hintFg, bg = hintBg },
+      hint_diagnostic_visible = { fg = hintFg, bg = hintBg },
+      hint_diagnostic_selected = { fg = hintFg, bg = activeBg, italic = true },
     },
     options = {
       mode = 'buffers',
