@@ -21,10 +21,10 @@ return {
     },
     dashboard = {
       row = 0,
-      preset = {
-        width = vim.o.columns,
-      },
+      col = 0,
+      width = vim.o.columns,
       sections = {
+        gap=1,
         {
           section = 'terminal',
           cmd = 'bash -c "pixterm -d 2 -s 1 '
@@ -32,24 +32,12 @@ return {
             .. wall_selection
             .. '; cat"',
           width = vim.o.columns,
-          height = math.floor(vim.o.lines * 0.75),
+          height = math.floor(vim.o.lines * 0.90),
           padding = 0,
           indent = 0,
-          align = 'top',
         },
         {
-          section = 'projects',
-          padding = 1,
-          height = math.max(
-            math.floor(vim.o.lines * 0.55),
-            math.floor(vim.o.lines * 0.45)
-          ),
-          limit = 5,
-        },
-        {
-          height = math.floor(vim.o.lines * 0.15),
           section = 'startup',
-          gap = 1,
         },
       },
     },
