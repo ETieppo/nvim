@@ -15,7 +15,10 @@ return {
     require('telescope').setup {
       defaults = {
         file_ignore_patterns = {
-          'public',
+          'imgs',
+          'images',
+          'videos',
+          'fonts',
           'bun.lock',
           'package-lock.json',
           'assets',

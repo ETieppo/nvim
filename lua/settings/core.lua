@@ -4,6 +4,8 @@ vim.lsp.enable {
   'jdtls',
   'clangd',
   'pyright',
+  'gopls',
+  'phpantom',
 }
 
 vim.filetype.add {
