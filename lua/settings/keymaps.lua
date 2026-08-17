@@ -29,7 +29,12 @@ vim.keymap.set(
   { desc = '[D]ata[B]ase [C]onnection [N]ew' }
 )
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = '[L]azy [O]pen' })
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set(
+  't',
+  '<Esc><Esc>',
+  '<C-\\><C-n>',
+  { desc = 'Exit terminal mode' }
+)
 
 -- Window Navigation ----------------------------------------------------------
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
@@ -38,11 +43,13 @@ vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
 
 -- Buffer Operations ----------------------------------------------------------
-local mod = vim.fn.has 'macunix' == 1 and 'D' or 'M'
-
 local function map(mode, key, rhs, opts)
   opts = vim.tbl_extend('force', { silent = true }, opts or {})
-  vim.keymap.set(mode, (key:gsub('<M%-', '<' .. mod .. '-')), rhs, opts)
+  vim.keymap.set(mode, key, rhs, opts) -- variante <M-...> (Alt)
+  local dkey = key:gsub('<M%-', '<D-')
+  if dkey ~= key then
+    vim.keymap.set(mode, dkey, rhs, opts) -- variante <D-...> (Cmd)
+  end
 end
 
 map('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move line down' })
@@ -64,7 +71,12 @@ map(
   { silent = true, desc = 'Previous buffer' }
 )
 
-vim.keymap.set('n', '<leader>bod', '<cmd>BufferLineCloseOthers<CR>', {desc="[B]uffer [O]thers [D]elete"})
+vim.keymap.set(
+  'n',
+  '<leader>bod',
+  '<cmd>BufferLineCloseOthers<CR>',
+  { desc = '[B]uffer [O]thers [D]elete' }
+)
 vim.keymap.set('n', '<leader>bd', function()
   local cur = vim.api.nvim_get_current_buf()
   local next_buf = nil
@@ -298,7 +310,7 @@ vim.keymap.set(
   'n',
   '<leader><leader>',
   function()
-    require('telescope.builtin').find_files { hidden = false, no_ignore = false}
+    require('telescope.builtin').find_files { hidden = false, no_ignore = false }
   end,
   { desc = 'Search Files' }
 )
