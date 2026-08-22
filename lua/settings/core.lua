@@ -62,3 +62,16 @@ vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 vim.cmd.colorscheme 'blackberry'
 
 vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
+if vim.env.SSH_TTY then
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+    },
+    paste = {
+      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+    },
+  }
+end
