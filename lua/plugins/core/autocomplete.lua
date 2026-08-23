@@ -1,4 +1,4 @@
-return { -- Autocompletion
+return {
   'saghen/blink.cmp',
   event = 'InsertEnter',
   version = '1.*',
@@ -6,13 +6,20 @@ return { -- Autocompletion
   ---@type blink.cmp.Config
   opts = {
     keymap = {
-      preset = 'enter',
+      preset = 'super-tab',
+      ['<Up>'] = {},
+      ['<Down>'] = {},
+      ['<M-j>'] = { 'select_next', 'fallback' },
+      ['<M-k>'] = { 'select_prev', 'fallback' },
+      ['<D-j>'] = { 'select_next', 'fallback' },
+      ['<D-k>'] = { 'select_prev', 'fallback' },
+      -- preset = 'enter',
     },
     appearance = {
       nerd_font_variant = 'mono',
     },
     completion = {
-      documentation = { auto_show = false, auto_show_delay_ms = 500 },
+      documentation = { auto_show = true, auto_show_delay_ms = 500 },
       menu = {
         draw = {
           components = {

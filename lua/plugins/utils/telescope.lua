@@ -14,6 +14,20 @@ return {
   config = function()
     require('telescope').setup {
       defaults = {
+        mappings = {
+          i = {
+            ['<Up>'] = false,
+            ['<Down>'] = false,
+            ['<Left>'] = false,
+            ['<Right>'] = false,
+          },
+          n = {
+            ['<Up>'] = false,
+            ['<Down>'] = false,
+            ['<Left>'] = false,
+            ['<Right>'] = false,
+          },
+        },
         vimgrep_arguments = {
           'rg',
           '--color=never',

@@ -325,7 +325,7 @@ function M.load()
   set(0, '@lsp.type.static', { fg = p.constant }) -- static X: ...
   set(0, '@lsp.type.formatSpecifier', { fg = p.regex }) -- {}, {:?} em println!
   set(0, '@lsp.type.boolean', { fg = p.constantAlt }) -- true/false como token
-  set(0, '@lsp.type.unresolvedReference', { undercurl = true, sp = p.error_ })
+  set(0, '@lsp.type.unresolvedReference', { undercurl = true, sp = p.stringAlt})
 
   -- rust-analyzer typemods (confirmados via :Inspect)
   -- const X   -> @lsp.type.const + @lsp.typemod.const.constant + @lsp.typemod.const.declaration

@@ -7,6 +7,14 @@ vim.keymap.set('n', '<left>', '<nop>')
 vim.keymap.set('n', '<right>', '<nop>')
 vim.keymap.set('n', '<up>', '<nop>')
 vim.keymap.set('n', '<down>', '<nop>')
+vim.keymap.set('i', '<left>', '<nop>')
+vim.keymap.set('i', '<right>', '<nop>')
+vim.keymap.set('i', '<up>', '<nop>')
+vim.keymap.set('i', '<down>', '<nop>')
+vim.keymap.set('v', '<left>', '<nop>')
+vim.keymap.set('v', '<right>', '<nop>')
+vim.keymap.set('v', '<up>', '<nop>')
+vim.keymap.set('v', '<down>', '<nop>')
 
 -- Several --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -56,8 +64,6 @@ map('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move line down' })
 map('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move line up' })
 map('x', '<M-j>', ":silent! m '>+1<CR>gv=gv", { desc = 'Move selection down' })
 map('x', '<M-k>', ":silent! m '<-2<CR>gv=gv", { desc = 'Move selection up' })
-map('i', '<M-j>', '<Esc>:m .+1<CR>==gi')
-map('i', '<M-k>', '<Esc>:m .-2<CR>==gi')
 map(
   'n',
   '<M-l>',
