@@ -1,12 +1,9 @@
 local p = require 'blackberry.palette'
 
--- estados do buffer (sem diagnóstico)
 local activeFg = p.cyan
 local activeBg = p.cyanDim
 local inactiveFg = p.darkRed
 local inactiveBg = p.darkRedDim
-
--- diagnósticos: fg = cor do nível, bg = fundo escuro do nível
 local errorFg = p.error_
 local errorBg = p.bgRed
 local warnFg = p.warning
@@ -14,7 +11,7 @@ local warnBg = p.bgYellow
 local infoFg = p.info
 local infoBg = p.bgBlue
 local hintFg = p.hint
-local hintBg = p.bgTeal -- << adicionar no palette (ver nota)
+local hintBg = p.bgTeal
 
 return {
   'akinsho/bufferline.nvim',
@@ -48,7 +45,7 @@ return {
       error = { fg = errorFg, bg = errorBg, bold = true },
       error_visible = { fg = errorFg, bg = errorBg },
       error_selected = {
-        fg = errorFg,
+        fg = activeFg,
         bg = activeBg,
         bold = true,
         italic = true,
