@@ -6,6 +6,7 @@ vim.lsp.enable {
   'pyright',
   'gopls',
   'phpantom',
+  'asm_lsp'
 }
 
 vim.filetype.add {
