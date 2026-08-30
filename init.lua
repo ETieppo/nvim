@@ -18,15 +18,19 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
+local cfg = vim.fn.stdpath 'config'
+local profile = require 'profile'
 local scan = require('utils.scan_modules_imports').scan_modules_imports
-local imp = scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
 
-if vim.g.neovide then vim.g.neovide_frame = 'none' end
+local imp = scan(cfg .. '/lua/plugins', 'plugins', {
+  exclude = { ['plugins.extra'] = true },
+})
+
+if not profile.is 'minimal' then
+  vim.list_extend(imp, scan(cfg .. '/lua/plugins/extra', 'plugins.extra'))
+end
 
 require('lazy').setup {
   spec = imp,
-  change_detection = {
-    enable = false,
-    notify = false,
-  },
+  change_detection = { enable = false, notify = false },
 }

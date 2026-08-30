@@ -15,7 +15,6 @@ vim.filetype.add {
 
 vim.g.have_nerd_font = true
 
-vim.o.winbar = ' '
 vim.o.number = true
 vim.o.mouse = ''
 vim.o.showmode = false

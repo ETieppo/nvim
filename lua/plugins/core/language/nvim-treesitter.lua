@@ -3,7 +3,6 @@ return {
   lazy = false,
   build = ':TSUpdate',
   config = function()
-    require('nvim-treesitter').setup()
     require('nvim-treesitter').install {
       'html',
       'angular',
@@ -22,6 +21,7 @@ return {
       'vimdoc',
       'query',
       'python',
+      'asm',
     }
     vim.api.nvim_create_autocmd('FileType', {
       callback = function()

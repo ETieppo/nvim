@@ -147,7 +147,17 @@ function M.install()
     )
   end
   if #cmds == 0 then return end
-  vim.cmd('botright split | terminal ' .. table.concat(cmds, ' && '))
+  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+    if
+      vim.api.nvim_buf_is_valid(b)
+      and vim.bo[b].filetype == 'snacks_dashboard'
+    then
+      pcall(vim.api.nvim_buf_delete, b, { force = true })
+    end
+  end
+  vim.cmd 'tabnew'
+  vim.cmd('terminal ' .. table.concat(cmds, ' && '))
+  vim.cmd 'startinsert'
 end
 
 return M
