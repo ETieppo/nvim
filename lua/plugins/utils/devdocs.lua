@@ -36,7 +36,7 @@ return {
           end
         )
       end,
-      desc = '[D]ev[D]ocs [G]rep',
+      desc = '[D]ev [D]ocs [G]rep',
     },
   },
   opts = {

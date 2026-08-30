@@ -6,7 +6,7 @@ vim.lsp.enable {
   'pyright',
   'gopls',
   'phpantom',
-  'asm_lsp'
+  'asm_lsp',
 }
 
 vim.filetype.add {
@@ -67,12 +67,12 @@ if vim.env.SSH_TTY then
   vim.g.clipboard = {
     name = 'OSC 52',
     copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
+      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
     },
     paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
-      ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+      ['+'] = require('vim.ui.clipboard.osc52').paste '+',
+      ['*'] = require('vim.ui.clipboard.osc52').paste '*',
     },
   }
 end

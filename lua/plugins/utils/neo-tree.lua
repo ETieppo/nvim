@@ -35,8 +35,6 @@ return {
         hide_gitignored = false,
         hide_ignored = false,
         never_show = {
-          'dist',
-          'node_modules',
           '.DS_Store',
           '.git',
         },

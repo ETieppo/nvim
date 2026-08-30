@@ -52,7 +52,11 @@ return {
       },
       error_diagnostic = { fg = errorFg, bg = errorBg },
       error_diagnostic_visible = { fg = errorFg, bg = errorBg },
-      error_diagnostic_selected = { fg = activeFg, bg = activeBg, italic = true },
+      error_diagnostic_selected = {
+        fg = activeFg,
+        bg = activeBg,
+        italic = true,
+      },
       warning = { fg = warnFg, bg = warnBg, bold = true },
       warning_visible = { fg = warnFg, bg = warnBg },
       warning_selected = {

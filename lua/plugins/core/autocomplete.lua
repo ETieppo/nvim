@@ -13,7 +13,6 @@ return {
       ['<M-k>'] = { 'select_prev', 'fallback' },
       ['<D-j>'] = { 'select_next', 'fallback' },
       ['<D-k>'] = { 'select_prev', 'fallback' },
-      -- preset = 'enter',
     },
     appearance = {
       nerd_font_variant = 'mono',

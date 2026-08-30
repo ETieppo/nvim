@@ -3,7 +3,14 @@ require 'settings'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
+  local out = vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    '--branch=stable',
+    lazyrepo,
+    lazypath,
+  }
   if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\n' .. out) end
 end
 
@@ -14,9 +21,7 @@ rtp:prepend(lazypath)
 local scan = require('utils.scan_modules_imports').scan_modules_imports
 local imp = scan(vim.fn.stdpath 'config' .. '/lua/plugins', 'plugins')
 
-if vim.g.neovide then
-    vim.g.neovide_frame = "none"
-end
+if vim.g.neovide then vim.g.neovide_frame = 'none' end
 
 require('lazy').setup {
   spec = imp,

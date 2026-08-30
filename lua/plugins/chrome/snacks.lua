@@ -24,7 +24,7 @@ return {
       col = 0,
       width = vim.o.columns,
       sections = {
-        gap=1,
+        gap = 1,
         {
           section = 'terminal',
           cmd = 'bash -c "pixterm -d 2 -s 1 '
