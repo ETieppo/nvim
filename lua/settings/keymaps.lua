@@ -1,3 +1,26 @@
+local function normalize(path) return (path:gsub('\\', '/')) end
+
+local function to_os(path)
+  local sep = package.config:sub(1, 1)
+  return (path:gsub('[/\\]', sep))
+end
+
+local function edit_file(old, new)
+  new = to_os(new)
+  if new == '' or new == old then return end
+  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
+  vim.fn.rename(old, new)
+  vim.cmd('edit ' .. vim.fn.fnameescape(new))
+  vim.cmd 'bdelete! #'
+end
+
+local function new_file(path)
+  if path == '' then return end
+  path = to_os(path)
+  vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
+  vim.cmd('edit ' .. vim.fn.fnameescape(path))
+end
+
 -- Leaders --------------------------------------------------------------------
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -104,11 +127,9 @@ end, { desc = '[B]uffer [D]elete' })
 
 -- File Operations --------------------------------------------------------
 vim.keymap.set('n', '<leader>fn', function()
-  local dir = vim.fn.expand '%:p:h'
+  local dir = normalize(vim.fn.expand '%:p:h')
   local path = vim.fn.input('New file: ', dir .. '/', 'file')
-  if path == '' then return end
-  vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
-  vim.cmd('edit ' .. path)
+  new_file(path)
 end, { desc = '[F]ile [N]ew' })
 
 vim.keymap.set('n', '<leader>fd', function()
@@ -127,6 +148,17 @@ vim.keymap.set('n', '<leader>fd', function()
       '-e',
       string.format('tell application "Finder" to delete POSIX file %q', file),
     }
+  elseif vim.fn.has 'win32' == 1 then
+    cmd = {
+      'powershell',
+      '-NoProfile',
+      '-NonInteractive',
+      '-Command',
+      'Add-Type -AssemblyName Microsoft.VisualBasic; '
+        .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
+        .. file:gsub("'", "''")
+        .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
+    }
   else
     cmd = { 'gio', 'trash', '--', file }
   end
@@ -144,9 +176,9 @@ end, { desc = '[F]ile [D]elete (trash) current' })
 
 vim.keymap.set('n', '<leader>fr', function()
   local old = vim.fn.expand '%:p'
-  local dir = vim.fn.expand '%:p:h'
+  local dir = normalize(vim.fn.expand '%:p:h')
   local ext = vim.fn.expand '%:e'
-  local default = dir .. '/.' .. ext
+  local default = dir .. '/' .. '.' .. ext
   local move = #ext + 1
   vim.schedule(
     function()
@@ -161,12 +193,16 @@ vim.keymap.set('n', '<leader>fr', function()
     end
   )
   local new = vim.fn.input('Rename to: ', default, 'file')
-  if new == '' or new == old then return end
-  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-  vim.fn.rename(old, new)
-  vim.cmd('edit ' .. new)
-  vim.cmd 'bdelete! #'
+  edit_file(old, new)
 end, { desc = '[F]ile [R]ename' })
+
+vim.keymap.set('n', '<leader>fe', function()
+  local old = vim.fn.expand '%:p'
+  local filename = normalize(vim.fn.expand '%:p:r')
+  local default = filename .. '.'
+  local new = vim.fn.input('Rename to: ', default, 'file')
+  edit_file(old, new)
+end, { desc = '[F]ile [E]xtension' })
 
 vim.keymap.set('n', '<leader>fm', function()
   local old = vim.fn.expand '%:p'
@@ -184,12 +220,8 @@ vim.keymap.set('n', '<leader>fm', function()
       )
     end
   )
-  local new = vim.fn.input('Move to: ', old, 'file')
-  if new == '' or new == old then return end
-  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-  vim.fn.rename(old, new)
-  vim.cmd('edit ' .. vim.fn.fnameescape(new))
-  vim.cmd 'bdelete! #'
+  local new = vim.fn.input('Move to: ', normalize(old), 'file')
+  edit_file(old, new)
 end, { desc = '[F]ile [M]ove' })
 
 vim.keymap.set('n', '<leader>fc', function()
@@ -208,25 +240,25 @@ vim.keymap.set('n', '<leader>fc', function()
       )
     end
   )
-  local new = vim.fn.input('Copy to: ', old, 'file')
+  local new = vim.fn.input('Copy to: ', normalize(old), 'file')
+  new = to_os(new)
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-  local success = vim.loop.fs_copyfile(old, new)
+  local success = vim.uv.fs_copyfile(old, new)
   if success then
     vim.cmd('edit ' .. vim.fn.fnameescape(new))
   else
-    print '\nError at file clone.'
+    vim.notify('Error at file clone.', vim.log.levels.ERROR)
   end
 end, { desc = '[F]ile [C]opy' })
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
-  local config_lua_path = vim.fn.stdpath 'config' .. '/lua/'
+  local config_lua_path = normalize(vim.fn.stdpath 'config') .. '/'
   local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
   if path == '' then return end
   if not path:match '%.lua$' then path = path .. '.lua' end
-  vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
-  vim.cmd('edit ' .. path)
+  new_file(path)
 end, { desc = '[C]onfig [N]ew' })
 
 vim.keymap.set(
