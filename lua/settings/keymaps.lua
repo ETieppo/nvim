@@ -1,12 +1,7 @@
-local function normalize(path) return (path:gsub('\\', '/')) end
-
-local function to_os(path)
-  local sep = package.config:sub(1, 1)
-  return (path:gsub('[/\\]', sep))
-end
+local os = require 'utils.os'
 
 local function edit_file(old, new)
-  new = to_os(new)
+  new = os.to_os(new)
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
   vim.fn.rename(old, new)
@@ -16,7 +11,7 @@ end
 
 local function new_file(path)
   if path == '' then return end
-  path = to_os(path)
+  path = os.to_os(path)
   vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
   vim.cmd('edit ' .. vim.fn.fnameescape(path))
 end
@@ -127,7 +122,7 @@ end, { desc = '[B]uffer [D]elete' })
 
 -- File Operations --------------------------------------------------------
 vim.keymap.set('n', '<leader>fn', function()
-  local dir = normalize(vim.fn.expand '%:p:h')
+  local dir = os.normalize(vim.fn.expand '%:p:h')
   local path = vim.fn.input('New file: ', dir .. '/', 'file')
   new_file(path)
 end, { desc = '[F]ile [N]ew' })
@@ -142,13 +137,13 @@ vim.keymap.set('n', '<leader>fd', function()
     return
   end
   local cmd
-  if vim.fn.has 'mac' == 1 then
+  if os.is_mac then
     cmd = {
       'osascript',
       '-e',
       string.format('tell application "Finder" to delete POSIX file %q', file),
     }
-  elseif vim.fn.has 'win32' == 1 then
+  elseif os.is_windows() then
     cmd = {
       'powershell',
       '-NoProfile',
@@ -176,7 +171,7 @@ end, { desc = '[F]ile [D]elete (trash) current' })
 
 vim.keymap.set('n', '<leader>fr', function()
   local old = vim.fn.expand '%:p'
-  local dir = normalize(vim.fn.expand '%:p:h')
+  local dir = os.normalize_os_path(vim.fn.expand '%:p:h')
   local ext = vim.fn.expand '%:e'
   local default = dir .. '/' .. '.' .. ext
   local move = #ext + 1
@@ -198,7 +193,7 @@ end, { desc = '[F]ile [R]ename' })
 
 vim.keymap.set('n', '<leader>fe', function()
   local old = vim.fn.expand '%:p'
-  local filename = normalize(vim.fn.expand '%:p:r')
+  local filename = os.normalize(vim.fn.expand '%:p:r')
   local default = filename .. '.'
   local new = vim.fn.input('Rename to: ', default, 'file')
   edit_file(old, new)
@@ -220,7 +215,7 @@ vim.keymap.set('n', '<leader>fm', function()
       )
     end
   )
-  local new = vim.fn.input('Move to: ', normalize(old), 'file')
+  local new = vim.fn.input('Move to: ', os.normalize_os_path(old), 'file')
   edit_file(old, new)
 end, { desc = '[F]ile [M]ove' })
 
@@ -240,8 +235,8 @@ vim.keymap.set('n', '<leader>fc', function()
       )
     end
   )
-  local new = vim.fn.input('Copy to: ', normalize(old), 'file')
-  new = to_os(new)
+  local new = vim.fn.input('Copy to: ', os.normalize_os_path(old), 'file')
+  new = os.rewrite_to_os(new)
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
   local success = vim.uv.fs_copyfile(old, new)
@@ -254,7 +249,8 @@ end, { desc = '[F]ile [C]opy' })
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
-  local config_lua_path = normalize(vim.fn.stdpath 'config') .. '/'
+  local config_lua_path = os.normalize_os_path(vim.fn.stdpath 'config')
+    .. '/'
   local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
   if path == '' then return end
   if not path:match '%.lua$' then path = path .. '.lua' end

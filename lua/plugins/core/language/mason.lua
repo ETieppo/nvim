@@ -10,7 +10,7 @@ return {
     'mason-org/mason-lspconfig.nvim',
     dependencies = {
       'mason-org/mason.nvim',
-      'neovim/nvim-lspconfig',
+      -- 'neovim/nvim-lspconfig',
     },
     opts = {},
   },
@@ -28,6 +28,7 @@ return {
         'prettier',
         'emmet-language-server',
         'angular-language-server',
+        'markdown-oxide',
       },
     },
   },
