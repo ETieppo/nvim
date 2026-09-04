@@ -6,7 +6,7 @@ function M.rewrite_to_os_path(path)
 end
 
 function M.normalize_os_path(path) return (path:gsub('\\', '/')) end
-
+function M.has_deps(dep_name) return vim.fn.executable(dep_name) == 1 end
 function M.is_unix() return vim.fn.has 'macunix' == 1 end
 function M.is_windows() return vim.fn.has 'win32' == 1 end
 function M.is_linux() return vim.fn.has 'linux' == 1 end
