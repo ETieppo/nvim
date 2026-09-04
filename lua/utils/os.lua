@@ -7,7 +7,7 @@ end
 
 function M.normalize_os_path(path) return (path:gsub('\\', '/')) end
 function M.has_deps(dep_name) return vim.fn.executable(dep_name) == 1 end
-function M.is_unix() return vim.fn.has 'macunix' == 1 end
+function M.is_unix() return vim.fn.has 'unix' == 1 end
 function M.is_windows() return vim.fn.has 'win32' == 1 end
 function M.is_linux() return vim.fn.has 'linux' == 1 end
 function M.is_macos() return vim.fn.has 'mac' == 1 end
@@ -21,7 +21,7 @@ function M.get_package_manager()
   if M.is_macos() then
     return vim.fn.executable 'brew' == 1 and 'brew' or nil
   end
-  if M.is_windows then
+  if M.is_windows() then
     if vim.fn.executable 'scoop' == 0 then
       vim.cmd 'tabnew'
       vim.cmd 'terminal Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force'
@@ -30,7 +30,7 @@ function M.get_package_manager()
     end
     return 'scoop'
   end
-  if M.is_linux then
+  if M.is_linux() then
     for _, pm in ipairs { 'pacman', 'apt', 'dnf', 'zypper', 'apk' } do
       if vim.fn.executable(pm) == 1 then return pm end
     end
