@@ -24,6 +24,7 @@ function M.get_package_manager()
   if M.is_windows then
     if vim.fn.executable 'scoop' == 0 then
       vim.cmd 'tabnew'
+      vim.cmd 'terminal Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force'
       vim.cmd 'terminal irm get.scoop.sh | iex'
       vim.cmd 'startinsert'
     end
