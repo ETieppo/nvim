@@ -4,6 +4,7 @@ return {
     'lsp',
     'stdio',
   },
+  filetypes = { 'toml' },
   toml = {
     root_markers = {
       'Cargo.toml',
