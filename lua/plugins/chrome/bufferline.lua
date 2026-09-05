@@ -1,17 +1,4 @@
-local p = require 'blackberry.palette'
-
-local activeFg = p.cyan
-local activeBg = p.cyanDim
-local inactiveFg = p.darkRed
-local inactiveBg = p.darkRedDim
-local errorFg = p.error_
-local errorBg = p.bgRed
-local warnFg = p.warning
-local warnBg = p.bgYellow
-local infoFg = p.info
-local infoBg = p.bgBlue
-local hintFg = p.hint
-local hintBg = p.bgTeal
+local p = require('settings.theme').get_theme_colors()
 
 return {
   'akinsho/bufferline.nvim',
@@ -21,79 +8,91 @@ return {
   opts = {
     highlights = {
       fill = { bg = p.bg0 },
-      background = { fg = inactiveFg, bg = inactiveBg, bold = true },
-      buffer_visible = { fg = inactiveFg, bg = inactiveBg },
+      background = { fg = p.inactiveFg, bg = p.inactiveBg, bold = true },
+      buffer_visible = { fg = p.inactiveFg, bg = p.inactiveBg },
       buffer_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         bold = true,
         italic = true,
       },
-      duplicate = { fg = inactiveFg, bg = inactiveBg, italic = true },
-      duplicate_visible = { fg = inactiveFg, bg = inactiveBg, italic = true },
-      duplicate_selected = { fg = activeFg, bg = activeBg, italic = true },
-      separator = { fg = p.bg0, bg = inactiveBg },
-      separator_visible = { fg = p.bg0, bg = inactiveBg },
-      separator_selected = { fg = p.bg0, bg = activeBg },
-      close_button = { fg = inactiveFg, bg = inactiveBg },
-      close_button_visible = { fg = inactiveFg, bg = inactiveBg },
-      close_button_selected = { fg = activeFg, bg = activeBg },
-      modified = { fg = inactiveFg, bg = inactiveBg },
-      modified_visible = { fg = inactiveFg, bg = inactiveBg },
-      modified_selected = { fg = activeFg, bg = activeBg },
-      indicator_selected = { fg = activeFg, bg = activeBg },
-      error = { fg = errorFg, bg = errorBg, bold = true },
-      error_visible = { fg = errorFg, bg = errorBg },
+      duplicate = { fg = p.inactiveFg, bg = p.inactiveBg, italic = true },
+      duplicate_visible = {
+        fg = p.inactiveFg,
+        bg = p.inactiveBg,
+        italic = true,
+      },
+      duplicate_selected = { fg = p.activeFg, bg = p.activeBg, italic = true },
+      separator = { fg = p.bg0, bg = p.inactiveBg },
+      separator_visible = { fg = p.bg0, bg = p.inactiveBg },
+      separator_selected = { fg = p.bg0, bg = p.activeBg },
+      close_button = { fg = p.inactiveFg, bg = p.inactiveBg },
+      close_button_visible = { fg = p.inactiveFg, bg = p.inactiveBg },
+      close_button_selected = { fg = p.activeFg, bg = p.activeBg },
+      modified = { fg = p.inactiveFg, bg = p.inactiveBg },
+      modified_visible = { fg = p.inactiveFg, bg = p.inactiveBg },
+      modified_selected = { fg = p.activeFg, bg = p.activeBg },
+      indicator_selected = { fg = p.activeFg, bg = p.activeBg },
+      error = { fg = p.errorFg, bg = p.errorBg, bold = true },
+      error_visible = { fg = p.errorFg, bg = p.errorBg },
       error_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         bold = true,
         italic = true,
       },
-      error_diagnostic = { fg = errorFg, bg = errorBg },
-      error_diagnostic_visible = { fg = errorFg, bg = errorBg },
+      error_diagnostic = { fg = p.errorFg, bg = p.errorBg },
+      error_diagnostic_visible = { fg = p.errorFg, bg = p.errorBg },
       error_diagnostic_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         italic = true,
       },
-      warning = { fg = warnFg, bg = warnBg, bold = true },
-      warning_visible = { fg = warnFg, bg = warnBg },
+      warning = { fg = p.warnFg, bg = p.warnBg, bold = true },
+      warning_visible = { fg = p.warnFg, bg = p.warnBg },
       warning_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         bold = true,
         italic = true,
       },
-      warning_diagnostic = { fg = warnFg, bg = warnBg },
-      warning_diagnostic_visible = { fg = warnFg, bg = warnBg },
+      warning_diagnostic = { fg = p.warnFg, bg = p.warnBg },
+      warning_diagnostic_visible = { fg = p.warnFg, bg = p.warnBg },
       warning_diagnostic_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         italic = true,
       },
-      info = { fg = infoFg, bg = infoBg, bold = true },
-      info_visible = { fg = infoFg, bg = infoBg },
+      info = { fg = p.infoFg, bg = p.infoBg, bold = true },
+      info_visible = { fg = p.infoFg, bg = p.infoBg },
       info_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         bold = true,
         italic = true,
       },
-      info_diagnostic = { fg = infoFg, bg = infoBg },
-      info_diagnostic_visible = { fg = infoFg, bg = infoBg },
-      info_diagnostic_selected = { fg = activeFg, bg = activeBg, italic = true },
-      hint = { fg = hintFg, bg = hintBg, bold = true },
-      hint_visible = { fg = hintFg, bg = hintBg },
+      info_diagnostic = { fg = p.infoFg, bg = p.infoBg },
+      info_diagnostic_visible = { fg = p.infoFg, bg = p.infoBg },
+      info_diagnostic_selected = {
+        fg = p.activeFg,
+        bg = p.activeBg,
+        italic = true,
+      },
+      hint = { fg = p.hintFg, bg = p.hintBg, bold = true },
+      hint_visible = { fg = p.hintFg, bg = p.hintBg },
       hint_selected = {
-        fg = activeFg,
-        bg = activeBg,
+        fg = p.activeFg,
+        bg = p.activeBg,
         bold = true,
         italic = true,
       },
-      hint_diagnostic = { fg = hintFg, bg = hintBg },
-      hint_diagnostic_visible = { fg = hintFg, bg = hintBg },
-      hint_diagnostic_selected = { fg = activeFg, bg = activeBg, italic = true },
+      hint_diagnostic = { fg = p.hintFg, bg = p.hintBg },
+      hint_diagnostic_visible = { fg = p.hintFg, bg = p.hintBg },
+      hint_diagnostic_selected = {
+        fg = p.activeFg,
+        bg = p.activeBg,
+        italic = true,
+      },
     },
     options = {
       mode = 'buffers',

@@ -1,21 +1,18 @@
 local M = {}
 
-function M.load()
-  local p = require 'blackberry.palette'
-
+function M.load(p)
   vim.cmd 'highlight clear'
   if vim.fn.exists 'syntax_on' == 1 then vim.cmd 'syntax reset' end
 
   vim.o.termguicolors = true
-  vim.g.colors_name = 'blackberry'
   local set = vim.api.nvim_set_hl
 
   -- ============================================================================
   -- UI / Editor
   -- ============================================================================
   set(0, 'WinSeparator', { fg = p.transparent })
-  set(0, 'Normal', { fg = p.fg, bg = p.bg0 })
-  set(0, 'NormalNC', { fg = p.fg, bg = p.bg0 })
+  set(0, 'Normal', { fg = p.fg, bg = p.bg3 })
+  set(0, 'NormalNC', { fg = p.fg, bg = p.bg2 })
   set(0, 'NormalFloat', { fg = p.fg, bg = p.bg3 })
   set(0, 'CursorLine', { bg = p.bg3 })
   set(0, 'CursorLineNr', { fg = p.keyword, bold = false })
@@ -146,7 +143,7 @@ function M.load()
   -- ============================================================================
 
   -- ── Variables ────────────────────────────────────────────────────────────────
-  -- Zed JSON:  variable=#c0caf5  |  variable.parameter=#e0687a  |  property=#7dcfff
+
   set(0, '@variable', { fg = p.variable })
   set(0, '@variable.builtin', { fg = p.variable }) -- self (no Zed = variable color)
   set(0, '@variable.member', { fg = p.property }) -- field access: foo.bar
@@ -179,7 +176,7 @@ function M.load()
   set(0, '@keyword.function', { fg = p.keywordAlt })
   set(0, '@keyword.operator', { fg = p.operator })
   set(0, '@keyword.return', { fg = p.keyword, italic = true })
-  set(0, '@keyword.import', { fg = p.property }) -- Zed: #7dcfff
+  set(0, '@keyword.import', { fg = p.property })
   set(0, '@keyword.modifier', { fg = p.keyword })
   set(0, '@keyword.repeat', { fg = p.keyword })
   set(0, '@keyword.conditional', { fg = p.keyword })
@@ -194,7 +191,7 @@ function M.load()
   set(0, '@type.qualifier', { fg = p.keyword })
 
   -- ── Properties / fields ──────────────────────────────────────────────────────
-  -- Zed JSON: property=#7dcfff (ciano claro) — distinto de variable
+
   set(0, '@property', { fg = p.property })
   set(0, '@field', { fg = p.property })
 
@@ -212,35 +209,24 @@ function M.load()
   set(0, '@string.special.path', { fg = p.cyan, italic = true })
   set(0, '@string.documentation', { fg = p.stringAlt, italic = true })
 
-  -- ── Characters ───────────────────────────────────────────────────────────────
-  set(0, '@character', { fg = p.stringAlt }) -- Zed character=#85d0b7
-  set(0, '@character.special', { fg = p.regex }) -- Zed character.special=#b4f9f8
-
-  -- ── Numbers ──────────────────────────────────────────────────────────────────
-  -- Zed JSON: number=#c0768e (igual constant.builtin) — p.number já corrigido no palette
+  set(0, '@character', { fg = p.stringAlt })
+  set(0, '@character.special', { fg = p.regex })
   set(0, '@number', { fg = p.number })
   set(0, '@number.float', { fg = p.number })
 
-  -- ── Operators ────────────────────────────────────────────────────────────────
   set(0, '@operator', { fg = p.operator })
 
-  -- ── Pontuação ────────────────────────────────────────────────────────────────
   set(0, '@punctuation.delimiter', { fg = p.fg })
-  set(0, '@punctuation.bracket', { fg = p.fgMuted })
-  set(0, '@punctuation.special', { fg = p.constant }) -- Zed: #b8003a
+  set(0, '@punctuation.bracket', { fg = p.bracket })
+  set(0, '@punctuation.special', { fg = p.bracket})
 
-  -- ── Atributos ────────────────────────────────────────────────────────────────
-  -- Rust: #[derive(Debug)] — o #[ e ] ficam em p.constant, mas o CONTEÚDO varia:
-  -- derive(...)  -> @lsp.type.derive  -> p.funcBuiltin (é uma macro-like, não constante)
-  -- #[allow(...)] etc -> @attribute.builtin -> p.macro
   set(0, '@attribute', { fg = p.macro })
   set(0, '@attribute.builtin', { fg = p.macro })
-  set(0, '@punctuation.special.attribute', { fg = p.constant }) -- o # e os [ ]
+  set(0, '@punctuation.special.attribute', { fg = p.constant })
   set(0, '@lsp.type.attribute', { fg = p.macro })
-  set(0, '@lsp.type.derive', { fg = p.funcBuiltin }) -- derive(...)
-  set(0, '@lsp.type.attributeBracket', { fg = p.constant })
+  set(0, '@lsp.type.derive', { fg = p.funcBuiltin })
+  set(0, '@lsp.type.attributeBracket', { fg = p.bracket })
 
-  -- ── Comments ─────────────────────────────────────────────────────────────────
   set(0, '@comment', { fg = p.comment, italic = true })
   set(0, '@comment.note', { fg = p.bg2, bg = p.info })
   set(0, '@comment.todo', { fg = p.bg2, bg = p.teal })
@@ -248,7 +234,6 @@ function M.load()
   set(0, '@comment.error', { fg = p.bg2, bg = p.error_ })
   set(0, '@comment.documentation', { fg = p.stringAlt, italic = true })
 
-  -- ── Markup ────────────────────────────────────────────────────────────────────
   set(0, '@markup', { fg = p.fg })
   set(0, '@markup.heading', { fg = p.type_, bold = true })
   set(0, '@markup.heading.1', { fg = p.type_, bold = true })
@@ -271,20 +256,6 @@ function M.load()
   set(0, '@markup.quote', { fg = p.fgMuted, italic = true })
   set(0, '@markup.math', { fg = p.property })
 
-  -- ── Tags (HTML/JSX/TSX/XML) ───────────────────────────────────────────────────
-  set(0, '@tag', { fg = p.tag })
-  set(0, '@tag.builtin', { fg = p.tag })
-  set(0, '@tag.attribute', { fg = p.tagAttr, italic = true })
-  set(0, '@tag.delimiter', { fg = p.fgDim })
-
-  -- ── Overrides por linguagem ───────────────────────────────────────────────────
-  set(0, '@constructor.lua', { fg = p.fg })
-  set(0, '@label.json', { fg = p.property })
-  set(0, '@property.json', { fg = p.property })
-  set(0, '@tag.attribute.tsx', { fg = p.tagAttr, italic = true })
-  set(0, '@tag.attribute.jsx', { fg = p.tagAttr, italic = true })
-
-  -- ── LSP semantic tokens (genéricos) ──────────────────────────────────────────
   set(0, '@lsp.type.interface', { fg = p.macro })
   set(0, '@lsp.type.enum', { fg = p.type_ })
   set(0, '@lsp.type.enumMember', { fg = p.constant })
@@ -294,8 +265,8 @@ function M.load()
   set(0, '@lsp.type.namespace', { fg = p.namespace_ })
   set(0, '@lsp.type.macro', { fg = p.macro })
   set(0, '@lsp.type.variable', { link = '@variable' })
-  set(0, '@lsp.type.parameter', { fg = p.variable }) -- uso de param = neutro (só def é salmon)
-  set(0, '@lsp.type.property', { fg = p.property }) -- Zed JSON: property=#7dcfff
+  set(0, '@lsp.type.parameter', { fg = p.variable })
+  set(0, '@lsp.type.property', { fg = p.property })
   set(0, '@lsp.type.function', { link = '@function' })
   set(0, '@lsp.type.method', { link = '@function.method' })
   set(0, '@lsp.type.keyword', { link = '@keyword' })
@@ -311,30 +282,29 @@ function M.load()
   set(0, '@lsp.mod.readonly', { fg = p.constant })
   set(0, '@lsp.mod.static', { fg = p.type_, bold = true })
 
-  -- ── rust-analyzer specific (semantic tokens) ─────────────────────────────────
-  -- Tokens emitidos pelo rust-analyzer que não estão no conjunto LSP padrão.
-  -- Confira com `:Inspect` / `:lua =vim.lsp.semantic_tokens.get_at_pos()`.
-  set(0, '@lsp.type.selfKeyword', { fg = p.keyword, italic = true }) -- self
-  set(0, '@lsp.type.selfTypeKeyword', { fg = p.type_ }) -- Self
-  set(0, '@lsp.type.builtinType', { fg = p.type_ }) -- u32, i64, bool, str, f64
-  set(0, '@lsp.type.builtinAttribute', { fg = p.macro }) -- nomes em #[derive], #[inline]...
-  set(0, '@lsp.type.lifetime', { fg = p.typeParam }) -- 'a, 'static
-  set(0, '@lsp.type.generic', { fg = p.typeParam }) -- parâmetros genéricos <T>
-  set(0, '@lsp.type.typeAlias', { fg = p.type_ }) -- type Foo = ...
-  set(0, '@lsp.type.const', { fg = p.constant }) -- const X: ...
-  set(0, '@lsp.type.static', { fg = p.constant }) -- static X: ...
-  set(0, '@lsp.type.formatSpecifier', { fg = p.regex }) -- {}, {:?} em println!
-  set(0, '@lsp.type.boolean', { fg = p.constantAlt }) -- true/false como token
+  -- ── Tags (HTML/JSX/TSX/XML) ───────────────────────────────────────────────────
+  set(0, '@tag', { fg = p.tag })
+  set(0, '@tag.builtin', { fg = p.tag })
+  set(0, '@tag.attribute', { fg = p.tagAttr, italic = true })
+  set(0, '@tag.delimiter', { fg = p.fgDim })
+
+  -- ── rust ─────────────────────────────────
+  set(0, '@lsp.type.selfKeyword', { fg = p.keyword, italic = true })
+  set(0, '@lsp.type.selfTypeKeyword', { fg = p.type_ })
+  set(0, '@lsp.type.builtinType', { fg = p.type_ })
+  set(0, '@lsp.type.builtinAttribute', { fg = p.macro })
+  set(0, '@lsp.type.lifetime', { fg = p.typeParam })
+  set(0, '@lsp.type.generic', { fg = p.typeParam })
+  set(0, '@lsp.type.typeAlias', { fg = p.type_ })
+  set(0, '@lsp.type.const', { fg = p.constant })
+  set(0, '@lsp.type.static', { fg = p.constant })
+  set(0, '@lsp.type.formatSpecifier', { fg = p.regex })
+  set(0, '@lsp.type.boolean', { fg = p.constantAlt })
   set(
     0,
     '@lsp.type.unresolvedReference',
     { undercurl = true, sp = p.stringAlt }
   )
-
-  -- rust-analyzer typemods (confirmados via :Inspect)
-  -- const X   -> @lsp.type.const + @lsp.typemod.const.constant + @lsp.typemod.const.declaration
-  -- static X  -> @lsp.type.static + mods
-  -- mut x     -> @lsp.typemod.variable.mutable
   set(0, '@lsp.typemod.const.constant', { fg = p.constant })
   set(0, '@lsp.typemod.const.declaration', { fg = p.constant })
   set(0, '@lsp.typemod.variable.static', { fg = p.constant })
@@ -348,7 +318,6 @@ function M.load()
     '@lsp.typemod.selfKeyword.defaultLibrary',
     { fg = p.keyword, italic = true }
   )
-  -- defaultLibrary = vindo da stdlib (Vec, Option, Some, None, Result, println!, etc.)
   set(0, '@lsp.typemod.function.defaultLibrary', { fg = p.funcBuiltin })
   set(0, '@lsp.typemod.method.defaultLibrary', { fg = p.funcBuiltin })
   set(0, '@lsp.typemod.macro.defaultLibrary', { fg = p.macro, bold = true })
@@ -359,30 +328,11 @@ function M.load()
     0,
     '@lsp.typemod.enumMember.defaultLibrary',
     { fg = p.constantAlt, bold = true }
-  ) -- None, Some, Ok, Err
+  )
   set(0, '@lsp.typemod.interface.defaultLibrary', { fg = p.funcBuiltin })
   set(0, '@lsp.typemod.property.defaultLibrary', { fg = p.property })
-  -- atributos com modifiers (ex.: #[tokio::main] é um attribute)
-  set(0, '@lsp.typemod.attributeBracket.attribute', { fg = p.constant })
+  set(0, '@lsp.typemod.attributeBracket.attribute', { fg = p.bracket })
   set(0, '@lsp.typemod.decorator.attribute', { fg = p.macro })
-
-  -- ============================================================================
-  -- Plugins
-  -- ============================================================================
-
-  -- Neogit
-  set(0, 'NeogitBranch', { fg = p.purple })
-  set(0, 'NeogitRemote', { fg = p.teal })
-  set(0, 'NeogitHunkHeader', { fg = p.property, bg = p.bg5 })
-  set(0, 'NeogitHunkHeaderHighlight', { fg = p.property, bg = p.bg4 })
-  set(0, 'NeogitDiffAdd', { fg = p.added })
-  set(0, 'NeogitDiffAddHighlight', { bg = p.bgGreen })
-  set(0, 'NeogitDiffDelete', { fg = p.deleted })
-  set(0, 'NeogitDiffDeleteHighlight', { bg = p.bgRed })
-  set(0, 'NeogitDiffContextHighlight', { bg = p.bg4 })
-  set(0, 'NeogitNotificationError', { fg = p.error_ })
-  set(0, 'NeogitNotificationWarning', { fg = p.warning })
-  set(0, 'NeogitNotificationInfo', { fg = p.info })
 
   -- Neotest
   set(0, 'NeotestPassed', { fg = p.added })
@@ -420,7 +370,7 @@ function M.load()
   set(0, 'NeoTreeGitIgnored', { fg = p.fgSemiHide })
   set(0, 'NeoTreeGitConflict', { fg = p.warning, italic = true })
   set(0, 'NeoTreeTabActive', { bold = true })
-  set(0, 'NeoTreeTabInactive', { fg = p.fgMuted, bg = p.bg3 })
+  set(0, 'NeoTreeTabInactive', { fg = p.fgMuted, bg = p.bg1 })
   set(0, 'NeoTreeTabSeparatorActive', { fg = p.bg2 })
   set(0, 'NeoTreeTabSeparatorInactive', { fg = p.bg2, bg = p.bg3 })
   set(0, 'NeoTreeModified', { fg = p.modified })
@@ -443,9 +393,51 @@ function M.load()
   set(0, 'NvimTreeGitMerge', { fg = p.modified })
 
   -- Telescope
-  set(0, 'TelescopeBorder', { fg = p.bg5 })
+  set(0, 'TelescopeBorder', { fg = p.fgSemiHide, bg = p.bg3 })
   set(0, 'TelescopeSelectionCaret', { fg = p.teal })
   set(0, 'TelescopeSelection', { fg = p.fg, bg = p.bg4 })
+
+  set(0, 'TelescopeNormal', { bg = p.bg3 })
+  set(0, 'TelescopePreviewDate', {})
+  set(0, 'TelescopePreviewGroup', {})
+  set(0, 'TelescopePreviewUser', {})
+  set(0, 'TelescopePreviewHyphen', {})
+  set(0, 'TelescopePreviewExecute', {})
+  set(0, 'TelescopePreviewWrite', {})
+  set(0, 'TelescopePreviewRead', {})
+  set(0, 'TelescopePreviewSocket', {})
+  set(0, 'TelescopePreviewLink', {})
+  set(0, 'TelescopePreviewBlock', {})
+  set(0, 'TelescopePreviewDirectory', {})
+  set(0, 'TelescopePreviewCharDev', {})
+  set(0, 'TelescopePreviewPipe', {})
+  set(0, 'TelescopePreviewMatch', {})
+  set(0, 'TelescopePreviewLine', {})
+  set(0, 'TelescopePromptPrefix', {})
+  set(0, 'TelescopeMatching', { bg = p.fgDim })
+  set(0, 'TelescopePromptCounter', {})
+  set(0, 'TelescopeMultiIcon', {})
+  set(0, 'TelescopeMultiSelection', {})
+  set(0, 'TelescopeResultsDiffUntracked', {})
+  set(0, 'TelescopeResultsDiffDelete', {})
+  set(0, 'TelescopeResultsDiffAdd', {})
+  set(0, 'TelescopeResultsDiffChange', {})
+  set(0, 'TelescopeResultsSpecialComment', {})
+  set(0, 'TelescopePreviewSticky', {})
+  set(0, 'TelescopeResultsComment', {})
+  set(0, 'TelescopeResultsNumber', {})
+  set(0, 'TelescopeResultsIdentifier', {})
+  set(0, 'TelescopeResultsLineNr', {})
+  set(0, 'TelescopeResultsVariable', {})
+  set(0, 'TelescopePreviewSize', {})
+  set(0, 'TelescopeResultsStruct', {})
+  set(0, 'TelescopeResultsOperator', {})
+  set(0, 'TelescopeResultsMethod', {})
+  set(0, 'TelescopeResultsFunction', {})
+  set(0, 'TelescopeResultsField', {})
+  set(0, 'TelescopeResultsConstant', {})
+  set(0, 'TelescopeResultsClass', {})
+  set(0, 'TelescopePreviewMessageFillchar', {})
 
   -- Dashboard / Alpha
   set(0, 'AlphaHeader', { fg = p.teal })
@@ -633,25 +625,21 @@ function M.load()
   set(0, 'SlimlineModeReplaceSep2Sec', { fg = p.bg4, bg = p.bg4 })
   set(0, 'SlimlineModeCommandSep2Sec', { fg = p.bg4, bg = p.bg4 })
   set(0, 'SlimlineModeOtherSep2Sec', { fg = p.bg4, bg = p.bg4 })
-  -- Git
   set(0, 'SlimlineGitPrimary', { fg = p.warning, bg = p.bg4 })
   set(0, 'SlimlineGitPrimarySep', { fg = p.bg4, bg = p.bg0 })
   set(0, 'SlimlineGitPrimarySep2Sec', { fg = p.bg4, bg = p.bg4 })
   set(0, 'SlimlineGitSecondary', { fg = p.fgMuted, bg = p.bg4 })
   set(0, 'SlimlineGitSecondarySep', { fg = p.bg4, bg = p.bg0 })
-  -- Path
   set(0, 'SlimlinePathPrimary', { fg = p.darkRed, bg = p.bg4 })
   set(0, 'SlimlinePathPrimarySep', { fg = p.bg4, bg = p.bg0 })
   set(0, 'SlimlinePathPrimarySep2Sec', { fg = p.bg4, bg = p.bg4 })
   set(0, 'SlimlinePathSecondary', { fg = p.fgMuted, bg = p.bg4 })
   set(0, 'SlimlinePathSecondarySep', { fg = p.bg4, bg = p.bg0 })
-  -- Filetype / LSP
   set(0, 'SlimlineFiletype_lspPrimary', { fg = p.fg, bg = p.bg4 })
   set(0, 'SlimlineFiletype_lspPrimarySep', { fg = p.bg4, bg = p.bg0 })
   set(0, 'SlimlineFiletype_lspPrimarySep2Sec', { fg = p.bg4, bg = p.bg4 })
   set(0, 'SlimlineFiletype_lspSecondary', { fg = p.fgMuted, bg = p.bg4 })
   set(0, 'SlimlineFiletype_lspSecondarySep', { fg = p.bg4, bg = p.bg0 })
-  -- Diagnostics
   set(0, 'SlimlineDiagnosticsError', { fg = p.error_, bg = p.bgRed })
   set(0, 'SlimlineDiagnosticsWarn', { fg = p.warning, bg = p.bgYellow })
   set(0, 'SlimlineDiagnosticsInfo', { fg = p.info, bg = p.bgBlue })
@@ -697,334 +685,6 @@ function M.load()
   set(0, 'NotifyDEBUGBorder', { fg = p.bgGreen })
   set(0, 'NotifyTRACETitle', { fg = p.fgMuted })
   set(0, 'NotifyTRACEBorder', { fg = p.bg5 })
-
-  -- Neominimap
-  set(0, 'NeominimapErrorLine', { bg = p.error_ })
-  set(0, 'NeominimapWarnLine', { bg = p.purple })
-  set(0, 'NeominimapInfoLine', { bg = p.info })
-  set(0, 'NeominimapHintLine', { bg = p.hint })
-  set(0, 'NeominimapErrorSign', { fg = p.error_ })
-  set(0, 'NeominimapWarnSign', { fg = p.purple })
-  set(0, 'NeominimapInfoSign', { fg = p.info })
-  set(0, 'NeominimapHintSign', { fg = p.hint })
-  set(0, 'NeominimapErrorIcon', { fg = p.error_ })
-  set(0, 'NeominimapWarnIcon', { fg = p.purple })
-  set(0, 'NeominimapInfoIcon', { fg = p.info })
-  set(0, 'NeominimapHintIcon', { fg = p.hint })
-  set(0, 'NeominimapGitChangeLine', { bg = p.modified })
-  set(0, 'NeominimapGitChangeIcon', { fg = p.modified })
-  set(0, 'NeominimapGitChangeSign', { fg = p.modified })
-  set(0, 'NeominimapGitAddLine', { bg = p.teal })
-  set(0, 'NeominimapGitAddIcon', { fg = p.added })
-  set(0, 'NeominimapGitAddSign', { fg = p.added })
-  set(0, 'NeominimapGitDeleteLine', { bg = p.error_ })
-  set(0, 'NeominimapGitDeleteIcon', { fg = p.error_ })
-  set(0, 'NeominimapGitDeleteSign', { fg = p.error_ })
-  set(0, '_Neominimap.@constructor', { fg = p.namespace_ })
-  set(0, '_Neominimap.@number', { fg = p.number })
-  set(0, '_Neominimap.@operator', { fg = p.operator })
-  set(0, '_Neominimap.@property', { fg = p.property })
-  set(0, '_Neominimap.@string', { fg = p.string_ })
-  set(0, '_Neominimap.@variable', { fg = p.fg })
-  set(0, '_Neominimap.@variable.member', { fg = p.property })
-  set(0, '_Neominimap.@punctuation.delimiter', { fg = p.fg })
-  set(0, '_Neominimap.@punctuation.bracket', { fg = p.fg })
-  set(0, '_Neominimap.@comment', { fg = p.comment })
-  set(0, '_Neominimap.@keyword', { fg = p.keyword })
-  set(0, '_Neominimap.@boolean', { fg = p.constantAlt })
-
-  -- TinyInlineDiagnostic
-  set(0, 'TinyInlineDiagnosticVirtualTextHint', { fg = p.hint, bg = p.bgGreen })
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextWarn',
-    { fg = p.warning, bg = p.bgYellow }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextError',
-    { fg = p.error_, bg = p.bgRed }
-  )
-  set(0, 'TinyInlineDiagnosticVirtualTextInfo', { fg = p.info, bg = p.bgBlue })
-  set(0, 'TinyInlineDiagnosticVirtualTextBg', { bg = p.bg5 })
-  set(0, 'TinyInlineDiagnosticVirtualTextArrow', { fg = p.bg5, bg = p.bg5 })
-  set(0, 'TinyInlineDiagnosticVirtualTextArrowNoBg', { fg = p.bg5 })
-  set(0, 'TinyInlineDiagnosticVirtualTextErrorNoBg', { fg = p.error_ })
-  set(0, 'TinyInlineDiagnosticVirtualTextWarnNoBg', { fg = p.warning })
-  set(0, 'TinyInlineDiagnosticVirtualTextInfoNoBg', { fg = p.info })
-  set(0, 'TinyInlineDiagnosticVirtualTextHintNoBg', { fg = p.hint })
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextErrorMixError',
-    { fg = p.error_, bg = p.bgRed }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextErrorMixWarn',
-    { fg = p.error_, bg = p.bgYellow }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextErrorMixInfo',
-    { fg = p.error_, bg = p.bgBlue }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextErrorMixHint',
-    { fg = p.error_, bg = p.bgGreen }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextWarnMixWarn',
-    { fg = p.warning, bg = p.bgYellow }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextWarnMixInfo',
-    { fg = p.warning, bg = p.bgBlue }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextWarnMixHint',
-    { fg = p.warning, bg = p.bgGreen }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextInfoMixWarn',
-    { fg = p.info, bg = p.bgYellow }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextInfoMixInfo',
-    { fg = p.info, bg = p.bgBlue }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextInfoMixHint',
-    { fg = p.info, bg = p.bgGreen }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextHintMixInfo',
-    { fg = p.hint, bg = p.bgBlue }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextHintMixWarn',
-    { fg = p.hint, bg = p.bgYellow }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextHintMixError',
-    { fg = p.hint, bg = p.bgRed }
-  )
-  set(
-    0,
-    'TinyInlineDiagnosticVirtualTextHintMixHint',
-    { fg = p.hint, bg = p.bgGreen }
-  )
-  set(0, 'TinyInlineDiagnosticVirtualTextErrorCursorLine', { fg = p.error_ })
-  set(0, 'TinyInlineDiagnosticVirtualTextWarnCursorLine', { fg = p.warning })
-  set(0, 'TinyInlineDiagnosticVirtualTextInfoCursorLine', { fg = p.info })
-  set(0, 'TinyInlineDiagnosticVirtualTextHintCursorLine', { fg = p.hint })
-  set(
-    0,
-    'TinyInlineInvDiagnosticVirtualTextHint',
-    { fg = p.bgGreen, bg = p.bg5 }
-  )
-  set(
-    0,
-    'TinyInlineInvDiagnosticVirtualTextWarn',
-    { fg = p.bgYellow, bg = p.bg5 }
-  )
-  set(
-    0,
-    'TinyInlineInvDiagnosticVirtualTextError',
-    { fg = p.bgRed, bg = p.bg5 }
-  )
-  set(
-    0,
-    'TinyInlineInvDiagnosticVirtualTextInfo',
-    { fg = p.bgBlue, bg = p.bg5 }
-  )
-  set(0, 'TinyInlineInvDiagnosticVirtualTextHintNoBg', { fg = p.bgGreen })
-  set(0, 'TinyInlineInvDiagnosticVirtualTextWarnNoBg', { fg = p.bgYellow })
-  set(0, 'TinyInlineInvDiagnosticVirtualTextErrorNoBg', { fg = p.bgRed })
-  set(0, 'TinyInlineInvDiagnosticVirtualTextInfoNoBg', { fg = p.bgBlue })
-  set(0, 'TinyInlineInvDiagnosticVirtualTextHintCursorLine', { fg = p.bgGreen })
-  set(
-    0,
-    'TinyInlineInvDiagnosticVirtualTextWarnCursorLine',
-    { fg = p.bgYellow }
-  )
-  set(0, 'TinyInlineInvDiagnosticVirtualTextErrorCursorLine', { fg = p.bgRed })
-  set(0, 'TinyInlineInvDiagnosticVirtualTextInfoCursorLine', { fg = p.bgBlue })
-
-  -- SmearCursor
-  set(0, 'SmearCursor1', { fg = p.bg5, blend = 0 })
-  set(0, 'SmearCursor2', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor3', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor4', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor5', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor6', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor7', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor8', { fg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursor9', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor10', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor11', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor12', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor13', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor14', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor15', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursor16', { fg = p.teal, blend = 0 })
-  set(0, 'SmearCursorHideable', { fg = p.fgBright, blend = 100 })
-  set(0, 'SmearCursorInverted1', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted2', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted3', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted4', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted5', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted6', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted7', { fg = p.bg3, bg = p.fgMuted, blend = 0 })
-  set(0, 'SmearCursorInverted8', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted9', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted10', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted11', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted12', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted13', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted14', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted15', { fg = p.bg3, bg = p.teal, blend = 0 })
-  set(0, 'SmearCursorInverted16', { fg = p.bg3, bg = p.teal, blend = 0 })
-
-  -- SmoothCursor
-  set(0, 'SmoothCursor', { fg = p.teal })
-  set(0, 'SmoothCursorRed', { fg = p.error_ })
-  set(0, 'SmoothCursorRed1', { fg = p.error_ })
-  set(0, 'SmoothCursorRed2', { fg = p.error_ })
-  set(0, 'SmoothCursorBlue', { fg = p.info })
-  set(0, 'SmoothCursorBlue1', { fg = p.bgBlue })
-  set(0, 'SmoothCursorBlue2', { fg = p.bgBlue })
-  set(0, 'SmoothCursorBlue3', { fg = p.bgBlue })
-  set(0, 'SmoothCursorGreen', { fg = p.added })
-  set(0, 'SmoothCursorYellow', { fg = p.warning })
-  set(0, 'SmoothCursorYellow1', { fg = p.warning })
-  set(0, 'SmoothCursorYellow2', { fg = p.warning })
-  set(0, 'SmoothCursorOrange', { fg = p.warning })
-  set(0, 'SmoothCursorPurple', { fg = p.purple })
-  set(0, 'SmoothCursorAqua', { fg = p.teal })
-  set(0, 'SmoothCursorScarlet1', { fg = p.error_ })
-  set(0, 'SmoothCursorScarlet2', { fg = p.keyword })
-
-  -- RainbowDelimiter
-  set(0, 'RainbowDelimiterRed', { fg = p.keyword })
-  set(0, 'RainbowDelimiterOrange', { fg = p.warning })
-  set(0, 'RainbowDelimiterYellow', { fg = p.warning })
-  set(0, 'RainbowDelimiterGreen', { fg = p.added })
-  set(0, 'RainbowDelimiterCyan', { fg = p.teal })
-  set(0, 'RainbowDelimiterBlue', { fg = p.func })
-  set(0, 'RainbowDelimiterPurple', { fg = p.purple })
-  set(0, 'TSRainbowRed', { fg = p.keyword })
-  set(0, 'TSRainbowOrange', { fg = p.warning })
-  set(0, 'TSRainbowYellow', { fg = p.warning })
-  set(0, 'TSRainbowGreen', { fg = p.added })
-  set(0, 'TSRainbowCyan', { fg = p.teal })
-  set(0, 'TSRainbowBlue', { fg = p.func })
-  set(0, 'TSRainbowViolet', { fg = p.purple })
-  set(0, 'rainbowcol1', { fg = p.keyword })
-  set(0, 'rainbowcol2', { fg = p.warning })
-  set(0, 'rainbowcol3', { fg = p.warning })
-  set(0, 'rainbowcol4', { fg = p.added })
-  set(0, 'rainbowcol5', { fg = p.teal })
-  set(0, 'rainbowcol6', { fg = p.func })
-  set(0, 'rainbowcol7', { fg = p.purple })
-
-  -- IndentBlankline
-  set(0, 'IndentBlanklineChar', { fg = p.bg5 })
-  set(0, 'IndentBlanklineContextChar', { fg = p.teal })
-  set(0, 'IndentBlanklineContextStart', { underline = true, sp = p.teal })
-  set(0, 'IndentBlanklineIndent1', { fg = p.keyword })
-  set(0, 'IndentBlanklineIndent2', { fg = p.warning })
-  set(0, 'IndentBlanklineIndent3', { fg = p.teal })
-  set(0, 'IndentBlanklineIndent4', { fg = p.func })
-  set(0, 'IndentBlanklineIndent5', { fg = p.info })
-  set(0, 'IndentBlanklineIndent6', { fg = p.purple })
-
-  -- DevIcon
-  set(0, 'DevIconSvg', { fg = p.warning })
-  set(0, 'DevIconDb', { fg = p.fgMuted })
-  set(0, 'DevIconGitModules', { fg = p.keyword })
-  set(0, 'DevIconPNPMFile', { fg = p.warning })
-  set(0, 'DevIconTerminal', { fg = p.teal })
-  set(0, 'DevIconHyprlock', { fg = p.namespace_ })
-  set(0, 'DevIconSh', { fg = p.fgMuted })
-  set(0, 'DevIconCp', { fg = p.namespace_ })
-  set(0, 'DevIconSway', { fg = p.fgMuted })
-  set(0, 'DevIconPng', { fg = p.keyword })
-  set(0, 'DevIconKotlin', { fg = p.purple })
-  set(0, 'DevIconErl', { fg = p.keyword })
-  set(0, 'DevIconVue', { fg = p.teal })
-  set(0, 'DevIconYaml', { fg = p.keyword })
-  set(0, 'DevIconHtml', { fg = p.keyword })
-  set(0, 'DevIconCss', { fg = p.purple })
-  set(0, 'DevIconDockerfile', { fg = p.namespace_ })
-  set(0, 'DevIconGo', { fg = p.namespace_ })
-  set(0, 'DevIconRs', { fg = p.warning })
-  set(0, 'DevIconPy', { fg = p.namespace_ })
-  set(0, 'DevIconJs', { fg = p.warning })
-  set(0, 'DevIconTs', { fg = p.namespace_ })
-  set(0, 'DevIconTsx', { fg = p.namespace_ })
-  set(0, 'DevIconJsx', { fg = p.namespace_ })
-  set(0, 'DevIconLua', { fg = p.namespace_ })
-  set(0, 'DevIconJson', { fg = p.warning })
-  set(0, 'DevIconMd', { fg = p.fg })
-  set(0, 'DevIconToml', { fg = p.keyword })
-  set(0, 'DevIconYml', { fg = p.keyword })
-  set(0, 'DevIconZsh', { fg = p.teal })
-  set(0, 'DevIconBash', { fg = p.teal })
-  set(0, 'DevIconBashrc', { fg = p.teal })
-  set(0, 'DevIconVim', { fg = p.fg })
-  set(0, 'DevIconGitIgnore', { fg = p.keyword })
-  set(0, 'DevIconGitLogo', { fg = p.keyword })
-  set(0, 'DevIconPackageJson', { fg = p.keyword })
-  set(0, 'DevIconTxt', { fg = p.fg })
-  set(0, 'DevIconCsv', { fg = p.fg })
-  set(0, 'DevIconDefault', { fg = p.fgMuted })
-  set(0, 'DevIconMarkdown', { fg = p.fg })
-  set(0, 'DevIconReadme', { fg = p.fgBright })
-  set(0, 'DevIconLock', { fg = p.fgMuted })
-  set(0, 'DevIconSql', { fg = p.namespace_ })
-  set(0, 'DevIconNix', { fg = p.namespace_ })
-  set(0, 'DevIconSwift', { fg = p.keyword })
-  set(0, 'DevIconDart', { fg = p.namespace_ })
-  set(0, 'DevIconZig', { fg = p.warning })
-  set(0, 'DevIconScss', { fg = p.keyword })
-  set(0, 'DevIconSass', { fg = p.keyword })
-  set(0, 'DevIconPhp', { fg = p.purple })
-  set(0, 'DevIconRb', { fg = p.keyword })
-  set(0, 'DevIconJava', { fg = p.keyword })
-  set(0, 'DevIconScala', { fg = p.keyword })
-  set(0, 'DevIconCs', { fg = p.fg })
-  set(0, 'DevIconCpp', { fg = p.namespace_ })
-  set(0, 'DevIconC', { fg = p.namespace_ })
-  set(0, 'DevIconH', { fg = p.fgMuted })
-  set(0, 'DevIconPdf', { fg = p.keyword })
-  set(0, 'DevIconXlsx', { fg = p.fg })
-  set(0, 'DevIconDocx', { fg = p.namespace_ })
-  set(0, 'DevIconPptx', { fg = p.keyword })
-  set(0, 'DevIconArch', { fg = p.namespace_ })
-  set(0, 'DevIconDebian', { fg = p.keyword })
-  set(0, 'DevIconUbuntu', { fg = p.keyword })
-  set(0, 'DevIconFedora', { fg = p.namespace_ })
-  set(0, 'DevIconApple', { fg = p.fgMuted })
-  set(0, 'DevIconWindows', { fg = p.namespace_ })
-  set(0, 'DevIconLinux', { fg = p.fgBright })
-  set(0, 'DevIconTypeScript', { fg = p.namespace_ })
-  set(0, 'DevIconElm', { fg = p.namespace_ })
-  set(0, 'DevIconSvelte', { fg = p.keyword })
-  set(0, 'DevIconVitestConfig', { fg = p.fg })
-  set(0, 'DevIconAstro', { fg = p.keyword })
-  set(0, 'DevIconTerraform', { fg = p.purple })
-  set(0, 'DevIconPrisma', { fg = p.namespace_ })
-  set(0, 'DevIconGradle', { fg = p.namespace_ })
 
   -- ============================================================================
   -- Additional

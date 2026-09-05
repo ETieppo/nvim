@@ -1,7 +1,7 @@
 local os = require 'utils.os'
 
 local function edit_file(old, new)
-  new = os.to_os(new)
+  new = os.rewrite_to_os_path(new)
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
   vim.fn.rename(old, new)
@@ -11,7 +11,7 @@ end
 
 local function new_file(path)
   if path == '' then return end
-  path = os.to_os(path)
+  path = os.rewrite_to_os_path(path)
   vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
   vim.cmd('edit ' .. vim.fn.fnameescape(path))
 end
@@ -122,7 +122,7 @@ end, { desc = '[B]uffer [D]elete' })
 
 -- File Operations --------------------------------------------------------
 vim.keymap.set('n', '<leader>fn', function()
-  local dir = os.normalize(vim.fn.expand '%:p:h')
+  local dir = os.normalize_os_path(vim.fn.expand '%:p:h')
   local path = vim.fn.input('New file: ', dir .. '/', 'file')
   new_file(path)
 end, { desc = '[F]ile [N]ew' })
@@ -193,7 +193,7 @@ end, { desc = '[F]ile [R]ename' })
 
 vim.keymap.set('n', '<leader>fe', function()
   local old = vim.fn.expand '%:p'
-  local filename = os.normalize(vim.fn.expand '%:p:r')
+  local filename = os.normalize_os_path(vim.fn.expand '%:p:r')
   local default = filename .. '.'
   local new = vim.fn.input('Rename to: ', default, 'file')
   edit_file(old, new)
@@ -236,7 +236,7 @@ vim.keymap.set('n', '<leader>fc', function()
     end
   )
   local new = vim.fn.input('Copy to: ', os.normalize_os_path(old), 'file')
-  new = os.rewrite_to_os(new)
+  new = os.rewrite_to_os_path(new)
   if new == '' or new == old then return end
   vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
   local success = vim.uv.fs_copyfile(old, new)
@@ -249,8 +249,7 @@ end, { desc = '[F]ile [C]opy' })
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
-  local config_lua_path = os.normalize_os_path(vim.fn.stdpath 'config')
-    .. '/'
+  local config_lua_path = os.normalize_os_path(vim.fn.stdpath 'config') .. '/'
   local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
   if path == '' then return end
   if not path:match '%.lua$' then path = path .. '.lua' end

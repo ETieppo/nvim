@@ -19,7 +19,7 @@ local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
 local cfg = vim.fn.stdpath 'config'
-local profile = require 'profile'
+local profile = require 'settings.profile'
 local scan = require('utils.scan_modules_imports').scan_modules_imports
 
 local imp = scan(cfg .. '/lua/plugins', 'plugins', {
