@@ -7,6 +7,7 @@ vim.lsp.enable {
   'gopls',
   'phpantom',
   'asm_lsp',
+  'swift'
 }
 
 vim.filetype.add {
