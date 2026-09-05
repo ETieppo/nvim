@@ -1,5 +1,6 @@
 return {
   cmd = { vim.fn.expand '~/.cargo/bin/rust-analyzer' },
+  filetypes = { 'rust' },
   settings = {
     ['rust-analyzer'] = {
       checkOnSave = true,

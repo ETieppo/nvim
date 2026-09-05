@@ -8,6 +8,7 @@ return {
     '--function-arg-placeholders',
     '--fallback-style=llvm',
   },
+  filetypes = { 'cpp', 'c' },
   clangd = {
     root_markers = {
       'compile_commands.json',

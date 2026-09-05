@@ -1,13 +1,16 @@
 vim.lsp.enable {
+  'asm',
+  'cpp',
+  'go',
   'java',
-  'rust_analyzer',
-  'jdtls',
-  'clangd',
-  'pyright',
-  'gopls',
-  'phpantom',
-  'asm_lsp',
-  'swift'
+  'kotlin',
+  'lua',
+  'php',
+  'python',
+  'rust',
+  'swift',
+  'php',
+  'toml',
 }
 
 vim.filetype.add {

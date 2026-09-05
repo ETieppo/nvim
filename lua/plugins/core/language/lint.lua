@@ -13,8 +13,8 @@ return {
       markdown = { 'markdownlint-cli2' },
       c = {},
       cpp = { 'cpplint' },
-      kotlin = { 'ktlint' },
       lua = { 'selene' },
+      -- kotlin = { 'ktlint' },
     }
 
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
