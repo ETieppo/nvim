@@ -41,7 +41,7 @@ return {
       },
     },
     snippets = { preset = 'luasnip' },
-    fuzzy = { implementation = 'lua' },
+    fuzzy = { implementation = 'prefer_rust_with_warning' },
     signature = { enabled = true },
     sources = {
       default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
