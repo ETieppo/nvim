@@ -11,6 +11,7 @@ vim.lsp.enable {
   'swift',
   'php',
   'toml',
+  'zig',
 }
 
 vim.filetype.add {
