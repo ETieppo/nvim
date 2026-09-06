@@ -4,7 +4,6 @@ local ensure_installed = os.has_deps 'gcc'
     and os.has_deps 'tree-sitter'
     and {
       'css-lsp',
-      'lua_ls',
       'selene',
       'ts_ls',
       'jsonls',
