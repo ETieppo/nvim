@@ -168,21 +168,13 @@ return {
 
     vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
     vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
-    local icons = vim.g.have_nerd_font
-        and {
-          Breakpoint = '',
-          BreakpointCondition = '',
-          BreakpointRejected = '',
-          LogPoint = '',
-          Stopped = '',
-        }
-      or {
-        Breakpoint = '●',
-        BreakpointCondition = '⊜',
-        BreakpointRejected = '⊘',
-        LogPoint = '◆ ',
-        Stopped = '⭔ ',
-      }
+    local icons = {
+      Breakpoint = '●',
+      BreakpointCondition = '⊜',
+      BreakpointRejected = '⊘',
+      LogPoint = '◆ ',
+      Stopped = '⭔ ',
+    }
     for type, icon in pairs(icons) do
       local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'
       vim.fn.sign_define(
