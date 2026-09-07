@@ -1,6 +1,6 @@
 local mason = vim.fn.stdpath 'data' .. '/mason/packages'
 local angular_pkg = mason
-  .. '/angular-language-server/node_modules/@angular/language-server'
+    .. '/angular-language-server/node_modules/@angular/language-server'
 local ts_lib = mason .. '/angular-language-server/node_modules/typescript/lib'
 
 return {

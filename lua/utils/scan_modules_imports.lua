@@ -6,9 +6,11 @@ function M.scan_modules_imports(dir, prefix, opts)
   local uv = vim.uv or vim.loop
   local imports = {}
   local handle = uv.fs_scandir(dir)
-  if not handle then return imports end
   local subdirs = {}
   local has_lua = false
+
+  if not handle then return imports end
+
   while true do
     local name, type = uv.fs_scandir_next(handle)
     if not name then break end
@@ -18,7 +20,9 @@ function M.scan_modules_imports(dir, prefix, opts)
       has_lua = true
     end
   end
+
   if has_lua then imports[#imports + 1] = { import = prefix } end
+
   for _, name in ipairs(subdirs) do
     local module = prefix .. '.' .. name
     if not exclude[module] then
@@ -28,6 +32,7 @@ function M.scan_modules_imports(dir, prefix, opts)
       )
     end
   end
+
   return imports
 end
 

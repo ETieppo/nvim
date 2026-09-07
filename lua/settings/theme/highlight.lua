@@ -1,15 +1,9 @@
 local M = {}
 
 function M.load(p)
-  vim.cmd 'highlight clear'
-  if vim.fn.exists 'syntax_on' == 1 then vim.cmd 'syntax reset' end
-
-  vim.o.termguicolors = true
   local set = vim.api.nvim_set_hl
 
-  -- ============================================================================
   -- UI / Editor
-  -- ============================================================================
   set(0, 'WinSeparator', { fg = p.transparent })
   set(0, 'Normal', { fg = p.fg, bg = p.bg2 })
   set(0, 'NormalNC', { fg = p.fg, bg = p.bg2 })
@@ -46,9 +40,7 @@ function M.load(p)
   set(0, 'TermCursor', { reverse = true })
   set(0, 'Whitespace', { fg = p.bg5 })
 
-  -- ============================================================================
   -- Syntax (fallback sem Treesitter)
-  -- ============================================================================
   set(0, 'Comment', { fg = p.comment, italic = true })
   set(0, 'Keyword', { fg = p.keyword })
   set(0, 'Identifier', { fg = p.fg })
@@ -79,9 +71,7 @@ function M.load(p)
   set(0, 'Italic', { italic = true })
   set(0, 'Directory', { fg = p.macro })
 
-  -- ============================================================================
   -- Diagnostic
-  -- ============================================================================
   set(0, 'DiagnosticError', { fg = p.error_ })
   set(0, 'DiagnosticWarn', { fg = p.warning })
   set(0, 'DiagnosticInfo', { fg = p.info })
@@ -99,9 +89,7 @@ function M.load(p)
   set(0, 'DiagnosticVirtualTextOk', { fg = p.hint, bg = p.bgGreen })
   set(0, 'DiagnosticDeprecated', { strikethrough = true })
 
-  -- ============================================================================
   -- Git / Diff
-  -- ============================================================================
   set(0, 'DiffAdd', { bg = p.bgGreen })
   set(0, 'DiffDelete', { bg = p.bgRed })
   set(0, 'DiffChange', { bg = p.bgYellow })
@@ -116,9 +104,7 @@ function M.load(p)
   set(0, 'GitSignsStagedChange', { fg = p.modified })
   set(0, 'GitSignsStagedDelete', { fg = p.deleted })
 
-  -- ============================================================================
   -- LSP
-  -- ============================================================================
   set(0, 'LspReferenceText', { bg = p.bg4 })
   set(0, 'LspReferenceRead', { bg = p.bg4 })
   set(0, 'LspReferenceWrite', { bg = p.bg4 })
@@ -137,29 +123,16 @@ function M.load(p)
   set(0, 'LspTroubleNormal', { fg = p.fgMuted, bg = p.bg2 })
   set(0, 'LspTroubleText', { fg = p.fg })
   set(0, 'LspTroubleCount', { fg = p.purple, bg = p.fgMuted })
-
-  -- ============================================================================
-  -- Treesitter & Semantic Tokens
-  -- ============================================================================
-
-  -- ── Variables ────────────────────────────────────────────────────────────────
-
   set(0, '@variable', { fg = p.variable })
   set(0, '@variable.builtin', { fg = p.variable }) -- self (no Zed = variable color)
   set(0, '@variable.member', { fg = p.property }) -- field access: foo.bar
   set(0, '@variable.parameter', { fg = p.param }) -- na definição fn f(x: ...)
-
-  -- ── Constants ────────────────────────────────────────────────────────────────
   set(0, '@constant', { fg = p.constant })
   set(0, '@constant.builtin', { fg = p.constantAlt, bold = true })
   set(0, '@constant.macro', { fg = p.macro })
-
-  -- ── Namespaces / modules ─────────────────────────────────────────────────────
   set(0, '@module', { fg = p.namespace_ })
   set(0, '@module.builtin', { fg = p.namespace_, bold = true })
   set(0, '@namespace', { fg = p.namespace_ })
-
-  -- ── Functions ────────────────────────────────────────────────────────────────
   set(0, '@function', { fg = p.func })
   set(0, '@function.builtin', { fg = p.funcBuiltin })
   set(0, '@function.call', { fg = p.func })
@@ -167,11 +140,7 @@ function M.load(p)
   set(0, '@function.method', { fg = p.func })
   set(0, '@function.method.call', { fg = p.func })
   set(0, '@constructor', { fg = p.type_ })
-
-  -- ── Parameters ───────────────────────────────────────────────────────────────
   set(0, '@parameter', { fg = p.param })
-
-  -- ── Keywords ─────────────────────────────────────────────────────────────────
   set(0, '@keyword', { fg = p.keyword })
   set(0, '@keyword.function', { fg = p.keywordAlt })
   set(0, '@keyword.operator', { fg = p.operator })
@@ -183,19 +152,12 @@ function M.load(p)
   set(0, '@keyword.conditional.ternary', { fg = p.keyword })
   set(0, '@keyword.exception', { fg = p.crimsonBright })
   set(0, '@keyword.type', { fg = p.keywordAlt })
-
-  -- ── Types ────────────────────────────────────────────────────────────────────
   set(0, '@type', { fg = p.type_ })
   set(0, '@type.builtin', { fg = p.funcBuiltin })
   set(0, '@type.definition', { fg = p.type_, bold = true })
   set(0, '@type.qualifier', { fg = p.keyword })
-
-  -- ── Properties / fields ──────────────────────────────────────────────────────
-
   set(0, '@property', { fg = p.property })
   set(0, '@field', { fg = p.property })
-
-  -- ── Strings ──────────────────────────────────────────────────────────────────
   set(0, '@string', { fg = p.string_ })
   set(0, '@string.regex', { fg = p.regex })
   set(0, '@string.regexp', { fg = p.regex })
@@ -208,32 +170,26 @@ function M.load(p)
   })
   set(0, '@string.special.path', { fg = p.cyan, italic = true })
   set(0, '@string.documentation', { fg = p.stringAlt, italic = true })
-
   set(0, '@character', { fg = p.stringAlt })
   set(0, '@character.special', { fg = p.regex })
   set(0, '@number', { fg = p.number })
   set(0, '@number.float', { fg = p.number })
-
   set(0, '@operator', { fg = p.operator })
-
   set(0, '@punctuation.delimiter', { fg = p.fg })
   set(0, '@punctuation.bracket', { fg = p.bracket })
   set(0, '@punctuation.special', { fg = p.bracket })
-
   set(0, '@attribute', { fg = p.macro })
   set(0, '@attribute.builtin', { fg = p.macro })
   set(0, '@punctuation.special.attribute', { fg = p.constant })
   set(0, '@lsp.type.attribute', { fg = p.macro })
   set(0, '@lsp.type.derive', { fg = p.funcBuiltin })
   set(0, '@lsp.type.attributeBracket', { fg = p.bracket })
-
   set(0, '@comment', { fg = p.comment, italic = true })
   set(0, '@comment.note', { fg = p.bg2, bg = p.info })
   set(0, '@comment.todo', { fg = p.bg2, bg = p.teal })
   set(0, '@comment.warning', { fg = p.bg2, bg = p.warning })
   set(0, '@comment.error', { fg = p.bg2, bg = p.error_ })
   set(0, '@comment.documentation', { fg = p.stringAlt, italic = true })
-
   set(0, '@markup', { fg = p.fg })
   set(0, '@markup.heading', { fg = p.type_, bold = true })
   set(0, '@markup.heading.1', { fg = p.type_, bold = true })
@@ -255,7 +211,6 @@ function M.load(p)
   set(0, '@markup.raw.block', { fg = p.fgMuted })
   set(0, '@markup.quote', { fg = p.fgMuted, italic = true })
   set(0, '@markup.math', { fg = p.property })
-
   set(0, '@lsp.type.interface', { fg = p.macro })
   set(0, '@lsp.type.enum', { fg = p.type_ })
   set(0, '@lsp.type.enumMember', { fg = p.constant })
@@ -281,8 +236,6 @@ function M.load(p)
   set(0, '@lsp.mod.deprecated', { strikethrough = true })
   set(0, '@lsp.mod.readonly', { fg = p.constant })
   set(0, '@lsp.mod.static', { fg = p.type_, bold = true })
-
-  -- ── Tags (HTML/JSX/TSX/XML) ───────────────────────────────────────────────────
   set(0, '@tag', { fg = p.tag })
   set(0, '@tag.builtin', { fg = p.tag })
   set(0, '@tag.attribute', { fg = p.tagAttr, italic = true })

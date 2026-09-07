@@ -12,6 +12,7 @@ vim.lsp.enable {
   'php',
   'toml',
   'zig',
+  'typescript',
 }
 
 vim.filetype.add {

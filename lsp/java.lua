@@ -1,7 +1,4 @@
-local os = require 'utils.os'
-
-local jdtls_path = os.is_unix() and '/opt/homebrew/bin/jdtls'
-  or '/usr/bin/jdtls'
+local jdtls_path = require('utils.os').expand_bin_path 'jdtls'
 
 return {
   cmd = { vim.fn.expand(jdtls_path) },

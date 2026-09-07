@@ -49,8 +49,8 @@ local deps = {
     required = true,
     check = function()
       return vim.fn.executable 'cc' == 1
-        or vim.fn.executable 'gcc' == 1
-        or vim.fn.executable 'clang' == 1
+          or vim.fn.executable 'gcc' == 1
+          or vim.fn.executable 'clang' == 1
     end,
     os_override = { mac = { 'xcode-select', '--install' } },
     install = {
@@ -122,15 +122,15 @@ function M.install()
   if #skipped > 0 then
     vim.notify(
       'No install command (need manual intervension): '
-        .. table.concat(skipped, ', '),
+      .. table.concat(skipped, ', '),
       vim.log.levels.WARN
     )
   end
   if #cmds == 0 then return end
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
     if
-      vim.api.nvim_buf_is_valid(b)
-      and vim.bo[b].filetype == 'snacks_dashboard'
+        vim.api.nvim_buf_is_valid(b)
+        and vim.bo[b].filetype == 'snacks_dashboard'
     then
       pcall(vim.api.nvim_buf_delete, b, { force = true })
     end
