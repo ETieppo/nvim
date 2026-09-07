@@ -72,7 +72,6 @@ return {
             0,
             120,
             vim.schedule_wrap(function()
-              -- válvula de escape: se o cliente LSP sumiu, para tudo
               if not next(spinner.tokens) or #vim.lsp.get_clients() == 0 then
                 spinner.tokens = {}
                 stop_timer()

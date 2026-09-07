@@ -1,6 +1,6 @@
 local os = require 'utils.os'
-local zls_path = os.expand_bin_path 'zls'
-local zig_exe_path = os.expand_bin_path 'zig'
+local zls_path = os.which 'zls'
+local zig_exe_path = os.which 'zig'
 
 return {
   cmd = { zls_path },

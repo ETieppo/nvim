@@ -1,4 +1,4 @@
-local jdtls_path = require('utils.os').expand_bin_path 'jdtls'
+local jdtls_path = require('utils.os').which 'jdtls'
 
 return {
   cmd = { vim.fn.expand(jdtls_path) },

@@ -21,7 +21,7 @@ return {
       rust = { 'rustfmt' },
       javascript = { 'prettier' },
       javascriptreact = { 'prettier' },
-      typescript = { 'prettier' },
+      typescript = {'prettierd', 'prettier' },
       typescriptreact = { 'prettier' },
       html = { 'prettier' },
       htmlangular = { 'prettier' },

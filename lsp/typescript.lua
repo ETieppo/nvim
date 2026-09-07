@@ -7,14 +7,14 @@ return {
     'typescriptreact',
   },
 
-  root_markers = { 
+  root_markers = {
     'jsconfig.json',
     'tsconfig.json',
     'package.json',
-    '.git'
+    '.git',
   },
 
   init_options = {
-    hostInfo = "neovim",
+    hostInfo = 'neovim',
   },
 }
