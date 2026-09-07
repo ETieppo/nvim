@@ -1,18 +1,17 @@
 return {
-  cmd = { "typescript-language-server", "--stdio" },
-
+  cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = {
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
   },
 
-  root_markers = {
-    "tsconfig.json",
-    "jsconfig.json",
-    "package.json",
-    ".git",
+  root_markers = { 
+    'jsconfig.json',
+    'tsconfig.json',
+    'package.json',
+    '.git'
   },
 
   init_options = {
