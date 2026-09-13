@@ -1,14 +1,12 @@
-local os = require 'utils.os'
-local zls_path = os.which 'zls'
-local zig_exe_path = os.which 'zig'
+local zig = vim.fn.exepath 'zig'
 
 return {
-  cmd = { zls_path },
-  filetypes = { 'zig' },
-  root_markers = { 'build.zig' },
+  cmd = { 'zls' },
+  filetypes = { 'zig', 'zon' },
+  root_markers = { 'build.zig', '.git' },
   settings = {
     zls = {
-      zig_exe_path,
+      zig_exe_path = zig ~= '' and zig or nil,
     },
   },
 }

@@ -1,5 +1,5 @@
 return {
-  cmd = { vim.fn.expand '~/.cargo/bin/rust-analyzer' },
+  cmd = { vim.fn.expand 'rust-analyzer' },
   filetypes = { 'rust' },
   settings = {
     ['rust-analyzer'] = {

@@ -1,5 +1,5 @@
 return {
-  cmd = { vim.fn.expand '~/.go/bin/gopls' },
+  cmd = { vim.fn.expand 'gopls' },
   filetypes = { 'go' },
   ['gopls'] = {
     rootPatterns = { 'go.work', 'go.mod', '.vim/', '.git/', '.hg/' },

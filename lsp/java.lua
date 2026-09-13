@@ -1,7 +1,5 @@
-local jdtls_path = require('utils.os').which 'jdtls'
-
 return {
-  cmd = { vim.fn.expand(jdtls_path) },
+  cmd = { 'jdtls' },
   filetypes = { 'java' },
   root_markers = {
     'settings.gradle.kts',

@@ -1,7 +1,5 @@
-local lua_lsp_path = require('utils.os').which 'lua-language-server'
-
 return {
-  cmd = { lua_lsp_path },
+  cmd = { 'lua-language-server' },
   filetypes = { 'lua' },
   root_markers = { '.git', '.stylua.toml' },
 }
