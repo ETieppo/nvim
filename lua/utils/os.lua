@@ -57,7 +57,7 @@ function M.get_package_manager()
   if M.is_macos() then
     pm = M.has_deps 'brew' and 'brew' or nil
   elseif M.is_windows() then
-    pm = M.has_deps 'scoop' and 'scoop' or M.bootstrap_scoop() and 'scoop'
+    pm = M.has_deps 'scoop' and 'scoop' or nil
   elseif M.is_linux() then
     for _, p in ipairs { 'pacman', 'apt', 'dnf', 'zypper', 'apk' } do
       if M.has_deps(p) then
@@ -95,6 +95,23 @@ end
 
 function M.get_os_joiner() return M.is_windows() and ' ; ' or ' && ' end
 
+---@return string[]
+local function shell_argv(script)
+  if M.is_windows() then
+    local pwsh = M.which 'pwsh' and 'pwsh' or 'powershell'
+    return {
+      pwsh,
+      '-NoLogo',
+      '-NoProfile',
+      '-ExecutionPolicy',
+      'Bypass',
+      '-Command',
+      script,
+    }
+  end
+  return { vim.o.shell, '-c', script }
+end
+
 ---@param cmds string[]
 function M.run_in_terminal(cmds)
   for _, b in ipairs(vim.api.nvim_list_bufs()) do
@@ -106,8 +123,9 @@ function M.run_in_terminal(cmds)
     end
   end
 
+  local script = table.concat(cmds, M.get_os_joiner())
   vim.cmd.tabnew()
-  vim.cmd.terminal(table.concat(cmds, M.get_os_joiner()))
+  vim.fn.jobstart(shell_argv(script), { term = true })
   vim.cmd.startinsert()
 end
 
@@ -137,6 +155,10 @@ function M.install(deps)
   end
 
   if #cmds == 0 then return end
+  if M.is_windows() and not M.has_deps 'scoop' then
+    cmds = vim.list_extend(M.bootstrap_scoop_cmds(), cmds)
+  end
+
   M.forget()
   M.run_in_terminal(cmds)
 end

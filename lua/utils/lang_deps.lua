@@ -1,18 +1,23 @@
----@class ByUnix
----@field unix string
----@field windows string
----@field macos? nil
----@field archlinux? nil
+---@class OsInstruction
+---@field unix? string|0
+---@field windows? string|0
+---@field macos? string|0
+---@field archlinux? string|0
 
----@class ByOs
----@field archlinux string
----@field macos string
----@field windows string
----@field unix? nil
+---@class DepBase
+---@field cmd string
+---@field min_version? string
+---@field version_cmd? string
 
----@alias OsInstruction ByUnix | ByOs
+---@class DepByOs : DepBase
+---@field os OsInstruction
+---@field install_command? nil
 
----@alias DepProps { cmd: string, os: OsInstruction } | { cmd: string, install_command: string }
+---@class DepByCommand : DepBase
+---@field install_command string
+---@field os? nil
+
+---@alias DepProps DepByOs | DepByCommand
 
 ---@class LangDeps
 ---@field lang string
@@ -21,27 +26,64 @@
 local M = {}
 local os = require 'utils.os'
 
+---@param cli DepProps
+---@return boolean
+local function needs_install(cli)
+  if not os.which(cli.cmd) then return true end
+  if not cli.min_version then return false end
+
+  local out = vim.fn.system(cli.version_cmd or (cli.cmd .. ' --version'))
+  if vim.v.shell_error ~= 0 then return true end
+
+  local raw = out:match '%d+%.%d+%.%d+' or out:match '%d+%.%d+'
+  if not raw then return true end
+
+  local ok, v = pcall(vim.version.parse, raw, { strict = false })
+  if not ok or not v then return true end
+
+  return vim.version.lt(v, cli.min_version)
+end
+
+---@param cli DepProps
+---@return string|nil
+local function resolve_install(cli)
+  local by_os = cli.os or {}
+  local cmd = cli.install_command
+    or (os.is_windows() and by_os.windows)
+    or (os.is_macos() and by_os.macos)
+    or (os.is_linux() and by_os.archlinux)
+    or by_os.unix
+
+  if cmd == nil or cmd == false or cmd == 0 or cmd == '' then return nil end
+  return cmd --[[@as string]]
+end
+
 ---@param lang string
 function M.ensure_lang_deps(lang)
   for _, l in ipairs(M.langs) do
     if lang == l.lang then
-      local commands_to_install = {}
+      local to_install, skipped = {}, {}
+
       for _, cli in ipairs(l.deps) do
-        if not os.which(cli.cmd) then
-          local install_command = cli.install_command
-            or (os.is_windows() and cli.os.windows)
-            or cli.os.unix
-            or (os.is_linux() and cli.os.archlinux)
-            or (os.is_macos() and cli.os.macos)
-          if install_command == nil then return end
-          table.insert(commands_to_install, install_command)
+        if not needs_install(cli) then
+          vim.notify(cli.cmd .. ' already installed')
         else
-          vim.notify(cli.cmd .. ' command already installed')
+          local cmd = resolve_install(cli)
+          if cmd then
+            table.insert(to_install, cmd)
+          else
+            table.insert(skipped, cli.cmd)
+          end
         end
       end
-      if #commands_to_install > 0 then
-        os.run_in_terminal(commands_to_install)
+
+      if #skipped > 0 then
+        vim.notify(
+          'No install command for: ' .. table.concat(skipped, ', '),
+          vim.log.levels.WARN
+        )
       end
+      if #to_install > 0 then os.run_in_terminal(to_install) end
       return
     end
   end
@@ -51,7 +93,7 @@ end
 ---@type LangDeps[]
 M.langs = {
   {
-    lang = 'typescript',
+    lang = 'ts',
     deps = {
       {
         cmd = 'bun',
