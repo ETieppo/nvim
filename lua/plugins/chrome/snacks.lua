@@ -32,13 +32,13 @@ return {
             .. wall_selection
             .. '; cat"',
           width = vim.o.columns,
-          height = math.floor(vim.o.lines * 0.85),
+          height = math.floor(vim.o.lines * 0.90),
           padding = 0,
           indent = 0,
         },
         {
           align = 'center',
-          height = math.floor(vim.o.lines * 0.15),
+          height = math.floor(vim.o.lines * 0.10),
           section = 'startup',
         },
       },
