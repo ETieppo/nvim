@@ -14,7 +14,8 @@ vim.lsp.enable {
   'zig',
   'typescript',
   'ruby',
-  'css'
+  'css',
+  'emmet',
 }
 
 vim.filetype.add {
