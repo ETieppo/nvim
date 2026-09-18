@@ -22,6 +22,8 @@ local p = {
   border = '#191921',
   borderFaint = '#14141a',
   borderFocus = '#545c7e',
+  inactiveIndentLine = '#303040',
+  activeIndentLine = '#702ded',
 
   -- Accent / Selection
   selection = '#3d59a144',

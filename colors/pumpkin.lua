@@ -1,3 +1,4 @@
+local mainColor = '#F05239'
 local p = {
   -- neo-tree div line
   transparent = '#000000',
@@ -28,9 +29,11 @@ local p = {
   selectionBg = '#FFFFFF',
   matchBg = '#3d59a166',
 
-  -- selected line number, primary keywords, search match, wich-key key
+  inactiveIndentLine = '#686868',
+  activeIdentLine = mainColor,
   -- info
-  keyword = '#F05239',
+
+  keyword = mainColor,
   keywordAlt = '#bb9af7',
   func = '#779310',
   funcBuiltin = '#0db9d7',
@@ -71,7 +74,7 @@ local p = {
   cyanBright = '#b4f9f8',
   crimson = '#757575',
   crimsonBright = '#f7768e',
-  darkRed = '#F05239',
+  darkRed = mainColor,
   darkRedDim = '#290006',
 }
 

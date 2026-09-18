@@ -641,6 +641,8 @@ function M.load(p)
   set(0, 'ModesDelete', { bg = p.error_ })
 
   set(0, 'SnacksImageMath', { fg = p.namespace_ })
+  set(0, 'SnacksIndent', { fg = p.inactiveIndentLine })
+  set(0, 'SnacksIndentScope', { fg = p.activeIndentLine })
   set(0, 'NavicText', { fg = p.fg })
   set(0, 'NavicSeparator', { fg = p.bg5 })
   set(0, 'FernBranchText', { fg = p.namespace_ })
