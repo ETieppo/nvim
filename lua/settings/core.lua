@@ -13,7 +13,8 @@ vim.lsp.enable {
   'toml',
   'zig',
   'typescript',
-  'ruby'
+  'ruby',
+  'css'
 }
 
 vim.filetype.add {
