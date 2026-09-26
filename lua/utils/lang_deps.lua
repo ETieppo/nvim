@@ -217,6 +217,31 @@ M.langs = {
       { cmd = 'ruby-lsp', install_command = 'gem install ruby-lsp' },
     },
   },
+  {
+    lang = 'sh',
+    deps = {
+      {
+        cmd = 'bash-language-server',
+        install_command = 'bun add -g bash-language-server',
+      },
+      {
+        cmd = 'shellcheck',
+        os = {
+          macos = 'brew install shellcheck',
+          archlinux = 'sudo pacman -S shellcheck',
+          windows = 'scoop install shellcheck',
+        },
+      },
+      {
+        cmd = 'shfmt',
+        os = {
+          macos = 'brew install shfmt',
+          archlinux = 'pacman -S shfmt',
+          windows = 'scoop install shfmt',
+        },
+      },
+    },
+  },
 }
 
 return M

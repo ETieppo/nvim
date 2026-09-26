@@ -17,6 +17,7 @@ vim.lsp.enable {
   'css',
   'emmet',
   'kof',
+  'sh',
 }
 
 vim.filetype.add {
