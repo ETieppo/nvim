@@ -16,10 +16,15 @@ vim.lsp.enable {
   'ruby',
   'css',
   'emmet',
+  'kof',
 }
 
 vim.filetype.add {
   pattern = { ['.*%.component%.html'] = 'htmlangular' },
+}
+
+vim.filetype.add {
+  extension = { kf = 'kof', kof = 'kof' },
 }
 
 vim.g.have_nerd_font = true

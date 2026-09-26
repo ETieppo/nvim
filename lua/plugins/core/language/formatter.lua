@@ -15,7 +15,17 @@ return {
   opts = {
     notify_on_error = false,
     format_on_save = nil,
+
+    formatters = {
+      kof_fmt = {
+        command = 'kof',
+        args = { 'fmt', '$FILENAME', '-w' },
+        stdin = false,
+      },
+    },
+
     formatters_by_ft = {
+      kof = { 'kof_fmt' },
       lua = { 'stylua' },
       markdown = { 'markdownlint-cli2' },
       rust = { 'rustfmt' },
