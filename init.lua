@@ -30,6 +30,17 @@ if not profile.is 'minimal' then
   vim.list_extend(imp, scan(cfg .. '/lua/plugins/extra', 'plugins.extra'))
 end
 
+local dir = vim.fn.stdpath 'config' .. '/after/lsp'
+local servers = {}
+
+for file, kind in vim.fs.dir(dir) do
+  if kind == 'file' and file:sub(-4) == '.lua' then
+    servers[#servers + 1] = file:sub(1, -5)
+  end
+end
+
+vim.lsp.enable(servers)
+
 require('lazy').setup {
   spec = imp,
   change_detection = { enable = false, notify = false },

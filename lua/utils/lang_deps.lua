@@ -63,39 +63,41 @@ end
 
 ---@param lang string
 function M.ensure_lang_deps(lang)
-  for _, l in ipairs(M.langs) do
-    if lang == l.lang then
-      local to_install, skipped = {}, {}
+  local _ = vim.lsp.config[lang]
+  local l = M.langs[lang]
+  local to_install, skipped = {}, {}
 
-      for _, cli in ipairs(l.deps) do
-        if not needs_install(cli) then
-          vim.notify(cli.cmd .. ' already installed')
-        else
-          local cmd = resolve_install(cli)
-          if cmd then
-            table.insert(to_install, cmd)
-          else
-            table.insert(skipped, cli.cmd)
-          end
-        end
-      end
+  if not l then
+    vim.notify('No config to install\n' .. lang .. ' deps (#_#)')
+    return
+  end
 
-      if #skipped > 0 then
-        vim.notify(
-          'No install command for: ' .. table.concat(skipped, ', '),
-          vim.log.levels.WARN
-        )
+
+  for _, cli in ipairs(l.deps) do
+    if not needs_install(cli) then
+      vim.notify(cli.cmd .. ' already installed')
+    else
+      local cmd = resolve_install(cli)
+      if cmd then
+        table.insert(to_install, cmd)
+      else
+        table.insert(skipped, cli.cmd)
       end
-      if #to_install > 0 then os.run_in_terminal(to_install) end
-      return
     end
   end
-  vim.notify('No config to install\n' .. lang .. ' deps (#_#)')
+
+  if #skipped > 0 then
+    vim.notify(
+      'No install command for: ' .. table.concat(skipped, ', '),
+      vim.log.levels.WARN
+    )
+  end
+  if #to_install > 0 then os.run_in_terminal(to_install) end
 end
 
 ---@param lang_deps LangDeps
 function M.register_lang_deps(lang_deps)
-  table.insert(M.langs, lang_deps)
+  M.langs[lang_deps.lang] = lang_deps
 end
 
 return M

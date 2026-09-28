@@ -1,25 +1,3 @@
-vim.lsp.enable {
-  'asm',
-  'cpp',
-  'go',
-  'java',
-  'kotlin',
-  'lua',
-  'php',
-  'python',
-  'rust',
-  'swift',
-  'php',
-  'toml',
-  'zig',
-  'typescript',
-  'ruby',
-  'css',
-  'emmet',
-  'kof',
-  'sh',
-}
-
 vim.filetype.add {
   pattern = { ['.*%.component%.html'] = 'htmlangular' },
 }
