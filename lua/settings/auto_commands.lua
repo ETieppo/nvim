@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd(
       if
         vim.bo[buf].modified
         and vim.bo[buf].buftype == ''
+        and vim.b[buf].dbui_db_key_name == nil
         and vim.api.nvim_buf_get_name(buf) ~= ''
       then
         vim.api.nvim_buf_call(buf, function() vim.cmd 'silent! write' end)

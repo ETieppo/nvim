@@ -1,3 +1,27 @@
+local function notify(msg, level)
+  vim.schedule(
+    function()
+      vim.notify(
+        msg,
+        level or vim.log.levels.ERROR,
+        { title = 'blink.cmp', id = 'blink.cmp' }
+      )
+    end
+  )
+end
+
+---@param fn function?
+local function print_to_notify(fn)
+  if type(fn) ~= 'function' then return end
+  local proxy = setmetatable({
+    print = function(msg, ...)
+      notify(tostring(msg))
+      return msg, ...
+    end,
+  }, { __index = vim })
+  setfenv(fn, setmetatable({ vim = proxy }, { __index = getfenv(fn) }))
+end
+
 return {
   'saghen/blink.cmp',
   event = 'InsertEnter',
@@ -54,4 +78,20 @@ return {
       },
     },
   },
+  config = function(_, opts)
+    require('blink.cmp.lib.utils').notify = function(chunks, level)
+      local text = {}
+      for _, chunk in ipairs(chunks) do
+        text[#text + 1] = chunk[1]
+      end
+      notify(table.concat(text), level or vim.log.levels.WARN)
+    end
+
+    require('blink.cmp').setup(opts)
+
+    local sources = require 'blink.cmp.sources.lib'
+    print_to_notify(require('blink.cmp.sources.lib.tree').get_completions)
+    print_to_notify(sources.resolve)
+    print_to_notify(sources.execute)
+  end,
 }

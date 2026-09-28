@@ -42,12 +42,18 @@ vim.keymap.set(
   vim.diagnostic.setloclist,
   { desc = 'Diagnostic [Q]uickfix list' }
 )
-vim.keymap.set(
-  'n',
-  '<leader>dbt',
-  '<cmd>DBUIToggle<CR>',
-  { desc = '[D]ata[B]ase [T]oggle' }
-)
+
+vim.keymap.set('n', '<leader>dbt', function()
+  local ok, dbui = pcall(require, 'settings.dbui')
+  print(ok)
+  if not ok then
+    vim.notify("Set 'Max' profile to use dbui", vim.log.levels.WARN)
+    return
+  end
+
+  dbui.toggle()
+end, { desc = '[D]ata[B]ase [T]oggle' })
+
 vim.keymap.set(
   'n',
   '<leader>dbcn',
@@ -150,9 +156,9 @@ vim.keymap.set('n', '<leader>fd', function()
       '-NonInteractive',
       '-Command',
       'Add-Type -AssemblyName Microsoft.VisualBasic; '
-      .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
-      .. file:gsub("'", "''")
-      .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
+        .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
+        .. file:gsub("'", "''")
+        .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
     }
   else
     cmd = { 'gio', 'trash', '--', file }
@@ -414,10 +420,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
           local seen, unique = {}, {}
           for _, item in ipairs(options.items) do
             local key = (item.filename or '')
-                .. ':'
-                .. (item.lnum or 0)
-                .. ':'
-                .. (item.col or 0)
+              .. ':'
+              .. (item.lnum or 0)
+              .. ':'
+              .. (item.col or 0)
             if not seen[key] then
               seen[key] = true
               table.insert(unique, item)
@@ -453,10 +459,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end
 
     if
-        client and client:supports_method('textDocument/documentHighlight', buf)
+      client and client:supports_method('textDocument/documentHighlight', buf)
     then
       local hl =
-          vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
+        vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = buf,
         group = hl,
