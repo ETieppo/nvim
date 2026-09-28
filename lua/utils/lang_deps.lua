@@ -26,6 +26,9 @@
 local M = {}
 local os = require 'utils.os'
 
+---@type LangDeps[]
+M.langs = {}
+
 ---@param cli DepProps
 ---@return boolean
 local function needs_install(cli)
@@ -49,10 +52,10 @@ end
 local function resolve_install(cli)
   local by_os = cli.os or {}
   local cmd = cli.install_command
-    or (os.is_windows() and by_os.windows)
-    or (os.is_macos() and by_os.macos)
-    or (os.is_linux() and by_os.archlinux)
-    or by_os.unix
+      or (os.is_windows() and by_os.windows)
+      or (os.is_macos() and by_os.macos)
+      or (os.is_linux() and by_os.archlinux)
+      or by_os.unix
 
   if cmd == nil or cmd == false or cmd == 0 or cmd == '' then return nil end
   return cmd --[[@as string]]
@@ -90,158 +93,10 @@ function M.ensure_lang_deps(lang)
   vim.notify('No config to install\n' .. lang .. ' deps (#_#)')
 end
 
----@type LangDeps[]
-M.langs = {
-  {
-    lang = 'ts',
-    deps = {
-      {
-        cmd = 'bun',
-        os = {
-          unix = 'curl -fsSL https://bun.sh/install | bash',
-          windows = 'powershell -c "irm bun.sh/install.ps1|iex"',
-        },
-      },
-      {
-        cmd = 'prettierd',
-        install_command = 'bun i -g @fsouza/prettierd',
-      },
-      {
-        cmd = 'tsc',
-        install_command = 'bun i -g typescript',
-      },
-    },
-  },
-  {
-    lang = 'rust',
-    deps = {
-      {
-        cmd = 'rustup',
-        os = {
-          unix = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
-          windows = 'scoop install rustup',
-        },
-      },
-      {
-        cmd = 'cargo',
-        install_command = 'rustup toolchain install stable',
-      },
-      {
-        cmd = 'rust-analyzer',
-        install_command = 'rustup component add rust-analyzer',
-      },
-    },
-  },
-  {
-    lang = 'lua',
-    deps = {
-      {
-        cmd = 'lua',
-        os = {
-          archlinux = 'pacman -S lua',
-          windows = 'scoop install main/lua',
-          macos = 'brew install lua',
-        },
-      },
-      {
-        cmd = 'lua-language-server',
-        os = {
-          macos = 'brew install lua-language-server',
-          archlinux = 'pacman -S lua-language-server',
-          windows = 'scoop install main/lua-language-server',
-        },
-      },
-    },
-  },
-  {
-    lang = 'zig',
-    deps = {
-      {
-        cmd = 'zvm',
-        os = {
-          unix = 'curl https://www.zvm.app/install.sh | bash',
-          windows = 'irm https://www.zvm.app/install.ps1 | iex',
-        },
-      },
-      {
-        cmd = 'zig',
-        install_command = 'zvm install lts',
-      },
-      {
-        cmd = 'zls',
-        install_command = 'zvm install lts --zls',
-      },
-    },
-  },
-  {
-    lang = 'go',
-    deps = {
-      {
-        cmd = 'go',
-        os = {
-          macos = 'brew install go',
-          windows = 'scoop install main/go',
-          archlinux = 'pacman -S go',
-        },
-      },
-      {
-        cmd = 'gopls',
-        os = {
-          unix = 'go install golang.org/x/tools/gopls@latest && echo export PATH=$PATH:$(go env GOPATH)/bin >> ~/.zshrc',
-          windows = 'go install golang.org/x/tools/gopls@latest',
-        },
-      },
-    },
-  },
-  {
-    lang = 'ruby',
-    deps = {
-      {
-        cmd = 'rbenv',
-        os = {
-          macos = 'brew install rbenv ruby-build',
-          archlinux = 'pacman -S rbenv ruby-build',
-          windows = 0,
-        },
-      },
-      {
-        cmd = 'ruby',
-        min_version = '3.0.0',
-        version_cmd = "ruby -e 'print RUBY_VERSION'",
-        os = {
-          unix = 'V=$(rbenv install -l | grep -E "^[0-9]+(\\.[0-9]+)*$" | tail -1)'
-            .. ' && rbenv install -s "$V" && rbenv global "$V"',
-          windows = 0,
-        },
-      },
-      { cmd = 'ruby-lsp', install_command = 'gem install ruby-lsp' },
-    },
-  },
-  {
-    lang = 'sh',
-    deps = {
-      {
-        cmd = 'bash-language-server',
-        install_command = 'bun add -g bash-language-server',
-      },
-      {
-        cmd = 'shellcheck',
-        os = {
-          macos = 'brew install shellcheck',
-          archlinux = 'sudo pacman -S shellcheck',
-          windows = 'scoop install shellcheck',
-        },
-      },
-      {
-        cmd = 'shfmt',
-        os = {
-          macos = 'brew install shfmt',
-          archlinux = 'pacman -S shfmt',
-          windows = 'scoop install shfmt',
-        },
-      },
-    },
-  },
-}
+---@param lang_deps LangDeps
+function M.register_lang_deps(lang_deps)
+  print(lang_deps.lang)
+  table.insert(M.langs, lang_deps)
+end
 
 return M
