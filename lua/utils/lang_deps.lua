@@ -95,7 +95,6 @@ end
 
 ---@param lang_deps LangDeps
 function M.register_lang_deps(lang_deps)
-  print(lang_deps.lang)
   table.insert(M.langs, lang_deps)
 end
 
