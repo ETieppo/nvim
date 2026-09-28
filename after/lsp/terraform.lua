@@ -5,7 +5,7 @@ require('utils.lang_deps').register_lang_deps({
       cmd = "terraform-ls",
       os = {
         macos = "brew install terraform-ls",
-        archlinux = "sudo pacman -S terraform-ls",
+        archlinux = "yay -S terraform-ls",
         windows = "scoop bucket add main ; scoop install main/terraform-ls"
       }
     },
