@@ -18,6 +18,5 @@ require('utils.lang_deps').register_lang_deps({
 
 return {
   cmd = { 'docker-langserver', '--stdio' },
-  filetype = { "Dockerfile" }
-
+  filetypes = { "Dockerfile", "docker" }
 }
