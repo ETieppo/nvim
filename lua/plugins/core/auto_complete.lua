@@ -89,6 +89,15 @@ return {
 
     require('blink.cmp').setup(opts)
 
+    local renderer = require 'blink.cmp.completion.windows.render'
+    local draw = renderer.draw
+    renderer.draw = function(self, ...)
+      local ok, columns = pcall(draw, self, ...)
+      if ok then return columns end
+      notify('menu render failed: ' .. tostring(columns))
+      return self.columns or {}
+    end
+
     local sources = require 'blink.cmp.sources.lib'
     print_to_notify(require('blink.cmp.sources.lib.tree').get_completions)
     print_to_notify(sources.resolve)
