@@ -40,7 +40,6 @@ vim.opt.shiftwidth = 2
 vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.wrap = true
-vim.opt.wrapmargin = 80
 vim.opt.linebreak = true
 vim.opt.relativenumber = true
 vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
