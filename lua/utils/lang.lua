@@ -130,7 +130,7 @@ function M.record_fmt(fmt)
     if item.config ~= nil then
       M.formatters.configs[item.formatter] = item.config
     end
-    M.formatters.linkers[item.lang] = item.formatter
+    M.formatters.linkers[item.lang] = { item.formatter }
   end
 
   if type(fmt) == 'table' then
@@ -144,7 +144,7 @@ end
 
 ---@param lint LintProps
 function M.record_linter(lint)
-  M.linters[lint.lang] = lint.linter
+  M.linters[lint.lang] = { lint.linter }
 end
 
 function M.ignore_at_treesitter()
