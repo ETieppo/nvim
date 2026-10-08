@@ -526,7 +526,7 @@ function M.load(p)
   set(0, 'CmpDocumentationBorder', { fg = p.bg5, bg = p.bg2 })
 
   -- slimline
-  set(0, 'Slimline', { fg = p.fg, bg = p.bg0 })
+  set(0, 'Slimline', { fg = p.fg, bg = p.bg2 })
   set(0, 'SlimlineInactive', { fg = p.fgDim, bg = p.bg0 })
   set(0, 'SlimlineModeNormal', { fg = p.teal, bg = p.bg4, bold = true })
   set(0, 'SlimlineModeInsert', { fg = p.typeParam, bg = p.bg4, bold = true })
@@ -574,7 +574,7 @@ function M.load(p)
   set(0, 'SlimlineDiagnosticsHintSep', { fg = p.bgGreen, bg = p.bg0 })
   set(0, 'SlimlineDiagnosticsSecondarySep', { fg = p.bg4, bg = p.bg0 })
 
-  -- Bufferline / Barbar
+  -- Bufferline
   set(0, 'BufferCurrent', { fg = p.fg, bg = p.fgMuted })
   set(0, 'BufferCurrentMod', { fg = p.purple, bg = p.fgMuted })
   set(0, 'BufferCurrentSign', { fg = p.teal, bg = p.fgMuted })
@@ -675,3 +675,4 @@ function M.load(p)
 end
 
 return M
+
