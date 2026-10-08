@@ -9,7 +9,8 @@ function M.get_profile_capability()
 end
 
 function M.is_min_profile() return M.get_profile_capability() == 'minimal' end
-function M.is_max_profile() return M.get_profile_capability() == 'minimal' end
+
+function M.is_max_profile() return M.get_profile_capability() == 'max' end
 
 local function apply(name)
   if name == 'minimal' then
