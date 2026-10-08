@@ -1,4 +1,16 @@
 local kinds = vim.lsp.protocol.CompletionItemKind
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.record_fmt {
+  lang = lang_name,
+  formatter = 'kof_fmt',
+  config = {
+    command = 'kof',
+    args = { 'fmt', '$FILENAME', '-w' },
+    stdin = false,
+  },
+}
 
 local function normalize_items(result)
   if type(result) ~= 'table' then return end
@@ -17,7 +29,7 @@ local normalized = {
 
 return {
   cmd = { 'kof', 'lsp' },
-  filetypes = { 'kof' },
+  filetypes = { lang_name },
   root_markers = { 'kofdeps', 'kof.toml', '.git' },
   on_init = function(client)
     local request = client.request

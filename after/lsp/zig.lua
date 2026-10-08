@@ -1,7 +1,9 @@
 local zig = vim.fn.exepath 'zig'
+local lang_name = require('utils.helpers').get_this_filename()
+local lang_mod = require 'utils.lang'
 
-require('utils.lang_deps').register_lang_deps({
-  lang = 'zig',
+lang_mod.record_lang_deps {
+  lang = lang_name,
   deps = {
     {
       cmd = 'zvm',
@@ -19,11 +21,11 @@ require('utils.lang_deps').register_lang_deps({
       install_command = 'zvm install lts --zls',
     },
   },
-})
+}
 
 return {
   cmd = { 'zls' },
-  filetypes = { 'zig', 'zon' },
+  filetypes = { lang_name, 'zon' },
   root_markers = { 'build.zig', '.git' },
   settings = {
     zls = {

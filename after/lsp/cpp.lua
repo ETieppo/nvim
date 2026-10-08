@@ -1,3 +1,11 @@
+local lang_name = require('utils.helpers').get_this_filename()
+local lang_mod = require('utils.lang')
+
+lang_mod.record_linter {
+  lang = lang_name,
+  linter = 'cpplint'
+}
+
 return {
   cmd = {
     'clangd',
@@ -8,7 +16,7 @@ return {
     '--function-arg-placeholders',
     '--fallback-style=llvm',
   },
-  filetypes = { 'cpp', 'c' },
+  filetypes = { lang_name, 'c' },
   clangd = {
     root_markers = {
       'compile_commands.json',
@@ -21,7 +29,6 @@ return {
       'meson.build',
       'meson_options.txt',
       'build.ninja',
-
       '.git',
       'main.c',
       'main.cpp',

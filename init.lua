@@ -18,20 +18,14 @@ end
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
-local cfg = vim.fn.stdpath 'config'
-local profile = require 'settings.profile'
-local scan = require('utils.scan_modules_imports').scan_modules_imports
-
-local imp = scan(cfg .. '/lua/plugins', 'plugins', {
-  exclude = { ['plugins.extra'] = true },
-})
-
-if not profile.is 'minimal' then
-  vim.list_extend(imp, scan(cfg .. '/lua/plugins/extra', 'plugins.extra'))
-end
-
-local dir = vim.fn.stdpath 'config' .. '/after/lsp'
 local servers = {}
+local dir = vim.fn.stdpath 'config' .. '/after/lsp'
+local profile = require 'settings.profile'
+local exclude_dirs = profile.is_min_profile() and { ['plugins.extra'] = true } or {}
+local scan = require('utils.helpers').find_modules
+local imp = scan('/lua/plugins', 'plugins', {
+  exclude = exclude_dirs,
+})
 
 for file, kind in vim.fs.dir(dir) do
   if kind == 'file' and file:sub(-4) == '.lua' then
@@ -40,7 +34,6 @@ for file, kind in vim.fs.dir(dir) do
 end
 
 vim.lsp.enable(servers)
-
 require('lazy').setup {
   spec = imp,
   change_detection = { enable = false, notify = false },

@@ -1,3 +1,7 @@
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+lang_mod.ignore_at_treesitter()
+
 return {
   cmd = { 'emmet-language-server', '--stdio' },
   filetypes = {

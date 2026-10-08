@@ -1,14 +1,15 @@
 local M = {}
 local statefile = vim.fs.joinpath(vim.fn.stdpath 'state', 'profile')
 
-function M.name()
+function M.get_profile_capability()
   if vim.fn.filereadable(statefile) == 0 then return 'minimal' end
   local lines = vim.fn.readfile(statefile)
   local name = (lines[1] and vim.trim(lines[1])) or ''
   return name ~= '' and name or 'max'
 end
 
-function M.is(p) return M.name() == p end
+function M.is_min_profile() return M.get_profile_capability() == 'minimal' end
+function M.is_max_profile() return M.get_profile_capability() == 'minimal' end
 
 local function apply(name)
   if name == 'minimal' then
@@ -36,7 +37,9 @@ vim.api.nvim_create_user_command(
 
 vim.api.nvim_create_user_command(
   'Profile',
-  function() vim.notify('Profile: ' .. M.name(), vim.log.levels.INFO) end,
+  function()
+    vim.notify('Profile: ' .. M.get_profile_capability(), vim.log.levels.INFO)
+  end,
   { desc = 'Show the active plugin profile' }
 )
 

@@ -1,5 +1,9 @@
-require('utils.lang_deps').register_lang_deps({
-  lang = 'ts',
+local lang_name = require('utils.helpers').get_this_filename()
+local lang_mod = require 'utils.lang'
+
+lang_mod.record_lang_deps {
+  lang = lang_name,
+  short = 'ts',
   deps = {
     {
       cmd = 'bun',
@@ -17,14 +21,24 @@ require('utils.lang_deps').register_lang_deps({
       install_command = 'bun i -g typescript',
     },
   },
-})
+}
+
+lang_mod.record_fmt {
+  { lang = 'javascript', formatter = 'prettierd' },
+  { lang = 'javascriptreact', formatter = 'prettierd' },
+  { lang = 'typescript', formatter = 'prettierd' },
+  { lang = 'typescriptreact', formatter = 'prettierd' },
+  { lang = 'html', formatter = 'prettierd' },
+  { lang = 'htmlangular', formatter = 'prettierd' },
+  { lang = 'json', formatter = 'prettierd' },
+}
 
 return {
   cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = {
+    lang_name,
     'javascript',
     'javascriptreact',
-    'typescript',
     'typescriptreact',
   },
 

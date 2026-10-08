@@ -1,6 +1,9 @@
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+
 return {
   cmd = { 'sourcekit-lsp' },
-  filetypes = { 'swift' },
+  filetypes = { lang_name },
   root_markers = {
     '.git',
     'compile_commands.json',

@@ -1,5 +1,8 @@
-require('utils.lang_deps').register_lang_deps({
-  lang = 'lua',
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.record_lang_deps {
+  lang = lang_name,
   deps = {
     {
       cmd = 'lua',
@@ -18,10 +21,15 @@ require('utils.lang_deps').register_lang_deps({
       },
     },
   },
-})
+}
+
+lang_mod.record_fmt {
+  lang = lang_name,
+  formatter = 'stylua',
+}
 
 return {
   cmd = { 'lua-language-server' },
-  filetypes = { 'lua' },
+  filetypes = { lang_name },
   root_markers = { '.git', '.stylua.toml' },
 }

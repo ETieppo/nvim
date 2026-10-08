@@ -1,6 +1,6 @@
 local M = {}
 
-function M.scan_modules_imports(dir, prefix, opts)
+local function scan_imported_modules(dir, prefix, opts)
   opts = opts or {}
   local exclude = opts.exclude or {}
   local uv = vim.uv or vim.loop
@@ -28,12 +28,22 @@ function M.scan_modules_imports(dir, prefix, opts)
     if not exclude[module] then
       vim.list_extend(
         imports,
-        M.scan_modules_imports(dir .. '/' .. name, module, opts)
+        scan_imported_modules(dir .. '/' .. name, module, opts)
       )
     end
   end
 
   return imports
+end
+
+function M.get_this_filename()
+  local src = debug.getinfo(2, 'S').source
+  return vim.fn.fnamemodify(src:sub(2), ':t:r')
+end
+
+function M.find_modules(base_dir, prefix, opts)
+  local dir = (vim.fn.stdpath 'config') .. base_dir
+  return scan_imported_modules(dir, prefix, opts)
 end
 
 return M

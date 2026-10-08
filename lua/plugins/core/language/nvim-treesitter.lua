@@ -1,4 +1,6 @@
 local os = require 'utils.os'
+-- local scan = require('utils.scan_modules_imports').scan_modules_imports
+-- local lsps = scan(cfg .. '/after/lsp', 'plugins')
 
 local ensure_installed = os.has_deps 'gcc'
     and os.has_deps 'tree-sitter'

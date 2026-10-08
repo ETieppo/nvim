@@ -1,5 +1,19 @@
-require('utils.lang_deps').register_lang_deps({
-  lang = 'rust',
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.record_test_adapter {
+  'mrcjkb/rustaceanvim',
+  module = 'rustaceanvim.neotest',
+}
+
+lang_mod.record_fmt {
+  lang = lang_name,
+  formatter = 'rustfmt',
+}
+
+lang_mod.record_lang_deps {
+  lang = lang_name,
+  short = 'rs',
   deps = {
     {
       cmd = 'rustup',
@@ -17,11 +31,11 @@ require('utils.lang_deps').register_lang_deps({
       install_command = 'rustup component add rust-analyzer',
     },
   },
-})
+}
 
 return {
   cmd = { vim.fn.expand 'rust-analyzer' },
-  filetypes = { 'rust' },
+  filetypes = { lang_name },
   settings = {
     ['rust-analyzer'] = {
       checkOnSave = true,

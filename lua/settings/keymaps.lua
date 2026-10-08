@@ -45,7 +45,6 @@ vim.keymap.set(
 
 vim.keymap.set('n', '<leader>dbt', function()
   local ok, dbui = pcall(require, 'settings.dbui')
-  print(ok)
   if not ok then
     vim.notify("Set 'Max' profile to use dbui", vim.log.levels.WARN)
     return
@@ -316,27 +315,9 @@ vim.keymap.set(
 )
 vim.keymap.set(
   'n',
-  '<leader>sr',
-  function() require('telescope.builtin').resume() end,
-  { desc = '[S]earch [R]esume' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>s.',
-  function() require('telescope.builtin').oldfiles() end,
-  { desc = '[S]earch Recent Files' }
-)
-vim.keymap.set(
-  'n',
   '<leader>sc',
   function() require('telescope.builtin').commands() end,
   { desc = '[S]earch [C]ommands' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>sf',
-  function() require('telescope.builtin').buffers() end,
-  { desc = '[S]earch open buffers' }
 )
 vim.keymap.set(
   { 'n', 'v' },
@@ -344,7 +325,6 @@ vim.keymap.set(
   function() require('telescope.builtin').grep_string() end,
   { desc = '[S]earch current [W]ord' }
 )
-
 vim.keymap.set(
   'n',
   '<leader><leader>',
@@ -446,17 +426,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, 'Goto Definition')
 
     local client = vim.lsp.get_client_by_id(event.data.client_id)
-    if client and client:supports_method('textDocument/inlayHint', buf) then
-      map(
-        '<leader>th',
-        function()
-          vim.lsp.inlay_hint.enable(
-            not vim.lsp.inlay_hint.is_enabled { bufnr = buf }
-          )
-        end,
-        '[T]oggle Inlay [H]ints'
-      )
-    end
 
     if
       client and client:supports_method('textDocument/documentHighlight', buf)
@@ -490,6 +459,50 @@ vim.api.nvim_create_autocmd('LspAttach', {
   end,
 })
 
+-- NeoTest Operations -----------------------------------------------------
+vim.keymap.set(
+  'n',
+  '<leader>tt',
+  function() require('neotest').run.run() end,
+  { desc = '[T]est [T]his' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>tf',
+  function() require('neotest').run.run(vim.fn.expand '%') end,
+  { desc = '[T]est [F]ile' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>td',
+  function() require('neotest').run.run { strategy = 'dap' } end,
+  { desc = '[T]est [D]ebug' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>[T]est [R]eport',
+  function() require('neotest').summary.toggle() end,
+  { desc = '[T]est [R]eport' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>to',
+  function() require('neotest').output.open { enter = true } end,
+  { desc = '[T]est [O]utput' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>ts',
+  function() require('neotest').run.stop() end,
+  { desc = '[T]est [S]top' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>ta',
+  function() require('neotest').run.run { suite = true } end,
+  { desc = '[T]est [A]ll' }
+)
+
 -- Git Operations ---------------------------------------------------------
 local gs = function() return require 'gitsigns' end
 vim.keymap.set('n', ']c', function()
@@ -522,67 +535,67 @@ vim.keymap.set(
 )
 vim.keymap.set(
   'n',
-  '<leader>hs',
+  '<leader>gsh',
   function() gs().stage_hunk() end,
-  { desc = 'git [S]tage hunk' }
+  { desc = '[G]it [S]tage [H]unk' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hr',
+  '<leader>grh',
   function() gs().reset_hunk() end,
-  { desc = 'git [R]eset hunk' }
+  { desc = '[G]it [R]eset [H]unk' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hS',
+  '<leader>gsb',
   function() gs().stage_buffer() end,
-  { desc = 'git [S]tage buffer' }
+  { desc = '[G]it [S]tage [B]uffer' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hu',
+  '<leader>gush',
   function() gs().stage_hunk() end,
-  { desc = 'git [U]ndo stage hunk' }
+  { desc = '[G]it [U]ndo [S]tage [H]unk' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hR',
+  '<leader>grb',
   function() gs().reset_buffer() end,
-  { desc = 'git [R]eset buffer' }
+  { desc = '[G]it [R]eset [B]uffer' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hp',
+  '<leader>gph',
   function() gs().preview_hunk() end,
-  { desc = 'git [P]review hunk' }
+  { desc = '[G]it [P]review [H]unk' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hb',
-  function() gs().blame_line() end,
-  { desc = 'git [B]lame line' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>hd',
+  '<leader>gdi',
   function() gs().diffthis() end,
-  { desc = 'git [D]iff against index' }
+  { desc = '[G]it [D]iff [I]ndex' }
 )
 vim.keymap.set(
   'n',
-  '<leader>hD',
+  '<leader>gdl',
   function() gs().diffthis '@' end,
-  { desc = 'git [D]iff against last commit' }
+  { desc = '[G]it [D]iff [L]ast commit' }
 )
 vim.keymap.set(
   'n',
-  '<leader>tb',
+  '<leader>gbf',
+  function() gs().blame_line() end,
+  { desc = '[G]it [B]lame [F]ull' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>gbs',
   function() gs().toggle_current_line_blame() end,
-  { desc = '[T]oggle git [B]lame line' }
+  { desc = '[G]it [B]lame [S]hort' }
 )
 vim.keymap.set(
   'n',
-  '<leader>tD',
+  '<leader>gpd',
   function() gs().preview_hunk_inline() end,
-  { desc = '[T]oggle git show [D]eleted' }
+  { desc = '[G]it [P]review [D]eleted' }
 )

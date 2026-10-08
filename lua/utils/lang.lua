@@ -23,11 +23,32 @@
 ---@field lang string
 ---@field deps DepProps[]
 
+---@class FormatterProps
+---@field lang string
+---@field config FmtProps | nil
+---@field formatter string
+
+---@class FmtProps
+---@field command string
+---@field stdin boolean
+---@field args string[]
+
+---@class LintProps
+---@field lang string
+---@field linter string
+
 local M = {}
 local os = require 'utils.os'
 
 ---@type LangDeps[]
 M.langs = {}
+M.test_adapters = {}
+M.linters = {}
+M.ignore_treesitter_install = {}
+M.formatters = {
+  linkers = {},
+  configs = {},
+}
 
 ---@param cli DepProps
 ---@return boolean
@@ -72,7 +93,6 @@ function M.ensure_lang_deps(lang)
     return
   end
 
-
   for _, cli in ipairs(l.deps) do
     if not needs_install(cli) then
       vim.notify(cli.cmd .. ' already installed')
@@ -95,9 +115,42 @@ function M.ensure_lang_deps(lang)
   if #to_install > 0 then os.run_in_terminal(to_install) end
 end
 
----@param lang_deps LangDeps
-function M.register_lang_deps(lang_deps)
-  M.langs[lang_deps.lang] = lang_deps
+---@param lang LangDeps
+function M.record_lang_deps(lang) M.langs[lang.lang] = lang end
+
+function M.record_test_adapter(test_adapter)
+  if require('settings.profile').is_max_profile() then
+    vim.list_extend(M.test_adapters, { test_adapter })
+  end
+end
+
+---@param fmt FormatterProps | FormatterProps[]
+function M.record_fmt(fmt)
+  local function register(item)
+    if item.config ~= nil then
+      M.formatters.configs[item.formatter] = item.config
+    end
+    M.formatters.linkers[item.lang] = item.formatter
+  end
+
+  if type(fmt) == 'table' then
+    for _, item in ipairs(fmt) do
+      register(item)
+    end
+  else
+    register(fmt)
+  end
+end
+
+---@param lint LintProps
+function M.record_linter(lint)
+  M.linters[lint.lang] = lint.linter
+end
+
+function M.ignore_at_treesitter()
+  local src = debug.getinfo(2, 'S').source
+  local to_ignore = vim.fn.fnamemodify(src:sub(2), ':t:r')
+  table.insert(M.ignore_treesitter_install, to_ignore)
 end
 
 return M

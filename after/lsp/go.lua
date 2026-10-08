@@ -1,5 +1,8 @@
-require('utils.lang_deps').register_lang_deps({
-  lang = 'go',
+local lang_mod = require('utils.lang')
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.record_lang_deps({
+  lang = lang_name,
   deps = {
     {
       cmd = 'go',
@@ -21,7 +24,7 @@ require('utils.lang_deps').register_lang_deps({
 
 return {
   cmd = { vim.fn.expand 'gopls' },
-  filetypes = { 'go', 'gomod' },
+  filetypes = { lang_name, 'gomod' },
   ['gopls'] = {
     rootPatterns = { 'go.work', 'go.mod', '.vim/', '.git/', '.hg/' },
     initializationOptions = {

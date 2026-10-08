@@ -1,5 +1,8 @@
-require('utils.lang_deps').register_lang_deps({
-  lang = 'sh',
+local lang_mod = require('utils.lang')
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.record_lang_deps {
+  lang = lang_name,
   deps = {
     {
       cmd = 'bash-language-server',
@@ -19,14 +22,14 @@ require('utils.lang_deps').register_lang_deps({
         macos = 'brew install shfmt',
         archlinux = 'pacman -S shfmt',
         windows = 'scoop install shfmt',
-      },
-    },
-  },
-})
+      }
+    }
+  }
+}
 
 return {
   cmd = { 'bash-language-server', 'start' },
-  filetypes = { 'sh', 'bash' },
+  filetypes = { lang_name, 'bash' },
   root_markers = { '.git' },
   settings = {
     bashIde = {

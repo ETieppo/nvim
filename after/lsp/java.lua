@@ -1,6 +1,9 @@
+local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+
 return {
   cmd = { 'jdtls' },
-  filetypes = { 'java' },
+  filetypes = { lang_name },
   root_markers = {
     'settings.gradle.kts',
     'settings.gradle',
