@@ -79,6 +79,15 @@ local function resolve_install(cli)
       or by_os.unix
 
   if cmd == nil or cmd == false or cmd == 0 or cmd == '' then return nil end
+
+  if os.is_linux() then
+    if cmd:find("pacman", 1, true) and not cmd:find("sudo", 1, true) then
+      cmd = "sudo " .. cmd
+    end
+    if not cmd:find("--noconfirm", 1, true) then
+      cmd = cmd .. " --noconfirm"
+    end
+  end
   return cmd --[[@as string]]
 end
 
