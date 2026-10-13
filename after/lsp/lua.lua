@@ -20,6 +20,14 @@ lang_mod.record_lang_deps {
         windows = 'scoop install main/lua-language-server',
       },
     },
+    {
+      cmd = "stylua",
+      os = {
+        archlinux = "pacman -S stylua",
+        brew = "brew install stylua",
+        windows = "scoop install stylua"
+      }
+    }
   },
 }
 
