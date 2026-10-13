@@ -3,6 +3,6 @@ local lang_name = require('utils.helpers').get_this_filename()
 
 return {
   cmd = { 'asm-lsp' },
-  filetypes = { lang_name, 's' },
+  filetypes = { lang_name },
   root_markers = { '.asm-lsp.toml', '.git' },
 }
