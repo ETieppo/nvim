@@ -12,6 +12,23 @@ lang_mod.record_fmt {
   },
 }
 
+lang_mod.record_lang_deps {
+  lang = lang_name,
+  deps = {
+    {
+      cmd = "kfvm",
+      os = {
+        unix = "curl -fsSL https://raw.githubusercontent.com/KofLang/Kof4j/lab/tooling/kfvm/install.sh | sh",
+        windows = "irm https://raw.githubusercontent.com/KofLang/Kof4j/lab/tooling/kfvm/install.ps1 | iex"
+      }
+    },
+    {
+      cmd = "kof",
+      install_command = "kfvm u lts"
+    }
+  }
+}
+
 local function normalize_items(result)
   if type(result) ~= 'table' then return end
   local items = result.items or result
