@@ -6,4 +6,21 @@ lang_mod.record_linter {
   linter = 'markdownlint-cli2'
 }
 
-return {}
+lang_mod.record_lang_deps {
+  lang = lang_name,
+  short = "md",
+  deps = {
+    {
+      cmd = "markdownlint-cli2",
+      os = {
+        archlinux = "pacman -S markdownlint-cli2",
+        macos = "brew install markdownlint-cli2"
+      }
+    }
+  }
+}
+
+return {
+  cmd = {},
+  filetypes = { "markdown" }
+}
