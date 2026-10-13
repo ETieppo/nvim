@@ -143,22 +143,12 @@ function M.record_test_adapter(test_adapter)
   end
 end
 
----@param fmt FormatterProps | FormatterProps[]
+---@param fmt FormatterProps
 function M.record_fmt(fmt)
-  local function register(item)
-    if item.config ~= nil then
-      M.formatters.configs[item.formatter] = item.config
-    end
-    M.formatters.linkers[item.lang] = { item.formatter }
+  if fmt.config ~= nil then
+    M.formatters.configs[fmt.formatter] = fmt.config
   end
-
-  if type(fmt) == 'table' then
-    for _, item in ipairs(fmt) do
-      register(item)
-    end
-  else
-    register(fmt)
-  end
+  M.formatters.linkers[fmt.lang] = { fmt.formatter }
 end
 
 ---@param lint LintProps

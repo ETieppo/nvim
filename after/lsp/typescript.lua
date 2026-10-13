@@ -23,15 +23,20 @@ lang_mod.record_lang_deps {
   },
 }
 
-lang_mod.record_fmt {
-  { lang = 'javascript', formatter = 'prettierd' },
-  { lang = 'javascriptreact', formatter = 'prettierd' },
-  { lang = 'typescript', formatter = 'prettierd' },
-  { lang = 'typescriptreact', formatter = 'prettierd' },
-  { lang = 'html', formatter = 'prettierd' },
-  { lang = 'htmlangular', formatter = 'prettierd' },
-  { lang = 'json', formatter = 'prettierd' },
-}
+for _, l in ipairs({
+  'javascript',
+  'javascriptreact',
+  'typescript',
+  'typescriptreact',
+  'html',
+  'htmlangular',
+  'json',
+}) do
+  lang_mod.record_fmt {
+    lang = l,
+    formatter = 'prettierd'
+  }
+end
 
 return {
   cmd = { 'tsc', '--lsp', '--stdio' },
