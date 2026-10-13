@@ -5,16 +5,22 @@ lang_mod.record_lang_deps {
   lang = lang_name,
   deps = {
     {
+      cmd = 'qml-language-server',
+      os = {
+        archlinux = "yay -S qml-language-server-git"
+      }
+    },
+    {
       cmd = "qmlls6",
       os = {
-        archlinux = "sudo pacman -S qt6-declarative qt6-languageserver"
+        archlinux = "sudo pacman -S qt6-declarative"
       }
     }
   }
 }
 
 return {
-  cmd = { 'qmlls6' },
+  cmd = { 'qml-language-server' },
   filetypes = { 'qml' },
-  root_markers = { '.qmlls.ini', 'shell.qml', '.git' },
+  root_markers = { { "qmldir", "shell.qml" }, ".git" },
 }
