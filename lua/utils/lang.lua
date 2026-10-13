@@ -22,6 +22,7 @@
 ---@class LangDeps
 ---@field lang string
 ---@field deps DepProps[]
+---@field short string?
 
 ---@class FormatterProps
 ---@field lang string
@@ -40,7 +41,7 @@
 local M = {}
 local os = require 'utils.os'
 
----@type LangDeps[]
+---@type table<string, LangDeps>
 M.langs = {}
 M.test_adapters = {}
 M.linters = {}
@@ -91,18 +92,27 @@ local function resolve_install(cli)
   return cmd --[[@as string]]
 end
 
----@param lang string
-function M.ensure_lang_deps(lang)
-  local _ = vim.lsp.config[lang]
-  local l = M.langs[lang]
+---@param lang_name string
+function M.ensure_lang_deps(lang_name)
+  local _ = vim.lsp.config[lang_name]
+  local lang = M.langs[lang_name]
   local to_install, skipped = {}, {}
 
-  if not l then
-    vim.notify('No config to install\n' .. lang .. ' deps (#_#)')
+  if not lang then
+    for _, l in pairs(M.langs) do
+      if l.short == lang_name then
+        lang = l
+        break
+      end
+    end
+  end
+
+  if not lang then
+    vim.notify('No config to install\n' .. lang_name .. ' deps (#_#)')
     return
   end
 
-  for _, cli in ipairs(l.deps) do
+  for _, cli in ipairs(lang.deps) do
     if not needs_install(cli) then
       vim.notify(cli.cmd .. ' already installed')
     else
