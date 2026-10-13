@@ -15,6 +15,6 @@ lang_mod.record_lang_deps {
 
 return {
   cmd = { 'qmlls6' },
-  filetypes = { lang_name },
-  root_markers = {}
+  filetypes = { 'qml' },
+  root_markers = { '.qmlls.ini', 'shell.qml', '.git' },
 }
