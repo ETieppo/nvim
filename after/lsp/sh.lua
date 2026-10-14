@@ -3,6 +3,8 @@ local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
   lang = lang_name,
+  tree_sitter_name = "bash",
+  short = "bash",
   deps = {
     {
       cmd = 'bash-language-server',

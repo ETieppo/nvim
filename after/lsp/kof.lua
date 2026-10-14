@@ -2,6 +2,8 @@ local kinds = vim.lsp.protocol.CompletionItemKind
 local lang_mod = require 'utils.lang'
 local lang_name = require('utils.helpers').get_this_filename()
 
+lang_mod.ignore_treesitter_install()
+
 lang_mod.record_fmt {
   lang = lang_name,
   formatter = 'kof_fmt',

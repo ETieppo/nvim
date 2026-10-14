@@ -1,30 +1,10 @@
 local os = require 'utils.os'
--- local scan = require('utils.scan_modules_imports').scan_modules_imports
--- local lsps = scan(cfg .. '/after/lsp', 'plugins')
+local lang_mod = require 'utils.lang'
 
 local ensure_installed = os.has_deps 'gcc'
     and os.has_deps 'tree-sitter'
-    and {
-      'html',
-      'angular',
-      'css',
-      'sql',
-      'tsx',
-      'javascript',
-      'typescript',
-      'toml',
-      'zig',
-      'rust',
-      'lua',
-      'markdown',
-      'markdown_inline',
-      'vim',
-      'vimdoc',
-      'query',
-      'python',
-      'asm',
-    }
-  or {}
+    and lang_mod.install_lang_treesitters
+    or {}
 
 return {
   'nvim-treesitter/nvim-treesitter',

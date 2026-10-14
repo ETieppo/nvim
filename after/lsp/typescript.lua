@@ -30,7 +30,6 @@ for _, l in ipairs({
   'typescriptreact',
   'html',
   'htmlangular',
-  'json',
 }) do
   lang_mod.record_fmt {
     lang = l,

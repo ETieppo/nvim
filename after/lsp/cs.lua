@@ -4,6 +4,7 @@ local install = 'dotnet tool install --global roslyn-language-server --prereleas
 
 lang_mod.record_lang_deps {
   lang = lang_name,
+  tree_sitter_name = "c_sharp",
   deps = {
     {
       cmd = "dotnet",

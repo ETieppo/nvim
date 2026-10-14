@@ -23,6 +23,7 @@
 ---@field lang string
 ---@field deps DepProps[]
 ---@field short string?
+---@field tree_sitter_name (string | string[])?
 
 ---@class FormatterProps
 ---@field lang string
@@ -45,7 +46,8 @@ local os = require 'utils.os'
 M.langs = {}
 M.test_adapters = {}
 M.linters = {}
-M.ignore_treesitter_install = {}
+M.ignore_at_treesitter = {}
+M.install_lang_treesitters = {}
 M.formatters = {
   linkers = {},
   configs = {},
@@ -135,7 +137,29 @@ function M.ensure_lang_deps(lang_name)
 end
 
 ---@param lang LangDeps
-function M.record_lang_deps(lang) M.langs[lang.lang] = lang end
+function M.record_lang_deps(lang)
+  ---@param treesitter_name string
+  local function handle_tree_sitter_record(treesitter_name)
+    if not vim.list_contains(M.ignore_at_treesitter, treesitter_name) then
+      table.insert(M.install_lang_treesitters, treesitter_name)
+    end
+  end
+
+  local treesitters = lang.tree_sitter_name
+  if treesitters ~= nil then
+    if type(treesitters) == "string" then
+      handle_tree_sitter_record(treesitters)
+    else
+      for _, l in ipairs(treesitters) do
+        handle_tree_sitter_record(l)
+      end
+    end
+  else
+    handle_tree_sitter_record(lang.lang)
+  end
+
+  M.langs[lang.lang] = lang
+end
 
 function M.record_test_adapter(test_adapter)
   if require('settings.profile').is_max_profile() then
@@ -156,10 +180,10 @@ function M.record_linter(lint)
   M.linters[lint.lang] = { lint.linter }
 end
 
-function M.ignore_at_treesitter()
+function M.ignore_treesitter_install()
   local src = debug.getinfo(2, 'S').source
   local to_ignore = vim.fn.fnamemodify(src:sub(2), ':t:r')
-  table.insert(M.ignore_treesitter_install, to_ignore)
+  table.insert(M.ignore_at_treesitter, to_ignore)
 end
 
 return M
