@@ -14,11 +14,18 @@ lang_mod.record_lang_deps {
       },
     },
     {
-      cmd = 'black',
+      cmd = "pyright-langserver",
       os = {
-        macos = 'brew install black',
-        archlinux = 'sudo pacman -S python-black',
-        windows = 'pip install black',
+        macos = "brew -S pyright",
+        archlinux = "pacman -S pyright",
+      }
+    },
+    {
+      cmd = 'ruff',
+      os = {
+        macos = 'brew install ruff',
+        archlinux = 'sudo pacman -S ruff',
+        windows = 'scoop install ruff',
       },
     },
   },
@@ -26,7 +33,7 @@ lang_mod.record_lang_deps {
 
 lang_mod.record_fmt {
   lang = lang_name,
-  formatter = 'black',
+  formatter = 'ruff_format',
 }
 
 lang_mod.record_test_adapter {
@@ -38,6 +45,18 @@ lang_mod.record_test_adapter {
 return {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { lang_name },
+  root_dir = function(bufnr, on_dir)
+    local fname = vim.api.nvim_buf_get_name(bufnr)
+    if vim.fs.root(fname, 'codeterraform-workspace.json') then return end
+    on_dir(vim.fs.root(fname, {
+      'pyproject.toml',
+      'setup.py',
+      'setup.cfg',
+      'requirements.txt',
+      'Pipfile',
+      '.git',
+    }))
+  end,
   root_markers = {
     'pyproject.toml',
     'setup.py',
