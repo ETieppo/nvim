@@ -71,6 +71,17 @@ local function needs_install(cli)
   return vim.version.lt(v, cli.min_version)
 end
 
+---@param cmd string
+---@return string
+local function add_noconfirm(cmd)
+  if cmd:find("--noconfirm", 1, true) then return cmd end
+  for _, pm in ipairs({ "pacman", "yay" }) do
+    local new, n = cmd:gsub("(" .. pm .. "%s+%-S%a*)", "%1 --noconfirm", 1)
+    if n > 0 then return new end
+  end
+  return cmd
+end
+
 ---@param cli DepProps
 ---@return string|nil
 local function resolve_install(cli)
@@ -82,16 +93,16 @@ local function resolve_install(cli)
       or by_os.unix
 
   if cmd == nil or cmd == false or cmd == 0 or cmd == '' then return nil end
+  ---@cast cmd string
 
   if os.is_linux() then
-    if (cmd:find("pacman", 1, true) or cmd:find("yay", 1, true)) and not cmd:find("sudo", 1, true) then
+    if cmd:find("pacman", 1, true) and not cmd:find("sudo", 1, true) then
       cmd = "sudo " .. cmd
-      if not cmd:find("--noconfirm", 1, true) then
-        cmd = cmd .. " --noconfirm"
-      end
     end
+    cmd = add_noconfirm(cmd)
   end
-  return cmd --[[@as string]]
+
+  return cmd
 end
 
 ---@param lang_name string
