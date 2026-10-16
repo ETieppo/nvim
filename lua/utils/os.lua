@@ -42,14 +42,6 @@ function M.forget()
   resolved, pm_cache = {}, nil
 end
 
-function M.bootstrap_scoop()
-  if not M.is_windows() or M.has_deps 'scoop' then return end
-  M.run_in_terminal {
-    'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force',
-    'irm get.scoop.sh | iex',
-  }
-end
-
 function M.get_package_manager()
   if pm_cache ~= nil then return pm_cache or nil end
 
@@ -156,7 +148,10 @@ function M.install(deps)
 
   if #cmds == 0 then return end
   if M.is_windows() and not M.has_deps 'scoop' then
-    cmds = vim.list_extend(M.bootstrap_scoop_cmds(), cmds)
+    cmds = vim.list_extend({
+      'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force',
+      'irm get.scoop.sh | iex',
+    }, cmds)
   end
 
   M.forget()
