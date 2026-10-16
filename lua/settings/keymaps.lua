@@ -155,9 +155,9 @@ vim.keymap.set('n', '<leader>fd', function()
       '-NonInteractive',
       '-Command',
       'Add-Type -AssemblyName Microsoft.VisualBasic; '
-        .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
-        .. file:gsub("'", "''")
-        .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
+      .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
+      .. file:gsub("'", "''")
+      .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
     }
   else
     cmd = { 'gio', 'trash', '--', file }
@@ -329,9 +329,29 @@ vim.keymap.set(
   'n',
   '<leader><leader>',
   function()
-    require('telescope.builtin').find_files { hidden = false, no_ignore = false }
+    require('telescope.builtin').find_files()
   end,
   { desc = 'Search Files' }
+)
+
+vim.keymap.set(
+  'n',
+  '<leader>a',
+  function()
+    require('telescope.builtin').find_files {
+      prompt_title = 'Find All Files',
+      find_command = {
+        'rg',
+        '--files',
+        '--color=never',
+        '--hidden',
+        '--no-ignore',
+        '--follow',
+        '--glob=!.git/',
+      },
+    }
+  end,
+  { desc = '[A]ll Files' }
 )
 
 vim.keymap.set(
@@ -400,10 +420,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
           local seen, unique = {}, {}
           for _, item in ipairs(options.items) do
             local key = (item.filename or '')
-              .. ':'
-              .. (item.lnum or 0)
-              .. ':'
-              .. (item.col or 0)
+                .. ':'
+                .. (item.lnum or 0)
+                .. ':'
+                .. (item.col or 0)
             if not seen[key] then
               seen[key] = true
               table.insert(unique, item)
@@ -428,10 +448,10 @@ vim.api.nvim_create_autocmd('LspAttach', {
     local client = vim.lsp.get_client_by_id(event.data.client_id)
 
     if
-      client and client:supports_method('textDocument/documentHighlight', buf)
+        client and client:supports_method('textDocument/documentHighlight', buf)
     then
       local hl =
-        vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
+          vim.api.nvim_create_augroup('user-lsp-highlight', { clear = false })
       vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
         buffer = buf,
         group = hl,

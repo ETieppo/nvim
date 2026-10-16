@@ -10,6 +10,12 @@ lang_mod.record_lang_deps {
       os = {
         archlinux = "sudo pacman -S qt6-declarative qt6-languageserver"
       }
+    },
+    {
+      cmd = "qmlformat",
+      os = {
+        archlinux = "pacman -S qt6-tools && echo 'export PATH=\"/usr/lib/qt6/bin:$PATH\"' >> ~/.zshrc"
+      }
     }
   }
 }
