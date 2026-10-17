@@ -14,11 +14,11 @@ lang_mod.record_lang_deps {
       },
     },
     {
-      cmd = "pyright-langserver",
+      cmd = 'pyright-langserver',
       os = {
-        macos = "brew -S pyright",
-        archlinux = "pacman -S pyright",
-      }
+        macos = 'brew -S pyright',
+        archlinux = 'pacman -S pyright',
+      },
     },
     {
       cmd = 'ruff',

@@ -4,7 +4,7 @@ local lang_mod = require 'utils.lang'
 local ensure_installed = os.has_deps 'gcc'
     and os.has_deps 'tree-sitter'
     and lang_mod.install_lang_treesitters
-    or {}
+  or {}
 
 return {
   'nvim-treesitter/nvim-treesitter',

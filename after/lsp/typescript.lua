@@ -23,17 +23,17 @@ lang_mod.record_lang_deps {
   },
 }
 
-for _, l in ipairs({
+for _, l in ipairs {
   'javascript',
   'javascriptreact',
   'typescript',
   'typescriptreact',
   'html',
   'htmlangular',
-}) do
+} do
   lang_mod.record_fmt {
     lang = l,
-    formatter = 'prettierd'
+    formatter = 'prettierd',
   }
 end
 

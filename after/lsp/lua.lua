@@ -21,13 +21,13 @@ lang_mod.record_lang_deps {
       },
     },
     {
-      cmd = "stylua",
+      cmd = 'stylua',
       os = {
-        archlinux = "pacman -S stylua",
-        brew = "brew install stylua",
-        windows = "scoop install stylua"
-      }
-    }
+        archlinux = 'pacman -S stylua',
+        brew = 'brew install stylua',
+        windows = 'scoop install stylua',
+      },
+    },
   },
 }
 

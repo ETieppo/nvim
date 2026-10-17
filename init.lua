@@ -21,7 +21,8 @@ rtp:prepend(lazypath)
 local servers = {}
 local dir = vim.fn.stdpath 'config' .. '/after/lsp'
 local profile = require 'settings.profile'
-local exclude_dirs = profile.is_min_profile() and { ['plugins.extra'] = true } or {}
+local exclude_dirs = profile.is_min_profile() and { ['plugins.extra'] = true }
+  or {}
 local scan = require('utils.helpers').find_modules
 local imp = scan('/lua/plugins', 'plugins', {
   exclude = exclude_dirs,

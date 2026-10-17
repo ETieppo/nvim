@@ -1,9 +1,9 @@
 local lang_name = require('utils.helpers').get_this_filename()
-local lang_mod = require('utils.lang')
+local lang_mod = require 'utils.lang'
 
 lang_mod.record_linter {
   lang = lang_name,
-  linter = 'cpplint'
+  linter = 'cpplint',
 }
 
 return {

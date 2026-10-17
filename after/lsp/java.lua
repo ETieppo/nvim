@@ -5,23 +5,23 @@ lang_mod.record_lang_deps {
   lang = lang_name,
   deps = {
     {
-      cmd = "java",
-      min_version = "21",
+      cmd = 'java',
+      min_version = '21',
       os = {
-        archlinux = "pacman -S openjdk-src",
-        macos = "brew install openjdk",
-        windows = "scoop bucket add java ; scoop install java/openjdk"
-      }
+        archlinux = 'pacman -S openjdk-src',
+        macos = 'brew install openjdk',
+        windows = 'scoop bucket add java ; scoop install java/openjdk',
+      },
     },
     {
-      cmd = "jdtls",
+      cmd = 'jdtls',
       os = {
-        archlinux = "yay -S jdtls",
-        macos = "brew install jdtls",
-        windows = "scoop install jdtls"
-      }
-    }
-  }
+        archlinux = 'yay -S jdtls',
+        macos = 'brew install jdtls',
+        windows = 'scoop install jdtls',
+      },
+    },
+  },
 }
 
 return {

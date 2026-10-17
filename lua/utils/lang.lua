@@ -74,9 +74,9 @@ end
 ---@param cmd string
 ---@return string
 local function add_noconfirm(cmd)
-  if cmd:find("--noconfirm", 1, true) then return cmd end
-  for _, pm in ipairs({ "pacman", "yay" }) do
-    local new, n = cmd:gsub("(" .. pm .. "%s+%-S%a*)", "%1 --noconfirm", 1)
+  if cmd:find('--noconfirm', 1, true) then return cmd end
+  for _, pm in ipairs { 'pacman', 'yay' } do
+    local new, n = cmd:gsub('(' .. pm .. '%s+%-S%a*)', '%1 --noconfirm', 1)
     if n > 0 then return new end
   end
   return cmd
@@ -87,17 +87,17 @@ end
 local function resolve_install(cli)
   local by_os = cli.os or {}
   local cmd = cli.install_command
-      or (os.is_windows() and by_os.windows)
-      or (os.is_macos() and by_os.macos)
-      or (os.is_linux() and by_os.archlinux)
-      or by_os.unix
+    or (os.is_windows() and by_os.windows)
+    or (os.is_macos() and by_os.macos)
+    or (os.is_linux() and by_os.archlinux)
+    or by_os.unix
 
   if cmd == nil or cmd == false or cmd == 0 or cmd == '' then return nil end
   ---@cast cmd string
 
   if os.is_linux() then
-    if cmd:find("pacman", 1, true) and not cmd:find("sudo", 1, true) then
-      cmd = "sudo " .. cmd
+    if cmd:find('pacman', 1, true) and not cmd:find('sudo', 1, true) then
+      cmd = 'sudo ' .. cmd
     end
     cmd = add_noconfirm(cmd)
   end
@@ -158,7 +158,7 @@ function M.record_lang_deps(lang)
 
   local treesitters = lang.tree_sitter_name
   if treesitters ~= nil then
-    if type(treesitters) == "string" then
+    if type(treesitters) == 'string' then
       handle_tree_sitter_record(treesitters)
     else
       for _, l in ipairs(treesitters) do
@@ -180,16 +180,12 @@ end
 
 ---@param fmt FormatterProps
 function M.record_fmt(fmt)
-  if fmt.config ~= nil then
-    M.formatters.configs[fmt.formatter] = fmt.config
-  end
+  if fmt.config ~= nil then M.formatters.configs[fmt.formatter] = fmt.config end
   M.formatters.linkers[fmt.lang] = { fmt.formatter }
 end
 
 ---@param lint LintProps
-function M.record_linter(lint)
-  M.linters[lint.lang] = { lint.linter }
-end
+function M.record_linter(lint) M.linters[lint.lang] = { lint.linter } end
 
 function M.ignore_treesitter_install()
   local src = debug.getinfo(2, 'S').source

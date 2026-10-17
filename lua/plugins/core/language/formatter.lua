@@ -18,6 +18,6 @@ return {
     notify_on_error = false,
     format_on_save = nil,
     formatters = formatters.configs,
-    formatters_by_ft = formatters.linkers
+    formatters_by_ft = formatters.linkers,
   },
 }

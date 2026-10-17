@@ -1,10 +1,10 @@
-local lang_mod = require('utils.lang')
+local lang_mod = require 'utils.lang'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
   lang = lang_name,
-  tree_sitter_name = "bash",
-  short = "bash",
+  tree_sitter_name = 'bash',
+  short = 'bash',
   deps = {
     {
       cmd = 'bash-language-server',
@@ -24,9 +24,9 @@ lang_mod.record_lang_deps {
         macos = 'brew install shfmt',
         archlinux = 'pacman -S shfmt',
         windows = 'scoop install shfmt',
-      }
-    }
-  }
+      },
+    },
+  },
 }
 
 return {

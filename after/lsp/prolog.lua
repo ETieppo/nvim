@@ -18,12 +18,12 @@ lang_mod.record_lang_deps {
   lang = lang_name,
   deps = {
     {
-      cmd = "swipl",
+      cmd = 'swipl',
       os = {
-        archlinux = "sudo pacman -S swi-prolog && swipl -g \"pack_install(lsp_server, [interactive(false)])\" -t halt"
-      }
+        archlinux = 'sudo pacman -S swi-prolog && swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt',
+      },
     },
-  }
+  },
 }
 
 local function normalize_items(result)
@@ -44,10 +44,14 @@ local normalized = {
 return {
   cmd = {
     'swipl',
-    '-g', 'use_module(library(lsp_server)).',
-    '-g', 'lsp_server:main',
-    '-t', 'halt',
-    '--', 'stdio',
+    '-g',
+    'use_module(library(lsp_server)).',
+    '-g',
+    'lsp_server:main',
+    '-t',
+    'halt',
+    '--',
+    'stdio',
   },
   filetypes = { lang_name },
   root_markers = { 'kofdeps', 'kof.toml', '.git' },

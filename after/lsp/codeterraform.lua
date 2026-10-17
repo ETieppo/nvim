@@ -2,7 +2,8 @@ local lang_mod = require 'utils.lang'
 local lang_name = require('utils.helpers').get_this_filename()
 
 local root_marker = 'codeterraform-workspace.json'
-local server_dir = vim.fn.expand '~/.local/share/io.codeterraform.game/external-ide/server'
+local server_dir =
+  vim.fn.expand '~/.local/share/io.codeterraform.game/external-ide/server'
 
 lang_mod.ignore_treesitter_install()
 

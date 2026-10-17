@@ -1,7 +1,7 @@
-local lang_mod = require('utils.lang')
+local lang_mod = require 'utils.lang'
 local lang_name = require('utils.helpers').get_this_filename()
 
-lang_mod.record_lang_deps({
+lang_mod.record_lang_deps {
   lang = lang_name,
   deps = {
     {
@@ -20,7 +20,7 @@ lang_mod.record_lang_deps({
       },
     },
   },
-})
+}
 
 return {
   cmd = { vim.fn.expand 'gopls' },

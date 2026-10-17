@@ -16,15 +16,15 @@ lang_mod.record_lang_deps {
       install_command = 'bun i -g @fsouza/prettierd',
     },
     {
-      cmd = "jsonls",
-      install_command = "bun add -g vscode-langservers-extracted"
-    }
-  }
+      cmd = 'jsonls',
+      install_command = 'bun add -g vscode-langservers-extracted',
+    },
+  },
 }
 
 lang_mod.record_fmt {
   lang = lang_name,
-  formatter = 'prettierd'
+  formatter = 'prettierd',
 }
 
 return {

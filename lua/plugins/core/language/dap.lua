@@ -110,8 +110,9 @@ return {
       local rustc = which 'rustc'
       if not rustc then return {} end
 
-      local sysroot =
-        vim.system({ rustc, '--print', 'sysroot' }, { text = true }):wait()
+      local sysroot = vim
+        .system({ rustc, '--print', 'sysroot' }, { text = true })
+        :wait()
       if sysroot.code ~= 0 then return {} end
 
       local etc = vim.trim(sysroot.stdout) .. '/lib/rustlib/etc'
@@ -122,7 +123,6 @@ return {
         ("command source -s 0 '%s/lldb_commands'"):format(etc),
       }
     end
-
 
     local adapters = {
       lldb = {
@@ -171,15 +171,11 @@ return {
       },
       kotlin = {
         bin = 'kotlin-debug-adapter',
-        make = function(cmd)
-          return { type = 'executable', command = cmd }
-        end,
+        make = function(cmd) return { type = 'executable', command = cmd } end,
       },
       php = {
         bin = 'php-debug-adapter',
-        make = function(cmd)
-          return { type = 'executable', command = cmd }
-        end,
+        make = function(cmd) return { type = 'executable', command = cmd } end,
       },
     }
 
@@ -322,14 +318,11 @@ return {
       end
     end
 
-
     require('nvim-dap-virtual-text').setup { commented = true }
 
     local dapui = require 'dapui'
     dapui.setup()
-    dap.listeners.after.event_initialized.dapui_config = function()
-      dapui.open()
-    end
+    dap.listeners.after.event_initialized.dapui_config = function() dapui.open() end
     dap.listeners.before.event_terminated.dapui_config = function()
       dapui.close()
     end

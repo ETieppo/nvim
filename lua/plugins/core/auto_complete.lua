@@ -60,8 +60,8 @@ return {
             },
           },
           columns = {
-            { 'label',      'label_description', gap = 1 },
-            { 'kind_icon',  'kind',              gap = 1 },
+            { 'label', 'label_description', gap = 1 },
+            { 'kind_icon', 'kind', gap = 1 },
             { 'lsp_detail' },
             { 'source_name' },
           },
