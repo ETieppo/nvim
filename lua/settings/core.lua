@@ -28,6 +28,8 @@ vim.o.confirm = true
 vim.o.cmdheight = 0
 vim.o.background = 'dark'
 
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = "+1"
 vim.opt.laststatus = 3
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
