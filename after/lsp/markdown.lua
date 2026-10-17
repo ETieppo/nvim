@@ -16,11 +16,20 @@ lang_mod.record_lang_deps {
         archlinux = "pacman -S markdownlint-cli2",
         macos = "brew install markdownlint-cli2"
       }
+    },
+    {
+      cmd = "marksman",
+      os = {
+        archlinux = "pacman -S marksman",
+        macos = "brew install marksman",
+        windows = "scoop install marksman"
+      }
     }
   }
 }
 
 return {
-  cmd = {},
-  filetypes = { "markdown" }
+  cmd = { 'marksman', 'server', '--verbose', '0' },
+  filetypes = { "markdown", "markdown.mdx" },
+  root_markers = { '.git', '.marksman.toml' }
 }
