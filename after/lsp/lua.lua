@@ -36,8 +36,18 @@ lang_mod.record_fmt {
   formatter = 'stylua',
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'lua-language-server' },
   filetypes = { lang_name },
   root_markers = { '.git', '.stylua.toml' },
+  settings = {
+    Lua = {
+      runtime = { version = 'LuaJIT' },
+      workspace = {
+        checkThirdParty = false,
+        library = { vim.env.VIMRUNTIME },
+      },
+    },
+  },
 }
