@@ -1,30 +1,33 @@
 require 'settings'
+local helpers = require 'utils.helpers'
 
+local servers = {}
+local exclude_dirs = {}
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local dir = vim.fn.stdpath 'config' .. '/after/lsp'
+local profile = require 'settings.profile'
+local scan = helpers.find_modules
+
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
-  local out = vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    '--branch=stable',
-    lazyrepo,
-    lazypath,
-  }
-  if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\n' .. out) end
+  if vim.v.shell_error ~= 0 then
+    error('Error cloning lazy.nvim:\n' .. vim.fn.system {
+      'git',
+      'clone',
+      '--filter=blob:none',
+      '--branch=stable',
+      'https://github.com/folke/lazy.nvim.git',
+      lazypath,
+    })
+  end
 end
 
 ---@type vim.Option
 local rtp = vim.opt.rtp
 rtp:prepend(lazypath)
 
-local servers = {}
-local dir = vim.fn.stdpath 'config' .. '/after/lsp'
-local profile = require 'settings.profile'
-local exclude_dirs = profile.is_min_profile() and { ['plugins.extra'] = true }
-  or {}
-local scan = require('utils.helpers').find_modules
-local imp = scan('/lua/plugins', 'plugins', {
+if profile.is_min_profile() then exclude_dirs = { ['plugins.extra'] = true } end
+
+local plugins = scan('/lua/plugins', 'plugins', {
   exclude = exclude_dirs,
 })
 
@@ -35,7 +38,8 @@ for file, kind in vim.fs.dir(dir) do
 end
 
 vim.lsp.enable(servers)
+
 require('lazy').setup {
-  spec = imp,
+  spec = plugins,
   change_detection = { enable = false, notify = false },
 }
