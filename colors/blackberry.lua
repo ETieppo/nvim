@@ -32,7 +32,7 @@ local p = {
 
   -- Syntax — Core
   keyword = '#702ded',
-  keywordAlt = '#f7768e',
+  keywordAlt = '#e41951',
   func = '#7aa2f7',
   funcBuiltin = '#0db9d7',
   type_ = '#0db9d7',
