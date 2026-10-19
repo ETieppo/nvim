@@ -16,6 +16,31 @@ local function new_file(path)
   vim.cmd('edit ' .. vim.fn.fnameescape(path))
 end
 
+local function place_input_cursor(cursor_column)
+  local input_buffer = vim.api.nvim_get_current_buf()
+  if vim.bo[input_buffer].filetype ~= 'snacks_input' then return end
+  vim.api.nvim_create_autocmd('InsertEnter', {
+    buffer = input_buffer,
+    once = true,
+    callback = function()
+      vim.schedule(function()
+        if vim.api.nvim_get_current_buf() ~= input_buffer then return end
+        vim.api.nvim_win_set_cursor(0, { 1, cursor_column })
+      end)
+    end,
+  })
+end
+
+local function input_path(prompt, default, cursor_column, on_confirm)
+  vim.ui.input(
+    { prompt = prompt, default = default, completion = 'file' },
+    function(value)
+      if value then on_confirm(value) end
+    end
+  )
+  if cursor_column then place_input_cursor(cursor_column) end
+end
+
 -- Leaders --------------------------------------------------------------------
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -128,8 +153,7 @@ end, { desc = '[B]uffer [D]elete' })
 -- File Operations --------------------------------------------------------
 vim.keymap.set('n', '<leader>fn', function()
   local dir = os.normalize_os_path(vim.fn.expand '%:p:h')
-  local path = vim.fn.input('New file: ', dir .. '/', 'file')
-  new_file(path)
+  input_path('New file: ', dir .. '/', nil, new_file)
 end, { desc = '[F]ile [N]ew' })
 
 vim.keymap.set('n', '<leader>fd', function()
@@ -179,86 +203,58 @@ vim.keymap.set('n', '<leader>fr', function()
   local dir = os.normalize_os_path(vim.fn.expand '%:p:h')
   local ext = vim.fn.expand '%:e'
   local default = dir .. '/' .. '.' .. ext
-  local move = #ext + 1
-  vim.schedule(
-    function()
-      vim.api.nvim_feedkeys(
-        string.rep(
-          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
-          move
-        ),
-        'n',
-        false
-      )
-    end
+  input_path(
+    'Rename to: ',
+    default,
+    #default - #ext - 1,
+    function(new) edit_file(old, new) end
   )
-  local new = vim.fn.input('Rename to: ', default, 'file')
-  edit_file(old, new)
 end, { desc = '[F]ile [R]ename' })
 
 vim.keymap.set('n', '<leader>fe', function()
   local old = vim.fn.expand '%:p'
   local filename = os.normalize_os_path(vim.fn.expand '%:p:r')
   local default = filename .. '.'
-  local new = vim.fn.input('Rename to: ', default, 'file')
-  edit_file(old, new)
+  input_path('Rename to: ', default, nil, function(new) edit_file(old, new) end)
 end, { desc = '[F]ile [E]xtension' })
 
 vim.keymap.set('n', '<leader>fm', function()
   local old = vim.fn.expand '%:p'
   local name = vim.fn.expand '%:t'
-  local move = #name
-  vim.schedule(
-    function()
-      vim.api.nvim_feedkeys(
-        string.rep(
-          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
-          move
-        ),
-        'n',
-        false
-      )
-    end
+  local default = os.normalize_os_path(old)
+  input_path(
+    'Move to: ',
+    default,
+    #default - #name,
+    function(new) edit_file(old, new) end
   )
-  local new = vim.fn.input('Move to: ', os.normalize_os_path(old), 'file')
-  edit_file(old, new)
 end, { desc = '[F]ile [M]ove' })
 
 vim.keymap.set('n', '<leader>fc', function()
   local old = vim.fn.expand '%:p'
   local name = vim.fn.expand '%:t'
-  local move_cursor = #name
-  vim.schedule(
-    function()
-      vim.api.nvim_feedkeys(
-        string.rep(
-          vim.api.nvim_replace_termcodes('<Left>', true, false, true),
-          move_cursor
-        ),
-        'n',
-        false
-      )
+  local default = os.normalize_os_path(old)
+  input_path('Copy to: ', default, #default - #name, function(new)
+    new = os.rewrite_to_os_path(new)
+    if new == '' or new == old then return end
+    vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
+    local success = vim.uv.fs_copyfile(old, new)
+    if success then
+      vim.cmd('edit ' .. vim.fn.fnameescape(new))
+    else
+      vim.notify('Error at file clone.', vim.log.levels.ERROR)
     end
-  )
-  local new = vim.fn.input('Copy to: ', os.normalize_os_path(old), 'file')
-  new = os.rewrite_to_os_path(new)
-  if new == '' or new == old then return end
-  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-  local success = vim.uv.fs_copyfile(old, new)
-  if success then
-    vim.cmd('edit ' .. vim.fn.fnameescape(new))
-  else
-    vim.notify('Error at file clone.', vim.log.levels.ERROR)
-  end
+  end)
 end, { desc = '[F]ile [C]opy' })
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
   local config_lua_path = os.normalize_os_path(vim.fn.stdpath 'config') .. '/'
-  local path = vim.fn.input('New Lua config: ', config_lua_path, 'file')
-  if path == '' then return end
-  if not path:match '%.lua$' then path = path .. '.lua' end
-  new_file(path)
+  input_path('New Lua config: ', config_lua_path, nil, function(path)
+    if path == '' then return end
+    if not path:match '%.lua$' then path = path .. '.lua' end
+    new_file(path)
+  end)
 end, { desc = '[C]onfig [N]ew' })
 
 vim.keymap.set(
