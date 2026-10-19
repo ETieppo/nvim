@@ -34,6 +34,23 @@ lang_mod.record_lang_deps {
         windows = 'luarocks install teal-language-server',
       },
     },
+    {
+      cmd = 'ceru',
+      os = {
+        unix = 'sudo luarocks install cerulean',
+        windows = 'luarocks install cerulean',
+      },
+    },
+  },
+}
+
+lang_mod.record_fmt {
+  lang = lang_name,
+  formatter = 'cerulean',
+  config = {
+    command = 'ceru',
+    stdin = false,
+    args = {},
   },
 }
 
