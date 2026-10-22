@@ -46,6 +46,11 @@ local normalized = {
   ['completionItem/resolve'] = function(item) normalize_items { item } end,
 }
 
+
+vim.filetype.add {
+  extension = { kf = 'kof', kof = 'kof' },
+}
+
 return {
   cmd = { 'kof', 'lsp' },
   filetypes = { lang_name },

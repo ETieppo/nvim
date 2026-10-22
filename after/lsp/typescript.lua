@@ -37,6 +37,10 @@ for _, l in ipairs {
   }
 end
 
+vim.filetype.add {
+  pattern = { ['.*%.component%.html'] = 'htmlangular' },
+}
+
 return {
   cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = {
