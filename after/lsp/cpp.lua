@@ -1,10 +1,36 @@
-local lang_name = require('utils.helpers').get_this_filename()
 local lang_mod = require 'utils.lang'
+local lang_name = require('utils.helpers').get_this_filename()
+local filetypes = { lang_name, 'c' }
 
-lang_mod.record_linter {
+lang_mod.record_lang_deps {
   lang = lang_name,
-  linter = 'cpplint',
+  tree_sitter_name = filetypes,
+  deps = {
+    {
+      cmd = 'clangd',
+      os = {
+        archlinux = 'pacman -S clang',
+        macos = 'brew install llvm',
+        windows = 'scoop install main/llvm',
+      },
+    },
+    {
+      cmd = 'cmake',
+      os = {
+        archlinux = 'pacman -S cmake',
+        macos = 'brew install cmake',
+        windows = 'scoop install main/cmake',
+      },
+    },
+  },
 }
+
+for _, filetype in ipairs(filetypes) do
+  lang_mod.record_fmt {
+    lang = filetype,
+    formatter = 'clang-format',
+  }
+end
 
 return {
   cmd = {
@@ -16,32 +42,25 @@ return {
     '--function-arg-placeholders',
     '--fallback-style=llvm',
   },
-  filetypes = { lang_name, 'c' },
-  clangd = {
-    root_markers = {
-      'compile_commands.json',
-      'compile_flags.txt',
-      'configure.ac',
-      'Makefile',
-      'configure.ac',
-      'configure.in',
-      'config.h.in',
-      'meson.build',
-      'meson_options.txt',
-      'build.ninja',
-      '.git',
-      'main.c',
-      'main.cpp',
-      'index.c',
-      'index.cpp',
-    },
-    capabilities = {
-      offsetEncoding = { 'utf-16' },
-    },
-    init_options = {
-      usePlaceholders = true,
-      completeUnimported = true,
-      clangdFileStatus = true,
-    },
+  filetypes = filetypes,
+  root_markers = {
+    '.clangd',
+    '.clang-tidy',
+    '.clang-format',
+    'compile_commands.json',
+    'compile_flags.txt',
+    'CMakeLists.txt',
+    'meson.build',
+    'configure.ac',
+    'Makefile',
+    '.git',
+  },
+  capabilities = {
+    offsetEncoding = { 'utf-8', 'utf-16' },
+  },
+  init_options = {
+    usePlaceholders = true,
+    completeUnimported = true,
+    clangdFileStatus = true,
   },
 }
