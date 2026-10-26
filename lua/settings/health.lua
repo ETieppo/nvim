@@ -22,9 +22,3 @@ vim.api.nvim_create_autocmd('VimEnter', {
     )
   end,
 })
-
-vim.api.nvim_create_user_command(
-  'LangInstall',
-  function(opts) require('utils.lang').ensure_lang_deps(opts.args) end,
-  { nargs = 1 }
-)

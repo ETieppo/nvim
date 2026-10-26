@@ -39,6 +39,10 @@
 ---@field lang string
 ---@field linter string
 
+---@class LangCmdsProps
+---@field short string
+---@field func function
+
 local M = {}
 local os = require 'utils.os'
 
@@ -192,5 +196,49 @@ function M.ignore_treesitter_install()
   local to_ignore = vim.fn.fnamemodify(src:sub(2), ':t:r')
   table.insert(M.ignore_at_treesitter, to_ignore)
 end
+
+---@type table<string, LangCmdsProps>
+local lang_commands = {
+  install = {
+    short = 'i',
+    func = M.ensure_lang_deps,
+  },
+}
+
+vim.api.nvim_create_user_command('Lang', function(opts)
+  local char = '--_--'
+  local lang_cmd_arg = opts.fargs[1]
+  local lang_name_arg = opts.fargs[2]
+
+  if lang_cmd_arg == nil or lang_name_arg == nil then
+    vim.notify('Not enough args\nUse :Lang <command> <language>\n' .. char)
+    return
+  end
+
+  local refered_command = lang_commands[lang_cmd_arg]
+    or (function()
+      for _, cmd_items in pairs(lang_commands) do
+        if cmd_items.short == lang_cmd_arg then return cmd_items end
+      end
+    end)()
+
+  if refered_command == nil then
+    vim.notify('No ' .. lang_cmd_arg .. ' Lang command found! ' .. char)
+    return
+  end
+
+  refered_command.func(lang_name_arg)
+end, {
+  nargs = '+',
+  complete = function(arg_lead, cmdline)
+    if #vim.split(cmdline, '%s+') > 2 then return {} end
+    local names = vim.tbl_keys(lang_commands)
+    table.sort(names)
+    return vim.tbl_filter(
+      function(n) return vim.startswith(n, arg_lead) end,
+      names
+    )
+  end,
+})
 
 return M

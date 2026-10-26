@@ -81,4 +81,12 @@ return {
     },
     fallback = { 'cargo', 'install', 'tree-sitter-cli' },
   },
+  {
+    name="lldb-dap",
+    bin="lldb-dap",
+    required=true,
+    install={
+pacman=""
+    }
+  }
 }
