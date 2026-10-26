@@ -157,6 +157,21 @@ describe('deps_mod.is_installed', function()
     outputs = { ['java --version'] = 'openjdk 17.0.2 2022-01-18' },
   }
 
+  it('uses check_cmd instead of executables when given', function()
+    local checked = environment {
+      os_name = OsNameEnum.linux,
+      outputs = { ['python3 -c "import debugpy"'] = '' },
+    }
+    assert.is_true(deps_mod.is_installed({
+      cmd = 'debugpy',
+      check_cmd = 'python3 -c "import debugpy"',
+    }, checked))
+    assert.is_false(deps_mod.is_installed({
+      cmd = 'other',
+      check_cmd = 'python3 -c "import other"',
+    }, checked))
+  end)
+
   it(
     'detects missing executables',
     function() assert.is_false(deps_mod.is_installed({ cmd = 'zig' }, probe)) end
