@@ -11,6 +11,7 @@ lang_mod.record_lang_deps {
         windows = 'go install golang.org/x/tools/gopls@latest',
       },
     },
+    { cmd = 'dlv', install_command = 'delve' },
   },
 }
 
