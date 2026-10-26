@@ -51,7 +51,14 @@ function M.get_package_manager()
   elseif M.is_windows() then
     pm = M.has_deps 'scoop' and 'scoop' or nil
   elseif M.is_linux() then
-    for _, p in ipairs { 'pacman', 'apt', 'dnf', 'zypper', 'apk' } do
+    for _, p in ipairs {
+      'pacman',
+      'yay',
+      'apt',
+      'dnf',
+      'zypper',
+      'apk',
+    } do
       if M.has_deps(p) then
         pm = p
         break

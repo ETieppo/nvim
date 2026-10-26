@@ -50,7 +50,7 @@ end
 ---@param cli DepProps
 ---@return boolean
 function M.needs_install(cli)
-  if not os_mod.which(cli.cmd) then return true end
+  if not os_mod.has_deps(cli.cmd) then return true end
   if not cli.min_version then return false end
 
   local out = vim.fn.system(cli.version_cmd or (cli.cmd .. ' --version'))
