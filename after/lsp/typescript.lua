@@ -1,5 +1,17 @@
 local lang_name = require('utils.helpers').get_this_filename()
 local lang_mod = require 'utils.lang_mod'
+local ReleaseAdapter = require 'utils.release_adapter'
+local ArchiveFormatEnum = require 'utils.enums.archive_format_enum'
+
+local js_debug_adapter = ReleaseAdapter.new {
+  name = 'js-debug-adapter',
+  repo = 'microsoft/vscode-js-debug',
+  asset_pattern = 'js-debug-dap-v[^"]+\\.tar\\.gz',
+  archive_format = ArchiveFormatEnum.tar_gz,
+  wrapper = { runtime = 'bun', entry = 'js-debug/src/dapDebugServer.js' },
+}
+
+js_debug_adapter:add_to_path()
 
 lang_mod.record_lang_deps {
   short = 'ts',
@@ -18,6 +30,10 @@ lang_mod.record_lang_deps {
     {
       cmd = 'tsc',
       install_command = 'bun i -g typescript',
+    },
+    {
+      cmd = 'js-debug-adapter',
+      os = { unix = js_debug_adapter:build_install_command() },
     },
   },
 }
@@ -48,7 +64,7 @@ lang_mod.record_dap_adapter {
       type = 'server',
       host = '127.0.0.1',
       port = '${port}',
-      executable = { command = path, args = { '${port}' } },
+      executable = { command = path, args = { '${port}', '127.0.0.1' } },
     }
   end,
 }
