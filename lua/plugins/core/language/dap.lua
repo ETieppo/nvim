@@ -56,7 +56,7 @@ return {
   },
   config = function()
     local dap = require 'dap'
-    local which = require('utils.os').which
+    local which = require('utils.os_mod').which
 
     ---@return string
     local function ask_executable()

@@ -1,8 +1,8 @@
-local os = require 'utils.os'
+local os_mod = require 'utils.os_mod'
 local lang_mod = require 'utils.lang'
 
-local ensure_installed = os.has_deps 'gcc'
-    and os.has_deps 'tree-sitter'
+local ensure_installed = os_mod.has_deps 'gcc'
+    and os_mod.has_deps 'tree-sitter'
     and lang_mod.install_lang_treesitters
   or {}
 

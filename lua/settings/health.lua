@@ -1,12 +1,12 @@
 vim.api.nvim_create_user_command(
   'NvimDeps',
-  function() require('utils.os').install(require 'utils.nvim_deps') end,
+  function() require('utils.os_mod').install(require 'utils.nvim_deps') end,
   { desc = 'Install minimal needed dependencies X_X' }
 )
 
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
-    local missing = require('utils.os').missing(require 'utils.nvim_deps')
+    local missing = require('utils.os_mod').missing(require 'utils.nvim_deps')
     if #missing == 0 then return end
     local names = vim.tbl_map(function(d) return d.name end, missing)
     vim.schedule(
