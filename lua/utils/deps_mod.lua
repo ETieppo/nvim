@@ -17,6 +17,7 @@ local InstallPlanDto = require 'utils.dtos.install_plan_dto'
 ---@class DepProps
 ---@field cmd string
 ---@field alternative_cmds? string[]
+---@field check_cmd? string
 ---@field install_command? InstallInstructionProps
 ---@field os? OsInstructionProps
 ---@field depends_on? string
@@ -69,8 +70,18 @@ end
 ---@param dep DepProps
 ---@param probe DependencyProbeProps
 ---@return boolean
+function M.is_present(dep, probe)
+  if dep.check_cmd then
+    return probe.read_command_output(dep.check_cmd) ~= nil
+  end
+  return M.has_any_executable(dep, probe)
+end
+
+---@param dep DepProps
+---@param probe DependencyProbeProps
+---@return boolean
 function M.is_installed(dep, probe)
-  if not M.has_any_executable(dep, probe) then return false end
+  if not M.is_present(dep, probe) then return false end
   if not dep.min_version then return true end
 
   local output =
