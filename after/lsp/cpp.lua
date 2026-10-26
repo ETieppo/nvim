@@ -1,4 +1,4 @@
-local lang_mod = require 'utils.lang'
+local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 local filetypes = { lang_name, 'c' }
 
