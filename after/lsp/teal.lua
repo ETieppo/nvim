@@ -2,17 +2,9 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   short = 'tl',
   deps = {
-    {
-      cmd = 'luarocks',
-      os = {
-        archlinux = 'pacman -S luarocks',
-        macos = 'brew install luarocks',
-        windows = 'scoop install luarocks',
-      },
-    },
+    { cmd = 'luarocks' },
     {
       cmd = 'tl',
       os = {
@@ -45,7 +37,6 @@ lang_mod.record_lang_deps {
 }
 
 lang_mod.record_fmt {
-  lang = lang_name,
   formatter = 'cerulean',
   config = {
     command = 'ceru',

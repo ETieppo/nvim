@@ -1,5 +1,4 @@
 local lang_mod = require 'utils.lang_mod'
-local lang_name = require('utils.helpers').get_this_filename()
 
 local root_marker = 'codeterraform-workspace.json'
 local server_dir =
@@ -8,26 +7,10 @@ local server_dir =
 lang_mod.ignore_treesitter_install()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   short = 'ct',
+  depends_on = 'bun',
   deps = {
-    {
-      cmd = 'node',
-      min_version = '20.0.0',
-      os = {
-        archlinux = 'sudo pacman -S nodejs',
-        macos = 'brew install node',
-        windows = 'scoop install nodejs',
-      },
-    },
-    {
-      cmd = 'ruff',
-      os = {
-        archlinux = 'sudo pacman -S ruff',
-        macos = 'brew install ruff',
-        windows = 'scoop install ruff',
-      },
-    },
+    { cmd = 'ruff' },
   },
 }
 
@@ -40,7 +23,7 @@ local function setup_dap()
 
   dap.adapters.codeterraform = {
     type = 'executable',
-    command = 'node',
+    command = 'bun',
     args = { server_dir .. '/debug-adapter.cjs' },
   }
 
@@ -69,7 +52,7 @@ local function setup_dap()
 end
 
 return {
-  cmd = { 'node', server_dir .. '/server.cjs', '--stdio' },
+  cmd = { 'bun', server_dir .. '/server.cjs', '--stdio' },
   filetypes = { 'python' },
   root_markers = { root_marker },
   workspace_required = true,

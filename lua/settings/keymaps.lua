@@ -166,7 +166,7 @@ vim.keymap.set('n', '<leader>fd', function()
     return
   end
   local cmd
-  if os_mod.is_mac then
+  if os_mod.is_macos() then
     cmd = {
       'osascript',
       '-e',

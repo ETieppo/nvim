@@ -347,22 +347,19 @@ function M.attach(cmdwin_buffer, source_window)
   }
   local preview_props = active_preview
 
-  vim.api.nvim_create_autocmd(
-    {
-      'TextChanged',
-      'TextChangedI',
-      'TextChangedP',
-      'CursorMoved',
-      'CursorMovedI',
-    },
-    {
-      buffer = cmdwin_buffer,
-      callback = function()
-        if active_preview ~= preview_props then return true end
-        update(preview_props, vim.api.nvim_get_current_line())
-      end,
-    }
-  )
+  vim.api.nvim_create_autocmd({
+    'TextChanged',
+    'TextChangedI',
+    'TextChangedP',
+    'CursorMoved',
+    'CursorMovedI',
+  }, {
+    buffer = cmdwin_buffer,
+    callback = function()
+      if active_preview ~= preview_props then return true end
+      update(preview_props, vim.api.nvim_get_current_line())
+    end,
+  })
 end
 
 function M.detach()

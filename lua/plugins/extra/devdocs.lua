@@ -39,21 +39,12 @@ return {
       desc = '[D]ev [D]ocs [G]rep',
     },
   },
-  opts = {
-    ensure_installed = {
-      'html',
-      'css',
-      'http',
-      'tailwindcss',
-      'angular',
-      'react',
-      'typescript',
-      'rust',
-      'git',
-      'node',
-      'bash',
-      'bun',
-      'docker',
-    },
-  },
+  opts = function()
+    return {
+      ensure_installed = vim.list_extend(
+        { 'git', 'http' },
+        require('utils.lang_mod').get_docs()
+      ),
+    }
+  end,
 }

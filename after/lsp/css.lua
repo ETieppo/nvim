@@ -11,6 +11,8 @@ for _, l in ipairs { 'css', 'scss', 'less' } do
   }
 end
 
+lang_mod.record_docs { docs = { 'css', 'tailwindcss' } }
+
 return {
   cmd = { 'vscode-css-language-server', '--stdio' },
   filetypes = { lang_name, 'scss', 'less' },

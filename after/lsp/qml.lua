@@ -1,22 +1,14 @@
 local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
+require('utils.os_mod').add_to_path '/usr/lib/qt6/bin'
+
 lang_mod.record_lang_deps {
-  lang = lang_name,
   tree_sitter_name = { 'qmljs' },
   deps = {
-    {
-      cmd = 'qmlls6',
-      os = {
-        archlinux = 'sudo pacman -S qt6-declarative qt6-languageserver',
-      },
-    },
-    {
-      cmd = 'qmlformat',
-      os = {
-        archlinux = 'pacman -S qt6-tools && echo \'export PATH="/usr/lib/qt6/bin:$PATH"\' >> ~/.zshrc',
-      },
-    },
+    { cmd = 'qmlls6', os = { archlinux = 'qt6-languageserver' } },
+    { cmd = 'qmlls6', os = { archlinux = 'qt6-declarative' } },
+    { cmd = 'qmlformat', os = { archlinux = 'qt6-declarative' } },
   },
 }
 

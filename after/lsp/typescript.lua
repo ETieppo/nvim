@@ -2,7 +2,6 @@ local lang_name = require('utils.helpers').get_this_filename()
 local lang_mod = require 'utils.lang_mod'
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   short = 'ts',
   deps = {
     {
@@ -39,6 +38,51 @@ end
 
 vim.filetype.add {
   pattern = { ['.*%.component%.html'] = 'htmlangular' },
+}
+
+lang_mod.record_dap_adapter {
+  name = 'pwa-node',
+  cmd = 'js-debug-adapter',
+  build = function(path)
+    return {
+      type = 'server',
+      host = '127.0.0.1',
+      port = '${port}',
+      executable = { command = path, args = { '${port}' } },
+    }
+  end,
+}
+
+lang_mod.record_dap {
+  adapter = 'pwa-node',
+  filetypes = {
+    'javascript',
+    'typescript',
+    'javascriptreact',
+    'typescriptreact',
+  },
+  configurations = {
+    {
+      name = 'Launch file',
+      type = 'pwa-node',
+      request = 'launch',
+      program = '${file}',
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+    },
+    {
+      name = 'Attach to process',
+      type = 'pwa-node',
+      request = 'attach',
+      processId = function() return require('dap.utils').pick_process() end,
+      cwd = '${workspaceFolder}',
+      sourceMaps = true,
+    },
+  },
+}
+
+lang_mod.record_docs {
+  docs = { 'typescript', 'html', 'angular', 'react', 'bun' },
 }
 
 return {

@@ -1,9 +1,9 @@
+local dap_mod = require 'utils.dap_mod'
 local zig = vim.fn.exepath 'zig'
 local lang_name = require('utils.helpers').get_this_filename()
 local lang_mod = require 'utils.lang_mod'
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
     {
       cmd = 'zvm',
@@ -21,6 +21,11 @@ lang_mod.record_lang_deps {
       install_command = 'zvm install lts --zls',
     },
   },
+}
+
+lang_mod.record_dap {
+  adapter = 'lldb',
+  configurations = { dap_mod.build_lldb_launch_configuration() },
 }
 
 return {

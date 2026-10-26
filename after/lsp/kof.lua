@@ -5,7 +5,6 @@ local lang_name = require('utils.helpers').get_this_filename()
 lang_mod.ignore_treesitter_install()
 
 lang_mod.record_fmt {
-  lang = lang_name,
   formatter = 'kof_fmt',
   config = {
     command = 'kof',
@@ -15,7 +14,6 @@ lang_mod.record_fmt {
 }
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
     {
       cmd = 'kfvm',
@@ -45,7 +43,6 @@ local normalized = {
   ['textDocument/completion'] = normalize_items,
   ['completionItem/resolve'] = function(item) normalize_items { item } end,
 }
-
 
 vim.filetype.add {
   extension = { kf = 'kof', kof = 'kof' },

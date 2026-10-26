@@ -2,25 +2,17 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
     {
       cmd = 'java',
       min_version = '21',
       os = {
-        archlinux = 'pacman -S openjdk-src',
-        macos = 'brew install openjdk',
-        windows = 'scoop bucket add java ; scoop install java/openjdk',
+        archlinux = 'jdk-openjdk',
+        macos = 'openjdk',
+        windows = 'java/openjdk',
       },
     },
-    {
-      cmd = 'jdtls',
-      os = {
-        archlinux = 'yay -S jdtls',
-        macos = 'brew install jdtls',
-        windows = 'scoop install jdtls',
-      },
-    },
+    { cmd = 'jdtls' },
   },
 }
 

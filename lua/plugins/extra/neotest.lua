@@ -1,4 +1,4 @@
-local test_adapters = require('utils.lang').test_adapters
+local test_adapters = require('utils.lang_mod').test_adapters
 
 local deps = {
   'nvim-neotest/nvim-nio',

@@ -1,168 +1,165 @@
+local OsNameEnum = require 'utils.enums.os_name_enum'
+local package_managers = require 'utils.package_managers'
+
 local M = {}
 
 local sysname = vim.uv.os_uname().sysname
-local os_name = sysname == 'Darwin' and 'macos'
-  or sysname == 'Linux' and 'linux'
-  or sysname:find 'Windows' and 'win32'
+
+---@type OsNameEnum|nil
+local os_name = sysname == 'Darwin' and OsNameEnum.macos
+  or sysname == 'Linux' and OsNameEnum.linux
+  or sysname:find 'Windows' and OsNameEnum.windows
   or nil
 
-local sep = package.config:sub(1, 1)
-local resolved = {}
-local pm_cache = nil
+local path_separator = package.config:sub(1, 1)
+local path_list_separator = os_name == OsNameEnum.windows and ';' or ':'
 
+---@type table<string, string|false>
+local resolved_executables = {}
+
+---@type PackageManager|false|nil
+local cached_package_manager = nil
+
+---@return OsNameEnum|nil
 function M.get_name() return os_name end
-function M.is_macos() return os_name == 'macos' end
-function M.is_linux() return os_name == 'linux' end
-function M.is_windows() return os_name == 'win32' end
 
-function M.rewrite_to_os_path(path) return (path:gsub('[/\\]', sep)) end
+---@return boolean
+function M.is_macos() return os_name == OsNameEnum.macos end
+
+---@return boolean
+function M.is_linux() return os_name == OsNameEnum.linux end
+
+---@return boolean
+function M.is_windows() return os_name == OsNameEnum.windows end
+
+---@param path string
+---@return string
+function M.rewrite_to_os_path(path) return (path:gsub('[/\\]', path_separator)) end
+
+---@param path string
+---@return string
 function M.normalize_os_path(path) return (path:gsub('\\', '/')) end
 
 ---@param name string
 ---@return string|nil
-function M.which(name)
-  local cached = resolved[name]
-  if cached ~= nil then return cached or nil end
-
+local function find_executable_path(name)
   local path = vim.fn.exepath(name)
+
   if path == '' and M.is_macos() and vim.fn.executable 'xcrun' == 1 then
-    local found = vim
+    local result = vim
       .system({ 'xcrun', '--find', name }, { text = true })
       :wait()
-    if found.code == 0 then path = vim.trim(found.stdout or '') end
+    if result.code == 0 then path = vim.trim(result.stdout or '') end
   end
-  if path == '' or vim.fn.executable(path) ~= 1 then path = nil end
 
-  resolved[name] = path or false
+  if path == '' or vim.fn.executable(path) ~= 1 then return nil end
   return path
 end
 
-function M.has_deps(name) return M.which(name) ~= nil end
-function M.forget()
-  resolved, pm_cache = {}, nil
+---@param name string
+---@return string|nil
+function M.which(name)
+  local cached = resolved_executables[name]
+  if cached ~= nil then return cached or nil end
+
+  local path = find_executable_path(name)
+  resolved_executables[name] = path or false
+  return path
 end
 
+---@param name string
+---@return boolean
+function M.has_executable(name) return M.which(name) ~= nil end
+
+function M.clear_cache()
+  resolved_executables = {}
+  cached_package_manager = nil
+end
+
+---@param dir string
+---@return boolean
+function M.add_to_path(dir)
+  if vim.fn.isdirectory(dir) == 0 then return false end
+
+  local current_path = vim.env.PATH or ''
+  local entries = vim.split(current_path, path_list_separator, { plain = true })
+  if vim.list_contains(entries, dir) then return false end
+
+  vim.env.PATH = current_path == '' and dir
+    or dir .. path_list_separator .. current_path
+  M.clear_cache()
+  return true
+end
+
+---@return PackageManager|nil
 function M.get_package_manager()
-  if pm_cache ~= nil then return pm_cache or nil end
+  if cached_package_manager == nil then
+    cached_package_manager = package_managers.detect(os_name, M.has_executable)
+      or false
+  end
+  return cached_package_manager or nil
+end
 
-  local pm
-  if M.is_macos() then
-    pm = M.has_deps 'brew' and 'brew' or nil
-  elseif M.is_windows() then
-    pm = M.has_deps 'scoop' and 'scoop' or nil
-  elseif M.is_linux() then
-    for _, p in ipairs {
-      'pacman',
-      'yay',
-      'apt',
-      'dnf',
-      'zypper',
-      'apk',
-    } do
-      if M.has_deps(p) then
-        pm = p
-        break
-      end
-    end
+---@param command string
+---@return string|nil
+function M.read_command_output(command)
+  local output = vim.fn.system(command)
+  if vim.v.shell_error ~= 0 then return nil end
+  return output
+end
+
+---@param commands string[]
+---@param target_os_name? OsNameEnum
+---@return string
+function M.join_commands(commands, target_os_name)
+  if (target_os_name or os_name) == OsNameEnum.windows then
+    return table.concat(commands, ' ; ')
   end
 
-  pm_cache = pm or false
-  return pm
+  local grouped = vim.tbl_map(
+    function(command) return '{ ' .. command .. '; }' end,
+    commands
+  )
+  return table.concat(grouped, ' && ')
 end
 
-local function is_installed(dep)
-  if dep.check then return dep.check() end
-  return dep.bin ~= nil and M.has_deps(dep.bin)
-end
-
-function M.missing(deps)
-  return vim.tbl_filter(function(dep) return not is_installed(dep) end, deps)
-end
-
-local function install_cmd(dep)
-  local override = dep.os_override and dep.os_override[os_name]
-  if override then return override end
-
-  local pm = M.get_package_manager()
-  local args = pm and dep.install and dep.install[pm]
-  if not args then return dep.fallback end
-
-  local no_sudo = { yay = true, paru = true }
-  local cmd = (M.is_linux() and not no_sudo[pm]) and { 'sudo', pm } or { pm }
-  return vim.list_extend(cmd, args)
-end
-
-function M.get_os_joiner() return M.is_windows() and ' ; ' or ' && ' end
-
+---@param script string
 ---@return string[]
-local function shell_argv(script)
-  if M.is_windows() then
-    local pwsh = M.which 'pwsh' and 'pwsh' or 'powershell'
-    return {
-      pwsh,
-      '-NoLogo',
-      '-NoProfile',
-      '-ExecutionPolicy',
-      'Bypass',
-      '-Command',
-      script,
-    }
-  end
-  return { vim.o.shell, '-c', script }
+local function build_shell_argv(script)
+  if not M.is_windows() then return { vim.o.shell, '-c', script } end
+
+  local powershell = M.has_executable 'pwsh' and 'pwsh' or 'powershell'
+  return {
+    powershell,
+    '-NoLogo',
+    '-NoProfile',
+    '-ExecutionPolicy',
+    'Bypass',
+    '-Command',
+    script,
+  }
 end
 
----@param cmds string[]
-function M.run_in_terminal(cmds)
-  for _, b in ipairs(vim.api.nvim_list_bufs()) do
+local function close_dashboard_buffers()
+  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
     if
-      vim.api.nvim_buf_is_valid(b)
-      and vim.bo[b].filetype == 'snacks_dashboard'
+      vim.api.nvim_buf_is_valid(buffer)
+      and vim.bo[buffer].filetype == 'snacks_dashboard'
     then
-      pcall(vim.api.nvim_buf_delete, b, { force = true })
+      pcall(vim.api.nvim_buf_delete, buffer, { force = true })
     end
   end
-
-  local script = table.concat(cmds, M.get_os_joiner())
-  vim.cmd.tabnew()
-  vim.fn.jobstart(shell_argv(script), { term = true })
-  vim.cmd.startinsert()
 end
 
----@param deps table[]
-function M.install(deps)
-  local missing = M.missing(deps)
-  if #missing == 0 then
-    return vim.notify('All dependencies installed.', vim.log.levels.INFO)
-  end
-
-  local cmds, skipped = {}, {}
-  for _, dep in ipairs(missing) do
-    local cmd = install_cmd(dep)
-    if cmd then
-      table.insert(cmds, table.concat(cmd, ' '))
-    else
-      table.insert(skipped, dep.name)
-    end
-  end
-
-  if #skipped > 0 then
-    vim.notify(
-      'No install command (manual intervention needed): '
-        .. table.concat(skipped, ', '),
-      vim.log.levels.WARN
-    )
-  end
-
-  if #cmds == 0 then return end
-  if M.is_windows() and not M.has_deps 'scoop' then
-    cmds = vim.list_extend({
-      'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force',
-      'irm get.scoop.sh | iex',
-    }, cmds)
-  end
-
-  M.forget()
-  M.run_in_terminal(cmds)
+---@param commands string[]
+function M.run_in_terminal(commands)
+  close_dashboard_buffers()
+  vim.cmd.tabnew()
+  vim.fn.jobstart(build_shell_argv(M.join_commands(commands)), {
+    term = true,
+    on_exit = function() M.clear_cache() end,
+  })
+  vim.cmd.startinsert()
 end
 
 return M

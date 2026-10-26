@@ -15,12 +15,11 @@ lang_mod.ignore_treesitter_install()
 -- }
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
     {
       cmd = 'swipl',
       os = {
-        archlinux = 'sudo pacman -S swi-prolog && swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt',
+        archlinux = 'sudo pacman -S --needed --noconfirm swi-prolog && swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt',
       },
     },
   },

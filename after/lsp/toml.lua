@@ -2,21 +2,12 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
-    {
-      cmd = 'taplo',
-      os = {
-        archlinux = 'sudo pacman -S taplo-cli',
-        macos = 'brew install taplo',
-        windows = 'scoop install taplo',
-      },
-    },
+    { cmd = 'taplo', os = { archlinux = 'taplo-cli' } },
   },
 }
 
 lang_mod.record_fmt {
-  lang = lang_name,
   formatter = 'taplo',
 }
 

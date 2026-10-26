@@ -1,19 +1,14 @@
 local lang_mod = require 'utils.lang_mod'
-local lang_name = require('utils.helpers').get_this_filename()
 local install =
   'dotnet tool install --global roslyn-language-server --prerelease'
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   tree_sitter_name = 'c_sharp',
   deps = {
     {
       cmd = 'dotnet',
-      os = {
-        archlinux = 'pacman -S dotnet-sdk',
-        macos = 'brew install dotnet',
-        windows = 'scoop install main/dotnet-sdk',
-      },
+      install_command = 'dotnet-sdk',
+      os = { macos = 'dotnet' },
     },
     {
       cmd = 'roslyn-language-server',

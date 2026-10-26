@@ -2,22 +2,50 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   deps = {
-    {
-      cmd = 'go',
-      os = {
-        macos = 'brew install go',
-        windows = 'scoop install main/go',
-        archlinux = 'pacman -S go',
-      },
-    },
+    { cmd = 'go' },
     {
       cmd = 'gopls',
       os = {
         unix = 'go install golang.org/x/tools/gopls@latest && echo export PATH=$PATH:$(go env GOPATH)/bin >> ~/.zshrc',
         windows = 'go install golang.org/x/tools/gopls@latest',
       },
+    },
+  },
+}
+
+lang_mod.record_dap_adapter {
+  name = 'delve',
+  cmd = 'dlv',
+  build = function(path)
+    return {
+      type = 'server',
+      port = '${port}',
+      executable = {
+        command = path,
+        args = { 'dap', '-l', '127.0.0.1:${port}' },
+      },
+    }
+  end,
+}
+
+lang_mod.record_dap {
+  adapter = 'delve',
+  configurations = {
+    {
+      name = 'Debug package',
+      type = 'delve',
+      request = 'launch',
+      program = '${fileDirname}',
+      cwd = '${workspaceFolder}',
+    },
+    {
+      name = 'Debug test',
+      type = 'delve',
+      request = 'launch',
+      mode = 'test',
+      program = '${fileDirname}',
+      cwd = '${workspaceFolder}',
     },
   },
 }

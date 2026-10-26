@@ -1,27 +1,17 @@
 local lang_mod = require 'utils.lang_mod'
+local dap_mod = require 'utils.dap_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 local filetypes = { lang_name, 'c' }
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   tree_sitter_name = filetypes,
   deps = {
     {
       cmd = 'clangd',
-      os = {
-        archlinux = 'pacman -S clang',
-        macos = 'brew install llvm',
-        windows = 'scoop install main/llvm',
-      },
+      install_command = 'llvm',
+      os = { archlinux = 'clang' },
     },
-    {
-      cmd = 'cmake',
-      os = {
-        archlinux = 'pacman -S cmake',
-        macos = 'brew install cmake',
-        windows = 'scoop install main/cmake',
-      },
-    },
+    { cmd = 'cmake' },
   },
 }
 
@@ -31,6 +21,12 @@ for _, filetype in ipairs(filetypes) do
     formatter = 'clang-format',
   }
 end
+
+lang_mod.record_dap {
+  adapter = 'lldb',
+  filetypes = filetypes,
+  configurations = { dap_mod.build_lldb_launch_configuration() },
+}
 
 return {
   cmd = {

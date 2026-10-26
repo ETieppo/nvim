@@ -1,4 +1,4 @@
-local formatters = require('utils.lang').formatters
+local formatters = require('utils.lang_mod').formatters
 
 return {
   'stevearc/conform.nvim',

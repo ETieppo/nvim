@@ -2,32 +2,20 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  lang = lang_name,
   tree_sitter_name = 'bash',
   short = 'bash',
   deps = {
     {
       cmd = 'bash-language-server',
+      depends_on = 'bun',
       install_command = 'bun add -g bash-language-server',
     },
-    {
-      cmd = 'shellcheck',
-      os = {
-        macos = 'brew install shellcheck',
-        archlinux = 'sudo pacman -S shellcheck',
-        windows = 'scoop install shellcheck',
-      },
-    },
-    {
-      cmd = 'shfmt',
-      os = {
-        macos = 'brew install shfmt',
-        archlinux = 'pacman -S shfmt',
-        windows = 'scoop install shfmt',
-      },
-    },
+    { cmd = 'shellcheck' },
+    { cmd = 'shfmt' },
   },
 }
+
+lang_mod.record_docs { docs = { 'bash' } }
 
 return {
   cmd = { 'bash-language-server', 'start' },
