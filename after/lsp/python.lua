@@ -10,6 +10,15 @@ lang_mod.record_lang_deps {
       os = { unix = 'pyright' },
     },
     { cmd = 'ruff' },
+    {
+      cmd = 'debugpy',
+      check_cmd = 'python3 -c "import debugpy"',
+      install_command = 'python3 -m pip install --user --break-system-packages debugpy',
+      os = {
+        archlinux = 'python-debugpy',
+        windows = 'python -m pip install debugpy',
+      },
+    },
   },
 }
 
