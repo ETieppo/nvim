@@ -10,16 +10,14 @@ local profile = require 'settings.profile'
 local scan = helpers.find_modules
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. vim.fn.system {
-      'git',
-      'clone',
-      '--filter=blob:none',
-      '--branch=stable',
-      'https://github.com/folke/lazy.nvim.git',
-      lazypath,
-    })
-  end
+  error('Error cloning lazy.nvim:\n' .. vim.fn.system {
+    'git',
+    'clone',
+    '--filter=blob:none',
+    '--branch=stable',
+    'https://github.com/folke/lazy.nvim.git',
+    lazypath,
+  })
 end
 
 ---@type vim.Option

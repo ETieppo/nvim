@@ -1,13 +1,8 @@
-local mainColor = '#F05239'
 local p = {
-  -- neo-tree div line
   transparent = '#000000',
-  --  buffer background, neo-tree inactive
   bg0 = '#000000',
   bg1 = '#0F0605',
-  -- empty top line at neo-tree
   bg2 = '#08080b',
-  -- selected line
   bg3 = '#0F0F15',
   bg4 = '#14141c',
   bg5 = '#1a1a26',
@@ -18,41 +13,39 @@ local p = {
 
   fg = '#a9b1d6',
   fgMuted = '#787c99',
-  fgDim = '#2C4A5D',
+  fgDim = '#545470',
   fgSemiHide = '#303040',
   fgBright = '#c5cae9',
 
   border = '#191921',
   borderFaint = '#14141a',
   borderFocus = '#545c7e',
+  inactiveIndentLine = '#303040',
+  activeIndentLine = '#F05239',
+
   selection = '#3d59a144',
-  selectionBg = '#FFFFFF',
-  matchBg = '#3d59a166',
+  selectionBg = '#1e202e',
+  matchBg = '#F0523944',
 
-  inactiveIndentLine = '#686868',
-  activeIdentLine = mainColor,
-  -- info
-
-  keyword = mainColor,
-  keywordAlt = '#bb9af7',
-  func = '#779310',
+  keyword = '#F05239',
+  keywordAlt = '#ff9e64',
+  func = '#f5a25d',
   funcBuiltin = '#0db9d7',
-  type_ = '#0db9d7',
+  type_ = '#7aa2f7',
   typeParam = '#3a5d81',
   property = '#A8B1D6',
   namespace_ = '#FFFBDB',
   variable = '#c0caf5',
-  param = '#e0687a',
-  constant = '#b8003a',
-  bracket = '#b8003a',
-  constantAlt = '#c0768e',
-  operator = '#93101B',
+  param = '#e0af68',
+  bracket = '#41a6b5',
+  constant = '#ffc777',
+  constantAlt = '#d7a65f',
+  operator = '#F05239',
   string_ = '#03826b',
-  stringAlt = '#85d0b7',
   regex = '#b4f9f8',
-  number = '#c0768e',
+  number = '#ff9e64',
   comment = '#444b6a',
-  tag = '#892a3b',
+  tag = '#F05239',
   tagAttr = '#556779',
   macro = '#737aa2',
 
@@ -61,20 +54,20 @@ local p = {
   info = '#7aa2f7',
   hint = '#41a6b5',
 
-  added = '#a9b1d6',
+  added = '#03826b',
   modified = '#e0af68',
   deleted = '#f7768e',
 
-  purple = '#934D10',
+  purple = '#bb9af7',
   salmon = '#e0687a',
   bgTeal = '#0c1618',
-  teal = '#FFFBDB',
+  teal = '#41a6b5',
   cyanDim = '#00262f',
   cyan = '#7dcfff',
   cyanBright = '#b4f9f8',
-  crimson = '#757575',
+  crimson = '#b8003a',
   crimsonBright = '#f7768e',
-  darkRed = mainColor,
+  darkRed = '#F05239',
   darkRedDim = '#290006',
 }
 

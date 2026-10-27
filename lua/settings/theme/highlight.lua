@@ -169,8 +169,8 @@ function M.load(p)
     underline = true,
   })
   set(0, '@string.special.path', { fg = p.cyan, italic = true })
-  set(0, '@string.documentation', { fg = p.stringAlt, italic = true })
-  set(0, '@character', { fg = p.stringAlt })
+  set(0, '@string.documentation', { fg = p.comment, italic = true })
+  set(0, '@character', { fg = p.comment })
   set(0, '@character.special', { fg = p.regex })
   set(0, '@number', { fg = p.number })
   set(0, '@number.float', { fg = p.number })
@@ -189,7 +189,7 @@ function M.load(p)
   set(0, '@comment.todo', { fg = p.bg2, bg = p.teal })
   set(0, '@comment.warning', { fg = p.bg2, bg = p.warning })
   set(0, '@comment.error', { fg = p.bg2, bg = p.error_ })
-  set(0, '@comment.documentation', { fg = p.stringAlt, italic = true })
+  set(0, '@comment.documentation', { fg = p.comment, italic = true })
   set(0, '@markup', { fg = p.fg })
   set(0, '@markup.heading', { fg = p.type_, bold = true })
   set(0, '@markup.heading.1', { fg = p.type_, bold = true })
@@ -241,52 +241,48 @@ function M.load(p)
   set(0, '@tag.attribute', { fg = p.tagAttr, italic = true })
   set(0, '@tag.delimiter', { fg = p.fgDim })
 
-  -- ── rust ─────────────────────────────────
-  set(0, '@lsp.type.selfKeyword', { fg = p.keyword, italic = true })
-  set(0, '@lsp.type.selfTypeKeyword', { fg = p.type_ })
-  set(0, '@lsp.type.builtinType', { fg = p.type_ })
-  set(0, '@lsp.type.builtinAttribute', { fg = p.macro })
-  set(0, '@lsp.type.lifetime', { fg = p.typeParam })
-  set(0, '@lsp.type.generic', { fg = p.typeParam })
-  set(0, '@lsp.type.typeAlias', { fg = p.type_ })
-  set(0, '@lsp.type.const', { fg = p.constant })
-  set(0, '@lsp.type.static', { fg = p.constant })
-  set(0, '@lsp.type.formatSpecifier', { fg = p.regex })
-  set(0, '@lsp.type.boolean', { fg = p.constantAlt })
-  set(
-    0,
-    '@lsp.type.unresolvedReference',
-    { undercurl = true, sp = p.stringAlt }
-  )
-  set(0, '@lsp.typemod.const.constant', { fg = p.constant })
-  set(0, '@lsp.typemod.const.declaration', { fg = p.constant })
-  set(0, '@lsp.typemod.variable.static', { fg = p.constant })
-  set(0, '@lsp.typemod.variable.readonly', { fg = p.constant })
-  set(0, '@lsp.typemod.variable.mutable', { fg = p.variable, underline = true })
-  set(0, '@lsp.typemod.parameter.mutable', { fg = p.param, underline = true })
-  set(0, '@lsp.typemod.variable.callable', { fg = p.func })
-  set(0, '@lsp.typemod.variable.constant', { fg = p.constant })
-  set(
-    0,
-    '@lsp.typemod.selfKeyword.defaultLibrary',
-    { fg = p.keyword, italic = true }
-  )
-  set(0, '@lsp.typemod.function.defaultLibrary', { fg = p.funcBuiltin })
-  set(0, '@lsp.typemod.method.defaultLibrary', { fg = p.funcBuiltin })
-  set(0, '@lsp.typemod.macro.defaultLibrary', { fg = p.macro, bold = true })
-  set(0, '@lsp.typemod.type.defaultLibrary', { fg = p.funcBuiltin })
-  set(0, '@lsp.typemod.struct.defaultLibrary', { fg = p.funcBuiltin })
-  set(0, '@lsp.typemod.enum.defaultLibrary', { fg = p.funcBuiltin })
-  set(
-    0,
-    '@lsp.typemod.enumMember.defaultLibrary',
-    { fg = p.constantAlt, bold = true }
-  )
-  set(0, '@lsp.typemod.interface.defaultLibrary', { fg = p.funcBuiltin })
-  set(0, '@lsp.typemod.property.defaultLibrary', { fg = p.property })
-  set(0, '@lsp.typemod.attributeBracket.attribute', { fg = p.bracket })
-  set(0, '@lsp.typemod.decorator.attribute', { fg = p.macro })
-
+  -- -- ── rust ─────────────────────────────────
+  -- set(0, '@lsp.type.selfKeyword', { fg = p.keyword, italic = true })
+  -- set(0, '@lsp.type.selfTypeKeyword', { fg = p.type_ })
+  -- set(0, '@lsp.type.builtinType', { fg = p.type_ })
+  -- set(0, '@lsp.type.builtinAttribute', { fg = p.macro })
+  -- set(0, '@lsp.type.lifetime', { fg = p.typeParam })
+  -- set(0, '@lsp.type.generic', { fg = p.typeParam })
+  -- set(0, '@lsp.type.typeAlias', { fg = p.type_ })
+  -- set(0, '@lsp.type.const', { fg = p.constant })
+  -- set(0, '@lsp.type.static', { fg = p.constant })
+  -- set(0, '@lsp.type.formatSpecifier', { fg = p.regex })
+  -- set(0, '@lsp.type.boolean', { fg = p.constantAlt })
+  -- set(0, '@lsp.type.unresolvedReference', { undercurl = true, sp = p.comment })
+  -- set(0, '@lsp.typemod.const.constant', { fg = p.constant })
+  -- set(0, '@lsp.typemod.const.declaration', { fg = p.constant })
+  -- set(0, '@lsp.typemod.variable.static', { fg = p.constant })
+  -- set(0, '@lsp.typemod.variable.readonly', { fg = p.constant })
+  -- set(0, '@lsp.typemod.variable.mutable', { fg = p.variable, underline = true })
+  -- set(0, '@lsp.typemod.parameter.mutable', { fg = p.param, underline = true })
+  -- set(0, '@lsp.typemod.variable.callable', { fg = p.func })
+  -- set(0, '@lsp.typemod.variable.constant', { fg = p.constant })
+  -- set(
+  --   0,
+  --   '@lsp.typemod.selfKeyword.defaultLibrary',
+  --   { fg = p.keyword, italic = true }
+  -- )
+  -- set(0, '@lsp.typemod.function.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(0, '@lsp.typemod.method.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(0, '@lsp.typemod.macro.defaultLibrary', { fg = p.macro, bold = true })
+  -- set(0, '@lsp.typemod.type.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(0, '@lsp.typemod.struct.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(0, '@lsp.typemod.enum.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(
+  --   0,
+  --   '@lsp.typemod.enumMember.defaultLibrary',
+  --   { fg = p.constantAlt, bold = true }
+  -- )
+  -- set(0, '@lsp.typemod.interface.defaultLibrary', { fg = p.funcBuiltin })
+  -- set(0, '@lsp.typemod.property.defaultLibrary', { fg = p.property })
+  -- set(0, '@lsp.typemod.attributeBracket.attribute', { fg = p.bracket })
+  -- set(0, '@lsp.typemod.decorator.attribute', { fg = p.macro })
+  --
   -- Neotest
   set(0, 'NeotestPassed', { fg = p.added })
   set(0, 'NeotestFailed', { fg = p.error_ })
