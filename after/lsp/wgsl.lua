@@ -16,7 +16,14 @@ lang_mod.record_fmt {
   config = {
     stdin = true,
     command = 'wgslfmt',
-    args = { '-', '--config', 'indent_width=2' },
+    args = {
+      '-',
+      '--silent',
+      '--config',
+      'indent_width=2',
+      '--config',
+      'max_line_width=80',
+    },
   },
 }
 
