@@ -1,5 +1,6 @@
 local search_preview = require 'utils.search_preview'
 local substitute_preview = require 'utils.substitute_preview'
+local cmdline_history = require 'utils.cmdline_history'
 local FLOATING_CMDLINE_WIDTH = 60
 local FLOATING_CMDLINE_ROW = 2
 local FLOATING_CMDLINE_TITLES = {
@@ -101,6 +102,7 @@ vim.api.nvim_create_autocmd('CmdwinEnter', {
     local source_window = vim.fn.win_getid(vim.fn.winnr '#')
     float_cmdwin(vim.api.nvim_get_current_win())
     vim.keymap.set('n', '<Esc>', '<cmd>quit<CR>', { buffer = event.buf })
+    cmdline_history.attach(event.buf)
 
     if source_window ~= 0 then attach_preview(event.buf, source_window) end
     if pending_initial_text == nil then return end
