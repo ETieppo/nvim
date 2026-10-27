@@ -63,10 +63,6 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@field collected_deps table<DepProps, boolean>
 ---@field visited_references table<string, boolean>
 
----@class LangCommandProps
----@field short string
----@field run fun(lang_name: string)
-
 local M = {}
 
 ---@type table<string, RecordedLangProps>
@@ -101,6 +97,7 @@ M.docs = {}
 
 ---@type table<string, boolean>
 local checked_langs = {}
+local collect_deps
 
 ---@param treesitter_name string
 local function record_treesitter(treesitter_name)
@@ -160,8 +157,6 @@ function M.find_referenced_deps(reference)
   if lang then return lang.deps end
   return find_deps_until_cmd(reference)
 end
-
-local collect_deps
 
 ---@param reference string|nil
 ---@param collector DepsCollectorProps
@@ -270,9 +265,9 @@ function M.warn_missing_lang_deps(filetype, buffer)
         local names = vim.tbl_map(function(dep) return dep.cmd end, missing)
         vim.notify(
           lang.lang
-            .. ' is missing deps: '
-            .. table.concat(names, ', ')
-            .. '\nRun :Lang i '
+            .. ' is missing deps:\n\n'
+            .. table.concat(names, ',\n')
+            .. '\n\nRun :Lang i '
             .. (lang.short or lang.lang),
           vim.log.levels.WARN,
           { title = 'Lang' }
@@ -356,25 +351,13 @@ function M.ignore_treesitter_install()
   end
 end
 
----@type table<string, LangCommandProps>
+---@type table<string, CommandProps>
 local lang_commands = {
   install = {
     short = 'i',
     run = M.ensure_lang_deps,
   },
 }
-
----@param name_or_short string
----@return LangCommandProps|nil
-local function find_lang_command(name_or_short)
-  if lang_commands[name_or_short] then return lang_commands[name_or_short] end
-
-  for _, command in pairs(lang_commands) do
-    if command.short == name_or_short then return command end
-  end
-
-  return nil
-end
 
 ---@param arg_lead string
 ---@param cmdline string
@@ -400,7 +383,7 @@ vim.api.nvim_create_user_command('Lang', function(opts)
     return
   end
 
-  local command = find_lang_command(command_arg)
+  local command = helpers.find_command_in(lang_commands, command_arg)
   if command == nil then
     vim.notify('No ' .. command_arg .. ' Lang command found! ' .. face)
     return

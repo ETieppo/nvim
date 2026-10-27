@@ -4,6 +4,10 @@
 ---@class LazyImportProps
 ---@field import string
 
+---@class CommandProps
+---@field short string
+---@field run fun(param: any|nil)
+
 local M = {}
 
 ---@param dir string
@@ -70,6 +74,19 @@ end
 function M.find_modules(base_dir, prefix, opts)
   local dir = vim.fn.stdpath 'config' .. base_dir
   return scan_imported_modules(dir, prefix, opts or {})
+end
+
+---@param list CommandProps[]
+---@param name_or_short string
+---@return CommandProps|nil
+function M.find_command_in(list, name_or_short)
+  if list[name_or_short] then return list[name_or_short] end
+
+  for _, command in pairs(list) do
+    if command.short == name_or_short then return command end
+  end
+
+  return nil
 end
 
 return M

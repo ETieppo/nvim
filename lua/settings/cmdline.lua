@@ -9,6 +9,21 @@ local FLOATING_CMDLINE_TITLES = {
   ['?'] = ' Search backward ',
 }
 local pending_initial_text = nil
+local native_win_gettype = vim.fn.win_gettype
+
+local function is_current_window(window)
+  return window == nil
+    or window == 0
+    or window == vim.api.nvim_get_current_win()
+    or window == vim.fn.winnr()
+end
+
+vim.fn.win_gettype = function(window)
+  if vim.fn.getcmdwintype() ~= '' and is_current_window(window) then
+    return 'command'
+  end
+  return native_win_gettype(window)
+end
 
 local function is_visual_mode() return vim.fn.mode():match '[vV\22]' ~= nil end
 local function is_macro_active()
