@@ -35,7 +35,8 @@ return {
   settings = {
     zls = {
       zig_exe_path = zig ~= '' and zig or nil,
+      enable_build_on_save = true,
+      warn_style = true,
     },
-    enable_build_on_save = true,
   },
 }
