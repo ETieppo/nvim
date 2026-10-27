@@ -4,10 +4,44 @@
 ---@field recalled_text string
 ---@field history_index integer
 
+---@class CmdlineHistoryKeymapProps
+---@field modes string[]
+---@field lhs string
+---@field step integer
+---@field desc string
+
 local M = {}
 
 ---@type table<integer, CmdlineHistoryStateProps>
 local states = {}
+
+---@type CmdlineHistoryKeymapProps[]
+local keymaps = {
+  {
+    modes = { 'i', 'n' },
+    lhs = '<Up>',
+    step = -1,
+    desc = 'Previous history entry with the typed prefix',
+  },
+  {
+    modes = { 'i', 'n' },
+    lhs = '<Down>',
+    step = 1,
+    desc = 'Next history entry with the typed prefix',
+  },
+  {
+    modes = { 'n' },
+    lhs = 'k',
+    step = -1,
+    desc = 'Previous history entry with the typed prefix',
+  },
+  {
+    modes = { 'n' },
+    lhs = 'j',
+    step = 1,
+    desc = 'Next history entry with the typed prefix',
+  },
+}
 
 ---@param line string
 ---@param prefix string
@@ -82,40 +116,6 @@ function M.navigate(step)
 
   replace_current_line(state.recalled_text)
 end
-
----@class CmdlineHistoryKeymapProps
----@field modes string[]
----@field lhs string
----@field step integer
----@field desc string
-
----@type CmdlineHistoryKeymapProps[]
-local keymaps = {
-  {
-    modes = { 'i', 'n' },
-    lhs = '<Up>',
-    step = -1,
-    desc = 'Previous history entry with the typed prefix',
-  },
-  {
-    modes = { 'i', 'n' },
-    lhs = '<Down>',
-    step = 1,
-    desc = 'Next history entry with the typed prefix',
-  },
-  {
-    modes = { 'n' },
-    lhs = 'k',
-    step = -1,
-    desc = 'Previous history entry with the typed prefix',
-  },
-  {
-    modes = { 'n' },
-    lhs = 'j',
-    step = 1,
-    desc = 'Next history entry with the typed prefix',
-  },
-}
 
 ---@param step integer
 local function navigate_with_count(step)

@@ -1,4 +1,4 @@
-local package_managers = require 'utils.package_managers'
+local PackageManager = require 'utils.package_manager'
 local OsNameEnum = require 'utils.enums.os_name_enum'
 local PackageManagerNameEnum = require 'utils.enums.package_manager_name_enum'
 
@@ -8,10 +8,10 @@ local function executables(available)
   return function(name) return vim.list_contains(available, name) end
 end
 
-describe('package_managers.detect', function()
+describe('PackageManager.detect', function()
   it('prefers pacman over other linux package managers', function()
     local manager = assert(
-      package_managers.detect(OsNameEnum.linux, executables { 'apt', 'pacman' })
+      PackageManager.detect(OsNameEnum.linux, executables { 'apt', 'pacman' })
     )
     assert.are.equal(PackageManagerNameEnum.pacman, manager.name)
   end)
@@ -19,13 +19,13 @@ describe('package_managers.detect', function()
   it(
     'returns nil when no package manager exists',
     function()
-      assert.is_nil(package_managers.detect(OsNameEnum.macos, executables {}))
+      assert.is_nil(PackageManager.detect(OsNameEnum.macos, executables {}))
     end
   )
 
   it('always returns scoop on windows', function()
     local manager =
-      assert(package_managers.detect(OsNameEnum.windows, executables {}))
+      assert(PackageManager.detect(OsNameEnum.windows, executables {}))
     assert.are.equal(PackageManagerNameEnum.scoop, manager.name)
     assert.is_false(manager.is_available)
   end)
@@ -33,7 +33,7 @@ end)
 
 describe('pacman', function()
   it('falls back to yay without sudo when pacman fails', function()
-    local pacman = package_managers.create(
+    local pacman = PackageManager.create(
       PackageManagerNameEnum.pacman,
       executables { 'pacman', 'yay' }
     )
@@ -45,7 +45,7 @@ describe('pacman', function()
   end)
 
   it('uses only pacman when yay is missing', function()
-    local pacman = package_managers.create(
+    local pacman = PackageManager.create(
       PackageManagerNameEnum.pacman,
       executables { 'pacman' }
     )
@@ -59,7 +59,7 @@ end)
 describe('generic package managers', function()
   it('uses sudo for apt', function()
     local apt =
-      package_managers.create(PackageManagerNameEnum.apt, executables { 'apt' })
+      PackageManager.create(PackageManagerNameEnum.apt, executables { 'apt' })
     assert.are.equal(
       'sudo apt install -y git',
       apt:build_install_command { 'git' }
@@ -67,17 +67,15 @@ describe('generic package managers', function()
   end)
 
   it('does not use sudo for brew', function()
-    local brew = package_managers.create(
-      PackageManagerNameEnum.brew,
-      executables { 'brew' }
-    )
+    local brew =
+      PackageManager.create(PackageManagerNameEnum.brew, executables { 'brew' })
     assert.are.equal('brew install git', brew:build_install_command { 'git' })
   end)
 end)
 
 describe('scoop', function()
   it('adds buckets before installing bucketed packages', function()
-    local scoop = package_managers.create(
+    local scoop = PackageManager.create(
       PackageManagerNameEnum.scoop,
       executables { 'scoop' }
     )
@@ -89,8 +87,8 @@ describe('scoop', function()
 
   it('bootstraps itself only when unavailable', function()
     local missing =
-      package_managers.create(PackageManagerNameEnum.scoop, executables {})
-    local available = package_managers.create(
+      PackageManager.create(PackageManagerNameEnum.scoop, executables {})
+    local available = PackageManager.create(
       PackageManagerNameEnum.scoop,
       executables { 'scoop' }
     )

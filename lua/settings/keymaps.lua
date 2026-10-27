@@ -249,7 +249,8 @@ end, { desc = '[F]ile [C]opy' })
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
-  local config_lua_path = os_mod.normalize_os_path(vim.fn.stdpath 'config') .. '/'
+  local config_lua_path = os_mod.normalize_os_path(vim.fn.stdpath 'config')
+    .. '/'
   input_path('New Lua config: ', config_lua_path, nil, function(path)
     if path == '' then return end
     if not path:match '%.lua$' then path = path .. '.lua' end
@@ -380,7 +381,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(event)
     local buf = event.buf
     local tb = function() return require 'telescope.builtin' end
-    local map = function(keys, func, desc, mode)
+    local set_lsp_keymap = function(keys, func, desc, mode)
       vim.keymap.set(
         mode or 'n',
         keys,
@@ -389,26 +390,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
       )
     end
 
-    map('grD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
-    map('grr', function() tb().lsp_references() end, 'Goto [R]eferences')
-    map(
+    set_lsp_keymap('grD', vim.lsp.buf.declaration, 'Goto [D]eclaration')
+    set_lsp_keymap(
+      'grr',
+      function() tb().lsp_references() end,
+      'Goto [R]eferences'
+    )
+    set_lsp_keymap(
       'gri',
       function() tb().lsp_implementations() end,
       'Goto [I]mplementation'
     )
-    map(
+    set_lsp_keymap(
       'grt',
       function() tb().lsp_type_definitions() end,
       'Goto [T]ype Definition'
     )
-    map('gO', function() tb().lsp_document_symbols() end, 'Document Symbols')
-    map(
+    set_lsp_keymap(
+      'gO',
+      function() tb().lsp_document_symbols() end,
+      'Document Symbols'
+    )
+    set_lsp_keymap(
       'gW',
       function() tb().lsp_dynamic_workspace_symbols() end,
       'Workspace Symbols'
     )
 
-    map('gd', function()
+    set_lsp_keymap('gd', function()
       vim.lsp.buf.definition {
         on_list = function(options)
           local seen, unique = {}, {}
@@ -489,7 +498,7 @@ vim.keymap.set(
 vim.keymap.set(
   'n',
   '<leader>td',
-  function() require('neotest').run.run { strategy = 'dap' } end,
+  function() require('neotest').run.run { suite = false, strategy = 'dap' } end,
   { desc = '[T]est [D]ebug' }
 )
 vim.keymap.set(

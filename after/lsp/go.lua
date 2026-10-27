@@ -6,10 +6,8 @@ lang_mod.record_lang_deps {
     { cmd = 'go' },
     {
       cmd = 'gopls',
-      os = {
-        unix = 'go install golang.org/x/tools/gopls@latest && echo export PATH=$PATH:$(go env GOPATH)/bin >> ~/.zshrc',
-        windows = 'go install golang.org/x/tools/gopls@latest',
-      },
+      install_command = 'go install golang.org/x/tools/gopls@latest',
+      push_env_source = 'go/bin',
     },
     { cmd = 'dlv', install_command = 'delve' },
   },

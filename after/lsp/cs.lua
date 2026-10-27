@@ -1,6 +1,4 @@
 local lang_mod = require 'utils.lang_mod'
-local install =
-  'dotnet tool install --global roslyn-language-server --prerelease'
 
 lang_mod.record_lang_deps {
   tree_sitter_name = 'c_sharp',
@@ -12,11 +10,8 @@ lang_mod.record_lang_deps {
     },
     {
       cmd = 'roslyn-language-server',
-      os = {
-        unix = install
-          .. [[ && (grep -q '.dotnet/tools' ~/.zshrc || echo 'export PATH="$PATH:$HOME/.dotnet/tools"' >> ~/.zshrc)]],
-        windows = install,
-      },
+      install_command = 'dotnet tool install --global roslyn-language-server --prerelease',
+      push_env_source = '.dotnet/tools',
     },
   },
 }

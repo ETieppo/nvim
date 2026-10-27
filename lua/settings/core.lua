@@ -26,7 +26,7 @@ vim.opt.laststatus = 3
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.virtualedit = 'onemore'
-vim.opt.formatoptions:remove { 'c', 'r', 'o' }
+vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 vim.opt.termguicolors = true
 vim.opt.showbreak = '↪ '
 vim.opt.tabstop = 2
@@ -37,7 +37,7 @@ vim.opt.wrap = true
 vim.opt.linebreak = true
 vim.opt.relativenumber = true
 vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
-vim.opt.fillchars:append { eob = ' ' }
+vim.opt.fillchars:append 'eob: '
 vim.opt.shortmess:append 'W'
 
 vim.api.nvim_set_hl(0, 'Comment', { italic = true })

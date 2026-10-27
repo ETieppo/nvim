@@ -39,7 +39,7 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@field name string
 ---@field cmd string
 ---@field check? fun(path: string): boolean
----@field build fun(path: string): table
+---@field build fun(path: string): dap.Adapter
 
 ---@class DapProps
 ---@field lang? string
@@ -97,7 +97,14 @@ M.docs = {}
 
 ---@type table<string, boolean>
 local checked_langs = {}
-local collect_deps
+
+---@type table<string, CommandProps>
+local lang_commands = {
+  install = {
+    short = 'i',
+    run = function(name_or_short) M.ensure_lang_deps(name_or_short) end,
+  },
+}
 
 ---@param treesitter_name string
 local function record_treesitter(treesitter_name)
@@ -152,32 +159,28 @@ end
 
 ---@param reference string
 ---@return DepProps[]|nil
-function M.find_referenced_deps(reference)
+local function find_referenced_deps(reference)
   local lang = M.find_lang(reference)
   if lang then return lang.deps end
   return find_deps_until_cmd(reference)
 end
 
 ---@param reference string|nil
----@param collector DepsCollectorProps
-local function collect_reference(reference, collector)
-  if not reference or collector.visited_references[reference] then return end
-  collector.visited_references[reference] = true
-
-  local referenced_deps = M.find_referenced_deps(reference)
-  if not referenced_deps then
-    table.insert(collector.resolution.unresolved_references, reference)
-    return
-  end
-
-  collect_deps(referenced_deps, collector)
-end
-
 ---@param deps DepProps[]
 ---@param collector DepsCollectorProps
-collect_deps = function(deps, collector)
+local function collect_deps(reference, deps, collector)
+  if reference and not collector.visited_references[reference] then
+    collector.visited_references[reference] = true
+    local referenced_deps = find_referenced_deps(reference)
+    if referenced_deps then
+      collect_deps(nil, referenced_deps, collector)
+    else
+      table.insert(collector.resolution.unresolved_references, reference)
+    end
+  end
+
   for _, dep in ipairs(deps) do
-    collect_reference(dep.depends_on, collector)
+    collect_deps(dep.depends_on, {}, collector)
     if not collector.collected_deps[dep] then
       collector.collected_deps[dep] = true
       table.insert(collector.resolution.deps, dep)
@@ -195,8 +198,7 @@ function M.resolve_lang_deps(lang)
     visited_references = { [lang.lang] = true },
   }
 
-  collect_reference(lang.depends_on, collector)
-  collect_deps(lang.deps, collector)
+  collect_deps(lang.depends_on, lang.deps, collector)
   return collector.resolution
 end
 
@@ -289,7 +291,18 @@ function M.record_lang_deps(lang)
     record_treesitter(treesitter_name)
   end
 
-  M.langs[lang_name] = vim.tbl_extend('force', lang, { lang = lang_name })
+  for _, dep in ipairs(lang.deps) do
+    dep.lang = dep.lang or lang_name
+  end
+
+  deps_mod.add_to_session_path(lang.deps)
+  M.langs[lang_name] = {
+    lang = lang_name,
+    short = lang.short,
+    depends_on = lang.depends_on,
+    deps = lang.deps,
+    tree_sitter_name = lang.tree_sitter_name,
+  }
 end
 
 ---@param test_adapter TestAdapterProps
@@ -318,10 +331,12 @@ function M.record_dap_adapter(adapter) M.dap.adapters[adapter.name] = adapter en
 ---@param dap DapProps
 function M.record_dap(dap)
   local lang_name = dap.lang or helpers.get_caller_filename()
-  M.dap.configurations[lang_name] = vim.tbl_extend('force', dap, {
+  M.dap.configurations[lang_name] = {
     lang = lang_name,
+    adapter = dap.adapter,
     filetypes = dap.filetypes or { lang_name },
-  })
+    configurations = dap.configurations,
+  }
 end
 
 ---@param docs DocsProps
@@ -350,14 +365,6 @@ function M.ignore_treesitter_install()
     table.insert(M.ignore_at_treesitter, lang_name)
   end
 end
-
----@type table<string, CommandProps>
-local lang_commands = {
-  install = {
-    short = 'i',
-    run = M.ensure_lang_deps,
-  },
-}
 
 ---@param arg_lead string
 ---@param cmdline string

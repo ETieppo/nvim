@@ -8,14 +8,16 @@ lang_mod.record_lang_deps {
     { cmd = 'ruby-build' },
     {
       cmd = 'ruby',
-      min_version = '3.0.0',
-      version_cmd = "ruby -e 'print RUBY_VERSION'",
+      min_version = '3',
+      push_env_source = '.rbenv/shims',
       os = {
-        unix = 'V=$(rbenv install -l | grep -E "^[0-9]+(\\.[0-9]+)*$" | tail -1)'
-          .. ' && rbenv install -s "$V" && rbenv global "$V"',
+        unix = 'rbenv install -s ruby && rbenv global "$(ruby-build --resolve ruby)"',
       },
     },
-    { cmd = 'ruby-lsp', install_command = 'gem install ruby-lsp' },
+    {
+      cmd = 'ruby-lsp',
+      install_command = 'gem install ruby-lsp && rbenv rehash',
+    },
   },
 }
 

@@ -1,5 +1,4 @@
-local search_preview = require 'utils.search_preview'
-local substitute_preview = require 'utils.substitute_preview'
+local cmdline_preview = require 'utils.cmdline_preview'
 local cmdline_history = require 'utils.cmdline_history'
 local FLOATING_CMDLINE_WIDTH = 60
 local FLOATING_CMDLINE_ROW = 2
@@ -10,6 +9,8 @@ local FLOATING_CMDLINE_TITLES = {
 }
 local pending_initial_text = nil
 local native_win_gettype = vim.fn.win_gettype
+local floating_cmdline_group =
+  vim.api.nvim_create_augroup('floating-cmdline', { clear = true })
 
 local function is_current_window(window)
   return window == nil
@@ -18,12 +19,12 @@ local function is_current_window(window)
     or window == vim.fn.winnr()
 end
 
-vim.fn.win_gettype = function(window)
+rawset(vim.fn, 'win_gettype', function(window)
   if vim.fn.getcmdwintype() ~= '' and is_current_window(window) then
     return 'command'
   end
   return native_win_gettype(window)
-end
+end)
 
 local function is_visual_mode() return vim.fn.mode():match '[vV\22]' ~= nil end
 local function is_macro_active()
@@ -43,20 +44,6 @@ local function open_floating_cmdline(cmdline_type)
     pending_initial_text = cmdline_type == ':' and resolve_range() or ''
     return '<Esc>q' .. cmdline_type
   end
-end
-
-local function attach_preview(cmdwin_buffer, source_window)
-  local cmdline_type = vim.fn.getcmdwintype()
-  if cmdline_type == ':' then
-    substitute_preview.attach(cmdwin_buffer, source_window)
-  elseif cmdline_type == '/' or cmdline_type == '?' then
-    search_preview.attach(cmdwin_buffer, source_window, cmdline_type)
-  end
-end
-
-local function detach_previews()
-  substitute_preview.detach()
-  search_preview.detach()
 end
 
 local function float_cmdwin(window)
@@ -101,13 +88,10 @@ vim.keymap.set(
   { expr = true, desc = 'Open floating backward search' }
 )
 
-local floating_cmdline_group =
-  vim.api.nvim_create_augroup('floating-cmdline', { clear = true })
-
 vim.api.nvim_create_autocmd('CmdwinLeave', {
   desc = 'Remove the command-line previews',
   group = floating_cmdline_group,
-  callback = detach_previews,
+  callback = cmdline_preview.detach,
 })
 
 vim.api.nvim_create_autocmd('CmdwinEnter', {
@@ -119,7 +103,9 @@ vim.api.nvim_create_autocmd('CmdwinEnter', {
     vim.keymap.set('n', '<Esc>', '<cmd>quit<CR>', { buffer = event.buf })
     cmdline_history.attach(event.buf)
 
-    if source_window ~= 0 then attach_preview(event.buf, source_window) end
+    if source_window ~= 0 then
+      cmdline_preview.attach(event.buf, source_window, vim.fn.getcmdwintype())
+    end
     if pending_initial_text == nil then return end
 
     vim.api.nvim_set_current_line(pending_initial_text)

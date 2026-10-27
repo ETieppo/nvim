@@ -1,4 +1,5 @@
 local helpers = require 'utils.helpers'
+local stub = require 'luassert.stub'
 local lang_mod = require 'utils.lang_mod'
 
 local fixture_path = vim.fn.fnamemodify(
@@ -31,6 +32,13 @@ describe('lang_mod records', function()
     assert.are.equal('fixture_lang', lang.lang)
     assert.are.equal('fx', lang.short)
   end)
+
+  it(
+    'tags each dep with the lang that records it',
+    function()
+      assert.are.equal('fixture_lang', lang_mod.langs.fixture_lang.deps[1].lang)
+    end
+  )
 
   it(
     'finds a lang by its short name',
@@ -163,18 +171,16 @@ describe('lang_mod.resolve_lang_deps', function()
 end)
 
 describe('lang_mod.warn_missing_lang_deps', function()
-  local original_notify = vim.notify
   local messages = {}
-
-  before_each(function()
-    messages = {}
-    vim.notify = function(...)
-      local message, level = ...
+  local notify = stub(
+    vim,
+    'notify',
+    function(message, level)
       table.insert(messages, { message = message, level = level })
     end
-  end)
+  )
 
-  after_each(function() vim.notify = original_notify end)
+  before_each(function() messages = {} end)
 
   it('warns once per lang for a matching filetype', function()
     lang_mod.record_lang_deps {
@@ -233,4 +239,6 @@ describe('lang_mod.warn_missing_lang_deps', function()
     )
     assert.are.equal(0, #messages)
   end)
+
+  notify:revert()
 end)

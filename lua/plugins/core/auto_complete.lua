@@ -83,24 +83,24 @@ return {
     },
   },
   config = function(_, opts)
-    require('blink.cmp.lib.utils').notify = function(chunks, level)
+    rawset(require 'blink.cmp.lib.utils', 'notify', function(chunks, level)
       local text = {}
       for _, chunk in ipairs(chunks) do
         text[#text + 1] = chunk[1]
       end
       notify(table.concat(text), level or vim.log.levels.WARN)
-    end
+    end)
 
     require('blink.cmp').setup(opts)
 
     local renderer = require 'blink.cmp.completion.windows.render'
     local draw = renderer.draw
-    renderer.draw = function(self, ...)
+    rawset(renderer, 'draw', function(self, ...)
       local ok, columns = pcall(draw, self, ...)
       if ok then return columns end
       notify('menu render failed: ' .. tostring(columns))
       return self.columns or {}
-    end
+    end)
 
     local sources = require 'blink.cmp.sources.lib'
     print_to_notify(require('blink.cmp.sources.lib.tree').get_completions)
