@@ -2,10 +2,62 @@ local PackageManager = require 'utils.package_manager'
 local OsNameEnum = require 'utils.enums.os_name_enum'
 local PackageManagerNameEnum = require 'utils.enums.package_manager_name_enum'
 
+---@class ConfirmationRecorderProps
+---@field prompts string[]
+---@field confirm_install InstallConfirmationProps
+
 ---@param available string[]
 ---@return fun(name: string): boolean
 local function executables(available)
   return function(name) return vim.list_contains(available, name) end
+end
+
+---@param outputs table<string, string>
+---@return CommandOutputReaderProps
+local function reader(outputs)
+  return function(command) return outputs[command] end
+end
+
+---@return boolean
+local function decline_install() return false end
+
+---@param answer boolean
+---@return ConfirmationRecorderProps
+local function confirmation(answer)
+  local prompts = {}
+  return {
+    prompts = prompts,
+    confirm_install = function(package_manager_name, package_name)
+      table.insert(prompts, package_manager_name .. ' ' .. package_name)
+      return answer
+    end,
+  }
+end
+
+---@param manager PackageManager
+---@return PackageManagerNameEnum[]
+local function chain_of(manager)
+  return vim.tbl_map(
+    function(source) return source.name end,
+    manager.resolution_sources
+  )
+end
+
+---@param manager PackageManager
+---@param package_name string
+---@param outputs table<string, string>
+---@param confirm_install? InstallConfirmationProps
+---@return string|nil
+local function resolved_command(manager, package_name, outputs, confirm_install)
+  local resolution = manager:resolve(
+    package_name,
+    reader(outputs),
+    confirm_install or decline_install
+  )
+  return resolution
+    and resolution.package_manager:build_install_command(
+      resolution.package_name
+    )
 end
 
 describe('PackageManager.detect', function()
@@ -31,153 +83,240 @@ describe('PackageManager.detect', function()
   end)
 end)
 
-describe('pacman resolution', function()
-  local AUR_INFO = "curl -fsS 'https://aur.archlinux.org/rpc/v5/info?arg[]=%s'"
-  local AUR_PROVIDES =
-    "curl -fsS 'https://aur.archlinux.org/rpc/v5/search/%s?by=provides'"
-  local BREW_FORMULA =
-    'curl -fsS -o /dev/null https://formulae.brew.sh/api/formula/%s.json'
-
-  ---@param names string[]
-  ---@return string
-  local function aur_results(names)
-    return vim.json.encode {
-      results = vim.tbl_map(function(name) return { Name = name } end, names),
-    }
-  end
-
-  ---@param outputs table<string, string>
-  ---@return CommandOutputReaderProps
-  local function reader(outputs)
-    return function(command) return outputs[command] end
-  end
-
-  ---@param manager PackageManager
-  ---@param package_name string
-  ---@param allows_prebuilt_binaries boolean
-  ---@param outputs table<string, string>
-  ---@return string|nil
-  local function resolved_command(
-    manager,
-    package_name,
-    allows_prebuilt_binaries,
-    outputs
-  )
-    local resolution =
-      manager:resolve(package_name, allows_prebuilt_binaries, reader(outputs))
-    return resolution
-      and resolution.package_manager:build_install_command(
-        resolution.package_name
+describe('PackageManager.create', function()
+  it(
+    'chains pacman to yay and brew',
+    function()
+      assert.are.same(
+        {
+          PackageManagerNameEnum.pacman,
+          PackageManagerNameEnum.yay,
+          PackageManagerNameEnum.brew,
+        },
+        chain_of(
+          PackageManager.create(
+            PackageManagerNameEnum.pacman,
+            executables { 'pacman', 'yay', 'brew' }
+          )
+        )
       )
-  end
+    end
+  )
 
-  local pacman = PackageManager.create(
+  it('leaves fallbacks that are not installed out of the chain', function()
+    assert.are.same(
+      { PackageManagerNameEnum.pacman },
+      chain_of(
+        PackageManager.create(
+          PackageManagerNameEnum.pacman,
+          executables { 'pacman' }
+        )
+      )
+    )
+    assert.are.same(
+      { PackageManagerNameEnum.pacman, PackageManagerNameEnum.brew },
+      chain_of(
+        PackageManager.create(
+          PackageManagerNameEnum.pacman,
+          executables { 'pacman', 'brew' }
+        )
+      )
+    )
+  end)
+
+  it('chains every other linux package manager to brew', function()
+    for _, name in ipairs {
+      PackageManagerNameEnum.apt,
+      PackageManagerNameEnum.dnf,
+      PackageManagerNameEnum.zypper,
+      PackageManagerNameEnum.apk,
+    } do
+      assert.are.same(
+        { name, PackageManagerNameEnum.brew },
+        chain_of(PackageManager.create(name, executables { name, 'brew' }))
+      )
+    end
+  end)
+
+  it('gives brew and scoop no fallbacks', function()
+    assert.are.same(
+      { PackageManagerNameEnum.brew },
+      chain_of(
+        PackageManager.create(
+          PackageManagerNameEnum.brew,
+          executables { 'brew', 'yay' }
+        )
+      )
+    )
+    assert.are.same(
+      { PackageManagerNameEnum.scoop },
+      chain_of(
+        PackageManager.create(
+          PackageManagerNameEnum.scoop,
+          executables { 'scoop', 'brew' }
+        )
+      )
+    )
+  end)
+end)
+
+describe('PackageManager:has_package', function()
+  it('queries each package manager with its own listing command', function()
+    ---@type table<PackageManagerNameEnum, string>
+    local expected_queries = {
+      [PackageManagerNameEnum.pacman] = 'pacman -Si foo',
+      [PackageManagerNameEnum.yay] = 'yay -Si --aur foo',
+      [PackageManagerNameEnum.apt] = 'apt-cache show foo',
+      [PackageManagerNameEnum.dnf] = 'dnf info -q foo',
+      [PackageManagerNameEnum.zypper] = 'zypper --non-interactive search --match-exact foo',
+      [PackageManagerNameEnum.apk] = 'apk search -x foo',
+      [PackageManagerNameEnum.brew] = 'brew info --formula foo',
+    }
+
+    for name, expected_query in pairs(expected_queries) do
+      local queries = {}
+      PackageManager.create(name, executables { name })
+        :has_package(
+          'foo',
+          function(command) table.insert(queries, command) end
+        )
+      assert.are.same({ expected_query }, queries)
+    end
+  end)
+
+  it('treats a failed or empty listing as a missing package', function()
+    local apk =
+      PackageManager.create(PackageManagerNameEnum.apk, executables { 'apk' })
+    assert.is_false(apk:has_package('foo', reader {}))
+    assert.is_false(
+      apk:has_package('foo', reader { ['apk search -x foo'] = '\n' })
+    )
+    assert.is_true(
+      apk:has_package('foo', reader { ['apk search -x foo'] = 'foo-1.0-r0\n' })
+    )
+  end)
+
+  it('accepts the package when the manager has no listing command', function()
+    local queries = {}
+    local scoop = PackageManager.create(
+      PackageManagerNameEnum.scoop,
+      executables { 'scoop' }
+    )
+    assert.is_true(
+      scoop:has_package(
+        'git',
+        function(command) table.insert(queries, command) end
+      )
+    )
+    assert.are.same({}, queries)
+  end)
+end)
+
+describe('PackageManager:resolve', function()
+  local arch = PackageManager.create(
     PackageManagerNameEnum.pacman,
     executables { 'pacman', 'yay', 'brew' }
   )
 
   it(
-    'prefers the exact pacman package',
+    'prefers the exact package of the native package manager',
     function()
       assert.are.equal(
         'sudo pacman -S --needed --noconfirm jdtls',
-        resolved_command(pacman, 'jdtls', false, {
+        resolved_command(arch, 'jdtls', {
           ['pacman -Si jdtls'] = 'Name : jdtls',
-          [AUR_INFO:format 'jdtls'] = aur_results { 'jdtls' },
+          ['yay -Si --aur jdtls'] = 'Name : jdtls',
+          ['brew info --formula jdtls'] = 'jdtls: stable',
         })
       )
     end
   )
 
   it(
-    'uses the exact aur package before brew',
+    'looks for the exact package in yay before brew',
     function()
       assert.are.equal(
         'yay -S --needed --noconfirm --aur jdtls',
-        resolved_command(pacman, 'jdtls', false, {
-          [AUR_INFO:format 'jdtls'] = aur_results { 'jdtls' },
-          [BREW_FORMULA:format 'jdtls'] = '',
+        resolved_command(arch, 'jdtls', {
+          ['yay -Si --aur jdtls'] = 'Name : jdtls',
+          ['brew info --formula jdtls'] = 'jdtls: stable',
         })
       )
     end
   )
 
   it(
-    'uses the exact brew formula before related packages',
+    'uses the exact brew formula when pacman and yay lack it',
     function()
       assert.are.equal(
         'brew install tofu-ls',
-        resolved_command(pacman, 'tofu-ls', false, {
-          [AUR_INFO:format 'tofu-ls'] = aur_results {},
-          [AUR_PROVIDES:format 'tofu-ls'] = aur_results { 'tofu-ls-bin' },
-          [BREW_FORMULA:format 'tofu-ls'] = '',
+        resolved_command(arch, 'tofu-ls', {
+          ['brew info --formula tofu-ls'] = 'tofu-ls: stable',
         })
       )
     end
   )
 
-  it('falls back to related packages after every exact lookup', function()
-    assert.are.equal(
-      'sudo pacman -S --needed --noconfirm bash',
-      resolved_command(pacman, 'sh', false, {
-        ['pacman -Sp --print-format %n sh'] = 'bash\n',
-        [AUR_PROVIDES:format 'sh'] = aur_results { 'sh-git' },
-      })
-    )
-    assert.are.equal(
-      'yay -S --needed --noconfirm --aur foo-git',
-      resolved_command(pacman, 'foo', false, {
-        [AUR_PROVIDES:format 'foo'] = aur_results { 'foo-bin', 'foo-git' },
-      })
-    )
-  end)
-
   it(
-    'never derives an aur -bin package',
-    function()
-      assert.is_nil(resolved_command(pacman, 'tofu-ls', false, {
-        [AUR_INFO:format 'tofu-ls'] = aur_results {},
-        [AUR_PROVIDES:format 'tofu-ls'] = aur_results { 'tofu-ls-bin' },
-      }))
-    end
-  )
-
-  it(
-    'installs an aur -bin package when explicitly allowed',
+    'prefers an exact package in any manager over a -git variant',
     function()
       assert.are.equal(
-        'yay -S --needed --noconfirm --aur tofu-ls-bin',
-        resolved_command(pacman, 'tofu-ls-bin', true, {
-          [AUR_INFO:format 'tofu-ls-bin'] = aur_results { 'tofu-ls-bin' },
+        'brew install foo',
+        resolved_command(arch, 'foo', {
+          ['yay -Si --aur foo-git'] = 'Name : foo-git',
+          ['brew info --formula foo'] = 'foo: stable',
         })
       )
     end
   )
 
-  it('skips yay when missing and calls brew by its prefix', function()
-    local without_helpers = PackageManager.create(
-      PackageManagerNameEnum.pacman,
-      executables { 'pacman' }
-    )
-    local resolution = assert(without_helpers:resolve(
-      'tofu-ls',
-      false,
-      reader {
-        [AUR_INFO:format 'tofu-ls'] = aur_results { 'tofu-ls' },
-        [BREW_FORMULA:format 'tofu-ls'] = '',
-      }
-    ))
-
+  it('falls back to -git variants before -bin ones', function()
+    local recorder = confirmation(true)
     assert.are.equal(
-      '/home/linuxbrew/.linuxbrew/bin/brew install tofu-ls',
-      resolution.package_manager:build_install_command(resolution.package_name)
+      'yay -S --needed --noconfirm --aur foo-git',
+      resolved_command(arch, 'foo', {
+        ['yay -Si --aur foo-git'] = 'Name : foo-git',
+        ['yay -Si --aur foo-bin'] = 'Name : foo-bin',
+      }, recorder.confirm_install)
     )
-    assert.are.equal(
-      '/home/linuxbrew/.linuxbrew/bin',
-      resolution.package_manager:get_unlisted_bin_dir()
-    )
-    assert.are.equal(1, #resolution.package_manager:get_bootstrap_commands())
+    assert.are.same({}, recorder.prompts)
   end)
+
+  it('asks before installing a derived -bin package', function()
+    local recorder = confirmation(true)
+    assert.are.equal(
+      'yay -S --needed --noconfirm --aur foo-bin',
+      resolved_command(arch, 'foo', {
+        ['yay -Si --aur foo-bin'] = 'Name : foo-bin',
+      }, recorder.confirm_install)
+    )
+    assert.are.same({ 'yay foo-bin' }, recorder.prompts)
+  end)
+
+  it('keeps looking after a declined -bin package', function()
+    local recorder = confirmation(false)
+    assert.is_nil(resolved_command(arch, 'foo', {
+      ['yay -Si --aur foo-bin'] = 'Name : foo-bin',
+      ['brew info --formula foo-bin'] = 'foo-bin: stable',
+    }, recorder.confirm_install))
+    assert.are.same({ 'yay foo-bin', 'brew foo-bin' }, recorder.prompts)
+  end)
+
+  it('installs an explicitly named -bin package without asking', function()
+    local recorder = confirmation(false)
+    assert.are.equal(
+      'yay -S --needed --noconfirm --aur tofu-ls-bin',
+      resolved_command(arch, 'tofu-ls-bin', {
+        ['yay -Si --aur tofu-ls-bin'] = 'Name : tofu-ls-bin',
+      }, recorder.confirm_install)
+    )
+    assert.are.same({}, recorder.prompts)
+  end)
+
+  it(
+    'returns nil when no manager has the package or a variant of it',
+    function() assert.is_nil(resolved_command(arch, 'nothing', {})) end
+  )
 end)
 
 describe('generic package managers', function()

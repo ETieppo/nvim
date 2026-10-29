@@ -11,6 +11,7 @@ local ShellNameEnum = require 'utils.enums.shell_name_enum'
 ---@field shell? ShellNameEnum
 ---@field executables? string[]
 ---@field outputs? table<string, string>
+---@field confirm_install? InstallConfirmationProps
 
 ---@param props FakeEnvironmentProps
 ---@return InstallEnvironmentProps
@@ -27,6 +28,7 @@ local function environment(props)
     read_command_output = function(command)
       return (props.outputs or {})[command]
     end,
+    confirm_install = props.confirm_install or function() return false end,
   }
 end
 
@@ -40,25 +42,32 @@ end
 local arch = environment {
   os_name = OsNameEnum.linux,
   package_manager = PackageManagerNameEnum.pacman,
-  executables = { 'pacman', 'yay' },
+  executables = { 'pacman', 'yay', 'brew' },
   outputs = {
     ['pacman -Si rustup'] = 'Name : rustup',
     ['pacman -Si taplo-cli'] = 'Name : taplo-cli',
     ['pacman -Si tree-sitter-cli'] = 'Name : tree-sitter-cli',
     ['pacman -Si qt6-languageserver'] = 'Name : qt6-languageserver',
-    ["curl -fsS 'https://aur.archlinux.org/rpc/v5/info?arg[]=foo-bin'"] = '{"results":[{"Name":"foo-bin"}]}',
-    ['curl -fsS -o /dev/null https://formulae.brew.sh/api/formula/tofu-ls.json'] = '',
+    ['brew info --formula tofu-ls'] = 'tofu-ls: stable',
   },
 }
 local debian = environment {
   os_name = OsNameEnum.linux,
   package_manager = PackageManagerNameEnum.apt,
   executables = { 'apt' },
+  outputs = {
+    ['apt-cache show taplo-cli'] = 'Package: taplo-cli',
+  },
 }
 local macos = environment {
   os_name = OsNameEnum.macos,
   package_manager = PackageManagerNameEnum.brew,
   executables = { 'brew' },
+  outputs = {
+    ['brew info --formula foo'] = 'foo: stable',
+    ['brew info --formula tree-sitter'] = 'tree-sitter: stable',
+    ['brew info --formula hashicorp/tap/terraform'] = 'terraform: stable',
+  },
 }
 local windows = environment {
   os_name = OsNameEnum.windows,
@@ -68,6 +77,23 @@ local windows = environment {
 }
 
 describe('deps_mod instruction selection', function()
+  ---@param prompts string[]
+  ---@param answer boolean
+  ---@param outputs table<string, string>
+  ---@return InstallEnvironmentProps
+  local function arch_answering(prompts, answer, outputs)
+    return environment {
+      os_name = OsNameEnum.linux,
+      package_manager = PackageManagerNameEnum.pacman,
+      executables = { 'pacman', 'yay' },
+      outputs = outputs,
+      confirm_install = function(package_manager_name, package_name)
+        table.insert(prompts, package_manager_name .. ' ' .. package_name)
+        return answer
+      end,
+    }
+  end
+
   it(
     'falls back to cmd as the package name',
     function()
@@ -78,10 +104,13 @@ describe('deps_mod instruction selection', function()
     end
   )
 
-  it('uses archlinux only with pacman', function()
-    local dep = { cmd = 'taplo', os = { archlinux = 'taplo-cli' } }
-    assert.is_truthy(command_for(dep, arch):find('taplo-cli', 1, true))
-    assert.are.equal('sudo apt install -y taplo', command_for(dep, debian))
+  it('uses the linux key on every linux distro', function()
+    local dep = { cmd = 'taplo', os = { linux = 'taplo-cli' } }
+    assert.are.equal(
+      'sudo pacman -S --needed --noconfirm taplo-cli',
+      command_for(dep, arch)
+    )
+    assert.are.equal('sudo apt install -y taplo-cli', command_for(dep, debian))
   end)
 
   it('uses unix for macos and linux but not windows', function()
@@ -97,33 +126,56 @@ describe('deps_mod instruction selection', function()
       os = { unix = 'tree-sitter-cli', macos = 'tree-sitter' },
     }
     assert.are.equal('brew install tree-sitter', command_for(dep, macos))
-    assert.is_truthy(command_for(dep, arch):find('tree-sitter-cli', 1, true))
-  end)
-
-  it('prefers linux over unix and lets it allow -bin packages', function()
-    local dep = { cmd = 'foo', os = { linux = 'foo-bin', unix = 'foo' } }
     assert.are.equal(
-      'yay -S --needed --noconfirm --aur foo-bin',
+      'sudo pacman -S --needed --noconfirm tree-sitter-cli',
       command_for(dep, arch)
     )
-    assert.are.equal('sudo apt install -y foo-bin', command_for(dep, debian))
+  end)
+
+  it('prefers linux over unix and installs an explicit -bin', function()
+    local prompts = {}
+    local dep = { cmd = 'foo', os = { linux = 'foo-bin', unix = 'foo' } }
+    local env = arch_answering(prompts, false, {
+      ['yay -Si --aur foo-bin'] = 'Name : foo-bin',
+    })
+
+    assert.are.equal(
+      'yay -S --needed --noconfirm --aur foo-bin',
+      command_for(dep, env)
+    )
+    assert.are.same({}, prompts)
     assert.are.equal('brew install foo', command_for(dep, macos))
   end)
 
-  it(
-    'does not derive -bin packages from the cmd name',
-    function() assert.is_nil(command_for({ cmd = 'foo-bin' }, arch)) end
-  )
+  it('asks before installing a -bin derived from the cmd name', function()
+    local accepted_prompts, declined_prompts = {}, {}
+    local outputs = { ['yay -Si --aur bar-bin'] = 'Name : bar-bin' }
+
+    assert.are.equal(
+      'yay -S --needed --noconfirm --aur bar-bin',
+      command_for(
+        { cmd = 'bar' },
+        arch_answering(accepted_prompts, true, outputs)
+      )
+    )
+    assert.are.same({ 'yay bar-bin' }, accepted_prompts)
+
+    local plan = deps_mod.plan(
+      { { cmd = 'bar' } },
+      arch_answering(declined_prompts, false, outputs)
+    )
+    assert.are.same({}, plan.commands)
+    assert.are.same({ 'bar' }, plan.skipped)
+    assert.are.same({ 'yay bar-bin' }, declined_prompts)
+  end)
 
   it(
-    'bootstraps brew and exports its prefix when nothing else has it',
+    'resolves through yay and brew when pacman lacks the package',
     function()
-      local plan = deps_mod.plan({ { cmd = 'tofu-ls' } }, arch)
-
-      assert.are.same({
-        '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
-        [[/home/linuxbrew/.linuxbrew/bin/brew install tofu-ls && echo '\n# BREW\nexport PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"' >> ~/.zshrc && source ~/.zshrc]],
-      }, plan.commands)
+      assert.are.equal(
+        'brew install tofu-ls',
+        command_for({ cmd = 'tofu-ls' }, arch)
+      )
     end
   )
 
@@ -158,6 +210,37 @@ describe('deps_mod instruction selection', function()
       )
     end
   )
+end)
+
+describe('deps_mod supported_os', function()
+  ---@type DepProps
+  local linux_only = {
+    cmd = 'linux-tool',
+    install_command = 'install linux-tool',
+    supported_os = { OsNameEnum.linux },
+  }
+
+  it('plans a dep only on the systems it supports', function()
+    assert.are.equal('install linux-tool', command_for(linux_only, arch))
+
+    local plan = deps_mod.plan({ linux_only }, windows)
+    assert.are.same({}, plan.commands)
+    assert.are.same({}, plan.installed)
+    assert.are.same({}, plan.skipped)
+  end)
+
+  it('never reports an unsupported dep as missing', function()
+    assert.are.same({ linux_only }, deps_mod.find_missing({ linux_only }, arch))
+    assert.are.same({}, deps_mod.find_missing({ linux_only }, macos))
+  end)
+
+  it('keeps deps without supported_os on every system', function()
+    ---@type DepProps
+    local everywhere = { cmd = 'everywhere', install_command = 'install it' }
+    for _, env in ipairs { arch, macos, windows } do
+      assert.are.equal('install it', command_for(everywhere, env))
+    end
+  end)
 end)
 
 describe('deps_mod.find_missing', function()
@@ -293,6 +376,14 @@ describe('deps_mod push_env_source', function()
   local original_home = vim.env.HOME
   local home = ''
 
+  ---@type DepProps
+  local linux_brew = {
+    cmd = 'brew',
+    supported_os = { OsNameEnum.linux },
+    push_env_source = '/home/linuxbrew/.linuxbrew/bin',
+    install_command = 'install brew',
+  }
+
   before_each(function()
     home = vim.fn.tempname()
     vim.fn.mkdir(home, 'p')
@@ -324,7 +415,7 @@ describe('deps_mod push_env_source', function()
         command_for({
           cmd = 'qmlls6',
           push_env_source = '/usr/lib/qt6/bin',
-          os = { archlinux = 'qt6-languageserver' },
+          os = { linux = 'qt6-languageserver' },
         }, arch)
       )
     end
@@ -421,6 +512,37 @@ describe('deps_mod push_env_source', function()
       [[echo '\n# RUBY\nexport PATH="$PATH:$HOME/.rbenv/shims"' >> ~/.zshrc && source ~/.zshrc]],
     }, plan.commands)
     assert.are.same({}, plan.installed)
+  end)
+
+  it(
+    'installs brew before exporting its bin dir when it is missing',
+    function()
+      assert.are.equal(
+        [[install brew && echo '\n# BREW\nexport PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"' >> ~/.zshrc && source ~/.zshrc]],
+        command_for(linux_brew, debian)
+      )
+    end
+  )
+
+  it(
+    'exports and sources the rc when brew is installed but not exported',
+    function()
+      assert.are.equal(
+        [[echo '\n# BREW\nexport PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"' >> ~/.zshrc && source ~/.zshrc]],
+        command_for(linux_brew, arch)
+      )
+    end
+  )
+
+  it('leaves an installed and exported brew alone', function()
+    vim.fn.writefile(
+      { 'export PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"' },
+      home .. '/.zshrc'
+    )
+    local plan = deps_mod.plan({ linux_brew }, arch)
+
+    assert.are.same({}, plan.commands)
+    assert.are.same({ 'brew' }, plan.installed)
   end)
 
   it('adds existing sources to the session path', function()

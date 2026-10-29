@@ -88,3 +88,10 @@ there are no tests
 and about little nightmares, Im pretty picky and was 4 months for all that
 I described... it was painfull but now I'm pretty happy that it was mine
 decision even so it look's and work like I idealised.
+
+
+# Test suit
+
+```bash
+nvim --headless --noplugin -u tests/minimal_init.lua -c "PlenaryBustedDirectory
+```
