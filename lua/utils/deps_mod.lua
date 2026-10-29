@@ -2,16 +2,14 @@ local os_mod = require 'utils.os_mod'
 local Shell = require 'utils.shell'
 local PackageManager = require 'utils.package_manager'
 local OsNameEnum = require 'utils.enums.os_name_enum'
-local PackageManagerNameEnum = require 'utils.enums.package_manager_name_enum'
-local InstallStrategyEnum = require 'utils.enums.install_strategy_enum'
 local InstallPlanDto = require 'utils.dtos.install_plan_dto'
 
----@alias OsInstructionKeyProps 'unix'|'macos'|'archlinux'|'windows'
+---@alias OsInstructionKeyProps 'unix'|'macos'|'linux'|'windows'
 
 ---@class OsInstructionProps
 ---@field unix? string
 ---@field macos? string
----@field archlinux? string
+---@field linux? string
 ---@field windows? string
 
 ---@class ReleaseWrapperProps
@@ -35,6 +33,7 @@ local InstallPlanDto = require 'utils.dtos.install_plan_dto'
 ---@field min_version? string
 ---@field push_env_source? string
 ---@field release? ReleaseProps
+---@field supported_os? OsNameEnum[]
 
 ---@class InstallEnvironmentProps
 ---@field os_name OsNameEnum|nil
@@ -42,8 +41,15 @@ local InstallPlanDto = require 'utils.dtos.install_plan_dto'
 ---@field shell Shell
 ---@field has_executable fun(name: string): boolean
 ---@field read_command_output fun(command: string): string|nil
+---@field confirm_install InstallConfirmationProps
 
 local M = {}
+---@type table<OsNameEnum, OsInstructionKeyProps[]>
+local OS_INSTRUCTION_KEYS = {
+  [OsNameEnum.macos] = { 'macos', 'unix' },
+  [OsNameEnum.linux] = { 'linux', 'unix' },
+  [OsNameEnum.windows] = { 'windows' },
+}
 local SHELL_CHARACTERS_PATTERN = '[%s|&;$()<>`\'"]'
 local VERSION_FLAGS = { '--version', 'version', '-version' }
 local RELEASES_DIR_NAME = 'debug-adapters'
@@ -56,6 +62,20 @@ local RELEASE_DOWNLOAD_STEPS = {
   'rm "$dir/asset"',
 }
 
+---@param package_manager_name PackageManagerNameEnum
+---@param package_name string
+---@return boolean
+local function confirm_install(package_manager_name, package_name)
+  return vim.fn.confirm(
+    ('Install prebuilt binary %s with %s?'):format(
+      package_name,
+      package_manager_name
+    ),
+    '&Yes\n&No',
+    2
+  ) == 1
+end
+
 ---@return InstallEnvironmentProps
 local function get_live_environment()
   local os_name = os_mod.get_name()
@@ -65,7 +85,21 @@ local function get_live_environment()
     shell = Shell.detect(os_name, vim.o.shell, os_mod.has_executable),
     has_executable = os_mod.has_executable,
     read_command_output = os_mod.read_command_output,
+    confirm_install = confirm_install,
   }
+end
+
+---@param deps DepProps[]
+---@param os_name OsNameEnum|nil
+---@return DepProps[]
+local function filter_supported(deps, os_name)
+  return vim.tbl_filter(
+    function(dep)
+      return not dep.supported_os
+        or vim.list_contains(dep.supported_os, os_name)
+    end,
+    deps
+  )
 end
 
 ---@param dep DepProps
@@ -103,14 +137,13 @@ local function is_installed(dep, environment)
   return version ~= nil and not vim.version.lt(version, dep.min_version)
 end
 
----@param dep DepProps
----@param environment InstallEnvironmentProps
+---@param source string|nil
+---@param shell Shell
 ---@return boolean
-local function lacks_path_export(dep, environment)
-  local shell = environment.shell
-  return dep.push_env_source ~= nil
+local function lacks_path_export(source, shell)
+  return source ~= nil
     and shell.rc_file ~= nil
-    and not shell:has_path_export(dep.push_env_source)
+    and not shell:has_path_export(source)
 end
 
 ---@param cmd string
@@ -148,28 +181,13 @@ local function build_release_command(cmd, release)
   return table.concat(steps, ' && ')
 end
 
----@param environment InstallEnvironmentProps
----@return OsInstructionKeyProps[]
-local function get_os_instruction_keys(environment)
-  if environment.os_name == OsNameEnum.windows then return { 'windows' } end
-  if environment.os_name == OsNameEnum.macos then return { 'macos', 'unix' } end
-
-  local package_manager = environment.package_manager
-  if
-    package_manager and package_manager.name == PackageManagerNameEnum.pacman
-  then
-    return { 'archlinux', 'unix' }
-  end
-  return { 'unix' }
-end
-
 ---@param dep DepProps
 ---@param environment InstallEnvironmentProps
 ---@return string
 local function select_instruction(dep, environment)
   local by_os = dep.os or {}
 
-  for _, key in ipairs(get_os_instruction_keys(environment)) do
+  for _, key in ipairs(OS_INSTRUCTION_KEYS[environment.os_name] or {}) do
     if by_os[key] ~= nil then return by_os[key] end
   end
 
@@ -182,16 +200,23 @@ end
 ---@param dep DepProps
 ---@param environment InstallEnvironmentProps
 ---@return string|nil command
----@return InstallStrategyEnum|nil strategy
+---@return PackageManager|nil package_manager
 local function build_install_command(dep, environment)
   local instruction = select_instruction(dep, environment)
-  if instruction:find(SHELL_CHARACTERS_PATTERN) then
-    return instruction, InstallStrategyEnum.shell
-  end
+  if instruction:find(SHELL_CHARACTERS_PATTERN) then return instruction, nil end
   if not environment.package_manager then return nil, nil end
 
-  return environment.package_manager:build_install_command { instruction },
-    InstallStrategyEnum.package
+  local resolution = environment.package_manager:resolve(
+    instruction,
+    environment.read_command_output,
+    environment.confirm_install
+  )
+  if not resolution then return nil, nil end
+
+  return resolution.package_manager:build_install_command(
+    resolution.package_name
+  ),
+    resolution.package_manager
 end
 
 ---@param deps DepProps[]
@@ -202,9 +227,9 @@ function M.find_missing(deps, environment)
   return vim.tbl_filter(
     function(dep)
       return not is_installed(dep, active_environment)
-        or lacks_path_export(dep, active_environment)
+        or lacks_path_export(dep.push_env_source, active_environment.shell)
     end,
-    deps
+    filter_supported(deps, active_environment.os_name)
   )
 end
 
@@ -234,15 +259,16 @@ function M.plan(deps, environment)
   ---@type table<string, boolean>
   local exported_sources = {}
 
-  for _, dep in ipairs(deps) do
-    local source = dep.push_env_source
-    local command, strategy = nil, nil
+  for _, dep in ipairs(filter_supported(deps, environment.os_name)) do
+    local command, package_manager = nil, nil
     local installed = is_installed(dep, environment)
-    local exports_path = not exported_sources[source or '']
-      and lacks_path_export(dep, environment)
     if not installed then
-      command, strategy = build_install_command(dep, environment)
+      command, package_manager = build_install_command(dep, environment)
     end
+
+    local source = dep.push_env_source
+    local exports_path = not exported_sources[source or '']
+      and lacks_path_export(source, shell)
 
     if source and shell.rc_file and (command or installed and exports_path) then
       exported_sources[source] = true
@@ -257,7 +283,7 @@ function M.plan(deps, environment)
     if command then
       table.insert(plan.commands, command)
       plan.uses_package_manager = plan.uses_package_manager
-        or strategy == InstallStrategyEnum.package
+        or package_manager ~= nil
     else
       table.insert(installed and plan.installed or plan.skipped, dep.cmd)
     end

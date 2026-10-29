@@ -15,7 +15,7 @@ lang_mod.record_lang_deps {
       check_cmd = 'python3 -c "import debugpy"',
       install_command = 'python3 -m pip install --user --break-system-packages debugpy',
       os = {
-        archlinux = 'python-debugpy',
+        linux = 'python-debugpy',
         windows = 'python -m pip install debugpy',
       },
     },

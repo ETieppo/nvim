@@ -7,10 +7,10 @@ lang_mod.record_lang_deps {
     {
       cmd = 'qmlls6',
       push_env_source = '/usr/lib/qt6/bin',
-      os = { archlinux = 'qt6-languageserver' },
+      os = { linux = 'qt6-languageserver' },
     },
-    { cmd = 'qmlls6', os = { archlinux = 'qt6-declarative' } },
-    { cmd = 'qmlformat', os = { archlinux = 'qt6-declarative' } },
+    { cmd = 'qmlls6', os = { linux = 'qt6-declarative' } },
+    { cmd = 'qmlformat', os = { linux = 'qt6-declarative' } },
   },
 }
 

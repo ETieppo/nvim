@@ -3,7 +3,7 @@ local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
   deps = {
-    { cmd = 'taplo', os = { archlinux = 'taplo-cli' } },
+    { cmd = 'taplo' },
   },
 }
 

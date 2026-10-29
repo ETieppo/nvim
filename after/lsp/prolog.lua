@@ -18,9 +18,12 @@ lang_mod.record_lang_deps {
   deps = {
     {
       cmd = 'swipl',
-      os = {
-        archlinux = 'sudo pacman -S --needed --noconfirm swi-prolog && swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt',
-      },
+      install_command = 'swi-prolog',
+    },
+    {
+      cmd = 'lsp_server',
+      check_cmd = 'swipl -g "use_module(library(lsp_server))" -t halt',
+      install_command = 'swipl -g "pack_install(lsp_server, [interactive(false)])" -t halt',
     },
   },
 }

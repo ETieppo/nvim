@@ -9,7 +9,7 @@ lang_mod.record_lang_deps {
     {
       cmd = 'clangd',
       install_command = 'llvm',
-      os = { archlinux = 'clang' },
+      os = { linux = 'clang' },
     },
     { cmd = 'cmake' },
   },

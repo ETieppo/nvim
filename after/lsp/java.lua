@@ -7,7 +7,7 @@ lang_mod.record_lang_deps {
       cmd = 'java',
       min_version = '21',
       os = {
-        archlinux = 'jdk-openjdk',
+        linux = 'jdk-openjdk',
         macos = 'openjdk',
         windows = 'java/openjdk',
       },

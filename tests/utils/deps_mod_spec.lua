@@ -41,6 +41,14 @@ local arch = environment {
   os_name = OsNameEnum.linux,
   package_manager = PackageManagerNameEnum.pacman,
   executables = { 'pacman', 'yay' },
+  outputs = {
+    ['pacman -Si rustup'] = 'Name : rustup',
+    ['pacman -Si taplo-cli'] = 'Name : taplo-cli',
+    ['pacman -Si tree-sitter-cli'] = 'Name : tree-sitter-cli',
+    ['pacman -Si qt6-languageserver'] = 'Name : qt6-languageserver',
+    ["curl -fsS 'https://aur.archlinux.org/rpc/v5/info?arg[]=foo-bin'"] = '{"results":[{"Name":"foo-bin"}]}',
+    ['curl -fsS -o /dev/null https://formulae.brew.sh/api/formula/tofu-ls.json'] = '',
+  },
 }
 local debian = environment {
   os_name = OsNameEnum.linux,
@@ -64,7 +72,7 @@ describe('deps_mod instruction selection', function()
     'falls back to cmd as the package name',
     function()
       assert.are.equal(
-        'sudo pacman -S --needed --noconfirm rustup || yay -S --needed --noconfirm rustup',
+        'sudo pacman -S --needed --noconfirm rustup',
         command_for({ cmd = 'rustup' }, arch)
       )
     end
@@ -90,6 +98,39 @@ describe('deps_mod instruction selection', function()
     }
     assert.are.equal('brew install tree-sitter', command_for(dep, macos))
     assert.is_truthy(command_for(dep, arch):find('tree-sitter-cli', 1, true))
+  end)
+
+  it('prefers linux over unix and lets it allow -bin packages', function()
+    local dep = { cmd = 'foo', os = { linux = 'foo-bin', unix = 'foo' } }
+    assert.are.equal(
+      'yay -S --needed --noconfirm --aur foo-bin',
+      command_for(dep, arch)
+    )
+    assert.are.equal('sudo apt install -y foo-bin', command_for(dep, debian))
+    assert.are.equal('brew install foo', command_for(dep, macos))
+  end)
+
+  it(
+    'does not derive -bin packages from the cmd name',
+    function() assert.is_nil(command_for({ cmd = 'foo-bin' }, arch)) end
+  )
+
+  it(
+    'bootstraps brew and exports its prefix when nothing else has it',
+    function()
+      local plan = deps_mod.plan({ { cmd = 'tofu-ls' } }, arch)
+
+      assert.are.same({
+        '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+        [[/home/linuxbrew/.linuxbrew/bin/brew install tofu-ls && echo '\n# BREW\nexport PATH="$PATH:/home/linuxbrew/.linuxbrew/bin"' >> ~/.zshrc && source ~/.zshrc]],
+      }, plan.commands)
+    end
+  )
+
+  it('skips deps that no manager provides', function()
+    local plan = deps_mod.plan({ { cmd = 'nothing' } }, arch)
+    assert.are.same({ 'nothing' }, plan.skipped)
+    assert.are.same({}, plan.commands)
   end)
 
   it(
@@ -279,7 +320,7 @@ describe('deps_mod push_env_source', function()
     'labels by cmd without lang and keeps absolute paths',
     function()
       assert.are.equal(
-        [[sudo pacman -S --needed --noconfirm qt6-languageserver || yay -S --needed --noconfirm qt6-languageserver && echo '\n# QMLLS6\nexport PATH="$PATH:/usr/lib/qt6/bin"' >> ~/.zshrc && source ~/.zshrc]],
+        [[sudo pacman -S --needed --noconfirm qt6-languageserver && echo '\n# QMLLS6\nexport PATH="$PATH:/usr/lib/qt6/bin"' >> ~/.zshrc && source ~/.zshrc]],
         command_for({
           cmd = 'qmlls6',
           push_env_source = '/usr/lib/qt6/bin',

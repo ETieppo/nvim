@@ -1,5 +1,6 @@
 local deps_mod = require 'utils.deps_mod'
 local helpers = require 'utils.helpers'
+local OsNameEnum = require 'utils.enums.os_name_enum'
 
 local M = {}
 
@@ -8,6 +9,18 @@ local dep_user_command_name = 'Deps'
 
 ---@type DepProps[]
 local nvim_deps = {
+  {
+    cmd = 'brew',
+    supported_os = { OsNameEnum.linux },
+    push_env_source = '/home/linuxbrew/.linuxbrew/bin',
+    install_command = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+  },
+  {
+    cmd = 'brew',
+    supported_os = { OsNameEnum.macos },
+    push_env_source = '/opt/homebrew/bin',
+    install_command = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+  },
   { cmd = 'git' },
   { cmd = 'rg', install_command = 'ripgrep' },
   { cmd = 'fd' },
@@ -34,6 +47,8 @@ local nvim_deps_commands = {
     run = deps_mod.install,
   },
 }
+
+deps_mod.add_to_session_path(nvim_deps)
 
 vim.api.nvim_create_user_command(dep_user_command_name, function(opts)
   local face = '--_--'

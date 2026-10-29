@@ -8,7 +8,11 @@ lang_mod.record_fmt {
   formatter = 'kof_fmt',
   config = {
     command = 'kof',
-    args = { 'fmt', '$FILENAME', '-w' },
+    args = {
+      'fmt',
+      '$FILENAME',
+      '-w',
+    },
     stdin = false,
   },
 }
@@ -45,13 +49,23 @@ local normalized = {
 }
 
 vim.filetype.add {
-  extension = { kf = 'kof', kof = 'kof' },
+  extension = {
+    kf = 'kof',
+    kof = 'kof',
+  },
 }
 
 return {
-  cmd = { 'kof', 'lsp' },
+  cmd = {
+    'kof',
+    'lsp',
+  },
   filetypes = { lang_name },
-  root_markers = { 'kofdeps', 'kof.toml', '.git' },
+  root_markers = {
+    'kofdeps',
+    'kof.toml',
+    '.git',
+  },
   on_init = function(client)
     local request = client.request
     client.request = function(self, method, params, handler, ...)

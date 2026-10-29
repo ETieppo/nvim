@@ -1,49 +1,82 @@
 local OsNameEnum = require 'utils.enums.os_name_enum'
 local PackageManagerNameEnum = require 'utils.enums.package_manager_name_enum'
+local PackageResolutionDto = require 'utils.dtos.package_resolution_dto'
 
 ---@alias ExecutableCheckProps fun(name: string): boolean
+---@alias CommandOutputReaderProps fun(command: string): string|nil
+---@alias InstallConfirmationProps fun(package_manager_name: PackageManagerNameEnum, package_name: string): boolean
+
+---@class PackageNameVariantProps
+---@field suffix string
+---@field requires_confirmation boolean
 
 ---@class PackageManagerDefinitionProps
 ---@field install_args string[]
 ---@field requires_sudo boolean
----@field fallback_name? PackageManagerNameEnum
 ---@field uses_buckets? boolean
 ---@field bootstrap_commands? string[]
+---@field query_executable? string
+---@field exact_query_args? string
+---@field fallback_chain? PackageManagerNameEnum[]
 
 ---@class PackageManagerProps : PackageManagerDefinitionProps
 ---@field name PackageManagerNameEnum
 ---@field is_available boolean
+---@field resolution_sources PackageManager[]
 
 ---@class PackageManager : PackageManagerProps
 local PackageManager = {}
 PackageManager.__index = PackageManager
+
+---@type PackageNameVariantProps[]
+local PACKAGE_NAME_VARIANTS = {
+  { suffix = '', requires_confirmation = false },
+  { suffix = '-git', requires_confirmation = false },
+  { suffix = '-bin', requires_confirmation = true },
+}
 
 ---@type table<PackageManagerNameEnum, PackageManagerDefinitionProps>
 local definitions = {
   [PackageManagerNameEnum.pacman] = {
     install_args = { '-S', '--needed', '--noconfirm' },
     requires_sudo = true,
-    fallback_name = PackageManagerNameEnum.yay,
+    exact_query_args = '-Si',
+    fallback_chain = { PackageManagerNameEnum.yay, PackageManagerNameEnum.brew },
+  },
+  [PackageManagerNameEnum.yay] = {
+    install_args = { '-S', '--needed', '--noconfirm', '--aur' },
+    requires_sudo = false,
+    exact_query_args = '-Si --aur',
   },
   [PackageManagerNameEnum.apt] = {
     install_args = { 'install', '-y' },
     requires_sudo = true,
+    query_executable = 'apt-cache',
+    exact_query_args = 'show',
+    fallback_chain = { PackageManagerNameEnum.brew },
   },
   [PackageManagerNameEnum.dnf] = {
     install_args = { 'install', '-y' },
     requires_sudo = true,
+    exact_query_args = 'info -q',
+    fallback_chain = { PackageManagerNameEnum.brew },
   },
   [PackageManagerNameEnum.zypper] = {
     install_args = { 'install', '-y' },
     requires_sudo = true,
+    exact_query_args = '--non-interactive search --match-exact',
+    fallback_chain = { PackageManagerNameEnum.brew },
   },
   [PackageManagerNameEnum.apk] = {
     install_args = { 'add' },
     requires_sudo = true,
+    exact_query_args = 'search -x',
+    fallback_chain = { PackageManagerNameEnum.brew },
   },
   [PackageManagerNameEnum.brew] = {
     install_args = { 'install' },
     requires_sudo = false,
+    exact_query_args = 'info --formula',
   },
   [PackageManagerNameEnum.scoop] = {
     install_args = { 'install' },
@@ -65,24 +98,36 @@ local candidates_by_os = {
     PackageManagerNameEnum.dnf,
     PackageManagerNameEnum.zypper,
     PackageManagerNameEnum.apk,
+    PackageManagerNameEnum.brew,
   },
 }
 
 ---@param name PackageManagerNameEnum
 ---@param has_executable ExecutableCheckProps
 ---@return PackageManager
-function PackageManager.create(name, has_executable)
-  local package_manager = setmetatable(
+local function create_without_fallbacks(name, has_executable)
+  return setmetatable(
     vim.tbl_extend('force', definitions[name], {
       name = name,
       is_available = has_executable(name),
+      resolution_sources = {},
     }),
     PackageManager
   )
+end
 
-  local fallback_name = package_manager.fallback_name
-  if fallback_name and not has_executable(fallback_name) then
-    package_manager.fallback_name = nil
+---@param name PackageManagerNameEnum
+---@param has_executable ExecutableCheckProps
+---@return PackageManager
+function PackageManager.create(name, has_executable)
+  local package_manager = create_without_fallbacks(name, has_executable)
+  table.insert(package_manager.resolution_sources, package_manager)
+
+  for _, fallback_name in ipairs(package_manager.fallback_chain or {}) do
+    local fallback = create_without_fallbacks(fallback_name, has_executable)
+    if fallback.is_available then
+      table.insert(package_manager.resolution_sources, fallback)
+    end
   end
   return package_manager
 end
@@ -104,39 +149,58 @@ function PackageManager.detect(os_name, has_executable)
   return nil
 end
 
----@param executable string
----@param use_sudo boolean
----@param packages string[]
----@return string
-function PackageManager:build_invocation(executable, use_sudo, packages)
-  local parts = use_sudo and { 'sudo', executable } or { executable }
-  vim.list_extend(parts, self.install_args)
-  vim.list_extend(parts, packages)
-  return table.concat(parts, ' ')
+---@param package_name string
+---@param read_command_output CommandOutputReaderProps
+---@return boolean
+function PackageManager:has_package(package_name, read_command_output)
+  if not self.exact_query_args then return true end
+
+  local output = read_command_output(table.concat({
+    self.query_executable or self.name,
+    self.exact_query_args,
+    package_name,
+  }, ' '))
+  return output ~= nil and vim.trim(output) ~= ''
 end
 
----@param packages string[]
----@return string
-function PackageManager:build_install_command(packages)
-  local commands, added_buckets = {}, {}
-
-  for _, package in ipairs(self.uses_buckets and packages or {}) do
-    local bucket = package:match '^([^/]+)/'
-    if bucket and not added_buckets[bucket] then
-      added_buckets[bucket] = true
-      table.insert(commands, 'scoop bucket add ' .. bucket)
+---@param package_name string
+---@param read_command_output CommandOutputReaderProps
+---@param confirm_install InstallConfirmationProps
+---@return PackageResolutionDto|nil
+function PackageManager:resolve(
+  package_name,
+  read_command_output,
+  confirm_install
+)
+  for _, variant in ipairs(PACKAGE_NAME_VARIANTS) do
+    local variant_name = package_name .. variant.suffix
+    for _, source in ipairs(self.resolution_sources) do
+      if
+        source:has_package(variant_name, read_command_output)
+        and (
+          not variant.requires_confirmation
+          or confirm_install(source.name, variant_name)
+        )
+      then
+        return PackageResolutionDto.new(source, variant_name)
+      end
     end
   end
 
-  local install = self:build_invocation(self.name, self.requires_sudo, packages)
-  if self.fallback_name then
-    install = install
-      .. ' || '
-      .. self:build_invocation(self.fallback_name, false, packages)
-  end
+  return nil
+end
 
-  table.insert(commands, install)
-  return table.concat(commands, ' ; ')
+---@param package_name string
+---@return string
+function PackageManager:build_install_command(package_name)
+  local bucket = self.uses_buckets and package_name:match '^([^/]+)/'
+  local parts = self.requires_sudo and { 'sudo', self.name } or { self.name }
+  vim.list_extend(parts, self.install_args)
+  table.insert(parts, package_name)
+
+  local install = table.concat(parts, ' ')
+  if bucket then return 'scoop bucket add ' .. bucket .. ' ; ' .. install end
+  return install
 end
 
 ---@return string[]
