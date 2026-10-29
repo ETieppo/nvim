@@ -1,4 +1,10 @@
 local lang_mod = require 'utils.lang_mod'
+local lang_name = require('utils.helpers').get_this_filename()
+local wesl_name = 'wesl'
+local filetypes = {
+  lang_name,
+  wesl_name,
+}
 
 lang_mod.record_lang_deps {
   deps = {
@@ -11,31 +17,37 @@ lang_mod.record_lang_deps {
   },
 }
 
-lang_mod.record_fmt {
-  formatter = 'wgslfmt',
-  config = {
-    stdin = true,
-    command = 'wgslfmt',
-    args = {
-      '-',
-      '--silent',
-      '--config',
-      'indent_width=2',
-      '--config',
-      'max_line_width=80',
+for _, filetype in ipairs(filetypes) do
+  lang_mod.record_fmt {
+    lang = filetype,
+    formatter = 'wgslfmt',
+    config = {
+      stdin = true,
+      command = 'wgslfmt',
+      args = {
+        '-',
+        '--silent',
+        '--config',
+        'indent_width=2',
+        '--config',
+        'max_line_width=80',
+      },
     },
-  },
-}
+  }
+end
 
 vim.filetype.add {
   extension = {
-    wesl = 'wesl',
+    [wesl_name] = wesl_name,
   },
 }
+
+vim.treesitter.language.register(lang_name, wesl_name)
+
 ---@type vim.lsp.Config
 return {
   cmd = { 'wgsl-analyzer' },
-  filetypes = { 'wgsl', 'wesl' },
+  filetypes = filetypes,
   root_markers = { 'wesl.toml', '.git' },
   on_init = function(client)
     client.server_capabilities.documentFormattingProvider = false
