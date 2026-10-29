@@ -9,11 +9,12 @@ vim.filetype.add {
 }
 
 lang_mod.record_fmt {
+  lang = terraform_name,
   formatter = 'tofu_fmt',
 }
 
 lang_mod.record_lang_deps {
-  tree_sitter_name = 'terraform',
+  tree_sitter_name = terraform_name,
   short = 'tf',
   deps = {
     { cmd = 'tofu-ls' },
@@ -30,7 +31,7 @@ return {
     'serve',
   },
   filetypes = {
-    lang_name,
+    terraform_name,
     'tf',
     'terraform-vars',
   },
