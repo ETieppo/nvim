@@ -7,8 +7,14 @@ local filetypes = {
 }
 
 lang_mod.record_lang_deps {
+  short = 'wesl',
   deps = {
     { cmd = 'wgsl-analyzer' },
+    {
+      cmd = 'wesl',
+      depends_on = 'rust',
+      install_command = 'cargo install wesl-cli',
+    },
     {
       cmd = 'wgslfmt',
       depends_on = 'cargo',
