@@ -104,8 +104,6 @@ lang_mod.record_dap {
   },
 }
 
-lang_mod.record_docs { docs = { 'rust' } }
-
 return {
   cmd = { vim.fn.expand 'rust-analyzer' },
   filetypes = { lang_name },

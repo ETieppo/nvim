@@ -90,7 +90,9 @@ lang_mod.record_dap {
 }
 
 lang_mod.record_docs {
-  docs = { 'typescript', 'html', 'angular', 'react', 'bun' },
+  'html',
+  'react',
+  'bun',
 }
 
 return {

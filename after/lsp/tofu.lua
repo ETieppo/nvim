@@ -14,7 +14,8 @@ lang_mod.record_fmt {
 }
 
 lang_mod.record_lang_deps {
-  tree_sitter_name = terraform_name,
+  treesitter = terraform_name,
+  doc = { 'opentofu' },
   short = 'tf',
   deps = {
     { cmd = 'tofu-ls' },

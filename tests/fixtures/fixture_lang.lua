@@ -18,4 +18,4 @@ lang_mod.record_dap {
   configurations = { { name = 'Fixture launch' } },
 }
 
-lang_mod.record_docs { docs = { 'fixture_doc' } }
+lang_mod.record_docs { 'fixture_doc' }

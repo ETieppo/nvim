@@ -7,7 +7,8 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@field short? string
 ---@field depends_on? string
 ---@field deps DepProps[]
----@field tree_sitter_name? string|string[]
+---@field treesitter? string|string[]
+---@field doc? string|string[]
 
 ---@class RecordedLangProps : LangDepsProps
 ---@field lang string
@@ -54,10 +55,6 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@field adapters table<string, DapAdapterProps>
 ---@field configurations table<string, RecordedDapProps>
 
----@class DocsProps
----@field lang? string
----@field docs string[]
-
 ---@class DepsCollectorProps
 ---@field resolution LangDepsResolutionDto
 ---@field collected_deps table<DepProps, boolean>
@@ -78,6 +75,9 @@ M.linters = {}
 M.ignore_at_treesitter = {}
 
 ---@type string[]
+M.ignore_at_docs = {}
+
+---@type string[]
 M.install_lang_treesitters = {}
 
 ---@type FormattersProps
@@ -92,7 +92,7 @@ M.dap = {
   configurations = {},
 }
 
----@type table<string, string[]>
+---@type string[]
 M.docs = {}
 
 ---@type table<string, boolean>
@@ -115,6 +115,19 @@ local function record_treesitter(treesitter_name)
     return
   end
   table.insert(M.install_lang_treesitters, treesitter_name)
+end
+
+---@param docs string[]
+function M.record_docs(docs)
+  for _, doc in ipairs(docs) do
+    if
+      vim.list_contains(M.ignore_at_docs, doc)
+      or vim.list_contains(M.docs, doc)
+    then
+      return
+    end
+    table.insert(M.docs, doc)
+  end
 end
 
 ---@param name_or_short string
@@ -282,7 +295,12 @@ end
 ---@param lang LangDepsProps
 function M.record_lang_deps(lang)
   local lang_name = lang.lang or helpers.get_caller_filename()
-  local treesitter_names = lang.tree_sitter_name or lang_name
+  local treesitter_names = lang.treesitter or lang_name
+  local doc_names = lang.doc or { lang_name }
+
+  if type(doc_names) == 'string' then doc_names = { doc_names } end
+  M.record_docs(doc_names)
+
   if type(treesitter_names) == 'string' then
     treesitter_names = { treesitter_names }
   end
@@ -301,7 +319,7 @@ function M.record_lang_deps(lang)
     short = lang.short,
     depends_on = lang.depends_on,
     deps = lang.deps,
-    tree_sitter_name = lang.tree_sitter_name,
+    treesitter = lang.treesitter,
   }
 end
 
@@ -339,24 +357,12 @@ function M.record_dap(dap)
   }
 end
 
----@param docs DocsProps
-function M.record_docs(docs)
-  local lang_name = docs.lang or helpers.get_caller_filename()
-  M.docs[lang_name] = docs.docs
-end
-
----@return string[]
-function M.get_docs()
-  local all_docs = {}
-  for _, docs in pairs(M.docs) do
-    for _, doc in ipairs(docs) do
-      if not vim.list_contains(all_docs, doc) then
-        table.insert(all_docs, doc)
-      end
-    end
+---@param lang string?
+function M.ignore_at_docs_install(lang)
+  local lang_name = lang or helpers.get_caller_filename()
+  if not vim.list_contains(M.ignore_at_docs, lang_name) then
+    table.insert(M.ignore_at_docs, lang_name)
   end
-  table.sort(all_docs)
-  return all_docs
 end
 
 function M.ignore_treesitter_install()

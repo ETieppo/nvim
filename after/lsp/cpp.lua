@@ -4,7 +4,7 @@ local lang_name = require('utils.helpers').get_this_filename()
 local filetypes = { lang_name, 'c' }
 
 lang_mod.record_lang_deps {
-  tree_sitter_name = filetypes,
+  treesitter = filetypes,
   deps = {
     {
       cmd = 'clangd',

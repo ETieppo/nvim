@@ -1,6 +1,8 @@
 local lang_name = require('utils.helpers').get_this_filename()
 local lang_mod = require 'utils.lang_mod'
 
+lang_mod.ignore_at_docs_install()
+
 lang_mod.record_lang_deps {
   short = 'yml',
   deps = {

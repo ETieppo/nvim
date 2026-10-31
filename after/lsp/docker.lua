@@ -1,7 +1,9 @@
 local lang_mod = require 'utils.lang_mod'
 
+
+
 lang_mod.record_lang_deps {
-  tree_sitter_name = 'dockerfile',
+  treesitter = 'dockerfile',
   deps = {
     {
       cmd = 'docker-langserver',
@@ -11,8 +13,6 @@ lang_mod.record_lang_deps {
     { cmd = 'docker' },
   },
 }
-
-lang_mod.record_docs { docs = { 'docker' } }
 
 return {
   cmd = { 'docker-langserver', '--stdio' },

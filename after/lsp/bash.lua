@@ -2,8 +2,7 @@ local lang_mod = require 'utils.lang_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.record_lang_deps {
-  tree_sitter_name = 'bash',
-  short = 'bash',
+  short = 'sh',
   deps = {
     {
       cmd = 'bash-language-server',
@@ -15,11 +14,9 @@ lang_mod.record_lang_deps {
   },
 }
 
-lang_mod.record_docs { docs = { 'bash' } }
-
 return {
   cmd = { 'bash-language-server', 'start' },
-  filetypes = { lang_name, 'bash' },
+  filetypes = { lang_name, 'sh' },
   root_markers = { '.git' },
   settings = {
     bashIde = {

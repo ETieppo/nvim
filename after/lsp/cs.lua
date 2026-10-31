@@ -1,7 +1,10 @@
 local lang_mod = require 'utils.lang_mod'
+local lang_name = require('utils.helpers').get_this_filename()
+
+lang_mod.ignore_at_docs_install()
 
 lang_mod.record_lang_deps {
-  tree_sitter_name = 'c_sharp',
+  treesitter = 'c_sharp',
   deps = {
     {
       cmd = 'dotnet',
@@ -17,8 +20,12 @@ lang_mod.record_lang_deps {
 }
 
 return {
-  cmd = { 'roslyn-language-server', '--stdio', '--autoLoadProjects' },
-  filetypes = { 'cs' },
+  cmd = {
+    'roslyn-language-server',
+    '--stdio',
+    '--autoLoadProjects',
+  },
+  filetypes = { lang_name },
   root_dir = function(bufnr, on_dir)
     local root = vim.fs.root(
       bufnr,

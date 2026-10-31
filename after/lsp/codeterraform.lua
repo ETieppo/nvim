@@ -4,6 +4,7 @@ local root_marker = 'codeterraform-workspace.json'
 local server_dir =
   vim.fn.expand '~/.local/share/io.codeterraform.game/external-ide/server'
 
+lang_mod.ignore_at_docs_install()
 lang_mod.ignore_treesitter_install()
 
 lang_mod.record_lang_deps {
