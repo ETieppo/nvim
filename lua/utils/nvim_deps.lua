@@ -24,6 +24,7 @@ local nvim_deps = {
   { cmd = 'git' },
   { cmd = 'rg', install_command = 'ripgrep' },
   { cmd = 'fd' },
+  { cmd = 'pandoc' },
   {
     cmd = 'cc',
     alternative_cmds = { 'gcc', 'clang' },

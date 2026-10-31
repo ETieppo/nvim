@@ -74,7 +74,7 @@ local definitions = {
     fallback_chain = { PackageManagerNameEnum.brew },
   },
   [PackageManagerNameEnum.brew] = {
-    install_args = { 'install' },
+    install_args = { 'install', '--no-ask' },
     requires_sudo = false,
     exact_query_args = 'info --formula',
   },
