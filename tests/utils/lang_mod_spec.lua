@@ -28,7 +28,7 @@ describe('lang_mod records', function()
   dofile(fixture_path)
 
   it('infers the lang name from the calling file', function()
-    local lang = lang_mod.langs.fixture_lang
+    local lang = lang_mod.lang_deps.fixture_lang
     assert.are.equal('fixture_lang', lang.lang)
     assert.are.equal('fx', lang.short)
   end)
@@ -36,7 +36,7 @@ describe('lang_mod records', function()
   it(
     'tags each dep with the lang that records it',
     function()
-      assert.are.equal('fixture_lang', lang_mod.langs.fixture_lang.deps[1].lang)
+      assert.are.equal('fixture_lang', lang_mod.lang_deps.fixture_lang.deps[1].lang)
     end
   )
 
@@ -64,7 +64,7 @@ describe('lang_mod records', function()
     assert.is_false(
       vim.list_contains(lang_mod.install_lang_treesitters, 'fixture_lang')
     )
-    assert.are.same({ 'fixture_lang' }, lang_mod.ignore_at_treesitter)
+    assert.are.same({ 'fixture_lang' }, lang_mod.recorded_treesitter_ignores)
   end)
 end)
 
@@ -109,7 +109,7 @@ describe('lang_mod.resolve_lang_deps', function()
       lang = 'fake_wgsl',
       deps = { { cmd = 'fake-fmt', depends_on = 'fake_rust' } },
     }
-    local resolution = lang_mod.resolve_lang_deps(lang_mod.langs.fake_wgsl)
+    local resolution = lang_mod.resolve_lang_deps(lang_mod.lang_deps.fake_wgsl)
     assert.are.same(
       { 'fake-rustup', 'fake-cargo', 'fake-analyzer', 'fake-fmt' },
       cmds(resolution.deps)
@@ -121,7 +121,7 @@ describe('lang_mod.resolve_lang_deps', function()
       lang = 'fake_wgsl',
       deps = { { cmd = 'fake-fmt', depends_on = 'fake-cargo' } },
     }
-    local resolution = lang_mod.resolve_lang_deps(lang_mod.langs.fake_wgsl)
+    local resolution = lang_mod.resolve_lang_deps(lang_mod.lang_deps.fake_wgsl)
     assert.are.same(
       { 'fake-rustup', 'fake-cargo', 'fake-fmt' },
       cmds(resolution.deps)
@@ -134,7 +134,7 @@ describe('lang_mod.resolve_lang_deps', function()
       depends_on = 'frs',
       deps = { { cmd = 'fake-bun-pkg', depends_on = 'fake-bun' } },
     }
-    local resolution = lang_mod.resolve_lang_deps(lang_mod.langs.fake_game)
+    local resolution = lang_mod.resolve_lang_deps(lang_mod.lang_deps.fake_game)
     assert.are.same({
       'fake-rustup',
       'fake-cargo',
@@ -155,7 +155,7 @@ describe('lang_mod.resolve_lang_deps', function()
       depends_on = 'fake_cycle_a',
       deps = { { cmd = 'fake-b' } },
     }
-    local resolution = lang_mod.resolve_lang_deps(lang_mod.langs.fake_cycle_a)
+    local resolution = lang_mod.resolve_lang_deps(lang_mod.lang_deps.fake_cycle_a)
     assert.are.same({ 'fake-b', 'fake-a' }, cmds(resolution.deps))
   end)
 
@@ -164,7 +164,7 @@ describe('lang_mod.resolve_lang_deps', function()
       lang = 'fake_unknown',
       deps = { { cmd = 'fake-x', depends_on = 'does-not-exist' } },
     }
-    local resolution = lang_mod.resolve_lang_deps(lang_mod.langs.fake_unknown)
+    local resolution = lang_mod.resolve_lang_deps(lang_mod.lang_deps.fake_unknown)
     assert.are.same({ 'does-not-exist' }, resolution.unresolved_references)
     assert.are.same({ 'fake-x' }, cmds(resolution.deps))
   end)
