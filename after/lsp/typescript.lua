@@ -3,6 +3,10 @@ local lang_mod = require 'utils.lang_mod'
 
 lang_mod.record_lang_deps {
   short = 'ts',
+  depends_on = {
+    'emmet',
+    'oxlint',
+  },
   deps = {
     {
       cmd = 'bun',
@@ -10,10 +14,6 @@ lang_mod.record_lang_deps {
         unix = 'curl -fsSL https://bun.sh/install | bash',
         windows = 'powershell -c "irm bun.sh/install.ps1|iex"',
       },
-    },
-    {
-      cmd = 'prettierd',
-      install_command = 'bun i -g @fsouza/prettierd',
     },
     {
       cmd = 'tsc',
@@ -40,7 +40,19 @@ for _, l in ipairs {
 } do
   lang_mod.record_fmt {
     lang = l,
-    formatter = 'prettierd',
+    formatter = 'oxfmt',
+  }
+end
+
+for _, l in ipairs {
+  'javascript',
+  'javascriptreact',
+  'typescript',
+  'typescriptreact',
+} do
+  lang_mod.record_linter {
+    lang = l,
+    linter = 'oxlint',
   }
 end
 
