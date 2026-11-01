@@ -1,6 +1,6 @@
 local lang_mod = require 'utils.lang_mod'
 
-lang_mod.ignore_treesitter_install()
+lang_mod.treesitter_ignore()
 
 lang_mod.record_lang_deps {
   short = 'fx',

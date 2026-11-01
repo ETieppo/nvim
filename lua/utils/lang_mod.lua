@@ -5,7 +5,7 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@class LangDepsProps
 ---@field lang? string
 ---@field short? string
----@field depends_on? string
+---@field depends_on? string | string[]
 ---@field deps DepProps[]
 ---@field treesitter? string|string[]
 ---@field doc? string|string[]
@@ -72,10 +72,10 @@ M.test_adapters = {}
 M.linters = {}
 
 ---@type string[]
-M.ignore_at_treesitter = {}
+M.recorded_treesitter_ignores = {}
 
 ---@type string[]
-M.ignore_at_docs = {}
+M.recorded_docs_ignores = {}
 
 ---@type string[]
 M.install_lang_treesitters = {}
@@ -109,7 +109,7 @@ local lang_commands = {
 ---@param treesitter_name string
 local function record_treesitter(treesitter_name)
   if
-    vim.list_contains(M.ignore_at_treesitter, treesitter_name)
+    vim.list_contains(M.recorded_treesitter_ignores, treesitter_name)
     or vim.list_contains(M.install_lang_treesitters, treesitter_name)
   then
     return
@@ -121,7 +121,7 @@ end
 function M.record_docs(docs)
   for _, doc in ipairs(docs) do
     if
-      vim.list_contains(M.ignore_at_docs, doc)
+      vim.list_contains(M.recorded_docs_ignores, doc)
       or vim.list_contains(M.docs, doc)
     then
       return
@@ -178,17 +178,23 @@ local function find_referenced_deps(reference)
   return find_deps_until_cmd(reference)
 end
 
----@param reference string|nil
+---@param reference string | string[] | nil
 ---@param deps DepProps[]
 ---@param collector DepsCollectorProps
 local function collect_deps(reference, deps, collector)
-  if reference and not collector.visited_references[reference] then
-    collector.visited_references[reference] = true
-    local referenced_deps = find_referenced_deps(reference)
-    if referenced_deps then
-      collect_deps(nil, referenced_deps, collector)
-    else
-      table.insert(collector.resolution.unresolved_references, reference)
+  ---@type string[]
+  local references = (type(reference) ~= 'string') and reference
+    or { reference }
+
+  for _, ref in ipairs(references) do
+    if ref and not collector.visited_references[ref] then
+      collector.visited_references[ref] = true
+      local referenced_deps = find_referenced_deps(ref)
+      if referenced_deps then
+        collect_deps(nil, referenced_deps, collector)
+      else
+        table.insert(collector.resolution.unresolved_references, ref)
+      end
     end
   end
 
@@ -358,17 +364,17 @@ function M.record_dap(dap)
 end
 
 ---@param lang string?
-function M.ignore_at_docs_install(lang)
+function M.docs_ignore(lang)
   local lang_name = lang or helpers.get_caller_filename()
-  if not vim.list_contains(M.ignore_at_docs, lang_name) then
-    table.insert(M.ignore_at_docs, lang_name)
+  if not vim.list_contains(M.recorded_docs_ignores, lang_name) then
+    table.insert(M.recorded_docs_ignores, lang_name)
   end
 end
 
-function M.ignore_treesitter_install()
+function M.treesitter_ignore()
   local lang_name = helpers.get_caller_filename()
-  if not vim.list_contains(M.ignore_at_treesitter, lang_name) then
-    table.insert(M.ignore_at_treesitter, lang_name)
+  if not vim.list_contains(M.recorded_treesitter_ignores, lang_name) then
+    table.insert(M.recorded_treesitter_ignores, lang_name)
   end
 end
 

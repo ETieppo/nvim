@@ -6,7 +6,7 @@ local filetypes = {
   wesl_name,
 }
 
-lang_mod.ignore_at_docs_install()
+lang_mod.docs_ignore()
 
 lang_mod.record_lang_deps {
   short = 'wesl',
