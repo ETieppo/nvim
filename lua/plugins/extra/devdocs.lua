@@ -56,7 +56,7 @@ return {
       return false
     end
 
-    local wanted = require('utils.lang_mod').docs
+    local wanted = require('langs.core').get_docs()
     local pending = {}
     for _, name in ipairs(wanted) do
       if not name:find('~', 1, true) then pending[name] = true end

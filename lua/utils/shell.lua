@@ -1,4 +1,5 @@
 local os_mod = require 'utils.os_mod'
+local window = require 'buffer.window'
 local OsNameEnum = require 'utils.enums.os_name_enum'
 local ShellNameEnum = require 'utils.enums.shell_name_enum'
 
@@ -165,21 +166,10 @@ function Shell:append_env_source(command, source, label, exports_path)
   return table.concat(commands, POSIX_COMMAND_SEPARATOR)
 end
 
-local function close_dashboard_buffers()
-  for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-    if
-      vim.api.nvim_buf_is_valid(buffer)
-      and vim.bo[buffer].filetype == 'snacks_dashboard'
-    then
-      pcall(vim.api.nvim_buf_delete, buffer, { force = true })
-    end
-  end
-end
-
 ---@param commands string[]
 ---@param on_exit fun()
 function Shell:run_in_terminal(commands, on_exit)
-  close_dashboard_buffers()
+  window.close_dashboard()
   vim.cmd.tabnew()
   vim.fn.jobstart(self:build_argv(self:join(commands)), {
     term = true,

@@ -56,10 +56,8 @@ local function find_executable_path(name)
   local path = vim.fn.exepath(name)
 
   if path == '' and M.is_macos() and vim.fn.executable 'xcrun' == 1 then
-    local result = vim
-      .system({ 'xcrun', '--find', name }, { text = true })
-      :wait()
-    if result.code == 0 then path = vim.trim(result.stdout or '') end
+    local xcrun_output = M.read_program_stdout { 'xcrun', '--find', name }
+    if xcrun_output then path = vim.trim(xcrun_output) end
   end
 
   if path == '' or vim.fn.executable(path) ~= 1 then return nil end
@@ -96,6 +94,14 @@ function M.add_to_path(dir)
     or dir .. path_list_separator .. current_path
   M.clear_cache()
   return true
+end
+
+---@param argv string[]
+---@return string|nil
+function M.read_program_stdout(argv)
+  local result = vim.system(argv, { text = true }):wait()
+  if result.code ~= 0 then return nil end
+  return result.stdout or ''
 end
 
 ---@param command string

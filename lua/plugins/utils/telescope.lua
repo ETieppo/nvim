@@ -1,3 +1,11 @@
+local ArrowKeyEnum = require 'utils.enums.arrow_key_enum'
+local ripgrep = require 'utils.ripgrep'
+local disabled_arrow_mappings = {}
+
+for _, arrow_key in pairs(ArrowKeyEnum) do
+  disabled_arrow_mappings[arrow_key] = false
+end
+
 return {
   'nvim-telescope/telescope.nvim',
   dependencies = {
@@ -15,59 +23,21 @@ return {
     require('telescope').setup {
       defaults = {
         mappings = {
-          i = {
-            ['<Up>'] = false,
-            ['<Down>'] = false,
-            ['<Left>'] = false,
-            ['<Right>'] = false,
-          },
-          n = {
-            ['<Up>'] = false,
-            ['<Down>'] = false,
-            ['<Left>'] = false,
-            ['<Right>'] = false,
-          },
+          i = vim.deepcopy(disabled_arrow_mappings),
+          n = vim.deepcopy(disabled_arrow_mappings),
         },
-        vimgrep_arguments = {
-          'rg',
+        vimgrep_arguments = ripgrep.build_command {
           '--color=never',
           '--no-heading',
           '--with-filename',
           '--line-number',
           '--column',
           '--smart-case',
-          '--hidden',
-          '--follow',
-          '--glob=!.git/',
-          '--glob=!imgs/',
-          '--glob=!images/',
-          '--glob=!videos/',
-          '--glob=!fonts/',
-          '--glob=!assets/',
-          '--glob=!bun.lock',
-          '--glob=!package-lock.json',
-          '--glob=!Cargo.lock',
-          '--glob=!.angular/',
         },
       },
       pickers = {
         find_files = {
-          find_command = {
-            'rg',
-            '--files',
-            '--hidden',
-            '--follow',
-            '--glob=!.git/',
-            '--glob=!imgs/',
-            '--glob=!images/',
-            '--glob=!videos/',
-            '--glob=!fonts/',
-            '--glob=!assets/',
-            '--glob=!bun.lock',
-            '--glob=!package-lock.json',
-            '--glob=!Cargo.lock',
-            '--glob=!.angular/',
-          },
+          find_command = ripgrep.build_command { '--files' },
         },
       },
       extensions = {

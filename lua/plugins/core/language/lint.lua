@@ -1,4 +1,4 @@
-local linters = require('utils.lang_mod').linters
+local linters = require('langs.core').get_linters()
 
 ---@module 'lazy'
 ---@type LazySpec

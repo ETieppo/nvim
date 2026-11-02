@@ -1,9 +1,9 @@
 local os_mod = require 'utils.os_mod'
-local lang_mod = require 'utils.lang_mod'
+local lang_mod = require 'langs.core'
 
 local ensure_installed = os_mod.has_executable 'gcc'
     and os_mod.has_executable 'tree-sitter'
-    and lang_mod.install_lang_treesitters
+    and lang_mod.get_treesitters_to_install()
   or {}
 
 return {

@@ -1,0 +1,43 @@
+local lang_mod = require 'langs.core'
+local lang_name = require('utils.helpers').get_this_filename()
+local terraform_name = 'terraform'
+
+vim.filetype.add {
+  extension = {
+    [lang_name] = terraform_name,
+  },
+}
+
+lang_mod.record_fmt {
+  lang = terraform_name,
+  formatter = 'tofu_fmt',
+}
+
+lang_mod.record_lang_deps {
+  treesitter = terraform_name,
+  doc = { 'opentofu' },
+  short = 'tf',
+  deps = {
+    { cmd = 'tofu-ls' },
+    {
+      cmd = 'tofu',
+      install_command = 'opentofu',
+    },
+  },
+}
+
+return {
+  cmd = {
+    'tofu-ls',
+    'serve',
+  },
+  filetypes = {
+    terraform_name,
+    'tf',
+    'terraform-vars',
+  },
+  root_markers = {
+    '.terraform',
+    '.git',
+  },
+}

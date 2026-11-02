@@ -1,11 +1,15 @@
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+
 require 'settings'
 require 'utils'
+require 'buffer'
+require 'components.cmdline'
 local helpers = require 'utils.helpers'
+local lang_mod = require 'langs.core'
 
-local servers = {}
 local exclude_dirs = {}
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-local dir = vim.fn.stdpath 'config' .. '/after/lsp'
 local profile = require 'settings.profile'
 local scan = helpers.find_modules
 
@@ -30,13 +34,8 @@ local plugins = scan('/lua/plugins', 'plugins', {
   exclude = exclude_dirs,
 })
 
-for file, kind in vim.fs.dir(dir) do
-  if kind == 'file' and file:sub(-4) == '.lua' then
-    servers[#servers + 1] = file:sub(1, -5)
-  end
-end
-
-vim.lsp.enable(servers)
+lang_mod.load_langs()
+vim.lsp.enable(lang_mod.get_lsps())
 
 require('lazy').setup {
   spec = plugins,

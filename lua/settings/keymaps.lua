@@ -1,63 +1,15 @@
+local ArrowKeyEnum = require 'utils.enums.arrow_key_enum'
+local file = require 'buffer.file'
+local helpers = require 'utils.helpers'
 local os_mod = require 'utils.os_mod'
-
-local function edit_file(old, new)
-  new = os_mod.rewrite_to_os_path(new)
-  if new == '' or new == old then return end
-  vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-  vim.fn.rename(old, new)
-  vim.cmd('edit ' .. vim.fn.fnameescape(new))
-  vim.cmd 'bdelete! #'
-end
-
-local function new_file(path)
-  if path == '' then return end
-  path = os_mod.rewrite_to_os_path(path)
-  vim.fn.mkdir(vim.fn.fnamemodify(path, ':h'), 'p')
-  vim.cmd('edit ' .. vim.fn.fnameescape(path))
-end
-
-local function place_input_cursor(cursor_column)
-  local input_buffer = vim.api.nvim_get_current_buf()
-  if vim.bo[input_buffer].filetype ~= 'snacks_input' then return end
-  vim.api.nvim_create_autocmd('InsertEnter', {
-    buffer = input_buffer,
-    once = true,
-    callback = function()
-      vim.schedule(function()
-        if vim.api.nvim_get_current_buf() ~= input_buffer then return end
-        vim.api.nvim_win_set_cursor(0, { 1, cursor_column })
-      end)
-    end,
-  })
-end
-
-local function input_path(prompt, default, cursor_column, on_confirm)
-  vim.ui.input(
-    { prompt = prompt, default = default, completion = 'file' },
-    function(value)
-      if value then on_confirm(value) end
-    end
-  )
-  if cursor_column then place_input_cursor(cursor_column) end
-end
-
--- Leaders --------------------------------------------------------------------
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+local ripgrep = require 'utils.ripgrep'
 
 -- Disable arrows -------------------------------------------------------------
-vim.keymap.set('n', '<left>', '<nop>')
-vim.keymap.set('n', '<right>', '<nop>')
-vim.keymap.set('n', '<up>', '<nop>')
-vim.keymap.set('n', '<down>', '<nop>')
-vim.keymap.set('i', '<left>', '<nop>')
-vim.keymap.set('i', '<right>', '<nop>')
-vim.keymap.set('i', '<up>', '<nop>')
-vim.keymap.set('i', '<down>', '<nop>')
-vim.keymap.set('v', '<left>', '<nop>')
-vim.keymap.set('v', '<right>', '<nop>')
-vim.keymap.set('v', '<up>', '<nop>')
-vim.keymap.set('v', '<down>', '<nop>')
+for _, mode in ipairs { 'n', 'i', 'v' } do
+  for _, arrow_key in pairs(ArrowKeyEnum) do
+    vim.keymap.set(mode, arrow_key, '<nop>')
+  end
+end
 
 -- Several --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -92,169 +44,40 @@ vim.keymap.set(
   { desc = 'Exit terminal mode' }
 )
 
--- Window Navigation ----------------------------------------------------------
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Focus left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Focus right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Focus lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Focus upper window' })
-
--- Buffer Operations ----------------------------------------------------------
-local function map(mode, key, rhs, opts)
-  opts = vim.tbl_extend('force', { silent = true }, opts or {})
-  vim.keymap.set(mode, key, rhs, opts) -- variante <M-...> (Alt)
-  local dkey = key:gsub('<M%-', '<D-')
-  if dkey ~= key then
-    vim.keymap.set(mode, dkey, rhs, opts) -- variante <D-...> (Cmd)
-  end
-end
-
-map('n', '<M-j>', ':m .+1<CR>==', { desc = 'Move line down' })
-map('n', '<M-k>', ':m .-2<CR>==', { desc = 'Move line up' })
-map('x', '<M-j>', ":silent! m '>+1<CR>gv=gv", { desc = 'Move selection down' })
-map('x', '<M-k>', ":silent! m '<-2<CR>gv=gv", { desc = 'Move selection up' })
-map(
+-- Line Operations -----------------------------------------------------------
+helpers.set_alt_and_cmd_keymap(
   'n',
-  '<M-l>',
-  '<cmd>BufferLineCycleNext<CR>',
-  { silent = true, desc = 'Next buffer' }
+  '<M-j>',
+  ':m .+1<CR>==',
+  { desc = 'Move line down' }
 )
-map(
+helpers.set_alt_and_cmd_keymap(
   'n',
-  '<M-h>',
-  '<cmd>BufferLineCyclePrev<CR>',
-  { silent = true, desc = 'Previous buffer' }
+  '<M-k>',
+  ':m .-2<CR>==',
+  { desc = 'Move line up' }
 )
-
-vim.keymap.set(
-  'n',
-  '<leader>bod',
-  '<cmd>BufferLineCloseOthers<CR>',
-  { desc = '[B]uffer [O]thers [D]elete' }
+helpers.set_alt_and_cmd_keymap(
+  'x',
+  '<M-j>',
+  ":silent! m '>+1<CR>gv=gv",
+  { desc = 'Move selection down' }
 )
-vim.keymap.set('n', '<leader>bd', function()
-  local cur = vim.api.nvim_get_current_buf()
-  local next_buf = nil
-  local alt = vim.fn.bufnr '#'
-  if alt > 0 and alt ~= cur and vim.fn.buflisted(alt) == 1 then
-    next_buf = alt
-  end
-  if not next_buf then
-    for _, info in ipairs(vim.fn.getbufinfo { buflisted = 1 }) do
-      if info.bufnr ~= cur then
-        next_buf = info.bufnr
-        break
-      end
-    end
-  end
-  if next_buf then vim.api.nvim_set_current_buf(next_buf) end
-  vim.cmd('bdelete ' .. cur)
-end, { desc = '[B]uffer [D]elete' })
-
--- File Operations --------------------------------------------------------
-vim.keymap.set('n', '<leader>fn', function()
-  local dir = os_mod.normalize_os_path(vim.fn.expand '%:p:h')
-  input_path('New file: ', dir .. '/', nil, new_file)
-end, { desc = '[F]ile [N]ew' })
-
-vim.keymap.set('n', '<leader>fd', function()
-  local file = vim.fn.expand '%:p'
-  if file == '' then
-    vim.notify('No file to trash', vim.log.levels.WARN)
-    return
-  end
-  if vim.fn.confirm('Trash file?\n' .. file, '&Yes\n&No', 2) ~= 1 then
-    return
-  end
-  local cmd
-  if os_mod.is_macos() then
-    cmd = {
-      'osascript',
-      '-e',
-      string.format('tell application "Finder" to delete POSIX file %q', file),
-    }
-  elseif os_mod.is_windows() then
-    cmd = {
-      'powershell',
-      '-NoProfile',
-      '-NonInteractive',
-      '-Command',
-      'Add-Type -AssemblyName Microsoft.VisualBasic; '
-        .. "[Microsoft.VisualBasic.FileIO.FileSystem]::DeleteFile('"
-        .. file:gsub("'", "''")
-        .. "', 'OnlyErrorDialogs', 'SendToRecycleBin')",
-    }
-  else
-    cmd = { 'gio', 'trash', '--', file }
-  end
-  local result = vim.system(cmd, { text = true }):wait()
-  if result.code ~= 0 then
-    vim.notify(
-      'Trash failed: ' .. (result.stderr or 'unknown error'),
-      vim.log.levels.ERROR
-    )
-    return
-  end
-  Snacks.bufdelete { force = true }
-  vim.notify('Trashed ' .. file)
-end, { desc = '[F]ile [D]elete (trash) current' })
-
-vim.keymap.set('n', '<leader>fr', function()
-  local old = vim.fn.expand '%:p'
-  local dir = os_mod.normalize_os_path(vim.fn.expand '%:p:h')
-  local ext = vim.fn.expand '%:e'
-  local default = dir .. '/' .. '.' .. ext
-  input_path(
-    'Rename to: ',
-    default,
-    #default - #ext - 1,
-    function(new) edit_file(old, new) end
-  )
-end, { desc = '[F]ile [R]ename' })
-
-vim.keymap.set('n', '<leader>fe', function()
-  local old = vim.fn.expand '%:p'
-  local filename = os_mod.normalize_os_path(vim.fn.expand '%:p:r')
-  local default = filename .. '.'
-  input_path('Rename to: ', default, nil, function(new) edit_file(old, new) end)
-end, { desc = '[F]ile [E]xtension' })
-
-vim.keymap.set('n', '<leader>fm', function()
-  local old = vim.fn.expand '%:p'
-  local name = vim.fn.expand '%:t'
-  local default = os_mod.normalize_os_path(old)
-  input_path(
-    'Move to: ',
-    default,
-    #default - #name,
-    function(new) edit_file(old, new) end
-  )
-end, { desc = '[F]ile [M]ove' })
-
-vim.keymap.set('n', '<leader>fc', function()
-  local old = vim.fn.expand '%:p'
-  local name = vim.fn.expand '%:t'
-  local default = os_mod.normalize_os_path(old)
-  input_path('Copy to: ', default, #default - #name, function(new)
-    new = os_mod.rewrite_to_os_path(new)
-    if new == '' or new == old then return end
-    vim.fn.mkdir(vim.fn.fnamemodify(new, ':h'), 'p')
-    local success = vim.uv.fs_copyfile(old, new)
-    if success then
-      vim.cmd('edit ' .. vim.fn.fnameescape(new))
-    else
-      vim.notify('Error at file clone.', vim.log.levels.ERROR)
-    end
-  end)
-end, { desc = '[F]ile [C]opy' })
+helpers.set_alt_and_cmd_keymap(
+  'x',
+  '<M-k>',
+  ":silent! m '<-2<CR>gv=gv",
+  { desc = 'Move selection up' }
+)
 
 -- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
   local config_lua_path = os_mod.normalize_os_path(vim.fn.stdpath 'config')
     .. '/'
-  input_path('New Lua config: ', config_lua_path, nil, function(path)
+  file.prompt_path('New Lua config: ', config_lua_path, nil, function(path)
     if path == '' then return end
     if not path:match '%.lua$' then path = path .. '.lua' end
-    new_file(path)
+    file.create_file(path)
   end)
 end, { desc = '[C]onfig [N]ew' })
 
@@ -335,15 +158,10 @@ vim.keymap.set(
   function()
     require('telescope.builtin').find_files {
       prompt_title = 'Find All Files',
-      find_command = {
-        'rg',
-        '--files',
-        '--color=never',
-        '--hidden',
-        '--no-ignore',
-        '--follow',
-        '--glob=!.git/',
-      },
+      find_command = ripgrep.build_command(
+        { '--files', '--color=never', '--no-ignore' },
+        { '.git/' }
+      ),
     }
   end,
   { desc = '[A]ll Files' }
@@ -503,7 +321,7 @@ vim.keymap.set(
 )
 vim.keymap.set(
   'n',
-  '<leader>[T]est [R]eport',
+  '<leader>tr',
   function() require('neotest').summary.toggle() end,
   { desc = '[T]est [R]eport' }
 )
@@ -524,101 +342,4 @@ vim.keymap.set(
   '<leader>ta',
   function() require('neotest').run.run { suite = true } end,
   { desc = '[T]est [A]ll' }
-)
-
--- Git Operations ---------------------------------------------------------
-local gs = function() return require 'gitsigns' end
-vim.keymap.set('n', ']c', function()
-  if vim.wo.diff then
-    vim.cmd.normal { ']c', bang = true }
-  else
-    gs().nav_hunk 'next'
-  end
-end, { desc = 'Next git [C]hange' })
-
-vim.keymap.set('n', '[c', function()
-  if vim.wo.diff then
-    vim.cmd.normal { '[c', bang = true }
-  else
-    gs().nav_hunk 'prev'
-  end
-end, { desc = 'Prev git [C]hange' })
-
-vim.keymap.set(
-  'v',
-  '<leader>hs',
-  function() gs().stage_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
-  { desc = 'git [S]tage hunk' }
-)
-vim.keymap.set(
-  'v',
-  '<leader>hr',
-  function() gs().reset_hunk { vim.fn.line '.', vim.fn.line 'v' } end,
-  { desc = 'git [R]eset hunk' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gsh',
-  function() gs().stage_hunk() end,
-  { desc = '[G]it [S]tage [H]unk' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>grh',
-  function() gs().reset_hunk() end,
-  { desc = '[G]it [R]eset [H]unk' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gsb',
-  function() gs().stage_buffer() end,
-  { desc = '[G]it [S]tage [B]uffer' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gush',
-  function() gs().stage_hunk() end,
-  { desc = '[G]it [U]ndo [S]tage [H]unk' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>grb',
-  function() gs().reset_buffer() end,
-  { desc = '[G]it [R]eset [B]uffer' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gph',
-  function() gs().preview_hunk() end,
-  { desc = '[G]it [P]review [H]unk' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gdi',
-  function() gs().diffthis() end,
-  { desc = '[G]it [D]iff [I]ndex' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gdl',
-  function() gs().diffthis '@' end,
-  { desc = '[G]it [D]iff [L]ast commit' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gbf',
-  function() gs().blame_line() end,
-  { desc = '[G]it [B]lame [F]ull' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gbs',
-  function() gs().toggle_current_line_blame() end,
-  { desc = '[G]it [B]lame [S]hort' }
-)
-vim.keymap.set(
-  'n',
-  '<leader>gpd',
-  function() gs().preview_hunk_inline() end,
-  { desc = '[G]it [P]review [D]eleted' }
 )

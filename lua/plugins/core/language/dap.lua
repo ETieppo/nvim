@@ -56,7 +56,7 @@ return {
   },
   config = function()
     local dap = require 'dap'
-    require('utils.dap_mod').setup()
+    require('langs.core').setup_dap()
 
     require('nvim-dap-virtual-text').setup { commented = true }
 

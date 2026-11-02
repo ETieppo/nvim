@@ -1,9 +1,6 @@
+local helpers = require 'utils.helpers'
 local path = vim.fn.stdpath 'config' .. '/lua/utils'
-local files = vim.fn.readdir(path)
 
-for _, file in ipairs(files) do
-  if file ~= 'init.lua' and file:sub(-4) == '.lua' then
-    local module = 'utils.' .. file:gsub('%.lua$', '')
-    require(module)
-  end
+for _, name in ipairs(helpers.find_lua_module_names(path)) do
+  require('utils.' .. name)
 end

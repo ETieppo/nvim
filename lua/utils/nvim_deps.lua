@@ -1,5 +1,5 @@
 local deps_mod = require 'utils.deps_mod'
-local helpers = require 'utils.helpers'
+local deps_command = require 'hooks.deps_command'
 local OsNameEnum = require 'utils.enums.os_name_enum'
 
 local M = {}
@@ -42,60 +42,30 @@ local nvim_deps = {
   },
 }
 
-local nvim_deps_commands = {
-  install = {
-    short = 'i',
-    run = deps_mod.install,
+deps_mod.add_to_session_path(nvim_deps)
+
+deps_command.create_deps_user_command {
+  name = dep_user_command_name,
+  desc = 'Install minimal needed dependencies X_X',
+  subcommands = {
+    install = {
+      short = 'i',
+      run = function() deps_mod.install(nvim_deps) end,
+    },
   },
 }
 
-deps_mod.add_to_session_path(nvim_deps)
-
-vim.api.nvim_create_user_command(dep_user_command_name, function(opts)
-  local face = '--_--'
-  local command_arg = opts.args
-
-  if command_arg == nil then
-    vim.notify('Not enough args\nUse :Deps <command> <language>\n' .. face)
-    return
-  end
-
-  local command = helpers.find_command_in(nvim_deps_commands, command_arg)
-  if command == nil then
-    vim.notify(
-      'No '
-        .. command_arg
-        .. ' '
-        .. dep_user_command_name
-        .. ' command found! '
-        .. face
-    )
-    return
-  end
-
-  command.run(nvim_deps)
-end, {
-  nargs = 1,
-  desc = 'Install minimal needed dependencies X_X',
-})
-
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
-    local missing = deps_mod.find_missing(nvim_deps)
-    if #missing == 0 then return end
-
-    local names = vim.tbl_map(function(dep) return dep.cmd end, missing)
+    local missing_deps = deps_mod.find_missing(nvim_deps)
     vim.schedule(
       function()
-        vim.notify(
-          'Some deps could not be find ()_()\n'
-            .. table.concat(names, ',\n')
-            .. '\nRun :'
-            .. dep_user_command_name
-            .. ' i to install ;)',
-          vim.log.levels.WARN,
-          { title = 'Neovim setup' }
-        )
+        deps_command.notify_missing_deps {
+          title = 'Neovim setup',
+          subject = 'Neovim',
+          missing_deps = missing_deps,
+          install_command = ':' .. dep_user_command_name .. ' i',
+        }
       end
     )
   end,

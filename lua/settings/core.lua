@@ -1,3 +1,5 @@
+local osc52 = require 'vim.ui.clipboard.osc52'
+
 vim.g.have_nerd_font = true
 
 vim.o.number = true
@@ -40,8 +42,6 @@ vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 vim.opt.fillchars:append 'eob: '
 vim.opt.shortmess:append 'W'
 
-vim.api.nvim_set_hl(0, 'Comment', { italic = true })
-
 vim.cmd 'syntax on'
 vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
@@ -52,12 +52,12 @@ if vim.env.SSH_TTY then
   vim.g.clipboard = {
     name = 'OSC 52',
     copy = {
-      ['+'] = require('vim.ui.clipboard.osc52').copy '+',
-      ['*'] = require('vim.ui.clipboard.osc52').copy '*',
+      ['+'] = osc52.copy '+',
+      ['*'] = osc52.copy '*',
     },
     paste = {
-      ['+'] = require('vim.ui.clipboard.osc52').paste '+',
-      ['*'] = require('vim.ui.clipboard.osc52').paste '*',
+      ['+'] = osc52.paste '+',
+      ['*'] = osc52.paste '*',
     },
   }
 end
