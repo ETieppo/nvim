@@ -1,5 +1,4 @@
 local osc52 = require 'vim.ui.clipboard.osc52'
-local helpers = require 'utils.helpers'
 
 vim.g.have_nerd_font = true
 
@@ -23,6 +22,7 @@ vim.o.cmdheight = 0
 vim.o.background = 'dark'
 vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 
+vim.opt.sessionoptions:remove 'blank'
 vim.opt.signcolumn = 'yes'
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = '+1'
