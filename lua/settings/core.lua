@@ -1,24 +1,8 @@
 local osc52 = require 'vim.ui.clipboard.osc52'
-local base_char = '🭰'
+local helpers = require 'utils.helpers'
 
 vim.g.have_nerd_font = true
 
-vim.diagnostic.config {
-  virtual_text = {
-    enabled = true,
-    prefix = base_char,
-    suffix = ' 🭵',
-  },
-  underline = true,
-  signs = {
-    text = {
-      [vim.diagnostic.severity.ERROR] = base_char,
-      [vim.diagnostic.severity.WARN] = base_char,
-      [vim.diagnostic.severity.HINT] = base_char,
-      [vim.diagnostic.severity.INFO] = base_char,
-    },
-  },
-}
 vim.o.number = true
 vim.o.mouse = ''
 vim.o.showmode = false
@@ -39,7 +23,7 @@ vim.o.cmdheight = 0
 vim.o.background = 'dark'
 vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 
-vim.opt.signcolumn = "yes"
+vim.opt.signcolumn = 'yes'
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = '+1'
 vim.opt.laststatus = 3
@@ -76,6 +60,5 @@ if vim.env.SSH_TTY then
       ['+'] = osc52.paste '+',
       ['*'] = osc52.paste '*',
     },
-
   }
 end

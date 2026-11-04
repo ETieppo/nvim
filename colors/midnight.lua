@@ -1,4 +1,3 @@
-
 -- 08080b
 -- 455665
 -- 686868
@@ -42,9 +41,9 @@ local p = {
   -- Syntax — Core
   keyword = '#7ba9a3',
   keywordAlt = '#8abeb7',
-  func = '#455665',
+  func = '#2b4c9a',
+  types = '#455665',
   funcBuiltin = '#0db9d7',
-  type_ = '#4493f8',
   typeParam = '#3a5d81',
   property = '#A8B1D6',
   namespace_ = '#ffffff',

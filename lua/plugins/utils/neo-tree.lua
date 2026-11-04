@@ -1,4 +1,5 @@
-local base_char = ':'
+local sign_char = '¦'
+local staged_char = '┆'
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -20,15 +21,15 @@ return {
       indent = { with_expanders = false },
       git_status = {
         symbols = {
-          added = base_char,
-          deleted = base_char,
-          modified = base_char,
-          renamed = base_char,
-          untracked = base_char,
-          ignored = base_char,
-          unstaged = base_char,
-          staged = base_char,
-          conflict = base_char,
+          added = sign_char,
+          deleted = sign_char,
+          modified = sign_char,
+          renamed = sign_char,
+          untracked = sign_char,
+          ignored = sign_char,
+          unstaged = sign_char,
+          conflict = sign_char,
+          staged = staged_char,
         },
       },
     },
