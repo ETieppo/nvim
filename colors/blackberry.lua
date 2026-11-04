@@ -1,7 +1,6 @@
 ---@type ThemeProps
 local p = {
-  transparent = '#000000',
-  bg = '#060609',
+  bg = '#08080b',
   bg1 = '#0b0d16',
   bg2 = '#1a1a26',
 
@@ -20,7 +19,7 @@ local p = {
 
   -- Syntax — Core
   keyword = '#702ded',
-  keywordAlt = '#e41951',
+  keywordAlt = '#a2002e',
   func = '#2b4c9a',
   types = '#2596be',
   parameter = '#3a5d81',
