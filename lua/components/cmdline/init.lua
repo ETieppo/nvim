@@ -6,13 +6,6 @@ local cmdline_preview = require 'components.cmdline.preview'
 ---@field cmdline_type string
 ---@field desc string
 
-local FLOATING_CMDLINE_WIDTH = 60
-local FLOATING_CMDLINE_ROW = 2
-local FLOATING_CMDLINE_TITLES = {
-  [':'] = ' Cmdline ',
-  ['/'] = ' Search forward ',
-  ['?'] = ' Search backward ',
-}
 ---@type FloatingCmdlineKeymapProps[]
 local FLOATING_CMDLINE_KEYMAPS = {
   {
@@ -71,25 +64,23 @@ local function build_floating_cmdline_opener(cmdline_type)
   end
 end
 
-local function turn_cmdwin_into_floating_prompt(window)
-  local width = math.min(FLOATING_CMDLINE_WIDTH, vim.o.columns - 4)
+local function turn_cmdwin_into_bottom_prompt(window)
   vim.api.nvim_win_set_config(window, {
     relative = 'editor',
-    row = FLOATING_CMDLINE_ROW,
-    col = math.floor((vim.o.columns - width) / 2),
-    width = width,
+    row = vim.o.lines - math.max(vim.o.cmdheight, 1),
+    col = 0,
+    width = vim.o.columns,
     height = 1,
-    border = 'rounded',
-    title = FLOATING_CMDLINE_TITLES[vim.fn.getcmdwintype()],
-    title_pos = 'center',
+    border = 'none',
     zindex = 200,
   })
   vim.wo[window].number = false
   vim.wo[window].relativenumber = false
   vim.wo[window].signcolumn = 'no'
+  vim.wo[window].cursorline = false
+  vim.wo[window].colorcolumn = ''
   vim.wo[window].statuscolumn = '%#NonText#' .. vim.fn.getcmdwintype()
-  vim.wo[window].winhighlight =
-    'NormalFloat:SnacksInputNormal,FloatBorder:SnacksInputBorder,FloatTitle:SnacksInputTitle'
+  vim.wo[window].winhighlight = 'NormalFloat:MsgArea'
 end
 
 for _, keymap in ipairs(FLOATING_CMDLINE_KEYMAPS) do
@@ -108,11 +99,11 @@ vim.api.nvim_create_autocmd('CmdwinLeave', {
 })
 
 vim.api.nvim_create_autocmd('CmdwinEnter', {
-  desc = 'Turn the command-line window into a floating prompt',
+  desc = 'Turn the command-line window into a bottom prompt',
   group = floating_cmdline_group,
   callback = function(event)
     local source_window = vim.fn.win_getid(vim.fn.winnr '#')
-    turn_cmdwin_into_floating_prompt(vim.api.nvim_get_current_win())
+    turn_cmdwin_into_bottom_prompt(vim.api.nvim_get_current_win())
     vim.keymap.set('n', '<Esc>', '<cmd>quit<CR>', { buffer = event.buf })
     cmdline_history.attach(event.buf)
 

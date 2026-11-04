@@ -22,7 +22,7 @@
 ---@field constant string
 ---@field string_ string
 ---@field stringAlt string
----@field regex string
+---@field builtin string
 ---@field comment string
 ---@field tag string
 ---@field tagAttr string
