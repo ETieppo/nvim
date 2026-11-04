@@ -216,6 +216,7 @@ function M.load(p)
   set(0, '@type.definition', { fg = p.types, bold = true })
   set(0, '@type.qualifier', { fg = p.keyword })
 
+  set(0, '@lsp.typemod.method.consuming', { italic = true })
   set(0, '@lsp.type.attribute', { fg = p.fg })
   set(0, '@lsp.type.derive', { fg = p.keywordAlt })
   set(0, '@lsp.type.attributeBracket', { fg = p.ornamentActiveFg })
