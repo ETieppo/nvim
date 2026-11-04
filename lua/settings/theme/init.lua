@@ -20,7 +20,7 @@
 ---@field property string
 ---@field variable string
 ---@field constant string
----@field string_ string
+---@field strings string
 ---@field stringAlt string
 ---@field builtin string
 ---@field comment string

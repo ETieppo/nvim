@@ -1,91 +1,46 @@
--- 08080b
--- 455665
--- 686868
--- 8abeb7
--- 7ba9a3
--- 435a58
--- 29292b
-
+---@type ThemeProps
 local p = {
   transparent = '#000000',
-  bg0 = '#060609',
-  bg1 = '#0a0a0d',
-  bg2 = '#0b0d16',
-  bg3 = '#100c17',
-  bg4 = '#22222c',
-  bg5 = '#1a1a26',
-  bgBlue = '#11161f',
-  bgGreen = '#0d1410',
-  bgRed = '#160d0d',
-  bgYellow = '#15130a',
-
-  -- Foreground / Text
-  fg = '#a9b1d6',
-  fgMuted = '#787c99',
-  fgDim = '#545470',
-  fgSemiHide = '#303040',
-  fgBright = '#c5cae9',
-
-  -- Borders / Structural
-  border = '#191921',
-  borderFaint = '#14141a',
-  borderFocus = '#545c7e',
-  inactiveIndentLine = '#303040',
-  activeIndentLine = '#66d9ef',
-
-  -- Accent / Selection
-  selection = '#3d59a144',
-  selectionBg = '#1e202e',
-  matchBg = '#3d59a166',
-
-  -- Syntax — Core
-  keyword = '#7ba9a3',
-  keywordAlt = '#8abeb7',
-  func = '#2b4c9a',
-  types = '#455665',
-  funcBuiltin = '#0db9d7',
-  typeParam = '#3a5d81',
-  property = '#A8B1D6',
-  namespace_ = '#ffffff',
-  variable = '#c0caf5',
-  param = '#e0687a',
-  constant = '#601D49',
-  bracket = '#41a6b5',
-  constantAlt = '#c0768e',
-  operator = '#f92672',
-  string_ = '#03826b',
-  regex = '#b4f9f8',
-  number = '#ae81ff',
-  comment = '#444b6a',
-  tag = '#892a3b',
-  tagAttr = '#556779',
-  macro = '#737aa2',
+  bg = '#08080b',
+  bg1 = '#0e0e12',
+  bg2 = '#1a1a1d',
 
   -- Errors / Diagnostics
-  error_ = '#f7768e',
-  warning = '#e0af68',
-  info = '#7aa2f7',
-  hint = '#41a6b5',
+  errorFg = '#b8697f',
+  errorBg = '#1a0d10',
+  warningFg = '#a8966a',
+  warnBg = '#171209',
+  infoFg = '#7ba9a3',
+  infoBg = '#0f1c1b',
+  successFg = '#8abeb7',
+  successBg = '#0e1615',
 
-  -- Git
-  added = '#a9b1d6',
-  modified = '#41a6b5',
-  deleted = '#f7768e',
+  fg = '#686868',
+  fgDim = '#29292b',
 
-  -- Special
-  purple = '#bb9af7',
-  salmon = '#e0687a',
-  bgTeal = '#0c1618',
-  teal = '#41a6b5',
-  cyanDim = '#00262f',
-  cyan = '#7dcfff',
-  cyanBright = '#b4f9f8',
-  crimson = '#b8003a',
-  crimsonBright = '#f7768e',
-  darkRed = '#892a3b',
-  darkRedDim = '#290006',
+  -- Syntax — Core
+  keyword = '#95a7d0',
+  keywordAlt = '#d1d6db',
+  func = '#5378a2',
+  types = '#74a4b4',
+  parameter = '#5d7489',
+  property = '#8f8f90',
+  variable = '#b3c0cc',
+  constant = '#6c6c93',
+  builtin = '#c6e7e2',
+  strings = '#5b8b84',
+  stringAlt = '#8abeb7',
+  comment = '#455665',
+  tag = '#435a58',
+  tagAttr = '#66798a',
+
+  -- bracket and ornament
+  ornamentActiveFg = '#7ba9a3',
+  ornamentActiveBg = '#0f1c1b',
+  ornamentInactiveFg = '#435a58',
+  ornamentInactiveBg = '#101414',
 }
 
-require('settings.theme').load('blueberry', p)
+require('settings.theme').load('mint', p)
 
 return p
