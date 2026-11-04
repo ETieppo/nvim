@@ -26,12 +26,28 @@ local function wrap_virtual_diagnostic(diagnostic)
   return table.concat(lines, '\n')
 end
 
+-- vim.diagnostic.config {
+--   virtual_text = false,
+--   virtual_lines = {
+--     format = wrap_virtual_diagnostic,
+--   },
+--   severity_sort = true,
+--   underline = true,
+--   signs = {
+--     text = {
+--       [vim.diagnostic.severity.ERROR] = diagnostic_prefix,
+--       [vim.diagnostic.severity.WARN] = diagnostic_prefix,
+--       [vim.diagnostic.severity.HINT] = diagnostic_prefix,
+--       [vim.diagnostic.severity.INFO] = diagnostic_prefix,
+--     },
+--   },
+-- }
 vim.diagnostic.config {
-  virtual_text = false,
-  virtual_lines = {
-    format = wrap_virtual_diagnostic,
+  virtual_text = {
+    enabled = true,
+    prefix = diagnostic_prefix,
+    suffix = diagnostic_suffix,
   },
-  severity_sort = true,
   underline = true,
   signs = {
     text = {

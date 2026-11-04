@@ -4,13 +4,13 @@ function M.load(p)
   local set = vim.api.nvim_set_hl
 
   -- UI / Editor
-  set(0, 'WinSeparator', { fg = p.transparent })
+  set(0, 'WinSeparator', { fg = p.bg })
   set(0, 'Normal', { fg = p.fg, bg = p.bg })
   set(0, 'NormalNC', { fg = p.fg, bg = p.bg })
   set(0, 'NormalFloat', { fg = p.fg, bg = p.bg1 })
   set(0, 'CursorLine', { bg = p.bg1 })
   set(0, 'CursorLineNr', { fg = p.keyword, bold = false })
-  set(0, 'LineNr', { fg = p.fg })
+  set(0, 'LineNr', { fg = p.comment })
   set(0, 'NonText', { fg = p.ornamentInactiveFg })
   set(0, 'EndOfBuffer', { fg = p.bg })
   set(0, 'SignColumn', { fg = p.fg })
@@ -302,12 +302,12 @@ function M.load(p)
   set(
     0,
     'TelescopePreviewTitle',
-    { fg = p.ornamentActiveBg, bg = p.keywordAlt, bold = true }
+    { fg = p.ornamentActiveFg, bg = p.ornamentActiveBg, bold = true }
   )
   set(
     0,
     'TelescopePromptTitle',
-    { fg = p.ornamentActiveFg, bg = p.types, bold = true }
+    { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg, bold = true }
   )
   set(0, 'TelescopeResultsTitle', { fg = p.bg1, bg = p.bg1 })
   set(0, 'TelescopeSelection', { fg = 'NONE', bg = p.bg2 })
