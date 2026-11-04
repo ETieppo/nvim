@@ -1,3 +1,38 @@
+---@class ThemeProps
+---@field bg string
+---@field bg1 string
+---@field bg2 string
+---@field bg3 string
+---@field bg4 string
+---@field errorFg string
+---@field warningFg string
+---@field infoFg string
+---@field successFg string
+---@field infoBg string
+---@field errorBg string
+---@field warnBg string
+---@field successBg string
+---@field fg string
+---@field fgDim string
+---@field keyword string
+---@field keywordAlt string
+---@field func string
+---@field types string
+---@field parameter string
+---@field property string
+---@field variable string
+---@field constant string
+---@field string_ string
+---@field stringAlt string
+---@field regex string
+---@field comment string
+---@field tag string
+---@field tagAttr string
+---@field ornamentActiveFg string
+---@field ornamentActiveBg string
+---@field ornamentInactiveFg string
+---@field ornamentInactiveBg string
+
 local M = {}
 
 M.name = nil
@@ -10,6 +45,7 @@ function M.load(name, p)
   if vim.fn.exists 'syntax_on' == 1 then vim.cmd 'syntax reset' end
 
   M.name, M.palette = name, p
+  vim.list_extend(p, { transparent = '#000000' })
 
   require('settings.theme.highlight').load(p)
   vim.g.colors_name = name
@@ -22,22 +58,7 @@ function M.get() return M.palette end
 function M.get_theme_colors()
   local p = M.palette
   if not p then return nil end
-
-  return {
-    bg0 = p.bg0,
-    activeFg = p.cyan,
-    activeBg = p.cyanDim,
-    inactiveFg = p.darkRed,
-    inactiveBg = p.darkRedDim,
-    errorFg = p.error_,
-    errorBg = p.bgRed,
-    warnFg = p.warning,
-    warnBg = p.bgYellow,
-    infoFg = p.info,
-    infoBg = p.bgBlue,
-    hintFg = p.hint,
-    hintBg = p.bgTeal,
-  }
+  return p
 end
 
 return M

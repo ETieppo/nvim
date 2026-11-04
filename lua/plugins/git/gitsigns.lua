@@ -1,3 +1,6 @@
+local sign_char = '¦'
+local staged_char = '┆'
+
 ---@param action_name string
 ---@param ... any
 ---@return fun()
@@ -107,11 +110,20 @@ return {
   ---@diagnostic disable-next-line: missing-fields
   opts = {
     signs = {
-      add = { text = '+' }, ---@diagnostic disable-line: missing-fields
-      change = { text = '~' }, ---@diagnostic disable-line: missing-fields
-      delete = { text = '_' }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
+      add = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      change = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      delete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      topdelete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      changedelete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      untracked = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+    },
+    signs_staged = {
+      add = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      change = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      delete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      topdelete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      changedelete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      untracked = { text = staged_char }, ---@diagnostic disable-line: missing-fields
     },
   },
 }

@@ -16,10 +16,13 @@ lang_mod.record_lang_deps {
     },
   },
 }
+for _,l in ipairs(lang_mod.get_lang_filetypes 'typescript') do
+  print(l)
+end
 
 return {
   cmd = { 'oxlint', '--lsp' },
-  filetypes = lang_mod.get_javascript_filetypes(),
+  filetypes = lang_mod.get_lang_filetypes 'typescript',
   root_markers = {
     '.oxlintrc.json',
     '.oxlintrc.jsonc',

@@ -1,8 +1,12 @@
 local helpers = require 'utils.helpers'
 local DATABASE_OUTPUT_FILETYPE = 'dbout'
 local IMAGE_FILETYPE = 'image'
-local AUTOSAVE_EVENTS =
-  { 'InsertLeave', 'TextChanged', 'FocusLost', 'BufLeave' }
+local AUTOSAVE_EVENTS = {
+  'InsertLeave',
+  'TextChanged',
+  'FocusLost',
+  'BufLeave',
+}
 
 local M = {}
 
@@ -111,6 +115,15 @@ vim.api.nvim_create_autocmd('BufEnter', {
     if vim.api.nvim_buf_get_name(0) == '' then return end
     vim.schedule(delete_unused_empty_buffers)
   end,
+})
+
+vim.api.nvim_create_autocmd('TextYankPost', {
+  desc = 'Highlight when yanking text',
+  group = vim.api.nvim_create_augroup(
+    'highlight-yanked-text',
+    { clear = true }
+  ),
+  callback = function() vim.hl.hl_op { timeout = 300 } end,
 })
 
 return M

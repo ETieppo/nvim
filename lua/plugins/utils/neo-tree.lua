@@ -1,3 +1,5 @@
+local base_char = ':'
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
@@ -16,6 +18,19 @@ return {
     close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
+      git_status = {
+        symbols = {
+          added = base_char,
+          deleted = base_char,
+          modified = base_char,
+          renamed = base_char,
+          untracked = base_char,
+          ignored = base_char,
+          unstaged = base_char,
+          staged = base_char,
+          conflict = base_char,
+        },
+      },
     },
     clipboard = {
       sync = 'global',

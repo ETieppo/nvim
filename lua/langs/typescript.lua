@@ -1,8 +1,19 @@
 local lang_mod = require 'langs.core'
-local javascript_filetypes = lang_mod.get_javascript_filetypes()
+local javascript_filetypes = {
+  'javascript',
+  'javascriptreact',
+  'typescript',
+  'typescriptreact',
+}
 
 lang_mod.record_lang_deps {
   short = 'ts',
+  filetypes = {
+    'javascript',
+    'javascriptreact',
+    'typescript',
+    'typescriptreact',
+  },
   depends_on = {
     'emmet',
     'oxlint',
@@ -31,10 +42,7 @@ lang_mod.record_lang_deps {
 }
 
 lang_mod.record_fmt {
-  lang = vim.list_extend(
-    lang_mod.get_javascript_filetypes(),
-    { 'html', 'htmlangular' }
-  ),
+  lang = javascript_filetypes,
   formatter = 'oxfmt',
 }
 
@@ -55,19 +63,20 @@ lang_mod.record_dap_adapter {
       type = 'server',
       host = '127.0.0.1',
       port = '${port}',
-      executable = { command = path, args = { '${port}', '127.0.0.1' } },
+      executable = {
+        command = path,
+        args = {
+          '${port}',
+          '127.0.0.1',
+        },
+      },
     }
   end,
 }
 
 lang_mod.record_dap {
   adapter = 'pwa-node',
-  filetypes = {
-    'javascript',
-    'typescript',
-    'javascriptreact',
-    'typescriptreact',
-  },
+  filetypes = javascript_filetypes,
   configurations = {
     {
       name = 'Launch file',
@@ -97,14 +106,12 @@ lang_mod.record_docs {
 return {
   cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = javascript_filetypes,
-
   root_markers = {
     'jsconfig.json',
     'tsconfig.json',
     'package.json',
     '.git',
   },
-
   init_options = {
     hostInfo = 'neovim',
   },

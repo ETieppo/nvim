@@ -1,7 +1,24 @@
 local osc52 = require 'vim.ui.clipboard.osc52'
+local base_char = '🭰'
 
 vim.g.have_nerd_font = true
 
+vim.diagnostic.config {
+  virtual_text = {
+    enabled = true,
+    prefix = base_char,
+    suffix = ' 🭵',
+  },
+  underline = true,
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = base_char,
+      [vim.diagnostic.severity.WARN] = base_char,
+      [vim.diagnostic.severity.HINT] = base_char,
+      [vim.diagnostic.severity.INFO] = base_char,
+    },
+  },
+}
 vim.o.number = true
 vim.o.mouse = ''
 vim.o.showmode = false
@@ -13,7 +30,6 @@ vim.o.timeoutlen = 300
 vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.list = true
-vim.o.signcolumn = 'yes'
 vim.o.updatetime = 250
 vim.o.inccommand = 'split'
 vim.o.cursorline = true
@@ -21,6 +37,7 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 vim.o.cmdheight = 0
 vim.o.background = 'dark'
+vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = '+1'
@@ -28,7 +45,6 @@ vim.opt.laststatus = 3
 vim.opt.foldlevel = 99
 vim.opt.foldlevelstart = 99
 vim.opt.virtualedit = 'onemore'
-vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 vim.opt.termguicolors = true
 vim.opt.showbreak = '↪ '
 vim.opt.tabstop = 2
@@ -59,5 +75,6 @@ if vim.env.SSH_TTY then
       ['+'] = osc52.paste '+',
       ['*'] = osc52.paste '*',
     },
+
   }
 end

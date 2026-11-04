@@ -1,7 +1,13 @@
 local lang_mod = require 'langs.core'
+local os_mod = require 'utils.os_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
 lang_mod.docs_ignore()
+
+lang_mod.record_fmt {
+  lang = lang_name,
+  formatter = 'clang-format',
+}
 
 lang_mod.record_lang_deps {
   treesitter = 'c_sharp',
@@ -19,6 +25,18 @@ lang_mod.record_lang_deps {
   },
 }
 
+---@return string|nil
+local function find_dotnet_root()
+  local dotnet = os_mod.which 'dotnet'
+  if not dotnet then return nil end
+
+  local sdks = os_mod.read_program_stdout { dotnet, '--list-sdks' }
+  local sdk_dir = sdks and sdks:match '%[(.-)%]'
+  if not sdk_dir then return nil end
+
+  return vim.fs.dirname(sdk_dir)
+end
+
 return {
   cmd = {
     'roslyn-language-server',
@@ -26,6 +44,9 @@ return {
     '--autoLoadProjects',
   },
   filetypes = { lang_name },
+  cmd_env = {
+    DOTNET_ROOT = find_dotnet_root(),
+  },
   root_dir = function(bufnr, on_dir)
     local root = vim.fs.root(
       bufnr,

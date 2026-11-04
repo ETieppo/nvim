@@ -1,3 +1,4 @@
+---@type ThemeProps
 local p = {
   transparent = '#000000',
   bg0 = '#060609',
@@ -78,6 +79,6 @@ local p = {
   darkRedDim = '#290006',
 }
 
-require('settings.theme').load('blackberry', p)
+require('settings.theme').load('blueberry', p)
 
 return p

@@ -1,17 +1,14 @@
 local dap_mod = require 'langs.core.dap_mod'
 local docs_mod = require 'langs.core.docs_mod'
-local filetypes = require 'langs.core.utils.filetypes'
 local fmt_mod = require 'langs.core.fmt_mod'
 local lang_deps = require 'langs.core.utils.lang_deps'
 local lang_registry = require 'langs.core.utils.lang_registry'
 local lint_mod = require 'langs.core.lint_mod'
-local lsp_completion_kinds = require 'langs.core.utils.lsp_completion_kinds'
 local lsp_mod = require 'langs.core.lsp_mod'
 local test_mod = require 'langs.core.test_mod'
 local treesitter_mod = require 'langs.core.treesitter_mod'
 local utils_helpers = require 'utils.helpers'
 local langs_path = vim.fn.stdpath 'config' .. '/lua/langs'
-
 require 'langs.core.auto_cmd'
 
 local M = {}
@@ -19,12 +16,10 @@ local M = {}
 for _, module in ipairs {
   dap_mod,
   docs_mod,
-  filetypes,
   fmt_mod,
   lang_deps,
   lang_registry,
   lint_mod,
-  lsp_completion_kinds,
   lsp_mod,
   test_mod,
   treesitter_mod,

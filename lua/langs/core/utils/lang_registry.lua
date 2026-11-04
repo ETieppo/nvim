@@ -24,7 +24,6 @@ local recorded_langs = {}
 ---@param lang LangDepsProps
 function M.record_lang_deps(lang)
   local lang_name = lang.lang or utils_helpers.get_caller_filename()
-
   docs_mod.record_docs(utils_helpers.ensure_list(lang.doc or lang_name))
 
   for _, treesitter_name in
@@ -75,22 +74,21 @@ end
 
 ---@param lang RecordedLangProps
 ---@return string[]
-local function get_lang_filetypes(lang)
-  local lsp_config = vim.lsp.config[lang.lsp]
-  return lsp_config and lsp_config.filetypes or { lang.lang }
+function M.get_lang_filetypes(lang)
+  local ld = recorded_langs[lang]
+  return ld and ld or {}
 end
 
 ---@param filetype string
 ---@param buffer integer
 ---@return RecordedLangProps[]
 function M.find_langs_for_buffer(filetype, buffer)
-  return vim.tbl_filter(
-    function(lang)
-      return vim.list_contains(get_lang_filetypes(lang), filetype)
-        and is_buffer_inside_lang_workspace(lang, buffer)
-    end,
-    vim.tbl_values(recorded_langs)
-  )
+  return vim.tbl_filter(function(lang)
+    local lsp_config = vim.lsp.config[lang.lsp]
+    local filetypes = lsp_config and lsp_config.filetypes or { lang.lang }
+    return vim.list_contains(filetypes, filetype)
+      and is_buffer_inside_lang_workspace(lang, buffer)
+  end, vim.tbl_values(recorded_langs))
 end
 
 return M
