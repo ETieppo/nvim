@@ -39,6 +39,7 @@ vim.o.cmdheight = 0
 vim.o.background = 'dark'
 vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 
+vim.opt.signcolumn = "yes"
 vim.opt.textwidth = 80
 vim.opt.colorcolumn = '+1'
 vim.opt.laststatus = 3

@@ -2,8 +2,6 @@
 ---@field bg string
 ---@field bg1 string
 ---@field bg2 string
----@field bg3 string
----@field bg4 string
 ---@field errorFg string
 ---@field warningFg string
 ---@field infoFg string

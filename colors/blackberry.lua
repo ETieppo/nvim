@@ -1,15 +1,13 @@
 ---@type ThemeProps
 local p = {
   transparent = '#000000',
-  bg = '#060609',
-  bg1 = '#0a0a0d',
-  bg2 = '#08080b',
-  bg3 = '#0b0d16',
-  bg4 = '#1a1a26',
+  bg = '#08080b',
+  bg1 = '#0b0d16',
+  bg2 = '#1a1a26',
 
   -- Errors / Diagnostics
-  errorFg = '#e41951',
-  warningFg = '#ffff00',
+  errorFg = '#f7768e',
+  warningFg = '#e0af68',
   infoFg = '#7dcfff',
   successFg = '#85d0b7',
   infoBg = '#00262f',
