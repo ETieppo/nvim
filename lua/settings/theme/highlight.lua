@@ -111,12 +111,12 @@ function M.load(p)
   set(0, '@property', { fg = p.property })
   set(0, '@field', { fg = p.property })
 
-  set(0, 'LspReferenceText', { bg = p.bg2 })
-  set(0, 'LspReferenceRead', { bg = p.bg2 })
-  set(0, 'LspReferenceWrite', { bg = p.bg2 })
+  set(0, 'LspReferenceText', { bg = p.ornamentActiveBg })
+  set(0, 'LspReferenceRead', { bg = p.ornamentActiveBg })
+  set(0, 'LspReferenceWrite', { bg = p.ornamentActiveBg })
   set(0, 'LspCodeLens', { fg = p.fg })
   set(0, 'LspCodeLensSeparator', { fg = p.fg })
-  set(0, 'LspInlayHint', { fg = p.fg, bg = p.bg2 })
+  set(0, 'LspInlayHint', { fg = p.fg, bg = p.ornamentActiveFg })
   set(0, 'LspSignatureActiveParameter', { fg = p.keyword, bold = true })
   set(0, 'LspFloatWinNormal', { bg = p.bg })
   set(0, 'LspFloatWinBorder', { fg = p.bg2 })
@@ -311,12 +311,8 @@ function M.load(p)
   )
   set(0, 'TelescopeResultsTitle', { fg = p.bg1, bg = p.bg1 })
   set(0, 'TelescopeSelection', { fg = 'NONE', bg = p.bg2 })
-  set(0, 'TelescopePreviewLine', { fg = 'NONE', bg = p.bg2 })
-  set(
-    0,
-    'TelescopeMatching',
-    { fg = p.keyword, bg = 'NONE', bold = true, italic = true }
-  )
+  set(0, 'TelescopePreviewLine', { fg = 'NONE', bg = p.ornamentActiveBg })
+  set(0, 'TelescopeMatching', { fg = p.keyword, bold = true, italic = true })
 
   -- DAP UI
   set(0, 'DapUINormalNC', { bg = p.bg1 })

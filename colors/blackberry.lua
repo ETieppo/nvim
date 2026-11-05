@@ -3,6 +3,10 @@ local p = {
   bg = '#08080b',
   bg1 = '#0b0d16',
   bg2 = '#1a1a26',
+  ornamentActiveFg = '#7dcfff',
+  ornamentActiveBg = '#00262f',
+  ornamentInactiveFg = '#94002F',
+  ornamentInactiveBg = '#290006',
 
   -- Errors / Diagnostics
   errorFg = '#d15583',
@@ -32,12 +36,6 @@ local p = {
   comment = '#3d4357',
   tag = '#892a3b',
   tagAttr = '#556779',
-
-  -- bracket and ornament
-  ornamentActiveFg = '#7dcfff',
-  ornamentActiveBg = '#00262f',
-  ornamentInactiveFg = '#94002F',
-  ornamentInactiveBg = '#290006',
 }
 
 require('settings.theme').load('blackberry', p)
