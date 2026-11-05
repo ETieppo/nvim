@@ -7,7 +7,7 @@ function M.load(p)
   set(0, 'WinSeparator', { fg = p.bg })
   set(0, 'Normal', { fg = p.fg, bg = p.bg })
   set(0, 'NormalNC', { fg = p.fg, bg = p.bg })
-  set(0, 'NormalFloat', { fg = p.fg, bg = p.bg1 })
+  set(0, 'NormalFloat', { fg = p.fg, bg = p.ornamentActiveBg })
   set(0, 'CursorLine', { bg = p.bg1 })
   set(0, 'CursorLineNr', { fg = p.keyword, bold = false })
   set(0, 'LineNr', { fg = p.comment })
@@ -432,6 +432,9 @@ function M.load(p)
   set(0, 'RedrawDebugClear', { bg = p.fg })
   set(0, 'RedrawDebugComposed', { bg = p.keyword })
   set(0, 'RedrawDebugRecompose', { bg = p.errorFg })
+
+  set(0, 'WhichKeyNormal', { bg = p.bg1 })
+  set(0, 'LazyNormal', { bg = p.bg1 })
 end
 
 return M
