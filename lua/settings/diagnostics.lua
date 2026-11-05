@@ -26,28 +26,56 @@ local function wrap_virtual_diagnostic(diagnostic)
   return table.concat(lines, '\n')
 end
 
--- vim.diagnostic.config {
---   virtual_text = false,
---   virtual_lines = {
---     format = wrap_virtual_diagnostic,
---   },
---   severity_sort = true,
---   underline = true,
---   signs = {
---     text = {
---       [vim.diagnostic.severity.ERROR] = diagnostic_prefix,
---       [vim.diagnostic.severity.WARN] = diagnostic_prefix,
---       [vim.diagnostic.severity.HINT] = diagnostic_prefix,
---       [vim.diagnostic.severity.INFO] = diagnostic_prefix,
---     },
---   },
--- }
+local builtin_virtual_lines_handler = vim.diagnostic.handlers.virtual_lines
+
+local function highlight_virtual_lines_messages(namespace, bufnr)
+  local virtual_lines_namespace =
+    vim.diagnostic.get_namespace(namespace).user_data.virt_lines_ns
+  if not virtual_lines_namespace or not vim.api.nvim_buf_is_loaded(bufnr) then
+    return
+  end
+
+  local extmarks = vim.api.nvim_buf_get_extmarks(
+    bufnr,
+    virtual_lines_namespace,
+    0,
+    -1,
+    { details = true }
+  )
+
+  for _, extmark in ipairs(extmarks) do
+    local id, row, col, details = unpack(extmark)
+    for _, virtual_line in ipairs(details.virt_lines or {}) do
+      local message_chunk = virtual_line[#virtual_line]
+      if message_chunk and type(message_chunk[2]) == 'string' then
+        message_chunk[2] = message_chunk[2]:gsub(
+          '^DiagnosticVirtualLines',
+          'DiagnosticVirtualText'
+        )
+      end
+    end
+    vim.api.nvim_buf_set_extmark(bufnr, virtual_lines_namespace, row, col, {
+      id = id,
+      virt_lines = details.virt_lines,
+      virt_lines_overflow = details.virt_lines_overflow,
+    })
+  end
+end
+
+vim.diagnostic.handlers.virtual_lines = {
+  show = function(namespace, bufnr, diagnostics, opts)
+    builtin_virtual_lines_handler.show(namespace, bufnr, diagnostics, opts)
+    highlight_virtual_lines_messages(namespace, bufnr)
+  end,
+  hide = builtin_virtual_lines_handler.hide,
+}
+
 vim.diagnostic.config {
-  virtual_text = {
-    enabled = true,
-    prefix = diagnostic_prefix,
-    suffix = diagnostic_suffix,
+  virtual_text = false,
+  virtual_lines = {
+    format = wrap_virtual_diagnostic,
   },
+  severity_sort = true,
   underline = true,
   signs = {
     text = {
@@ -58,3 +86,19 @@ vim.diagnostic.config {
     },
   },
 }
+-- vim.diagnostic.config {
+--   virtual_text = {
+--     enabled = true,
+--     prefix = diagnostic_prefix,
+--     suffix = diagnostic_suffix,
+--   },
+--   underline = true,
+--   signs = {
+--     text = {
+--       [vim.diagnostic.severity.ERROR] = diagnostic_prefix,
+--       [vim.diagnostic.severity.WARN] = diagnostic_prefix,
+--       [vim.diagnostic.severity.HINT] = diagnostic_prefix,
+--       [vim.diagnostic.severity.INFO] = diagnostic_prefix,
+--     },
+--   },
+-- }
