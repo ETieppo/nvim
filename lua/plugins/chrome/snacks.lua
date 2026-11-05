@@ -1,3 +1,4 @@
+local prompt_bar = require('components.cmdline.prompt_bar')
 math.randomseed(os.time())
 
 local path = vim.fn.stdpath 'config' .. '/assets/'
@@ -13,7 +14,16 @@ return {
     bufdelete = { enabled = true },
     debug = { enabled = true },
     indent = { enabled = true },
-    input = { enabled = true },
+    input = {
+      enabled = true,
+      icon_pos = false,
+      prompt_pos = 'left',
+      expand = false,
+      win = vim.tbl_extend('force', prompt_bar.window_config, {
+        width = 0,
+        wo = { winhighlight = prompt_bar.window_highlight },
+      }),
+    },
     scroll = { enabled = true },
     image = {
       enabled = true,

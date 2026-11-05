@@ -44,7 +44,9 @@ return {
     {
       '<leader>bT',
       function()
-        require('dap').set_breakpoint(vim.fn.input 'Breakpoint condition: ')
+        vim.ui.input({ prompt = 'Breakpoint condition: ' }, function(condition)
+          if condition then require('dap').set_breakpoint(condition) end
+        end)
       end,
       desc = 'Conditional Breakpoint',
     },
@@ -57,7 +59,6 @@ return {
   config = function()
     local dap = require 'dap'
     require('langs.core').setup_dap()
-
     require('nvim-dap-virtual-text').setup { commented = true }
 
     local dapui = require 'dapui'
@@ -72,11 +73,11 @@ return {
     vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
 
     local icons = {
-      Breakpoint = '●',
-      BreakpointCondition = '⊜',
-      BreakpointRejected = '⊘',
-      LogPoint = '◆ ',
-      Stopped = '⭔ ',
+      Breakpoint = '⫩',
+      BreakpointCondition = 'ᚳ',
+      BreakpointRejected = 'ǂ',
+      LogPoint = '⬡',
+      Stopped = '⊥',
     }
     for type, icon in pairs(icons) do
       local hl = (type == 'Stopped') and 'DapStop' or 'DapBreak'

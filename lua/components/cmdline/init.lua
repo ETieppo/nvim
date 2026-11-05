@@ -1,5 +1,6 @@
 local cmdline_history = require 'components.cmdline.history'
 local cmdline_preview = require 'components.cmdline.preview'
+local prompt_bar = require 'components.cmdline.prompt_bar'
 
 ---@class FloatingCmdlineKeymapProps
 ---@field modes string[]
@@ -64,23 +65,18 @@ local function build_floating_cmdline_opener(cmdline_type)
   end
 end
 
-local function turn_cmdwin_into_bottom_prompt(window)
-  vim.api.nvim_win_set_config(window, {
-    relative = 'editor',
-    row = vim.o.lines - math.max(vim.o.cmdheight, 1),
-    col = 0,
-    width = vim.o.columns,
-    height = 1,
-    border = 'none',
-    zindex = 200,
-  })
+local function turn_cmdwin_into_prompt_bar(window)
+  vim.api.nvim_win_set_config(
+    window,
+    vim.tbl_extend('force', prompt_bar.window_config, { width = vim.o.columns })
+  )
   vim.wo[window].number = false
   vim.wo[window].relativenumber = false
   vim.wo[window].signcolumn = 'no'
   vim.wo[window].cursorline = false
   vim.wo[window].colorcolumn = ''
   vim.wo[window].statuscolumn = '%#NonText#' .. vim.fn.getcmdwintype()
-  vim.wo[window].winhighlight = 'NormalFloat:MsgArea'
+  vim.wo[window].winhighlight = prompt_bar.window_highlight
 end
 
 for _, keymap in ipairs(FLOATING_CMDLINE_KEYMAPS) do
@@ -99,11 +95,11 @@ vim.api.nvim_create_autocmd('CmdwinLeave', {
 })
 
 vim.api.nvim_create_autocmd('CmdwinEnter', {
-  desc = 'Turn the command-line window into a bottom prompt',
+  desc = 'Turn the command-line window into a prompt bar',
   group = floating_cmdline_group,
   callback = function(event)
     local source_window = vim.fn.win_getid(vim.fn.winnr '#')
-    turn_cmdwin_into_bottom_prompt(vim.api.nvim_get_current_win())
+    turn_cmdwin_into_prompt_bar(vim.api.nvim_get_current_win())
     vim.keymap.set('n', '<Esc>', '<cmd>quit<CR>', { buffer = event.buf })
     cmdline_history.attach(event.buf)
 

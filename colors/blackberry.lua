@@ -3,6 +3,7 @@ local p = {
   bg = '#08080b',
   bg1 = '#0b0d16',
   bg2 = '#1a1a26',
+
   ornamentActiveFg = '#7dcfff',
   ornamentActiveBg = '#00262f',
   ornamentInactiveFg = '#94002F',
