@@ -11,6 +11,10 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
+  config = function(_, opts)
+    require('components.material_icons').setup()
+    require('neo-tree').setup(opts)
+  end,
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
@@ -19,6 +23,15 @@ return {
     close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
+      icon = {
+        provider = function(icon, node, state)
+          local defaults = require 'neo-tree.defaults'
+          defaults.default_component_configs.icon.provider(icon, node, state)
+          if node.type == 'directory' then
+            require('components.material_icons').apply_folder_icon(icon, node)
+          end
+        end,
+      },
       git_status = {
         symbols = {
           added = sign_char,
