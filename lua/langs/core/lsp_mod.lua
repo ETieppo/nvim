@@ -1,5 +1,7 @@
 local COMPLETION_ITEM_KINDS = vim.lsp.protocol.CompletionItemKind
+---@type string
 local COMPLETION_RESOLVE_METHOD = 'completionItem/resolve'
+---@type table<string, boolean>
 local METHODS_RETURNING_COMPLETION_ITEMS = {
   ['textDocument/completion'] = true,
   [COMPLETION_RESOLVE_METHOD] = true,
@@ -15,6 +17,7 @@ local recorded_lsps = {}
 local function convert_kind_names_to_numbers(method, result)
   if type(result) ~= 'table' then return end
 
+  ---@type table<any>
   local items = method == COMPLETION_RESOLVE_METHOD and { result }
     or result.items
     or result
@@ -31,6 +34,8 @@ function M.convert_completion_kind_names_on_init(client)
   client.request = function(self, method, params, handler, ...)
     if METHODS_RETURNING_COMPLETION_ITEMS[method] and handler then
       local original_handler = handler
+      -- FIX: type
+      ---@diagnostic disable-next-line
       handler = function(err, result, ...)
         if not err then convert_kind_names_to_numbers(method, result) end
         return original_handler(err, result, ...)

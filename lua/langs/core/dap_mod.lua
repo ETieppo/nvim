@@ -115,6 +115,7 @@ end
 
 function M.setup_dap()
   local dap = require 'dap'
+  ---@type table<string, boolean>
   local available_adapters = {}
 
   for name, adapter in pairs(recorded_adapters) do

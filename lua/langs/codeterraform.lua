@@ -23,6 +23,7 @@ lang_mod.record_dap_adapter {
 
 lang_mod.record_dap {
   adapter = 'codeterraform',
+  ---@param buffer integer
   provider = function(buffer)
     local file = vim.api.nvim_buf_get_name(buffer)
     local root = vim.fs.root(file, root_marker)
@@ -47,6 +48,7 @@ lang_mod.record_dap {
   end,
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'bun', server_dir .. '/server.cjs', '--stdio' },
   filetypes = { 'python' },

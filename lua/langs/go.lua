@@ -16,6 +16,7 @@ lang_mod.record_lang_deps {
 lang_mod.record_dap_adapter {
   name = 'delve',
   cmd = 'dlv',
+  ---@param path string
   build = function(path)
     return {
       type = 'server',
@@ -49,6 +50,7 @@ lang_mod.record_dap {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { vim.fn.expand 'gopls' },
   filetypes = { lang_name, 'gomod' },

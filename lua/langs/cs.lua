@@ -31,12 +31,14 @@ local function find_dotnet_root()
   if not dotnet then return nil end
 
   local sdks = os_mod.read_program_stdout { dotnet, '--list-sdks' }
+  ---@type string|nil
   local sdk_dir = sdks and sdks:match '%[(.-)%]'
   if not sdk_dir then return nil end
 
   return vim.fs.dirname(sdk_dir)
 end
 
+---@type vim.lsp.Config
 return {
   cmd = {
     'roslyn-language-server',

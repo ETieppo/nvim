@@ -6,6 +6,7 @@ lang_mod.record_dap {
   configurations = { lang_mod.build_lldb_launch_configuration() },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'asm-lsp' },
   filetypes = { lang_name },

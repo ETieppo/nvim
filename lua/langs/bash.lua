@@ -14,6 +14,7 @@ lang_mod.record_lang_deps {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'bash-language-server', 'start' },
   filetypes = { lang_name, 'sh' },

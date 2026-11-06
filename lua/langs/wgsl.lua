@@ -1,6 +1,7 @@
 local lang_mod = require 'langs.core'
 local lang_name = require('utils.helpers').get_this_filename()
 local wesl_name = 'wesl'
+---@type string[]
 local filetypes = {
   lang_name,
   wesl_name,

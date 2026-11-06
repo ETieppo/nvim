@@ -54,6 +54,7 @@ lang_mod.record_dap {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { lang_name },

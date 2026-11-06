@@ -20,6 +20,7 @@ for _,l in ipairs(lang_mod.get_lang_filetypes 'typescript') do
   print(l)
 end
 
+---@type vim.lsp.Config
 return {
   cmd = { 'oxlint', '--lsp' },
   filetypes = lang_mod.get_lang_filetypes 'typescript',

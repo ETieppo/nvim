@@ -26,6 +26,7 @@ lang_mod.record_lang_deps {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = {
     'tofu-ls',

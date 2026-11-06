@@ -13,6 +13,7 @@ lang_mod.record_fmt {
   formatter = 'tombi',
 }
 
+---@type vim.lsp.Config
 return {
   cmd = {
     'tombi',

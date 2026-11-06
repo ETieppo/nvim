@@ -32,6 +32,7 @@ lang_mod.record_dap {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'phpantom_lsp' },
   filetypes = { lang_name },

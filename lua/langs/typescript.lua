@@ -1,4 +1,5 @@
 local lang_mod = require 'langs.core'
+---@type string[]
 local javascript_filetypes = {
   'javascript',
   'javascriptreact',
@@ -58,6 +59,7 @@ vim.filetype.add {
 lang_mod.record_dap_adapter {
   name = 'pwa-node',
   cmd = 'js-debug-adapter',
+  ---@param path string
   build = function(path)
     return {
       type = 'server',
@@ -103,6 +105,7 @@ lang_mod.record_docs {
   'bun',
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = javascript_filetypes,

@@ -1,5 +1,6 @@
 local lang_mod = require 'langs.core'
 local lang_name = require('utils.helpers').get_this_filename()
+---@type string[]
 local filetypes = { lang_name, 'c' }
 
 lang_mod.record_lang_deps {
@@ -25,6 +26,7 @@ lang_mod.record_dap {
   configurations = { lang_mod.build_lldb_launch_configuration() },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = {
     'clangd',

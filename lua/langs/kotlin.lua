@@ -33,6 +33,7 @@ lang_mod.record_dap {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'kotlin-language-server' },
   filetypes = { lang_name },

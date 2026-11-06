@@ -1,4 +1,5 @@
 local lang_mod = require 'langs.core'
+---@type string[]
 local filetypes = { 'json', 'jsonc' }
 
 lang_mod.docs_ignore()
@@ -18,6 +19,7 @@ lang_mod.record_fmt {
   formatter = 'oxfmt',
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'vscode-json-language-server', '--stdio' },
   filetypes = filetypes,

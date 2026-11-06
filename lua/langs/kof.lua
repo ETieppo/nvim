@@ -40,6 +40,7 @@ vim.filetype.add {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = {
     'kof',

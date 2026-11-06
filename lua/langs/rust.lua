@@ -54,6 +54,7 @@ local function build_cargo_debug_program()
   }
   if not metadata then return nil end
 
+  ---@diagnostic disable-next-line
   local is_valid_json, cargo_metadata = pcall(vim.json.decode, metadata)
   if not is_valid_json then return nil end
 
@@ -99,6 +100,7 @@ lang_mod.record_dap {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { vim.fn.expand 'rust-analyzer' },
   filetypes = { lang_name },

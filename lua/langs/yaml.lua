@@ -14,6 +14,7 @@ lang_mod.record_lang_deps {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'yaml-language-server', '--stdio' },
   filetypes = { lang_name, 'yml' },

@@ -21,6 +21,7 @@ lang_mod.record_lang_deps {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'ruby-lsp' },
   filetypes = { lang_name, 'rbs', 'rbx', 'tt' },

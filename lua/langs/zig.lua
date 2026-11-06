@@ -27,6 +27,7 @@ lang_mod.record_dap {
   configurations = { lang_mod.build_lldb_launch_configuration() },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'zls' },
   filetypes = { lang_name, 'zon' },

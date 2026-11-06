@@ -47,6 +47,7 @@ lang_mod.record_fmt {
   },
 }
 
+---@type vim.lsp.Config
 return {
   cmd = { 'teal-language-server', '--verbose=false', '--log-mode=none' },
   filetypes = { lang_name },
