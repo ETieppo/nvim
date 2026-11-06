@@ -311,7 +311,7 @@ return {
     name = 'MaterialBenchJs',
   },
   ['bench-jsx'] = {
-    icon = '\u{F0FB4}',
+    icon = '\u{F007A}',
     color = '#00BCD4',
     name = 'MaterialBenchJsx',
   },
