@@ -54,17 +54,17 @@ end
 local custom_icons = {
   default_icon = material_icons.get_default_file_icon(),
   tl = {
-    icon = '\u{100000}',
+    icon = '\u{F08B1}',
     color = '#00B1BC',
     name = 'Teal',
   },
   kof = {
-    icon = '\u{100001}',
+    icon = '\u{F0B12}',
     color = '#FFFFFF',
     name = 'Kf',
   },
   kf = {
-    icon = '\u{100001}',
+    icon = '\u{F0B12}',
     color = '#FFFFFF',
     name = 'Kof',
   },
