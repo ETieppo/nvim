@@ -4931,8 +4931,8 @@ return {
     name = 'MaterialOtne',
   },
   oxc = {
-    icon = '\u{F413}',
-    color = '#00B8D4',
+    icon = '\u{F0031}',
+    color = '#91EDE9',
     name = 'MaterialOxc',
   },
   packship = {

@@ -4,7 +4,7 @@ local file_names = require 'components.material_icons.data.file_names'
 local folder_names = require 'components.material_icons.data.folder_names'
 local folder_open_icons =
   require 'components.material_icons.data.folder_open_icons'
-local generated_icons = require 'components.material_icons.data.icons'
+local icons = require 'components.material_icons.data.icons'
 local language_ids = require 'components.material_icons.data.language_ids'
 
 ---@class MaterialIconProps
@@ -31,18 +31,16 @@ local custom_file_names = {
   ['.bash_logout'] = 'console',
   ['.bash_profile'] = 'console',
   ['.bashrc'] = 'console',
+  ['.env'] = 'tune',
   ['.profile'] = 'console',
+  ['.xcode.env'] = 'tune',
+  ['.xcode.env.local'] = 'tune',
   ['.zlogin'] = 'console',
   ['.zlogout'] = 'console',
   ['.zprofile'] = 'console',
   ['.zsh_history'] = 'console',
   ['.zshenv'] = 'console',
   ['.zshrc'] = 'console',
-}
-
----@type table<string, MaterialIconProps>
-local nerd_font_icons = {
-  oxc = { icon = '\u{F0031}', color = '#91EDE9', name = 'Oxc' },
 }
 
 local ICON_PADDING = ' '
@@ -56,7 +54,6 @@ local function pad_icons(icons_to_pad)
   end
 end
 
-local icons = vim.tbl_extend('force', generated_icons, nerd_font_icons)
 pad_icons(icons)
 
 local M = {}
