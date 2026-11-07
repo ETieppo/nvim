@@ -1,9 +1,8 @@
 local sign_char = '¦'
 local staged_char = '┆'
 
----@module 'nui.tree'
-
----@class (partial) NeoTreeIconProps : neotree.Component.Common.Icon
+-- ---@module 'nui.tree'
+-- ---@class (partial) NeoTreeIconProps : neotree.Component.Common.Icon
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -15,10 +14,10 @@ return {
   keys = {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
-  config = function(_, opts)
-    require('components.material_icons').setup()
-    require('neo-tree').setup(opts)
-  end,
+  -- config = function(_, opts)
+  --   require('components.material_icons').setup()
+  --   require('neo-tree').setup(opts)
+  -- end,
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
@@ -27,16 +26,16 @@ return {
     close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
-      ---@type NeoTreeIconProps
-      icon = {
-        provider = function(icon, node, state)
-          local defaults = require 'neo-tree.defaults'
-          defaults.default_component_configs.icon.provider(icon, node, state)
-          if node.type == 'directory' then
-            require('components.material_icons').apply_folder_icon(icon, node)
-          end
-        end,
-      },
+      -- ---@type NeoTreeIconProps
+      -- icon = {
+      --   provider = function(icon, node, state)
+      --     local defaults = require 'neo-tree.defaults'
+      --     defaults.default_component_configs.icon.provider(icon, node, state)
+      --     if node.type == 'directory' then
+      --       require('components.material_icons').apply_folder_icon(icon, node)
+      --     end
+      --   end,
+      -- },
       git_status = {
         symbols = {
           added = sign_char,
