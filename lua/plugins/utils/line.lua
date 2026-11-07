@@ -1,3 +1,8 @@
+---@class SlimlineSpinnerProps
+---@field tokens table<integer|string, boolean>
+---@field frame integer
+---@field timer? uv.uv_timer_t
+
 return {
   'sschleemilch/slimline.nvim',
   event = 'VeryLazy',
@@ -38,6 +43,7 @@ return {
       'ᗤ     🍒    ᗣ  ',
       'ᗤ     🍒    ᗣ  ',
     }
+    ---@type SlimlineSpinnerProps
     local spinner = { tokens = {}, frame = 1, timer = nil }
 
     local function stop_timer()

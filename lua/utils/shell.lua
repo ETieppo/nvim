@@ -104,6 +104,8 @@ end
 ---@return string
 function Shell:join(commands)
   local grouped = vim.tbl_map(
+    ---@param command string
+    ---@return string
     function(command) return self.command_group:format(command) end,
     commands
   )

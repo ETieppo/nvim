@@ -1,8 +1,3 @@
-------------------------------------------------------
---      Just lang autocommands, if looking for general
---              see seettings/auto_commands.lua
-------------------------------------------------------
-
 local deps_command = require 'hooks.deps_command'
 local lang_deps = require 'langs.core.utils.lang_deps'
 

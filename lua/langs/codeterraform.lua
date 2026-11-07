@@ -1,3 +1,5 @@
+---@module 'dap'
+
 local lang_mod = require 'langs.core'
 
 local root_marker = 'codeterraform-workspace.json'
@@ -24,6 +26,7 @@ lang_mod.record_dap_adapter {
 lang_mod.record_dap {
   adapter = 'codeterraform',
   ---@param buffer integer
+  ---@return table[]
   provider = function(buffer)
     local file = vim.api.nvim_buf_get_name(buffer)
     local root = vim.fs.root(file, root_marker)

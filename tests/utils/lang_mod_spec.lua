@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local helpers = require 'utils.helpers'
 local stub = require 'luassert.stub'
 local lang_mod = require 'utils.lang_mod'

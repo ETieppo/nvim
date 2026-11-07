@@ -14,6 +14,7 @@ local helpers = require 'utils.helpers'
 ---@field linkers table<string, string[]>
 ---@field configs table<string, FormatterConfigProps>
 
+---@class FmtModProps
 local M = {}
 
 ---@type FormattersProps
@@ -30,6 +31,7 @@ function M.record_fmt(fmt)
     recorded_formatters.configs[fmt.formatter] = fmt.config
   end
   for _, lang_name in ipairs(lang_names) do
+    ---@cast lang_name string
     recorded_formatters.linkers[lang_name] = { fmt.formatter }
   end
 end

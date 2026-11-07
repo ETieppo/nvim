@@ -26,9 +26,13 @@ local function wrap_virtual_diagnostic(diagnostic)
   return table.concat(lines, '\n')
 end
 
+---@class VirtualLinesExtmarkDetailsProps : vim.api.keyset.extmark_details
+---@field virt_lines_overflow? string
+
 local builtin_virtual_lines_handler = vim.diagnostic.handlers.virtual_lines
 
 local function highlight_virtual_lines_messages(namespace, bufnr)
+  ---@type integer|nil
   local virtual_lines_namespace =
     vim.diagnostic.get_namespace(namespace).user_data.virt_lines_ns
   if not virtual_lines_namespace or not vim.api.nvim_buf_is_loaded(bufnr) then
@@ -44,6 +48,7 @@ local function highlight_virtual_lines_messages(namespace, bufnr)
   )
 
   for _, extmark in ipairs(extmarks) do
+    ---@type integer, integer, integer, VirtualLinesExtmarkDetailsProps
     local id, row, col, details = unpack(extmark)
     for _, virtual_line in ipairs(details.virt_lines or {}) do
       local message_chunk = virtual_line[#virtual_line]

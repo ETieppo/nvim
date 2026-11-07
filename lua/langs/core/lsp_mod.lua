@@ -7,6 +7,10 @@ local METHODS_RETURNING_COMPLETION_ITEMS = {
   [COMPLETION_RESOLVE_METHOD] = true,
 }
 
+---@class RawCompletionItemProps
+---@field kind? string|integer
+
+---@class LspModProps
 local M = {}
 
 ---@type string[]
@@ -17,7 +21,7 @@ local recorded_lsps = {}
 local function convert_kind_names_to_numbers(method, result)
   if type(result) ~= 'table' then return end
 
-  ---@type table<any>
+  ---@type RawCompletionItemProps[]
   local items = method == COMPLETION_RESOLVE_METHOD and { result }
     or result.items
     or result
@@ -34,8 +38,6 @@ function M.convert_completion_kind_names_on_init(client)
   client.request = function(self, method, params, handler, ...)
     if METHODS_RETURNING_COMPLETION_ITEMS[method] and handler then
       local original_handler = handler
-      -- FIX: type
-      ---@diagnostic disable-next-line
       handler = function(err, result, ...)
         if not err then convert_kind_names_to_numbers(method, result) end
         return original_handler(err, result, ...)

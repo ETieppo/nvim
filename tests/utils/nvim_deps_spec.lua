@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local stub = require 'luassert.stub'
 local deps_mod = require 'utils.deps_mod'
 local OsNameEnum = require 'utils.enums.os_name_enum'

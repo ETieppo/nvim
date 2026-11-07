@@ -193,6 +193,7 @@ end
 ---@param delimiter string
 ---@return string[]
 local function split_by_delimiter(text, delimiter)
+  ---@type string[], string[], integer
   local parts, current, index = {}, {}, 1
 
   while index <= #text do
@@ -237,6 +238,7 @@ end
 ---@param submatches string[]
 ---@return string
 local function expand_replacement(replacement, submatches)
+  ---@type string[]
   local result = {}
   ---@type ReplacementCaseProps
   local case = {}
@@ -284,6 +286,7 @@ end
 
 ---@return string
 local function evaluate_replacement()
+  ---@type string[]
   local submatches = {}
 
   for group = 0, 9 do
@@ -375,6 +378,7 @@ local function collect_line_matches(text, substitute)
   )
   if not success then return {} end
 
+  ---@type SubstituteMatchProps[], integer, integer, integer
   local matches, column, position, match_index = {}, 0, 1, 0
   while true do
     local marker = marked_text:find(MATCH_MARKER, position, true)

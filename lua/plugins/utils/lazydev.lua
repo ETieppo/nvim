@@ -4,6 +4,8 @@ return {
   opts = {
     library = {
       { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      '${3rd}/busted/library',
+      '${3rd}/luassert/library',
       { path = 'lazy.nvim', words = { 'LazySpec' } },
       { path = 'snacks.nvim', words = { 'Snacks' } },
       { path = 'blink.cmp', words = { 'blink%.cmp' } },

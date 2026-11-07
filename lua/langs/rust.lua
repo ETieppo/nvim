@@ -2,6 +2,16 @@ local lang_mod = require 'langs.core'
 local os_mod = require 'utils.os_mod'
 local lang_name = require('utils.helpers').get_this_filename()
 
+---@class CargoTargetProps
+---@field name string
+---@field kind? string[]
+
+---@class CargoPackageProps
+---@field targets? CargoTargetProps[]
+
+---@class CargoMetadataProps
+---@field packages? CargoPackageProps[]
+
 lang_mod.record_test_adapter {
   'mrcjkb/rustaceanvim',
   module = 'rustaceanvim.neotest',
@@ -54,9 +64,9 @@ local function build_cargo_debug_program()
   }
   if not metadata then return nil end
 
-  ---@diagnostic disable-next-line
   local is_valid_json, cargo_metadata = pcall(vim.json.decode, metadata)
   if not is_valid_json then return nil end
+  ---@cast cargo_metadata CargoMetadataProps
 
   for _, package in ipairs(cargo_metadata.packages or {}) do
     for _, target in ipairs(package.targets or {}) do

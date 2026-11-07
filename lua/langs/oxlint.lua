@@ -1,4 +1,5 @@
 local lang_mod = require 'langs.core'
+require 'langs.typescript'
 
 lang_mod.treesitter_ignore()
 lang_mod.docs_ignore()
@@ -16,9 +17,6 @@ lang_mod.record_lang_deps {
     },
   },
 }
-for _,l in ipairs(lang_mod.get_lang_filetypes 'typescript') do
-  print(l)
-end
 
 ---@type vim.lsp.Config
 return {

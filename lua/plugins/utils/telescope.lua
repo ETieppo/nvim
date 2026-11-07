@@ -1,5 +1,6 @@
 local ArrowKeyEnum = require 'utils.enums.arrow_key_enum'
 local ripgrep = require 'utils.ripgrep'
+---@type table<string, boolean>
 local disabled_arrow_mappings = {}
 
 for _, arrow_key in pairs(ArrowKeyEnum) do

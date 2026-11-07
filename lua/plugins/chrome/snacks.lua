@@ -2,6 +2,7 @@ local prompt_bar = require('components.cmdline.prompt_bar')
 math.randomseed(os.time())
 
 local path = vim.fn.stdpath 'config' .. '/assets/'
+---@type string[]
 local dir_files = vim.fn.readdir(path)
 local wall_selection = dir_files[math.random(#dir_files)]
 

@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local deps_mod = require 'utils.deps_mod'
 local Shell = require 'utils.shell'
 local PackageManager = require 'utils.package_manager'
@@ -259,6 +261,8 @@ describe('deps_mod.find_missing', function()
   ---@return string[]
   local function missing(deps)
     return vim.tbl_map(
+      ---@param dep DepProps
+      ---@return string
       function(dep) return dep.cmd end,
       deps_mod.find_missing(deps, probe)
     )

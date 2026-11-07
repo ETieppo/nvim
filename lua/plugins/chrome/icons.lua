@@ -37,6 +37,7 @@ local apply_langs = {
 }
 
 local function build_language_icons()
+  ---@type table<string, MaterialIconProps>
   local icons = {}
   for _, lang in ipairs(apply_langs) do
     for _, type_color in ipairs(type_colors) do

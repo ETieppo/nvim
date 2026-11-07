@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local Shell = require 'utils.shell'
 local os_mod = require 'utils.os_mod'
 local OsNameEnum = require 'utils.enums.os_name_enum'

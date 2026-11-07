@@ -7,6 +7,7 @@ return {
   event = 'VeryLazy',
   opts = function()
     local p = require('settings.theme').get_theme_colors()
+    ---@cast p -nil
 
     local options = {
       mode = 'buffers',
@@ -18,6 +19,7 @@ return {
       diagnostics = 'nvim_lsp',
       diagnostics_indicator = function(_, _, diag)
         local icons = { error = ' ', warning = ' ', info = ' ' }
+        ---@type string[]
         local parts = {}
         for kind, icon in pairs(icons) do
           if (diag[kind] or 0) > 0 then
@@ -158,11 +160,11 @@ return {
           italic = true,
         },
         info = {
-          fg = p.inactiveOrnamentFg,
+          fg = p.ornamentInactiveFg,
           bg = p.ornamentInactiveBg,
           bold = true,
         },
-        info_visible = { fg = p.inactiveOrnamentFg, bg = p.ornamentInactiveBg },
+        info_visible = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
         info_selected = {
           fg = p.ornamentActiveFg,
           bg = p.ornamentActiveBg,
@@ -170,11 +172,11 @@ return {
           italic = true,
         },
         info_diagnostic = {
-          fg = p.inactiveOrnamentFg,
+          fg = p.ornamentInactiveFg,
           bg = p.ornamentInactiveBg,
         },
         info_diagnostic_visible = {
-          fg = p.inactiveOrnamentFg,
+          fg = p.ornamentInactiveFg,
           bg = p.ornamentInactiveBg,
         },
         info_diagnostic_selected = {

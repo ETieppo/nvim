@@ -23,6 +23,7 @@ return {
       group = vim.api.nvim_create_augroup('user-dbui', { clear = true }),
       pattern = { '*DBExecutePre', '*DBExecutePost' },
       callback = function()
+        ---@type string
         local mopt = vim.o.messagesopt
         if not mopt:find('hit-enter', 1, true) then return end
         vim.o.messagesopt = (mopt:gsub('hit%-enter', 'wait:0'))

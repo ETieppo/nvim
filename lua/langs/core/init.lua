@@ -11,6 +11,7 @@ local utils_helpers = require 'utils.helpers'
 local langs_path = vim.fn.stdpath 'config' .. '/lua/langs'
 require 'langs.core.auto_cmd'
 
+---@class LangCoreProps : DapModProps, DocsModProps, FmtModProps, LangDepsModProps, LangRegistryModProps, LintModProps, LspModProps, TestModProps, TreesitterModProps
 local M = {}
 
 for _, module in ipairs {
@@ -24,6 +25,7 @@ for _, module in ipairs {
   test_mod,
   treesitter_mod,
 } do
+  ---@cast module table<string, function>
   for key, value in pairs(module) do
     M[key] = value
   end
@@ -31,6 +33,7 @@ end
 
 function M.load_langs()
   for _, lang_name in ipairs(utils_helpers.find_lua_module_names(langs_path)) do
+    ---@type vim.lsp.Config|nil
     local lsp_config = require('langs.' .. lang_name)
     lsp_mod.record_lsp_config(
       lang_registry.resolve_lsp_name(lang_name),

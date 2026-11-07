@@ -1,4 +1,6 @@
-local cmdline_preview = require 'utils.cmdline_preview'
+---@module 'plenary.busted'
+
+local cmdline_preview = require 'components.cmdline.preview'
 
 local namespace = vim.api.nvim_create_namespace 'cmdline-preview'
 
@@ -55,12 +57,19 @@ describe('cmdline_preview substitute', function()
     type_line(fixture, '%s/foo/baz/g')
 
     local replacements = vim.tbl_map(
+      ---@param mark vim.api.keyset.get_extmark_item
+      ---@return string|nil
       function(mark) return mark[4].virt_text and mark[4].virt_text[1][1] end,
       get_marks(fixture)
     )
     assert.are.same(
       { 'baz', 'baz' },
-      vim.tbl_filter(function(text) return text ~= nil end, replacements)
+      vim.tbl_filter(
+        ---@param text string|nil
+        ---@return boolean
+        function(text) return text ~= nil end,
+        replacements
+      )
     )
     assert.are.equal(2, vim.wo[fixture.source_window].conceallevel)
   end)

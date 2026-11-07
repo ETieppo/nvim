@@ -1,7 +1,5 @@
 local lang_mod = require 'langs.core'
 
-
-
 lang_mod.record_lang_deps {
   treesitter = 'dockerfile',
   deps = {

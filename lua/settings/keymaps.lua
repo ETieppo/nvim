@@ -238,6 +238,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     set_lsp_keymap('gd', function()
       vim.lsp.buf.definition {
         on_list = function(options)
+          ---@type table<string, boolean>
           local seen, unique = {}, {}
           for _, item in ipairs(options.items) do
             local key = (item.filename or '')

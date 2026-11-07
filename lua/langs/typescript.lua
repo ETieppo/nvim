@@ -1,3 +1,5 @@
+---@module 'dap'
+
 local lang_mod = require 'langs.core'
 ---@type string[]
 local javascript_filetypes = {
@@ -60,6 +62,7 @@ lang_mod.record_dap_adapter {
   name = 'pwa-node',
   cmd = 'js-debug-adapter',
   ---@param path string
+  ---@return dap.Adapter
   build = function(path)
     return {
       type = 'server',

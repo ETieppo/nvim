@@ -3,7 +3,6 @@ return {
   event = 'VeryLazy',
   ---@module 'which-key'
   ---@type wk.Opts
-  ---@diagnostic disable-next-line: missing-fields
   opts = {
     delay = 500,
     icons = { mappings = vim.g.have_nerd_font },

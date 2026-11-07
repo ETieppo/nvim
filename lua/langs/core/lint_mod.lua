@@ -4,6 +4,7 @@ local helpers = require 'utils.helpers'
 ---@field lang? string|string[]
 ---@field linter string
 
+---@class LintModProps
 local M = {}
 
 ---@type table<string, string[]>
@@ -14,6 +15,7 @@ function M.record_linter(lint)
   local lang_names =
     helpers.ensure_list(lint.lang or helpers.get_caller_filename())
   for _, lang_name in ipairs(lang_names) do
+    ---@cast lang_name string
     recorded_linters[lang_name] = { lint.linter }
   end
 end

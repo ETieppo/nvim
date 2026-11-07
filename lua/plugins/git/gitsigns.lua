@@ -1,6 +1,12 @@
 local sign_char = '¦'
 local staged_char = '┆'
 
+---@class (partial) GitsignsSignProps : Gitsigns.SignConfig
+
+---@class (partial) GitsignsOptsProps : Gitsigns.Config
+---@field signs? table<Gitsigns.SignType, GitsignsSignProps>
+---@field signs_staged? table<Gitsigns.SignType, GitsignsSignProps>
+
 ---@param action_name string
 ---@param ... any
 ---@return fun()
@@ -106,24 +112,23 @@ return {
     },
   },
   ---@module 'gitsigns'
-  ---@type Gitsigns.Config
-  ---@diagnostic disable-next-line: missing-fields
+  ---@type GitsignsOptsProps
   opts = {
     signs = {
-      add = { text = sign_char }, ---@diagnostic disable-line: missing-fields
-      change = { text = sign_char }, ---@diagnostic disable-line: missing-fields
-      delete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = sign_char }, ---@diagnostic disable-line: missing-fields
-      untracked = { text = sign_char }, ---@diagnostic disable-line: missing-fields
+      add = { text = sign_char },
+      change = { text = sign_char },
+      delete = { text = sign_char },
+      topdelete = { text = sign_char },
+      changedelete = { text = sign_char },
+      untracked = { text = sign_char },
     },
     signs_staged = {
-      add = { text = staged_char }, ---@diagnostic disable-line: missing-fields
-      change = { text = staged_char }, ---@diagnostic disable-line: missing-fields
-      delete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
-      topdelete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
-      changedelete = { text = staged_char }, ---@diagnostic disable-line: missing-fields
-      untracked = { text = staged_char }, ---@diagnostic disable-line: missing-fields
+      add = { text = staged_char },
+      change = { text = staged_char },
+      delete = { text = staged_char },
+      topdelete = { text = staged_char },
+      changedelete = { text = staged_char },
+      untracked = { text = staged_char },
     },
   },
 }

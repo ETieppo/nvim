@@ -1,6 +1,10 @@
 local sign_char = '¦'
 local staged_char = '┆'
 
+---@module 'nui.tree'
+
+---@class (partial) NeoTreeIconProps : neotree.Component.Common.Icon
+
 ---@module 'lazy'
 ---@type LazySpec
 return {
@@ -23,6 +27,7 @@ return {
     close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
+      ---@type NeoTreeIconProps
       icon = {
         provider = function(icon, node, state)
           local defaults = require 'neo-tree.defaults'

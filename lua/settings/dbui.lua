@@ -17,6 +17,7 @@ local function find_fallback_buffer()
 end
 
 local function close_database_buffers()
+  ---@type integer|nil
   local fallback
   for _, buf in ipairs(api.nvim_list_bufs()) do
     if api.nvim_buf_is_valid(buf) and buffer.is_database_buffer(buf) then

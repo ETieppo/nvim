@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local os_mod = require 'utils.os_mod'
 
 describe('os_mod paths', function()

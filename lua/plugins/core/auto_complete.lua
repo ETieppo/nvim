@@ -84,6 +84,8 @@ return {
   },
   config = function(_, opts)
     rawset(require 'blink.cmp.lib.utils', 'notify', function(chunks, level)
+      ---@cast chunks [string, string?][]
+      ---@type string[]
       local text = {}
       for _, chunk in ipairs(chunks) do
         text[#text + 1] = chunk[1]

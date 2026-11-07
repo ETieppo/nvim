@@ -1,5 +1,6 @@
 local helpers = require 'utils.helpers'
 
+---@class TreesitterModProps
 local M = {}
 
 ---@type string[]

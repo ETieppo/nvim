@@ -8,6 +8,7 @@ local LangDepsResolutionDto = require 'utils.dtos.lang_deps_resolution_dto'
 ---@field collected_deps table<DepProps, boolean>
 ---@field visited_references table<string, boolean>
 
+---@class LangDepsModProps
 local M = {}
 
 ---@type table<string, boolean>

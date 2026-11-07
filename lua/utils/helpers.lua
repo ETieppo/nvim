@@ -23,6 +23,7 @@ local function is_lua_file(name) return name:sub(-4) == '.lua' end
 ---@return LazyImportProps[]
 local function scan_imported_modules(dir, prefix, opts)
   local exclude = opts.exclude or {}
+  ---@type LazyImportProps[], string[]
   local imports, subdirs = {}, {}
   local has_lua_file = false
   local handle = vim.uv.fs_scandir(dir)

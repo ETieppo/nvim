@@ -1,5 +1,6 @@
 local helpers = require 'utils.helpers'
 
+---@class DocsModProps
 local M = {}
 
 ---@type string[]

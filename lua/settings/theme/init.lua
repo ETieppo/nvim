@@ -33,11 +33,13 @@
 
 local M = {}
 
+---@type string|nil
 M.name = nil
+---@type ThemeProps|nil
 M.palette = nil
 
 ---@param name string
----@param p table
+---@param p ThemeProps
 function M.load(name, p)
   vim.cmd 'highlight clear'
   if vim.fn.exists 'syntax_on' == 1 then vim.cmd 'syntax reset' end
@@ -49,10 +51,10 @@ function M.load(name, p)
   vim.g.colors_name = name
 end
 
----@return table|nil
+---@return ThemeProps|nil
 function M.get() return M.palette end
 
----@return table|nil
+---@return ThemeProps|nil
 function M.get_theme_colors()
   local p = M.palette
   if not p then return nil end

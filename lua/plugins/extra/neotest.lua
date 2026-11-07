@@ -17,6 +17,7 @@ return {
   opts = function()
     local adapters = {}
     for _, a in ipairs(test_adapters) do
+      ---@type boolean, any
       local ok, adapter = pcall(require, a.module)
       if ok then
         if a.opts then adapter = adapter(a.opts) end

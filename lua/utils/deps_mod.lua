@@ -94,6 +94,8 @@ end
 ---@return DepProps[]
 local function filter_supported(deps, os_name)
   return vim.tbl_filter(
+    ---@param dep DepProps
+    ---@return boolean
     function(dep)
       return not dep.supported_os
         or vim.list_contains(dep.supported_os, os_name)
@@ -225,6 +227,8 @@ end
 function M.find_missing(deps, environment)
   local active_environment = environment or get_live_environment()
   return vim.tbl_filter(
+    ---@param dep DepProps
+    ---@return boolean
     function(dep)
       return not is_installed(dep, active_environment)
         or lacks_path_export(dep.push_env_source, active_environment.shell)

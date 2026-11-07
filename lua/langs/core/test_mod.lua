@@ -5,6 +5,7 @@ local profile = require 'settings.profile'
 ---@field module string
 ---@field opts? table
 
+---@class TestModProps
 local M = {}
 
 ---@type TestAdapterProps[]

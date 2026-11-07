@@ -34,6 +34,8 @@ local function build_subcommand_completion(props)
     local names = vim.tbl_keys(props.subcommands)
     table.sort(names)
     return vim.tbl_filter(
+      ---@param name string
+      ---@return boolean
       function(name) return vim.startswith(name, arg_lead) end,
       names
     )
@@ -78,6 +80,8 @@ function M.notify_missing_deps(props)
   if #props.missing_deps == 0 then return end
 
   local names = vim.tbl_map(
+    ---@param dep DepProps
+    ---@return string
     function(dep) return dep.cmd end,
     props.missing_deps
   )

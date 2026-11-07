@@ -61,6 +61,7 @@ local M = {}
 ---@param icon_keys table<string, string>
 ---@return table<string, MaterialIconProps>
 local function resolve_icons(icon_keys)
+  ---@type table<string, MaterialIconProps>
   local resolved_icons = {}
   for name, icon_key in pairs(icon_keys) do
     resolved_icons[name] = icons[icon_key]

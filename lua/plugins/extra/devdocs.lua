@@ -1,3 +1,7 @@
+---@class LatestDocProps
+---@field slug string
+---@field version number[]
+
 return {
   'maskudo/devdocs.nvim',
   cmd = { 'DevDocs' },
@@ -41,6 +45,7 @@ return {
   },
   opts = function()
     local function version_of(slug)
+      ---@type number[]
       local parts = {}
       for number in (slug:match '~(.+)$' or ''):gmatch '%d+' do
         parts[#parts + 1] = tonumber(number)
@@ -57,6 +62,7 @@ return {
     end
 
     local wanted = require('langs.core').get_docs()
+    ---@type table<string, boolean>
     local pending = {}
     for _, name in ipairs(wanted) do
       if not name:find('~', 1, true) then pending[name] = true end
@@ -64,6 +70,7 @@ return {
 
     if next(pending) == nil then return { ensure_installed = wanted } end
 
+    ---@type table<string, LatestDocProps>
     local latest = {}
     for _, doc in ipairs(require('devdocs').GetAllDocs()) do
       local slug = doc.slug
@@ -77,6 +84,7 @@ return {
       end
     end
 
+    ---@type string[]
     local ensure_installed = {}
     for i, name in ipairs(wanted) do
       ensure_installed[i] = latest[name] and latest[name].slug or name

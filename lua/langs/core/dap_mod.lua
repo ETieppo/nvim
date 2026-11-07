@@ -15,10 +15,18 @@ local os_mod = require 'utils.os_mod'
 ---@field configurations? table[]
 ---@field provider? fun(buffer: integer): table[]
 
+---@class DapProvidersRegistryProps
+---@field configs table<string, fun(buffer: integer): table[]>
+
+---@class DapRegistryProps
+---@field providers DapProvidersRegistryProps
+---@field configurations table<string, table[]>
+
 ---@class RecordedDapProps : DapProps
 ---@field lang string
 ---@field filetypes string[]
 
+---@class DapModProps
 local M = {}
 
 ---@type table<string, DapAdapterProps>
@@ -102,6 +110,7 @@ end
 ---@param dap table
 ---@param record RecordedDapProps
 local function register_dap_record(dap, record)
+  ---@cast dap DapRegistryProps
   if record.provider then
     dap.providers.configs[record.lang] = record.provider
     return

@@ -1,3 +1,5 @@
+---@module 'dap'
+
 local lang_mod = require 'langs.core'
 local lang_name = require('utils.helpers').get_this_filename()
 
@@ -17,6 +19,7 @@ lang_mod.record_dap_adapter {
   name = 'delve',
   cmd = 'dlv',
   ---@param path string
+  ---@return dap.Adapter
   build = function(path)
     return {
       type = 'server',

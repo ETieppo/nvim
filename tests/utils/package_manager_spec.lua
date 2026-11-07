@@ -1,3 +1,5 @@
+---@module 'plenary.busted'
+
 local PackageManager = require 'utils.package_manager'
 local OsNameEnum = require 'utils.enums.os_name_enum'
 local PackageManagerNameEnum = require 'utils.enums.package_manager_name_enum'
@@ -38,6 +40,8 @@ end
 ---@return PackageManagerNameEnum[]
 local function chain_of(manager)
   return vim.tbl_map(
+    ---@param source PackageManager
+    ---@return PackageManagerNameEnum
     function(source) return source.name end,
     manager.resolution_sources
   )

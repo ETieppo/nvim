@@ -1,4 +1,6 @@
-local cmdline_history = require 'utils.cmdline_history'
+---@module 'plenary.busted'
+
+local cmdline_history = require 'components.cmdline.history'
 
 ---@param lines string[]
 ---@return integer
@@ -90,6 +92,8 @@ describe('cmdline_history.navigate', function()
     ---@return string[]
     local function mapped_keys(mode)
       return vim.tbl_map(
+        ---@param map vim.api.keyset.get_keymap
+        ---@return string
         function(map) return map.lhs end,
         vim.api.nvim_buf_get_keymap(buffer, mode)
       )
