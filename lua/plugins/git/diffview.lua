@@ -1,4 +1,6 @@
-return {
+local plugins = require 'deps.plugins'
+
+plugins.record {
   'sindrets/diffview.nvim',
   cmd = { 'DiffviewOpen', 'DiffviewFileHistory' },
   keys = {

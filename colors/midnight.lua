@@ -41,6 +41,6 @@ local p = {
   ornamentInactiveBg = '#101414',
 }
 
-require('settings.theme').load('mint', p)
+require('theme').load('midnight', p)
 
 return p

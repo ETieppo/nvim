@@ -1,6 +1,9 @@
+local plugins = require 'deps.plugins'
+
 ---@module 'lazy'
 ---@type LazySpec
-return {
+
+plugins.record {
   'windwp/nvim-autopairs',
   event = 'InsertEnter',
   opts = {},

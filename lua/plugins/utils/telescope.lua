@@ -1,13 +1,9 @@
-local ArrowKeyEnum = require 'utils.enums.arrow_key_enum'
+local plugins = require 'deps.plugins'
 local ripgrep = require 'utils.ripgrep'
 ---@type table<string, boolean>
 local disabled_arrow_mappings = {}
 
-for _, arrow_key in pairs(ArrowKeyEnum) do
-  disabled_arrow_mappings[arrow_key] = false
-end
-
-return {
+plugins.record {
   'nvim-telescope/telescope.nvim',
   dependencies = {
     'nvim-lua/plenary.nvim',

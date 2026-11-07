@@ -1,4 +1,5 @@
-local material_icons = require 'components.material_icons'
+local plugins = require 'deps.plugins'
+local material_icons = require 'layout.material_icons'
 
 local type_colors = {
   { file_type = 'adapter', color = '#8D6E63' },
@@ -76,7 +77,7 @@ local custom_icons = {
   },
 }
 
-return {
+plugins.record {
   'DaikyXendo/nvim-material-icon',
   enabled = vim.g.have_nerd_font,
   config = function(_, opts)

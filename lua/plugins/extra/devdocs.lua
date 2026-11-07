@@ -1,8 +1,10 @@
+local plugins = require 'deps.plugins'
+
 ---@class LatestDocProps
 ---@field slug string
 ---@field version number[]
 
-return {
+plugins.record {
   'maskudo/devdocs.nvim',
   cmd = { 'DevDocs' },
   keys = {

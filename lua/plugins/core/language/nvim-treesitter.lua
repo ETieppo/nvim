@@ -1,12 +1,13 @@
-local os_mod = require 'utils.os_mod'
-local lang_mod = require 'langs.core'
+local plugins = require 'deps.plugins'
+local os_mod = require 'deps.sys'
+local treesitter= require 'core.treesitter'
 
 local ensure_installed = os_mod.has_executable 'gcc'
     and os_mod.has_executable 'tree-sitter'
-    and lang_mod.get_treesitters_to_install()
+    and treesitter.get_treesitters_to_install()
   or {}
 
-return {
+plugins.record {
   'nvim-treesitter/nvim-treesitter',
   lazy = false,
   build = ':TSUpdate',

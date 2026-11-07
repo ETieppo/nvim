@@ -1,4 +1,6 @@
-return {
+local plugins = require 'deps.plugins'
+
+plugins.record {
   'folke/lazydev.nvim',
   ft = 'lua',
   opts = {

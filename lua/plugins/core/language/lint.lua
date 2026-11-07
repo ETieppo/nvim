@@ -1,8 +1,9 @@
-local linters = require('langs.core').get_linters()
+local plugins = require 'deps.plugins'
+local linters = require('core.lint').get_linters()
 
 ---@module 'lazy'
 ---@type LazySpec
-return {
+plugins.record {
   'mfussenegger/nvim-lint',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()

@@ -1,4 +1,5 @@
-local prompt_bar = require('components.cmdline.prompt_bar')
+local plugins = require 'deps.plugins'
+local prompt_bar = require('layout.cmdline.prompt_bar')
 math.randomseed(os.time())
 
 local path = vim.fn.stdpath 'config' .. '/assets/'
@@ -6,7 +7,7 @@ local path = vim.fn.stdpath 'config' .. '/assets/'
 local dir_files = vim.fn.readdir(path)
 local wall_selection = dir_files[math.random(#dir_files)]
 
-return {
+plugins.record {
   'folke/snacks.nvim',
   opts = {
     animate = { enabled = true },

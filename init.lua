@@ -1,43 +1,67 @@
+require 'loader'
+local osc52 = require 'vim.ui.clipboard.osc52'
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.g.have_nerd_font = true
 
-require 'settings'
-require 'utils'
-require 'buffer'
-require 'components.cmdline'
-local helpers = require 'utils.helpers'
-local lang_mod = require 'langs.core'
+vim.o.number = true
+vim.o.mouse = ''
+vim.o.showmode = false
+vim.o.breakindent = true
+vim.o.undofile = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.timeoutlen = 300
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.list = true
+vim.o.updatetime = 250
+vim.o.inccommand = 'split'
+vim.o.cursorline = true
+vim.o.scrolloff = 10
+vim.o.confirm = true
+vim.o.cmdheight = 0
+vim.o.background = 'dark'
+vim.o.formatoptions = (vim.o.formatoptions:gsub('[cro]', ''))
 
-local exclude_dirs = {}
-local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-local profile = require 'settings.profile'
-local scan = helpers.find_modules
+vim.opt.sessionoptions:remove 'blank'
+vim.opt.signcolumn = 'yes'
+vim.opt.textwidth = 80
+vim.opt.colorcolumn = '+1'
+vim.opt.laststatus = 3
+vim.opt.foldlevel = 99
+vim.opt.foldlevelstart = 99
+vim.opt.virtualedit = 'onemore'
+vim.opt.termguicolors = true
+vim.opt.showbreak = '↪ '
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.expandtab = true
+vim.opt.wrap = true
+vim.opt.linebreak = true
+vim.opt.relativenumber = true
+vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
+vim.opt.fillchars:append 'eob: '
+vim.opt.shortmess:append 'W'
 
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  error('Error cloning lazy.nvim:\n' .. vim.fn.system {
-    'git',
-    'clone',
-    '--filter=blob:none',
-    '--branch=stable',
-    'https://github.com/folke/lazy.nvim.git',
-    lazypath,
-  })
+vim.cmd 'syntax on'
+vim.cmd 'filetype plugin indent on'
+vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
+vim.cmd.colorscheme 'blackberry'
+
+vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
+if vim.env.SSH_TTY then
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = osc52.copy '+',
+      ['*'] = osc52.copy '*',
+    },
+    paste = {
+      ['+'] = osc52.paste '+',
+      ['*'] = osc52.paste '*',
+    },
+  }
 end
-
----@type vim.Option
-local rtp = vim.opt.rtp
-rtp:prepend(lazypath)
-
-if profile.is_min_profile() then exclude_dirs = { ['plugins.extra'] = true } end
-
-local plugins = scan('/lua/plugins', 'plugins', {
-  exclude = exclude_dirs,
-})
-
-lang_mod.load_langs()
-vim.lsp.enable(lang_mod.get_lsps())
-
-require('lazy').setup {
-  spec = plugins,
-  change_detection = { enable = false, notify = false },
-}

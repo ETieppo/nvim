@@ -71,6 +71,6 @@ local p = {
   darkRedDim = '#290006',
 }
 
-require('settings.theme').load('pumpkin', p)
+require('theme').load('pumpkin', p)
 
 return p

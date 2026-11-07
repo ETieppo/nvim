@@ -1,6 +1,7 @@
-local formatters = require('langs.core').get_formatters()
+local plugins = require 'deps.plugins'
+local formatters = require('core.fmt').get_formatters()
 
-return {
+plugins.record {
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
   cmd = { 'ConformInfo' },
@@ -11,7 +12,7 @@ return {
         require('conform').format { async = true, lsp_fallback = true }
       end,
       mode = '',
-      desc = '[F]ormat [F]ile',
+      desc = '[F]ile [F]ormat',
     },
   },
   opts = {

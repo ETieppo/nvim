@@ -1,4 +1,6 @@
-return {
+local plugins = require 'deps.plugins'
+
+plugins.record {
   'folke/which-key.nvim',
   event = 'VeryLazy',
   ---@module 'which-key'

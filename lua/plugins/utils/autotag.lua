@@ -1,4 +1,6 @@
-return {
+local plugins = require 'deps.plugins'
+
+plugins.record {
   'windwp/nvim-ts-autotag',
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()

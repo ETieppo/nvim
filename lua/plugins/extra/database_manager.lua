@@ -1,4 +1,6 @@
-return {
+local plugins = require 'deps.plugins'
+
+plugins.record {
   'kristijanhusak/vim-dadbod-ui',
   dependencies = {
     { 'tpope/vim-dadbod', lazy = true },

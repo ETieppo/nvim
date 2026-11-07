@@ -1,4 +1,5 @@
-local test_adapters = require('langs.core').get_test_adapters()
+local plugins = require 'deps.plugins'
+local test_adapters = require('core.test').get_test_adapters()
 
 local deps = {
   'nvim-neotest/nvim-nio',
@@ -11,7 +12,7 @@ for _, a in ipairs(test_adapters) do
   table.insert(deps, a[1])
 end
 
-return {
+plugins.record {
   'nvim-neotest/neotest',
   dependencies = deps,
   opts = function()

@@ -1,3 +1,4 @@
+local plugins = require 'deps.plugins'
 local profile_mod = require 'settings.profile'
 
 local function notify(msg, level)
@@ -26,7 +27,7 @@ local function print_to_notify(fn)
   setfenv(fn, setmetatable({ vim = proxy }, { __index = getfenv(fn) }))
 end
 
-return {
+plugins.record {
   'saghen/blink.cmp',
   event = 'InsertEnter',
   version = '1.*',

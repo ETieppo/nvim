@@ -17,44 +17,6 @@ local M = {}
 ---@return boolean
 local function is_lua_file(name) return name:sub(-4) == '.lua' end
 
----@param dir string
----@param prefix string
----@param opts FindModulesOptionsProps
----@return LazyImportProps[]
-local function scan_imported_modules(dir, prefix, opts)
-  local exclude = opts.exclude or {}
-  ---@type LazyImportProps[], string[]
-  local imports, subdirs = {}, {}
-  local has_lua_file = false
-  local handle = vim.uv.fs_scandir(dir)
-
-  if not handle then return imports end
-
-  while true do
-    local name, entry_type = vim.uv.fs_scandir_next(handle)
-    if not name then break end
-    if entry_type == 'directory' then
-      table.insert(subdirs, name)
-    elseif is_lua_file(name) then
-      has_lua_file = true
-    end
-  end
-
-  if has_lua_file then table.insert(imports, { import = prefix }) end
-
-  for _, name in ipairs(subdirs) do
-    local module = prefix .. '.' .. name
-    if not exclude[module] then
-      vim.list_extend(
-        imports,
-        scan_imported_modules(dir .. '/' .. name, module, opts)
-      )
-    end
-  end
-
-  return imports
-end
-
 ---@param stack_level integer
 ---@return string
 local function get_filename_at_stack_level(stack_level)
@@ -75,18 +37,10 @@ function M.get_caller_filename()
   return filename
 end
 
----@param base_dir string
----@param prefix string
----@param opts? FindModulesOptionsProps
----@return LazyImportProps[]
-function M.find_modules(base_dir, prefix, opts)
-  local dir = vim.fn.stdpath 'config' .. base_dir
-  return scan_imported_modules(dir, prefix, opts or {})
-end
-
 ---@param dir string
 ---@return string[]
 function M.find_lua_module_names(dir)
+
   local names = {}
   for name, entry_type in vim.fs.dir(dir) do
     if entry_type == 'file' and is_lua_file(name) and name ~= 'init.lua' then

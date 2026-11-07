@@ -1,15 +1,7 @@
-local ArrowKeyEnum = require 'utils.enums.arrow_key_enum'
 local file = require 'buffer.file'
 local helpers = require 'utils.helpers'
-local os_mod = require 'utils.os_mod'
+local os_mod = require 'deps.sys'
 local ripgrep = require 'utils.ripgrep'
-
--- Disable arrows -------------------------------------------------------------
-for _, mode in ipairs { 'n', 'i', 'v' } do
-  for _, arrow_key in pairs(ArrowKeyEnum) do
-    vim.keymap.set(mode, arrow_key, '<nop>')
-  end
-end
 
 -- Several --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')

@@ -1,4 +1,4 @@
-local os_mod = require 'utils.os_mod'
+local os_mod = require 'deps.sys'
 local PROMPT_FILETYPE = 'snacks_input'
 
 local M = {}

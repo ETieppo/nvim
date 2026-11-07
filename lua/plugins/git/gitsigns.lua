@@ -1,3 +1,5 @@
+local plugins = require 'deps.plugins'
+
 local sign_char = '¦'
 local staged_char = '┆'
 
@@ -38,7 +40,7 @@ end
 
 ---@module 'lazy'
 ---@type LazySpec
-return {
+plugins.record {
   'lewis6991/gitsigns.nvim',
   dependencies = { 'nvim-lua/plenary.nvim' },
   event = { 'BufReadPost', 'BufNewFile' },

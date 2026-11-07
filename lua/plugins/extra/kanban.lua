@@ -1,3 +1,6 @@
+local plugins = require 'deps.plugins'
+local kanban_file_name = 'kanban.md'
+
 local function act(name, desc)
   return {
     callback = function(...) require('super-kanban.actions')[name](...) end,
@@ -5,8 +8,7 @@ local function act(name, desc)
   }
 end
 
-local kanban_file_name = 'kanban.md'
-return {
+plugins.record {
   'hasansujon786/super-kanban.nvim',
   dependencies = {
     'folke/snacks.nvim',
