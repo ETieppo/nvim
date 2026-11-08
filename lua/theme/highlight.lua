@@ -1,9 +1,23 @@
 local M = {}
 
+local function invert_color(hex)
+  local n = tonumber(hex:gsub('#', ''), 16)
+  return string.format('#%06x', 0xFFFFFF - n)
+end
+
 function M.load(p)
   local set = vim.api.nvim_set_hl
 
+  vim.opt.guicursor = {
+    'n-v-c:block',
+    'i-ci-ve:ver25',
+    'r-cr:hor20',
+    'a:Cursor',
+  }
+
   -- UI / Editor
+  set(0, 'Cursor', { fg = p.keyword, bg = invert_color(p.keyword)})
+  set(0, 'TermCursor', { reverse = true })
   set(0, 'WinSeparator', { fg = p.bg })
   set(0, 'Normal', { fg = p.fg, bg = p.bg })
   set(0, 'NormalNC', { fg = p.fg, bg = p.bg })
@@ -36,8 +50,6 @@ function M.load(p)
   set(0, 'FloatBorder', { fg = p.bg2 })
   set(0, 'FloatShadow', { blend = 80 })
   set(0, 'FloatShadowThrough', { blend = 100 })
-  set(0, 'Cursor', { fg = p.bg1, bg = p.keyword })
-  set(0, 'TermCursor', { reverse = true })
   set(0, 'Whitespace', { fg = p.bg2 })
 
   -- Syntax (fallback sem Treesitter)

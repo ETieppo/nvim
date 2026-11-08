@@ -1,82 +1,42 @@
 ---@type ThemeProps
 local p = {
-  transparent = '#000000',
-  bg0 = '#060609',
-  bg1 = '#0a0a0d',
-  bg2 = '#0b0d16',
-  bg3 = '#100c17',
-  bg4 = '#22222c',
-  bg5 = '#1a1a26',
-  bgBlue = '#11161f',
-  bgGreen = '#0d1410',
-  bgRed = '#160d0d',
-  bgYellow = '#15130a',
+  bg = '#060609',
+  bg1 = '#100c17',
+  bg2 = '#1a1a26',
 
-  -- Foreground / Text
+  ornamentActiveFg = '#66d9ef',
+  ornamentActiveBg = '#072e37',
+  ornamentInactiveFg = '#3a5d81',
+  ornamentInactiveBg = '#141931',
+
+  -- Errors / Diagnostics
+  errorFg = '#f7768e',
+  errorBg = '#160d0d',
+  warningFg = '#e0af68',
+  warnBg = '#15130a',
+  infoFg = '#7aa2f7',
+  infoBg = '#11161f',
+  successFg = '#03826b',
+  successBg = '#0d1410',
+
   fg = '#a9b1d6',
-  fgMuted = '#787c99',
   fgDim = '#545470',
-  fgSemiHide = '#303040',
-  fgBright = '#c5cae9',
-
-  -- Borders / Structural
-  border = '#191921',
-  borderFaint = '#14141a',
-  borderFocus = '#545c7e',
-  inactiveIndentLine = '#303040',
-  activeIndentLine = '#66d9ef',
-
-  -- Accent / Selection
-  selection = '#3d59a144',
-  selectionBg = '#1e202e',
-  matchBg = '#3d59a166',
 
   -- Syntax — Core
   keyword = '#66d9ef',
   keywordAlt = '#e41951',
   func = '#892a3b',
-  funcBuiltin = '#0db9d7',
-  type_ = '#4493f8',
-  typeParam = '#3a5d81',
+  types = '#4493f8',
+  parameter = '#e0687a',
   property = '#A8B1D6',
-  namespace_ = '#ffffff',
   variable = '#c0caf5',
-  param = '#e0687a',
   constant = '#601D49',
-  bracket = '#41a6b5',
-  constantAlt = '#c0768e',
-  operator = '#f92672',
+  builtin = '#0db9d7',
   strings = '#03826b',
-  regex = '#b4f9f8',
-  number = '#ae81ff',
+  stringAlt = '#b4f9f8',
   comment = '#444b6a',
   tag = '#892a3b',
   tagAttr = '#556779',
-  macro = '#737aa2',
-
-  -- Errors / Diagnostics
-  error_ = '#f7768e',
-  warning = '#e0af68',
-  info = '#7aa2f7',
-  hint = '#41a6b5',
-
-  -- Git
-  added = '#a9b1d6',
-  modified = '#41a6b5',
-  deleted = '#f7768e',
-
-  -- Special
-  purple = '#bb9af7',
-  salmon = '#e0687a',
-  bgTeal = '#0c1618',
-  teal = '#41a6b5',
-  cyanDim = '#00262f',
-  cyan = '#7dcfff',
-  cyanBright = '#b4f9f8',
-  crimson = '#b8003a',
-  crimsonBright = '#f7768e',
-  darkRed = '#892a3b',
-  darkRedDim = '#290006',
 }
 
 require('theme.loader').load('blueberry', p)

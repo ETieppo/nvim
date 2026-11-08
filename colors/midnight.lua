@@ -36,7 +36,7 @@ local p = {
 
   -- bracket and ornament
   ornamentActiveFg = '#7ba9a3',
-  ornamentActiveBg = '#0f1c1b',
+  ornamentActiveBg = '#174540',
   ornamentInactiveFg = '#435a58',
   ornamentInactiveBg = '#101414',
 }
