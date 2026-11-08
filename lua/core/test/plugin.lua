@@ -5,7 +5,6 @@ local deps = {
   'nvim-neotest/nvim-nio',
   'nvim-lua/plenary.nvim',
   'nvim-treesitter/nvim-treesitter',
-  'antoinemadec/FixCursorHold.nvim',
 }
 
 for _, a in ipairs(test_adapters) do

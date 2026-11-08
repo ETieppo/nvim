@@ -4,7 +4,6 @@ local M = {}
 local plugins = {}
 
 function M.record(plugin)
-  -- TODO: do validations
   table.insert(plugins, plugin)
 end
 

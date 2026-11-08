@@ -1,4 +1,3 @@
-local default_icons = require 'layout.icons.data.default_icons'
 local file_extensions = require 'layout.icons.data.file_extensions'
 local file_names = require 'layout.icons.data.file_names'
 local folder_names = require 'layout.icons.data.folder_names'
@@ -10,6 +9,12 @@ local language_ids = require 'layout.icons.data.language_ids'
 ---@field icon string
 ---@field color string
 ---@field name string
+
+local default = {
+  file = 'file',
+  folder = 'folder',
+  folder_open = 'folder-open',
+}
 
 ---@type table<string, string>
 local custom_folder_names = {
@@ -78,20 +83,6 @@ local function define_folder_highlights()
   end
 end
 
----@param name string
----@return string
-local function normalize_folder_name(name)
-  local normalized_name = name:lower():gsub('^[._-]+', ''):gsub('_+$', '')
-  return normalized_name
-end
-
----@param folder_name string
----@return string?
-local function find_closed_icon_key(folder_name)
-  local normalized_name = normalize_folder_name(folder_name)
-  return custom_folder_names[normalized_name] or folder_names[normalized_name]
-end
-
 function M.setup()
   define_folder_highlights()
   vim.api.nvim_create_autocmd('ColorScheme', {
@@ -115,14 +106,17 @@ function M.get_icons_by_filename()
 end
 
 ---@return MaterialIconProps
-function M.get_default_file_icon() return icons[default_icons.file] end
+function M.get_default_file_icon() return icons[default.file] end
 
 M.pad_icons = pad_icons
 
 ---@param icon table
 ---@param node table
 function M.apply_folder_icon(icon, node)
-  local closed_icon_key = find_closed_icon_key(node.name)
+  local normalized_name = node.name:lower():gsub('^[._-]+', ''):gsub('_+$', '')
+  local closed_icon_key = custom_folder_names[normalized_name]
+    or folder_names[normalized_name]
+
   if not closed_icon_key then
     icon.text = icon.text .. ICON_PADDING
     return
