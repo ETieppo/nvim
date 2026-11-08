@@ -13,6 +13,7 @@ end
 
 plugins.record {
   'nvim-neotest/neotest',
+  extra = true,
   dependencies = deps,
   opts = function()
     local adapters = {}

@@ -2,6 +2,7 @@ local plugins = require 'deps.plugins'
 
 plugins.record {
   'kristijanhusak/vim-dadbod-ui',
+  extra = true,
   dependencies = {
     { 'tpope/vim-dadbod', lazy = true },
     {

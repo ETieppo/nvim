@@ -4,18 +4,10 @@ local M = {}
 local plugins = {}
 
 function M.record(plugin)
+  if plugin.extra and profile.is_min_profile() then return end
   table.insert(plugins, plugin)
 end
 
-function M.get_plugins()
-  if profile.is_min_profile() then
-    local min_plugins = {}
-    for _, p in ipairs(plugins) do
-      if not p.extra then vim.list_extend(min_plugins, p) end
-    end
-    return min_plugins
-  end
-  return plugins
-end
+function M.get_plugins() return plugins end
 
 return M

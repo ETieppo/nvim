@@ -6,6 +6,7 @@ local plugins = require 'deps.plugins'
 
 plugins.record {
   'maskudo/devdocs.nvim',
+  extra = true,
   cmd = { 'DevDocs' },
   keys = {
     {

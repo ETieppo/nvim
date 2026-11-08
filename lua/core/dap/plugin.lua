@@ -4,6 +4,7 @@ local plugins = require 'deps.plugins'
 ---@type LazySpec
 plugins.record {
   'mfussenegger/nvim-dap',
+  extra = true,
   dependencies = {
     'rcarriga/nvim-dap-ui',
     'nvim-neotest/nvim-nio',
