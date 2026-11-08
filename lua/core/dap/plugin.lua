@@ -60,7 +60,7 @@ plugins.record {
   },
   config = function()
     local dap = require 'dap'
-    require('langs.core').setup_dap()
+    require('core.dap.registry').setup_dap()
     require('nvim-dap-virtual-text').setup { commented = true }
 
     local dapui = require 'dapui'

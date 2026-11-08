@@ -41,7 +41,7 @@ local ALL_MATCHES_PRIORITY = 10
 local CURRENT_MATCH_PRIORITY = 200
 local MATCH_MARKER = '\1'
 local MARK_MATCH_EXPRESSION =
-  [[\=v:lua.require'components.cmdline.preview'.mark_substitute_match()]]
+  [[\=v:lua.require'layout.cmdline.preview'.mark_substitute_match()]]
 local LINE_BREAK_SYMBOL = '↵'
 local PREVIEW_CMDLINE_TYPES = { [':'] = true, ['/'] = true, ['?'] = true }
 local PREVIEW_EVENTS = {

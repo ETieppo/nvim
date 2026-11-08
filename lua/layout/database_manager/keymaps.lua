@@ -1,5 +1,5 @@
 vim.keymap.set('n', '<leader>dbt', function()
-  local ok, dbui = pcall(require, 'settings.dbui')
+  local ok, dbui = pcall(require, 'layout.database_manager')
   if not ok then
     vim.notify("Set 'Max' profile to use dbui", vim.log.levels.WARN)
     return

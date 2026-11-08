@@ -63,7 +63,7 @@ plugins.record {
       return false
     end
 
-    local wanted = require('langs.core').get_docs()
+    local wanted = require('core.docs.registry').get_docs()
     ---@type table<string, boolean>
     local pending = {}
     for _, name in ipairs(wanted) do

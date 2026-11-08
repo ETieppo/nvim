@@ -11,7 +11,6 @@ local os_name = sysname == 'Darwin' and OsNameEnum.macos
 
 local path_separator = package.config:sub(1, 1)
 local path_list_separator = os_name == OsNameEnum.windows and ';' or ':'
----@enum OsNameEnum
 
 ---@type table<string, string|false>
 local resolved_executables = {}

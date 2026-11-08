@@ -33,7 +33,7 @@ plugins.record {
       --     local defaults = require 'neo-tree.defaults'
       --     defaults.default_component_configs.icon.provider(icon, node, state)
       --     if node.type == 'directory' then
-      --       require('components.material_icons').apply_folder_icon(icon, node)
+      --       require('layout.icons.loader').apply_folder_icon(icon, node)
       --     end
       --   end,
       -- },

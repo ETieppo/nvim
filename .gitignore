@@ -2,7 +2,6 @@ tags
 
 test.sh
 nvim
-lua/plugins/lsp/
 spell/
 lazy-lock.json
 .DS_Store

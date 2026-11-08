@@ -1,6 +1,6 @@
 local M = {}
 
----@type enum
+---@enum OsNameEnum
 M.OsNameEnum = {
   macos = 'macos',
   linux = 'linux',
@@ -17,6 +17,15 @@ M.PackageManagerNameEnum = {
   apk = 'apk',
   brew = 'brew',
   scoop = 'scoop',
+}
+
+---@enum ShellNameEnum
+M.ShellNameEnum = {
+  zsh = 'zsh',
+  bash = 'bash',
+  sh = 'sh',
+  pwsh = 'pwsh',
+  powershell = 'powershell',
 }
 
 return M

@@ -17,14 +17,6 @@ local ShellNameEnum = require('deps.enums').ShellNameEnum
 ---@class Shell : ShellProps
 local Shell = {}
 Shell.__index = Shell
----@enum ShellNameEnum
-local ShellNameEnum = {
-  zsh = 'zsh',
-  bash = 'bash',
-  sh = 'sh',
-  pwsh = 'pwsh',
-  powershell = 'powershell',
-}
 
 local POSIX_COMMAND_ARGS = { '-c' }
 local POSIX_COMMAND_GROUP = '{ %s; }'
