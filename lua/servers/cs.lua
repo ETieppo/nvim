@@ -1,7 +1,7 @@
-local  lang_deps= require 'core.lang_registry'
-local lsp = require 'core.lsp'
-local docs = require'core.docs'
-local fmt = require 'core.fmt'
+local deps = require 'core.lang.registry'
+local lsp = require 'core.lsp.registry'
+local docs = require 'core.docs.registry'
+local fmt = require 'core.formatter.registry'
 local os_mod = require 'deps.sys'
 local lang_name = require('utils.helpers').get_this_filename()
 
@@ -12,7 +12,7 @@ fmt.record_fmt {
   formatter = 'clang-format',
 }
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   treesitter = 'c_sharp',
   deps = {
     {

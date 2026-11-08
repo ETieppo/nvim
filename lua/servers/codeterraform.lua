@@ -1,10 +1,10 @@
 ---@module 'dap'
 
-local lsp = require 'core.lsp'
-local docs = require 'core.docs'
-local treesitter = require 'core.treesitter'
-local lang_registry = require 'core.lang_registry'
-local dap = require 'core.dap'
+local lsp = require 'core.lsp.registry'
+local docs = require 'core.docs.registry'
+local treesitter = require 'core.treesitter.registry'
+local deps = require 'core.lang.registry'
+local dap = require 'core.dap.registry'
 
 local root_marker = 'codeterraform-workspace.json'
 local server_dir =
@@ -13,7 +13,7 @@ local server_dir =
 docs.docs_ignore()
 treesitter.treesitter_ignore()
 
-lang_registry.record_lang_deps {
+deps.record_lang_deps {
   short = 'ct',
   depends_on = 'bun',
   deps = {

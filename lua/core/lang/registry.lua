@@ -1,7 +1,7 @@
-local deps_mod = require 'deps.deps_mod'
-local docs_mod = require 'core.docs'
-local treesitter_mod = require 'core.treesitter'
+local treesitter_mod = require 'core.treesitter.registry'
 local utils_helpers = require 'utils.helpers'
+local docs_mod = require 'core.docs.registry'
+local deps_mod = require 'deps.deps_mod'
 
 ---@class LangDepsProps
 ---@field lang? string

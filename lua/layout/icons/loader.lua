@@ -1,10 +1,10 @@
-local default_icons = require 'layout.material_icons.data.default_icons'
-local file_extensions = require 'layout.material_icons.data.file_extensions'
-local file_names = require 'layout.material_icons.data.file_names'
-local folder_names = require 'layout.material_icons.data.folder_names'
-local folder_open_icons = require 'layout.material_icons.data.folder_open_icons'
-local icons = require 'layout.material_icons.data.icons'
-local language_ids = require 'layout.material_icons.data.language_ids'
+local default_icons = require 'layout.icons.data.default_icons'
+local file_extensions = require 'layout.icons.data.file_extensions'
+local file_names = require 'layout.icons.data.file_names'
+local folder_names = require 'layout.icons.data.folder_names'
+local folder_open_icons = require 'layout.icons.data.folder_open_icons'
+local icons = require 'layout.icons.data.override'
+local language_ids = require 'layout.icons.data.language_ids'
 
 ---@class MaterialIconProps
 ---@field icon string

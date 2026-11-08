@@ -1,6 +1,6 @@
-local deps_command = require 'deps.deps_command'
+local deps_command = require 'deps.commands'
 local deps_mod = require 'deps.deps_mod'
-local lang_registry = require 'core.lang_registry'
+local lang_registry = require 'core.lang.registry'
 local LangDepsResolutionDto = require ('deps.dtos').LangDepsResolutionDto
 
 ---@class DepsCollectorProps

@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local profile_mod = require 'settings.profile'
+local profile_mod = require 'deps.profile'
 
 local function notify(msg, level)
   vim.schedule(

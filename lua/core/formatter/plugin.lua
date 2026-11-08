@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local formatters = require('core.fmt').get_formatters()
+local formatters = require('core.formatter.registry').get_formatters()
 
 plugins.record {
   'stevearc/conform.nvim',

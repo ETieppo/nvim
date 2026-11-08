@@ -1,3 +1,4 @@
+---@type ThemeProps
 local p = {
   transparent = '#000000',
   bg0 = '#000000',
@@ -71,6 +72,6 @@ local p = {
   darkRedDim = '#290006',
 }
 
-require('theme').load('pumpkin', p)
+require('theme.loader').load('pumpkin', p)
 
 return p

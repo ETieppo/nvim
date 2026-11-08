@@ -39,6 +39,6 @@ local p = {
   tagAttr = '#556779',
 }
 
-require('theme').load('blackberry', p)
+require('theme.loader').load('blackberry', p)
 
 return p

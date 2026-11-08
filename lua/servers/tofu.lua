@@ -1,6 +1,6 @@
-local fmt= require 'core.fmt'
-local lsp = require 'core.lsp'
-local lang_deps = require 'core.lang_registry'
+local fmt= require 'core.formatter.registry'
+local lsp = require 'core.lsp.registry'
+local deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 local terraform_name = 'terraform'
 
@@ -15,7 +15,7 @@ fmt.record_fmt {
   formatter = 'tofu_fmt',
 }
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   treesitter = terraform_name,
   doc = { 'opentofu' },
   short = 'tf',

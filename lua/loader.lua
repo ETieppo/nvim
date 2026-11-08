@@ -1,4 +1,4 @@
-local lsp = require 'core.lsp'
+local lsp = require 'core.lsp.registry'
 local plugins = require 'deps.plugins'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 

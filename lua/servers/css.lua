@@ -1,10 +1,11 @@
+local lsp = require 'core.lsp.registry'
+local fmt = require 'core.formatter.registry'
+local docs = require 'core.docs.registry'
+local lang_name = require('utils.helpers').get_this_filename()
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
-local lsp = require 'core.lsp'
-local lang_name = require('utils.helpers').get_this_filename()
-local fmt= require 'core.fmt'
-local docs= require 'core.docs'
 ---@type string[]
 local filetypes = { lang_name, 'scss', 'less' }
 

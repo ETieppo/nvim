@@ -1,4 +1,24 @@
 local plugins = require 'deps.plugins'
+local helpers = require 'utils.helpers'
+
+helpers.set_alt_and_cmd_keymap(
+  'n',
+  '<M-l>',
+  '<cmd>BufferLineCycleNext<CR>',
+  { desc = 'Next buffer' }
+)
+helpers.set_alt_and_cmd_keymap(
+  'n',
+  '<M-h>',
+  '<cmd>BufferLineCyclePrev<CR>',
+  { desc = 'Previous buffer' }
+)
+vim.keymap.set(
+  'n',
+  '<leader>bod',
+  '<cmd>BufferLineCloseOthers<CR>',
+  { desc = '[B]uffer [O]thers [D]elete' }
+)
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -8,7 +28,7 @@ plugins.record {
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   event = 'VeryLazy',
   opts = function()
-    local p = require('theme').get_theme_colors()
+    local p = require('theme.loader').get_theme_colors()
     ---@cast p -nil
 
     local options = {

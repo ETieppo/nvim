@@ -1,8 +1,8 @@
-local test= require 'core.test'
-local lsp = require 'core.lsp'
-local dap = require 'core.dap'
-local fmt = require 'core.fmt'
-local lang_deps = require'core.lang_registry'
+local test= require 'core.test.registry'
+local lsp = require 'core.lsp.registry'
+local dap = require 'core.dap.registry'
+local fmt = require 'core.formatter.registry'
+local lang_deps = require'core.lang.registry'
 local os_mod = require 'deps.sys'
 local lang_name = require('utils.helpers').get_this_filename()
 

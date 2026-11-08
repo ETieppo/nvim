@@ -1,11 +1,11 @@
 local lang_name = require('utils.helpers').get_this_filename()
-local lsp = require 'core.lsp'
-local docs= require 'core.docs'
-local lang_deps = require 'core.lang_registry'
+local lsp = require 'core.lsp.registry'
+local docs= require 'core.docs.registry'
+local deps = require 'core.lang.registry'
 
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   short = 'yml',
   deps = {
     {

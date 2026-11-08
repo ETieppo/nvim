@@ -1,12 +1,12 @@
-local lang_deps = require 'core.lang_registry'
-local lsp = require 'core.lsp'
-local fmt = require 'core.fmt'
-local docs= require 'core.docs'
+local deps = require 'core.lang.registry'
+local lsp = require 'core.lsp.registry'
+local fmt = require 'core.formatter.registry'
+local docs= require 'core.docs.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   short = 'tl',
   deps = {
     { cmd = 'luarocks' },

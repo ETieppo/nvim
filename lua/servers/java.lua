@@ -1,8 +1,8 @@
-local lang_mod = require 'core.lang_registry'
-local lsp = require 'core.lsp'
+local deps = require 'core.lang.registry'
+local lsp = require 'core.lsp.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-lang_mod.record_lang_deps {
+deps.record_lang_deps {
   doc = { 'openjdk' },
   deps = {
     {

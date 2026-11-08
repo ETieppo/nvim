@@ -1,7 +1,7 @@
-local treesitter= require 'core.treesitter'
-local lsp = require 'core.lsp'
-local docs = require 'core.docs'
-local lang_deps =require 'core.lang_registry'
+local treesitter = require 'core.treesitter.registry'
+local lsp = require 'core.lsp.registry'
+local docs = require 'core.docs.registry'
+local lang_deps = require 'core.lang.registry'
 require 'servers.typescript'
 
 treesitter.treesitter_ignore()

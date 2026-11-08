@@ -1,12 +1,12 @@
-local lang_deps= require 'core.lang_registry'
-local lsp = require 'core.lsp'
-local dap = require 'core.dap'
-local fmt = require 'core.fmt'
+local deps= require 'core.lang.registry'
+local lsp = require 'core.lsp.registry'
+local dap = require 'core.dap.registry'
+local fmt = require 'core.formatter.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 ---@type string[]
 local filetypes = { lang_name, 'c' }
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   treesitter = filetypes,
   deps = {
     {

@@ -43,10 +43,7 @@ M.palette = nil
 function M.load(name, p)
   vim.cmd 'highlight clear'
   if vim.fn.exists 'syntax_on' == 1 then vim.cmd 'syntax reset' end
-
   M.name, M.palette = name, p
-  vim.list_extend(p, { transparent = '#000000' })
-
   require('theme.highlight').load(p)
   vim.g.colors_name = name
 end

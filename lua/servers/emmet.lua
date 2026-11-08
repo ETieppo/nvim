@@ -1,12 +1,12 @@
-local treesitter = require 'core.treesitter'
-local lsp = require 'core.lsp'
-local docs = require 'core.docs'
-local lang_deps = require 'core.lang_registry'
+local treesitter = require 'core.treesitter.registry'
+local lsp = require 'core.lsp.registry'
+local docs = require 'core.docs.registry'
+local deps = require 'core.lang.registry'
 
 treesitter.treesitter_ignore()
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   deps = {
     {
       cmd = 'emmet-language-server',

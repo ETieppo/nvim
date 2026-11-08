@@ -79,6 +79,6 @@ local p = {
   darkRedDim = '#290006',
 }
 
-require('theme').load('blueberry', p)
+require('theme.loader').load('blueberry', p)
 
 return p

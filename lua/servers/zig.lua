@@ -1,10 +1,10 @@
 local lang_name = require('utils.helpers').get_this_filename()
-local lsp = require 'core.lsp'
-local dap = require 'core.dap'
-local lang_deps= require 'core.lang_registry'
+local lsp = require 'core.lsp.registry'
+local dap = require 'core.dap.registry'
+local deps= require 'core.lang.registry'
 local zig = vim.fn.exepath 'zig'
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   deps = {
     {
       cmd = 'zvm',

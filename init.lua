@@ -1,4 +1,3 @@
-require 'loader'
 local osc52 = require 'vim.ui.clipboard.osc52'
 
 vim.g.mapleader = ' '
@@ -65,3 +64,5 @@ if vim.env.SSH_TTY then
     },
   }
 end
+
+require 'loader'

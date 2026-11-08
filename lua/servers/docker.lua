@@ -1,7 +1,7 @@
-local lang_mod = require 'core.lang_registry'
-local lsp = require 'core.lsp'
+local deps = require 'core.lang.registry'
+local lsp = require 'core.lsp.registry'
 
-lang_mod.record_lang_deps {
+deps.record_lang_deps {
   treesitter = 'dockerfile',
   deps = {
     {

@@ -1,5 +1,5 @@
 local helpers = require 'utils.helpers'
-local lang_registry = require 'core.lang_registry'
+local lang_registry = require 'core.lang.registry'
 
 local COMPLETION_ITEM_KINDS = vim.lsp.protocol.CompletionItemKind
 ---@type string

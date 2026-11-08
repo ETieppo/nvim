@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local linters = require('core.lint').get_linters()
+local linters = require('core.linter.registry').get_linters()
 
 ---@module 'lazy'
 ---@type LazySpec

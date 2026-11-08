@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local material_icons = require 'layout.material_icons'
+local material_icons = require 'layout.icons.loader'
 
 local type_colors = {
   { file_type = 'adapter', color = '#8D6E63' },

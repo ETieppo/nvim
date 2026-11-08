@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local test_adapters = require('core.test').get_test_adapters()
+local test_adapters = require('core.test.registry').get_test_adapters()
 
 local deps = {
   'nvim-neotest/nvim-nio',

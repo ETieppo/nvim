@@ -1,6 +1,6 @@
 local plugins = require 'deps.plugins'
 local os_mod = require 'deps.sys'
-local treesitter= require 'core.treesitter'
+local treesitter= require 'core.treesitter.registry'
 
 local ensure_installed = os_mod.has_executable 'gcc'
     and os_mod.has_executable 'tree-sitter'

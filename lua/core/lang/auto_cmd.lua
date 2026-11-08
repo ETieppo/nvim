@@ -1,5 +1,5 @@
-local deps_command = require 'deps.deps_command'
-local lang_deps = require 'deps.lang_deps'
+local deps_command = require 'deps.commands'
+local lang_deps = require 'deps.language'
 
 deps_command.create_deps_user_command {
   name = 'Lang',

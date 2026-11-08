@@ -1,14 +1,14 @@
-local fmt = require 'core.fmt'
-local lsp = require 'core.lsp'
-local docs = require 'core.docs'
-local lang_deps = require 'core.lang_registry'
+local fmt = require 'core.formatter.registry'
+local lsp = require 'core.lsp.registry'
+local docs = require 'core.docs.registry'
+local deps = require 'core.lang.registry'
 
 ---@type string[]
 local filetypes = { 'json', 'jsonc' }
 
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   depends_on = { 'bun', 'oxfmt' },
   deps = {
     {

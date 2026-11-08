@@ -1,7 +1,7 @@
-local docs= require 'core.docs'
-local lsp = require 'core.lsp'
-local fmt  = require 'core.fmt'
-local lang_deps = require 'core.lang_registry'
+local docs = require 'core.docs.registry'
+local lsp = require 'core.lsp.registry'
+local fmt = require 'core.formatter.registry'
+local deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 local wesl_name = 'wesl'
 ---@type string[]
@@ -12,7 +12,7 @@ local filetypes = {
 
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
+deps.record_lang_deps {
   short = 'wesl',
   deps = {
     { cmd = 'wgsl-analyzer' },

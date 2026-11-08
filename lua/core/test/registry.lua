@@ -1,4 +1,4 @@
-local profile = require 'settings.profile'
+local profile = require 'deps.profile'
 
 ---@class TestAdapterProps
 ---@field [1] string
