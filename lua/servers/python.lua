@@ -1,7 +1,7 @@
 local deps = require 'core.lang.registry'
 local lsp = require 'core.lsp.registry'
-local fmt= require 'core.formatter.registry'
-local dap = require'core.dap.registry'
+local fmt = require 'core.formatter.registry'
+local dap = require 'core.dap.registry'
 local test = require 'core.test.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 

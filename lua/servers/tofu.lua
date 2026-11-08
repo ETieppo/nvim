@@ -1,4 +1,4 @@
-local fmt= require 'core.formatter.registry'
+local fmt = require 'core.formatter.registry'
 local lsp = require 'core.lsp.registry'
 local deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()

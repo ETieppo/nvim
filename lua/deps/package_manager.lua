@@ -1,6 +1,6 @@
-local OsNameEnum = require ('deps.enums').OsNameEnum
-local PackageManagerNameEnum = require ('deps.enums').PackageManagerNameEnum
-local PackageResolutionDto = require ('deps.dtos').PackageResolutionDto
+local OsNameEnum = require('deps.enums').OsNameEnum
+local PackageManagerNameEnum = require('deps.enums').PackageManagerNameEnum
+local PackageResolutionDto = require('deps.dtos').PackageResolutionDto
 
 ---@alias ExecutableCheckProps fun(name: string): boolean
 ---@alias CommandOutputReaderProps fun(command: string): string|nil

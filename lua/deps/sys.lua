@@ -1,4 +1,4 @@
-local OsNameEnum = require ('deps.enums').OsNameEnum
+local OsNameEnum = require('deps.enums').OsNameEnum
 local M = {}
 
 local sysname = vim.uv.os_uname().sysname

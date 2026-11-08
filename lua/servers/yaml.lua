@@ -1,6 +1,6 @@
 local lang_name = require('utils.helpers').get_this_filename()
 local lsp = require 'core.lsp.registry'
-local docs= require 'core.docs.registry'
+local docs = require 'core.docs.registry'
 local deps = require 'core.lang.registry'
 
 docs.docs_ignore()

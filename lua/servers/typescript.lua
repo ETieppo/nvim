@@ -1,8 +1,8 @@
-local deps= require 'core.lang.registry'
+local deps = require 'core.lang.registry'
 local lsp = require 'core.lsp.registry'
 local dap = require 'core.dap.registry'
 local docs = require 'core.docs.registry'
-local lint= require  'core.linter.registry'
+local lint = require 'core.linter.registry'
 local fmt = require 'core.formatter.registry'
 
 ---@type string[]

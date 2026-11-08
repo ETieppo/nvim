@@ -1,7 +1,7 @@
 local lang_name = require('utils.helpers').get_this_filename()
 local lsp = require 'core.lsp.registry'
 local dap = require 'core.dap.registry'
-local deps= require 'core.lang.registry'
+local deps = require 'core.lang.registry'
 local zig = vim.fn.exepath 'zig'
 
 deps.record_lang_deps {

@@ -1,4 +1,4 @@
-local docs= require 'core.docs.registry'
+local docs = require 'core.docs.registry'
 local lsp = require 'core.lsp.registry'
 local deps = require 'core.lang.registry'
 local fmt = require 'core.formatter.registry'

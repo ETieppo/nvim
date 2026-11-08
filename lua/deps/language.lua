@@ -1,7 +1,7 @@
 local deps_command = require 'deps.commands'
 local deps_mod = require 'deps.deps_mod'
 local lang_registry = require 'core.lang.registry'
-local LangDepsResolutionDto = require ('deps.dtos').LangDepsResolutionDto
+local LangDepsResolutionDto = require('deps.dtos').LangDepsResolutionDto
 
 ---@class DepsCollectorProps
 ---@field resolution LangDepsResolutionDto

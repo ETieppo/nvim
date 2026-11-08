@@ -1,7 +1,7 @@
 local os_mod = require 'deps.sys'
 local window = require 'buffer.window'
-local OsNameEnum = require ('deps.enums').OsNameEnum
-local ShellNameEnum = require ('deps.enums').ShellNameEnum
+local OsNameEnum = require('deps.enums').OsNameEnum
+local ShellNameEnum = require('deps.enums').ShellNameEnum
 
 ---@class ShellDefinitionProps
 ---@field command_args string[]

@@ -1,6 +1,6 @@
 local dap = require 'core.dap.registry'
 local lsp = require 'core.lsp.registry'
-local deps= require 'core.lang.registry'
+local deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
 deps.record_lang_deps {

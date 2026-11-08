@@ -1,4 +1,4 @@
-local deps= require 'core.lang.registry'
+local deps = require 'core.lang.registry'
 local lsp = require 'core.lsp.registry'
 local dap = require 'core.dap.registry'
 local fmt = require 'core.formatter.registry'

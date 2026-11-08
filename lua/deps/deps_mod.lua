@@ -1,8 +1,8 @@
 local os_mod = require 'deps.sys'
 local Shell = require 'deps.shell'
 local PackageManager = require 'deps.package_manager'
-local OsNameEnum = require ('deps.enums').OsNameEnum
-local InstallPlanDto = require ('deps.dtos').InstallPlanDto
+local OsNameEnum = require('deps.enums').OsNameEnum
+local InstallPlanDto = require('deps.dtos').InstallPlanDto
 
 ---@alias OsInstructionKeyProps 'unix'|'macos'|'linux'|'windows'
 

@@ -1,5 +1,5 @@
 local plugins = require 'deps.plugins'
-local prompt_bar = require('layout.cmdline.prompt_bar')
+local prompt_bar = require 'layout.cmdline.prompt_bar'
 math.randomseed(os.time())
 
 local path = vim.fn.stdpath 'config' .. '/assets/'

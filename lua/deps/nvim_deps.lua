@@ -1,6 +1,6 @@
 local deps_mod = require 'deps.deps_mod'
 local deps_command = require 'deps.commands'
-local OsNameEnum = require ('deps.enums').OsNameEnum
+local OsNameEnum = require('deps.enums').OsNameEnum
 
 local M = {}
 

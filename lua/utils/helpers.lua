@@ -40,7 +40,6 @@ end
 ---@param dir string
 ---@return string[]
 function M.find_lua_module_names(dir)
-
   local names = {}
   for name, entry_type in vim.fs.dir(dir) do
     if entry_type == 'file' and is_lua_file(name) and name ~= 'init.lua' then

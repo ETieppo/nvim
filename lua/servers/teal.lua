@@ -1,7 +1,7 @@
 local deps = require 'core.lang.registry'
 local lsp = require 'core.lsp.registry'
 local fmt = require 'core.formatter.registry'
-local docs= require 'core.docs.registry'
+local docs = require 'core.docs.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
 docs.docs_ignore()
