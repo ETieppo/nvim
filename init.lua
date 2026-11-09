@@ -48,7 +48,7 @@ vim.opt.shortmess:append 'W'
 vim.cmd 'syntax on'
 vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
-vim.cmd.colorscheme 'lime'
+vim.cmd.colorscheme 'cherry'
 
 vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 if vim.env.SSH_TTY then
