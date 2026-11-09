@@ -4,9 +4,9 @@ local p = {
   bg1 = '#11141d',
   bg2 = '#1a1a26',
 
-    ornamentActiveFg = '#ffa3b5',
+  ornamentActiveFg = '#ffa3b5',
   ornamentActiveBg = '#3a1420',
-    ornamentInactiveFg = '#b40032',
+  ornamentInactiveFg = '#b40032',
   ornamentInactiveBg = '#26081a',
 
   -- Errors / Diagnostics
