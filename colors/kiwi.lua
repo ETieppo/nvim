@@ -1,7 +1,7 @@
 ---@type ThemeProps
 local p = {
-  bg = '#060609',
-  bg1 = '#0b0d16',
+  bg = '#0c0d12',
+  bg1 = '#11141d',
   bg2 = '#1a1a26',
 
   ornamentActiveFg = '#8bc34a',
