@@ -4,6 +4,7 @@ local dap = require 'core.dap.registry'
 local docs = require 'core.docs.registry'
 local lint = require 'core.linter.registry'
 local fmt = require 'core.formatter.registry'
+local treesitter = require 'core.treesitter.registry'
 
 ---@type string[]
 local javascript_filetypes = {
@@ -12,6 +13,8 @@ local javascript_filetypes = {
   'typescript',
   'typescriptreact',
 }
+
+treesitter.record_treesitter 'html'
 
 deps.record_lang_deps {
   short = 'ts',

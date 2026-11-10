@@ -1,4 +1,3 @@
-local DATABASE_OUTPUT_FILETYPE = 'dbout'
 local IMAGE_FILETYPE = 'image'
 local AUTOSAVE_EVENTS = {
   'InsertLeave',
@@ -8,13 +7,6 @@ local AUTOSAVE_EVENTS = {
 }
 
 local M = {}
-
----@param buffer integer
----@return boolean
-function M.is_database_buffer(buffer)
-  return vim.bo[buffer].filetype == DATABASE_OUTPUT_FILETYPE
-    or vim.b[buffer].dbui_db_key_name ~= nil
-end
 
 ---@param is_excluded fun(buffer: integer): boolean
 ---@return integer|nil
@@ -37,6 +29,12 @@ function M.delete_current_buffer_keeping_window()
     vim.api.nvim_set_current_buf(replacement_buffer)
   end
   vim.cmd('bdelete ' .. current_buffer)
+end
+
+---@param buf integer
+---@return boolean
+function M.is_database_buffer(buf)
+  return vim.bo[buf].filetype == 'dbout' or vim.b[buf].dbui_db_key_name ~= nil
 end
 
 ---@param buffer integer

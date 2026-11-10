@@ -4,6 +4,29 @@ local STAGED_CHAR = '┆'
 
 -- ---@module 'nui.tree'
 -- ---@class (partial) NeoTreeIconProps : neotree.Component.Common.Icon
+local M = {}
+
+---@return integer|nil
+local function find_neotree_window()
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'neo-tree' then
+      return win
+    end
+  end
+end
+
+vim.keymap.set('n', '\\', function()
+  if not require('layout.database_manager.ui').focus() then
+    if find_neotree_window() ~= nil and vim.bo.filetype == 'neo-tree' then
+      vim.cmd 'Neotree close'
+    else
+      vim.cmd 'Neotree reveal'
+    end
+  end
+end, {
+  desc = 'Focus DBUI / Neotree reveal',
+  silent = true,
+})
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -12,9 +35,6 @@ plugins.record {
   dependencies = { 'MunifTanjim/nui.nvim' },
   version = '*',
   cmd = 'Neotree',
-  keys = {
-    { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
-  },
   -- config = function(_, opts)
   --   require('components.material_icons').setup()
   --   require('neo-tree').setup(opts)
@@ -83,3 +103,5 @@ plugins.record {
     },
   },
 }
+
+return M
