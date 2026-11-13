@@ -10,21 +10,21 @@ local p = {
   ornamentInactiveBg = '#26081a',
 
   -- Errors / Diagnostics
-  errorFg = '#d15583',
-  errorBg = '#1a0100',
-  warningFg = '#9c8700',
-  warnBg = '#171000',
-  infoFg = '#7dcfff',
-  infoBg = '#00262f',
-  successFg = '#85d0b7',
-  successBg = '#0c1618',
+  errorFg = '#7c0236',
+  errorBg = '#150b0d',
+  warningFg = '#5b2e00',
+  warnBg = '#140c07',
+  infoFg = '#003573',
+  infoBg = '#090f16',
+  hintFg = '#00424d',
+  hintBg = '#051111',
 
   fg = '#787c99',
   fgDim = '#303040',
 
   -- Syntax — Core
   keyword = '#f50050',
-  keywordAlt = '#542799',
+  keywordAlt = '#335c67',
   func = '#626a90',
   types = '#a60032',
   parameter = '#56708f',

@@ -5,11 +5,11 @@
 ---@field errorFg string
 ---@field warningFg string
 ---@field infoFg string
----@field successFg string
+---@field hintFg string
 ---@field infoBg string
 ---@field errorBg string
 ---@field warnBg string
----@field successBg string
+---@field hintBg string
 ---@field fg string
 ---@field fgDim string
 ---@field keyword string

@@ -6,14 +6,14 @@ local p = {
   bg2 = '#1a1a1d',
 
   -- Errors / Diagnostics
-  errorFg = '#b8697f',
-  errorBg = '#1a0d10',
-  warningFg = '#a8966a',
-  warnBg = '#171209',
-  infoFg = '#7ba9a3',
-  infoBg = '#0f1c1b',
-  successFg = '#8abeb7',
-  successBg = '#0e1615',
+  errorFg = '#631f34',
+  errorBg = '#100708',
+  warningFg = '#522e00',
+  warnBg = '#0e0803',
+  infoFg = '#083163',
+  infoBg = '#050910',
+  hintFg = '#00424d',
+  hintBg = '#020b0c',
 
   fg = '#686868',
   fgDim = '#29292b',
