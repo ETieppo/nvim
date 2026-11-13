@@ -17,11 +17,7 @@ end
 
 vim.keymap.set('n', '\\', function()
   if not require('layout.database_manager.ui').focus() then
-    if find_neotree_window() ~= nil and vim.bo.filetype == 'neo-tree' then
-      vim.cmd 'Neotree close'
-    else
-      vim.cmd 'Neotree reveal'
-    end
+    vim.cmd 'Neotree reveal'
   end
 end, {
   desc = 'Focus DBUI / Neotree reveal',
