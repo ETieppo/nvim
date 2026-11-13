@@ -81,7 +81,7 @@ vim.diagnostic.config {
     format = wrap_virtual_diagnostic,
   },
   severity_sort = true,
-  underline = true,
+  underline = false,
   signs = {
     text = {
       [vim.diagnostic.severity.ERROR] = diagnostic_prefix,
