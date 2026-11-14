@@ -30,20 +30,10 @@ return {
     color = '#5D4037',
     name = 'MaterialAdobeIllustrator',
   },
-  ['adobe-illustrator_light'] = {
-    icon = '\u{F00F2}',
-    color = '#795548',
-    name = 'MaterialAdobeIllustratorLight',
-  },
   ['adobe-photoshop'] = {
     icon = '\u{E7B8}',
     color = '#37474F',
     name = 'MaterialAdobePhotoshop',
-  },
-  ['adobe-photoshop_light'] = {
-    icon = '\u{F00F3}',
-    color = '#455A64',
-    name = 'MaterialAdobePhotoshopLight',
   },
   ['adobe-swc'] = {
     icon = '\u{F1A3B}',
@@ -99,41 +89,6 @@ return {
     icon = '\u{ED4B}',
     color = '#E53935',
     name = 'MaterialAngular',
-  },
-  ['angular-component.clone'] = {
-    icon = '\u{F00F5}',
-    color = '#1976D2',
-    name = 'MaterialAngularComponentClone',
-  },
-  ['angular-directive.clone'] = {
-    icon = '\u{F00F6}',
-    color = '#AB47BC',
-    name = 'MaterialAngularDirectiveClone',
-  },
-  ['angular-guard.clone'] = {
-    icon = '\u{F00F7}',
-    color = '#43A047',
-    name = 'MaterialAngularGuardClone',
-  },
-  ['angular-interceptor.clone'] = {
-    icon = '\u{F00F8}',
-    color = '#FF9800',
-    name = 'MaterialAngularInterceptorClone',
-  },
-  ['angular-pipe.clone'] = {
-    icon = '\u{F1354}',
-    color = '#00897B',
-    name = 'MaterialAngularPipeClone',
-  },
-  ['angular-resolver.clone'] = {
-    icon = '\u{F00F9}',
-    color = '#43A047',
-    name = 'MaterialAngularResolverClone',
-  },
-  ['angular-service.clone'] = {
-    icon = '\u{F0AAD}',
-    color = '#FFCA28',
-    name = 'MaterialAngularServiceClone',
   },
   antlr = {
     icon = '\u{F1A94}',
@@ -225,11 +180,6 @@ return {
     color = '#FFC400',
     name = 'MaterialAuto',
   },
-  auto_light = {
-    icon = '\u{F0242}',
-    color = '#FFC400',
-    name = 'MaterialAutoLight',
-  },
   autohotkey = {
     icon = '\u{F1A98}',
     color = '#4CAF50',
@@ -265,30 +215,15 @@ return {
     color = '#FF7043',
     name = 'MaterialBashly',
   },
-  ['bashly-hook'] = {
-    icon = '\u{F00FA}',
-    color = '#FF7043',
-    name = 'MaterialBashlyHook',
-  },
   ['bashly-settings.clone'] = {
     icon = '\u{E690}',
     color = '#E0E0E0',
     name = 'MaterialBashlySettingsClone',
   },
-  ['bashly-settings_light.clone'] = {
-    icon = '\u{EB51}',
-    color = '#424242',
-    name = 'MaterialBashlySettingsLightClone',
-  },
   ['bashly-strings.clone'] = {
     icon = '\u{F0EEC}',
     color = '#E0E0E0',
     name = 'MaterialBashlyStringsClone',
-  },
-  ['bashly-strings_light.clone'] = {
-    icon = '\u{F00FB}',
-    color = '#424242',
-    name = 'MaterialBashlyStringsLightClone',
   },
   bazel = {
     icon = '\u{E63A}',
@@ -360,11 +295,6 @@ return {
     color = '#F9A825',
     name = 'MaterialBlink',
   },
-  blink_light = {
-    icon = '\u{F00FC}',
-    color = '#37474F',
-    name = 'MaterialBlinkLight',
-  },
   blitz = {
     icon = '\u{F0A4D}',
     color = '#7C4DFF',
@@ -384,11 +314,6 @@ return {
     icon = '\u{F1028}',
     color = '#FFCA28',
     name = 'MaterialBrowserlist',
-  },
-  browserlist_light = {
-    icon = '\u{F00FD}',
-    color = '#FFCA28',
-    name = 'MaterialBrowserlistLight',
   },
   bruno = {
     icon = '\u{F1A9D}',
@@ -414,11 +339,6 @@ return {
     icon = '\u{E76F}',
     color = '#FFF8E1',
     name = 'MaterialBun',
-  },
-  bun_light = {
-    icon = '\u{F00FE}',
-    color = '#FFF8E1',
-    name = 'MaterialBunLight',
   },
   c = {
     icon = '\u{E61E}',
@@ -490,11 +410,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialChess',
   },
-  chess_light = {
-    icon = '\u{E25F}',
-    color = '#455A64',
-    name = 'MaterialChessLight',
-  },
   chromatic = {
     icon = '\u{F0021}',
     color = '#FF5722',
@@ -509,11 +424,6 @@ return {
     icon = '\u{E78C}',
     color = '#FAFAFA',
     name = 'MaterialCircleci',
-  },
-  circleci_light = {
-    icon = '\u{F00FF}',
-    color = '#424242',
-    name = 'MaterialCircleciLight',
   },
   citation = {
     icon = '\u{F0022}',
@@ -569,11 +479,6 @@ return {
     icon = '\u{E643}',
     color = '#EEEEEE',
     name = 'MaterialCodeClimate',
-  },
-  ['code-climate_light'] = {
-    icon = '\u{E000}',
-    color = '#455A64',
-    name = 'MaterialCodeClimateLight',
   },
   codecov = {
     icon = '\u{E797}',
@@ -655,20 +560,10 @@ return {
     color = '#FFCA28',
     name = 'MaterialContributing',
   },
-  controller = {
-    icon = '\u{F05BB}',
-    color = '#FFC107',
-    name = 'MaterialController',
-  },
   copilot = {
     icon = '\u{EC1E}',
     color = '#FAFAFA',
     name = 'MaterialCopilot',
-  },
-  copilot_light = {
-    icon = '\u{F4B8}',
-    color = '#212121',
-    name = 'MaterialCopilotLight',
   },
   cpp = {
     icon = '\u{E61D}',
@@ -689,11 +584,6 @@ return {
     icon = '\u{E62F}',
     color = '#CFD8DC',
     name = 'MaterialCrystal',
-  },
-  crystal_light = {
-    icon = '\u{E7AC}',
-    color = '#37474F',
-    name = 'MaterialCrystalLight',
   },
   csharp = {
     icon = '\u{F031B}',
@@ -729,11 +619,6 @@ return {
     icon = '\u{EC5C}',
     color = '#E0E0E0',
     name = 'MaterialCursor',
-  },
-  cursor_light = {
-    icon = '\u{F01BE}',
-    color = '#424242',
-    name = 'MaterialCursorLight',
   },
   cypress = {
     icon = '\u{EE38}',
@@ -774,11 +659,6 @@ return {
     icon = '\u{F0A4E}',
     color = '#CFD8DC',
     name = 'MaterialDeno',
-  },
-  deno_light = {
-    icon = '\u{F0100}',
-    color = '#455A64',
-    name = 'MaterialDenoLight',
   },
   dependabot = {
     icon = '\u{F4BE}',
@@ -859,11 +739,6 @@ return {
     icon = '\u{F01E2}',
     color = '#CFD8DC',
     name = 'MaterialDrone',
-  },
-  drone_light = {
-    icon = '\u{F0102}',
-    color = '#546E7A',
-    name = 'MaterialDroneLight',
   },
   ['dtx.clone'] = {
     icon = '\u{F0033}',
@@ -950,11 +825,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialExpo',
   },
-  expo_light = {
-    icon = '\u{F0103}',
-    color = '#455A64',
-    name = 'MaterialExpoLight',
-  },
   fastlane = {
     icon = '\u{F1033}',
     color = '#2979FF',
@@ -989,2906 +859,6 @@ return {
     icon = '\u{F06C8}',
     color = '#FBC02D',
     name = 'MaterialFlow',
-  },
-  folder = {
-    icon = '\u{F0104}',
-    color = '#90A4AE',
-    name = 'MaterialFolder',
-  },
-  ['folder-admin'] = {
-    icon = '\u{F0D09}',
-    color = '#546E7A',
-    name = 'MaterialFolderAdmin',
-  },
-  ['folder-admin-open'] = {
-    icon = '\u{F0D0A}',
-    color = '#546E7A',
-    name = 'MaterialFolderAdminOpen',
-  },
-  ['folder-android'] = {
-    icon = '\u{F50F}',
-    color = '#8BC34A',
-    name = 'MaterialFolderAndroid',
-  },
-  ['folder-android-open'] = {
-    icon = '\u{F0034}',
-    color = '#8BC34A',
-    name = 'MaterialFolderAndroidOpen',
-  },
-  ['folder-angular'] = {
-    icon = '\u{E753}',
-    color = '#FF5252',
-    name = 'MaterialFolderAngular',
-  },
-  ['folder-angular-open'] = {
-    icon = '\u{F06B2}',
-    color = '#FF5252',
-    name = 'MaterialFolderAngularOpen',
-  },
-  ['folder-animation'] = {
-    icon = '\u{F05D8}',
-    color = '#EC407A',
-    name = 'MaterialFolderAnimation',
-  },
-  ['folder-animation-open'] = {
-    icon = '\u{F093A}',
-    color = '#EC407A',
-    name = 'MaterialFolderAnimationOpen',
-  },
-  ['folder-ansible'] = {
-    icon = '\u{E723}',
-    color = '#616161',
-    name = 'MaterialFolderAnsible',
-  },
-  ['folder-ansible-open'] = {
-    icon = '\u{F0BEB}',
-    color = '#616161',
-    name = 'MaterialFolderAnsibleOpen',
-  },
-  ['folder-api'] = {
-    icon = '\u{F109B}',
-    color = '#FBC02D',
-    name = 'MaterialFolderApi',
-  },
-  ['folder-api-open'] = {
-    icon = '\u{F1257}',
-    color = '#FBC02D',
-    name = 'MaterialFolderApiOpen',
-  },
-  ['folder-apollo'] = {
-    icon = '\u{F10EC}',
-    color = '#7E57C2',
-    name = 'MaterialFolderApollo',
-  },
-  ['folder-apollo-open'] = {
-    icon = '\u{F10ED}',
-    color = '#7E57C2',
-    name = 'MaterialFolderApolloOpen',
-  },
-  ['folder-app'] = {
-    icon = '\u{F0BD}',
-    color = '#EF5350',
-    name = 'MaterialFolderApp',
-  },
-  ['folder-app-open'] = {
-    icon = '\u{F0BE}',
-    color = '#EF5350',
-    name = 'MaterialFolderAppOpen',
-  },
-  ['folder-appwrite'] = {
-    icon = '\u{F0BEC}',
-    color = '#FF4081',
-    name = 'MaterialFolderAppwrite',
-  },
-  ['folder-appwrite-open'] = {
-    icon = '\u{F0BED}',
-    color = '#FF4081',
-    name = 'MaterialFolderAppwriteOpen',
-  },
-  ['folder-archive'] = {
-    icon = '\u{EA98}',
-    color = '#FFA726',
-    name = 'MaterialFolderArchive',
-  },
-  ['folder-archive-open'] = {
-    icon = '\u{F187}',
-    color = '#FFA726',
-    name = 'MaterialFolderArchiveOpen',
-  },
-  ['folder-assembly'] = {
-    icon = '\u{F0AEE}',
-    color = '#FF6E40',
-    name = 'MaterialFolderAssembly',
-  },
-  ['folder-assembly-open'] = {
-    icon = '\u{F0B08}',
-    color = '#FF6E40',
-    name = 'MaterialFolderAssemblyOpen',
-  },
-  ['folder-astro'] = {
-    icon = '\u{F0035}',
-    color = '#7C4DFF',
-    name = 'MaterialFolderAstro',
-  },
-  ['folder-astro-open'] = {
-    icon = '\u{F0036}',
-    color = '#7C4DFF',
-    name = 'MaterialFolderAstroOpen',
-  },
-  ['folder-atom'] = {
-    icon = '\u{E27F}',
-    color = '#1E88E5',
-    name = 'MaterialFolderAtom',
-  },
-  ['folder-atom-open'] = {
-    icon = '\u{E764}',
-    color = '#1E88E5',
-    name = 'MaterialFolderAtomOpen',
-  },
-  ['folder-attachment'] = {
-    icon = '\u{F0066}',
-    color = '#9C27B0',
-    name = 'MaterialFolderAttachment',
-  },
-  ['folder-attachment-open'] = {
-    icon = '\u{F19C4}',
-    color = '#9C27B0',
-    name = 'MaterialFolderAttachmentOpen',
-  },
-  ['folder-audio'] = {
-    icon = '\u{E638}',
-    color = '#EF5350',
-    name = 'MaterialFolderAudio',
-  },
-  ['folder-audio-open'] = {
-    icon = '\u{F29E}',
-    color = '#EF5350',
-    name = 'MaterialFolderAudioOpen',
-  },
-  ['folder-aurelia'] = {
-    icon = '\u{F0037}',
-    color = '#F06292',
-    name = 'MaterialFolderAurelia',
-  },
-  ['folder-aurelia-open'] = {
-    icon = '\u{F0038}',
-    color = '#F06292',
-    name = 'MaterialFolderAureliaOpen',
-  },
-  ['folder-aws'] = {
-    icon = '\u{E7AD}',
-    color = '#FFB300',
-    name = 'MaterialFolderAws',
-  },
-  ['folder-aws-open'] = {
-    icon = '\u{F0EF}',
-    color = '#FFB300',
-    name = 'MaterialFolderAwsOpen',
-  },
-  ['folder-azure-pipelines'] = {
-    icon = '\u{F0805}',
-    color = '#1E88E5',
-    name = 'MaterialFolderAzurePipelines',
-  },
-  ['folder-azure-pipelines-open'] = {
-    icon = '\u{F0FD5}',
-    color = '#1E88E5',
-    name = 'MaterialFolderAzurePipelinesOpen',
-  },
-  ['folder-backup'] = {
-    icon = '\u{F0250}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBackup',
-  },
-  ['folder-backup-open'] = {
-    icon = '\u{F0251}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBackupOpen',
-  },
-  ['folder-base'] = {
-    icon = '\u{F0AEF}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBase',
-  },
-  ['folder-base-open'] = {
-    icon = '\u{F0B09}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBaseOpen',
-  },
-  ['folder-batch'] = {
-    icon = '\u{F19F7}',
-    color = '#616161',
-    name = 'MaterialFolderBatch',
-  },
-  ['folder-batch-open'] = {
-    icon = '\u{F19F8}',
-    color = '#616161',
-    name = 'MaterialFolderBatchOpen',
-  },
-  ['folder-benchmark'] = {
-    icon = '\u{F0252}',
-    color = '#1E88E5',
-    name = 'MaterialFolderBenchmark',
-  },
-  ['folder-benchmark-open'] = {
-    icon = '\u{F0254}',
-    color = '#1E88E5',
-    name = 'MaterialFolderBenchmarkOpen',
-  },
-  ['folder-bibliography'] = {
-    icon = '\u{F1246}',
-    color = '#A1887F',
-    name = 'MaterialFolderBibliography',
-  },
-  ['folder-bibliography-open'] = {
-    icon = '\u{F126D}',
-    color = '#A1887F',
-    name = 'MaterialFolderBibliographyOpen',
-  },
-  ['folder-bicep'] = {
-    icon = '\u{F0BEE}',
-    color = '#FBC02D',
-    name = 'MaterialFolderBicep',
-  },
-  ['folder-bicep-open'] = {
-    icon = '\u{F0BEF}',
-    color = '#FBC02D',
-    name = 'MaterialFolderBicepOpen',
-  },
-  ['folder-blender'] = {
-    icon = '\u{E766}',
-    color = '#FF9800',
-    name = 'MaterialFolderBlender',
-  },
-  ['folder-blender-open'] = {
-    icon = '\u{EDE1}',
-    color = '#FF9800',
-    name = 'MaterialFolderBlenderOpen',
-  },
-  ['folder-bloc'] = {
-    icon = '\u{F126E}',
-    color = '#26A69A',
-    name = 'MaterialFolderBloc',
-  },
-  ['folder-bloc-open'] = {
-    icon = '\u{F12E3}',
-    color = '#26A69A',
-    name = 'MaterialFolderBlocOpen',
-  },
-  ['folder-bluetooth'] = {
-    icon = '\u{F293}',
-    color = '#1E88E5',
-    name = 'MaterialFolderBluetooth',
-  },
-  ['folder-bluetooth-open'] = {
-    icon = '\u{F294}',
-    color = '#1E88E5',
-    name = 'MaterialFolderBluetoothOpen',
-  },
-  ['folder-bower'] = {
-    icon = '\u{E74D}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBower',
-  },
-  ['folder-bower-open'] = {
-    icon = '\u{F0BF0}',
-    color = '#8D6E63',
-    name = 'MaterialFolderBowerOpen',
-  },
-  ['folder-buildkite'] = {
-    icon = '\u{F0039}',
-    color = '#4CAF50',
-    name = 'MaterialFolderBuildkite',
-  },
-  ['folder-buildkite-open'] = {
-    icon = '\u{F003A}',
-    color = '#4CAF50',
-    name = 'MaterialFolderBuildkiteOpen',
-  },
-  ['folder-cart'] = {
-    icon = '\u{ED7F}',
-    color = '#009688',
-    name = 'MaterialFolderCart',
-  },
-  ['folder-cart-open'] = {
-    icon = '\u{EE66}',
-    color = '#009688',
-    name = 'MaterialFolderCartOpen',
-  },
-  ['folder-changesets'] = {
-    icon = '\u{F0AF0}',
-    color = '#2196F3',
-    name = 'MaterialFolderChangesets',
-  },
-  ['folder-changesets-open'] = {
-    icon = '\u{F0B0A}',
-    color = '#2196F3',
-    name = 'MaterialFolderChangesetsOpen',
-  },
-  ['folder-ci'] = {
-    icon = '\u{F003B}',
-    color = '#0288D1',
-    name = 'MaterialFolderCi',
-  },
-  ['folder-ci-open'] = {
-    icon = '\u{F003C}',
-    color = '#0288D1',
-    name = 'MaterialFolderCiOpen',
-  },
-  ['folder-circleci'] = {
-    icon = '\u{F003D}',
-    color = '#546E7A',
-    name = 'MaterialFolderCircleci',
-  },
-  ['folder-circleci-open'] = {
-    icon = '\u{F003E}',
-    color = '#546E7A',
-    name = 'MaterialFolderCircleciOpen',
-  },
-  ['folder-class'] = {
-    icon = '\u{F0D0B}',
-    color = '#EF5350',
-    name = 'MaterialFolderClass',
-  },
-  ['folder-class-open'] = {
-    icon = '\u{F0D0C}',
-    color = '#EF5350',
-    name = 'MaterialFolderClassOpen',
-  },
-  ['folder-claude'] = {
-    icon = '\u{F003F}',
-    color = '#FF7043',
-    name = 'MaterialFolderClaude',
-  },
-  ['folder-claude-open'] = {
-    icon = '\u{F0040}',
-    color = '#FF7043',
-    name = 'MaterialFolderClaudeOpen',
-  },
-  ['folder-client'] = {
-    icon = '\u{F0DCC}',
-    color = '#039BE5',
-    name = 'MaterialFolderClient',
-  },
-  ['folder-client-open'] = {
-    icon = '\u{F0DCD}',
-    color = '#039BE5',
-    name = 'MaterialFolderClientOpen',
-  },
-  ['folder-cline'] = {
-    icon = '\u{F0041}',
-    color = '#42A5F5',
-    name = 'MaterialFolderCline',
-  },
-  ['folder-cline-open'] = {
-    icon = '\u{F0042}',
-    color = '#42A5F5',
-    name = 'MaterialFolderClineOpen',
-  },
-  ['folder-cloud-functions'] = {
-    icon = '\u{E21D}',
-    color = '#2196F3',
-    name = 'MaterialFolderCloudFunctions',
-  },
-  ['folder-cloud-functions-open'] = {
-    icon = '\u{E226}',
-    color = '#2196F3',
-    name = 'MaterialFolderCloudFunctionsOpen',
-  },
-  ['folder-cloudflare'] = {
-    icon = '\u{F0043}',
-    color = '#FF8A65',
-    name = 'MaterialFolderCloudflare',
-  },
-  ['folder-cloudflare-open'] = {
-    icon = '\u{F0044}',
-    color = '#FF8A65',
-    name = 'MaterialFolderCloudflareOpen',
-  },
-  ['folder-cluster'] = {
-    icon = '\u{F0BF1}',
-    color = '#26A69A',
-    name = 'MaterialFolderCluster',
-  },
-  ['folder-cluster-open'] = {
-    icon = '\u{F0BF2}',
-    color = '#26A69A',
-    name = 'MaterialFolderClusterOpen',
-  },
-  ['folder-cobol'] = {
-    icon = '\u{E900}',
-    color = '#0288D1',
-    name = 'MaterialFolderCobol',
-  },
-  ['folder-cobol-open'] = {
-    icon = '\u{F0045}',
-    color = '#0288D1',
-    name = 'MaterialFolderCobolOpen',
-  },
-  ['folder-command'] = {
-    icon = '\u{F4B5}',
-    color = '#03A9F4',
-    name = 'MaterialFolderCommand',
-  },
-  ['folder-command-open'] = {
-    icon = '\u{F0DCE}',
-    color = '#03A9F4',
-    name = 'MaterialFolderCommandOpen',
-  },
-  ['folder-components'] = {
-    icon = '\u{F12E4}',
-    color = '#C0CA33',
-    name = 'MaterialFolderComponents',
-  },
-  ['folder-components-open'] = {
-    icon = '\u{F1359}',
-    color = '#C0CA33',
-    name = 'MaterialFolderComponentsOpen',
-  },
-  ['folder-config'] = {
-    icon = '\u{E5FC}',
-    color = '#00ACC1',
-    name = 'MaterialFolderConfig',
-  },
-  ['folder-config-open'] = {
-    icon = '\u{E5FB}',
-    color = '#00ACC1',
-    name = 'MaterialFolderConfigOpen',
-  },
-  ['folder-connection'] = {
-    icon = '\u{F0D3C}',
-    color = '#00ACC1',
-    name = 'MaterialFolderConnection',
-  },
-  ['folder-connection-open'] = {
-    icon = '\u{F0D3D}',
-    color = '#00ACC1',
-    name = 'MaterialFolderConnectionOpen',
-  },
-  ['folder-console'] = {
-    icon = '\u{EB9B}',
-    color = '#8BC34A',
-    name = 'MaterialFolderConsole',
-  },
-  ['folder-console-open'] = {
-    icon = '\u{F07B7}',
-    color = '#8BC34A',
-    name = 'MaterialFolderConsoleOpen',
-  },
-  ['folder-constant'] = {
-    icon = '\u{EB5D}',
-    color = '#607D8B',
-    name = 'MaterialFolderConstant',
-  },
-  ['folder-constant-open'] = {
-    icon = '\u{F135A}',
-    color = '#607D8B',
-    name = 'MaterialFolderConstantOpen',
-  },
-  ['folder-container'] = {
-    icon = '\u{F4B7}',
-    color = '#0288D1',
-    name = 'MaterialFolderContainer',
-  },
-  ['folder-container-open'] = {
-    icon = '\u{F18D8}',
-    color = '#0288D1',
-    name = 'MaterialFolderContainerOpen',
-  },
-  ['folder-content'] = {
-    icon = '\u{F018F}',
-    color = '#00BCD4',
-    name = 'MaterialFolderContent',
-  },
-  ['folder-content-open'] = {
-    icon = '\u{F0190}',
-    color = '#00BCD4',
-    name = 'MaterialFolderContentOpen',
-  },
-  ['folder-context'] = {
-    icon = '\u{F0BF3}',
-    color = '#00897B',
-    name = 'MaterialFolderContext',
-  },
-  ['folder-context-open'] = {
-    icon = '\u{F0001}',
-    color = '#00897B',
-    name = 'MaterialFolderContextOpen',
-  },
-  ['folder-contract'] = {
-    icon = '\u{F08AD}',
-    color = '#448AFF',
-    name = 'MaterialFolderContract',
-  },
-  ['folder-contract-open'] = {
-    icon = '\u{F08DE}',
-    color = '#448AFF',
-    name = 'MaterialFolderContractOpen',
-  },
-  ['folder-controller'] = {
-    icon = '\u{F02B4}',
-    color = '#FFC107',
-    name = 'MaterialFolderController',
-  },
-  ['folder-controller-open'] = {
-    icon = '\u{F02B5}',
-    color = '#FFC107',
-    name = 'MaterialFolderControllerOpen',
-  },
-  ['folder-core'] = {
-    icon = '\u{F0046}',
-    color = '#1976D2',
-    name = 'MaterialFolderCore',
-  },
-  ['folder-core-open'] = {
-    icon = '\u{F0047}',
-    color = '#1976D2',
-    name = 'MaterialFolderCoreOpen',
-  },
-  ['folder-coverage'] = {
-    icon = '\u{EBDD}',
-    color = '#26A69A',
-    name = 'MaterialFolderCoverage',
-  },
-  ['folder-coverage-open'] = {
-    icon = '\u{EC2C}',
-    color = '#26A69A',
-    name = 'MaterialFolderCoverageOpen',
-  },
-  ['folder-css'] = {
-    icon = '\u{F1080}',
-    color = '#7E57C2',
-    name = 'MaterialFolderCss',
-  },
-  ['folder-css-open'] = {
-    icon = '\u{F10B5}',
-    color = '#7E57C2',
-    name = 'MaterialFolderCssOpen',
-  },
-  ['folder-cue'] = {
-    icon = '\u{F0002}',
-    color = '#448AFF',
-    name = 'MaterialFolderCue',
-  },
-  ['folder-cue-open'] = {
-    icon = '\u{F0003}',
-    color = '#448AFF',
-    name = 'MaterialFolderCueOpen',
-  },
-  ['folder-cursor'] = {
-    icon = '\u{F246}',
-    color = '#E0E0E0',
-    name = 'MaterialFolderCursor',
-  },
-  ['folder-cursor-open'] = {
-    icon = '\u{F01BD}',
-    color = '#E0E0E0',
-    name = 'MaterialFolderCursorOpen',
-  },
-  ['folder-cursor-open_light'] = {
-    icon = '\u{F01BF}',
-    color = '#424242',
-    name = 'MaterialFolderCursorOpenLight',
-  },
-  ['folder-cursor_light'] = {
-    icon = '\u{F01C0}',
-    color = '#424242',
-    name = 'MaterialFolderCursorLight',
-  },
-  ['folder-custom'] = {
-    icon = '\u{F0004}',
-    color = '#FF7043',
-    name = 'MaterialFolderCustom',
-  },
-  ['folder-custom-open'] = {
-    icon = '\u{F0005}',
-    color = '#FF7043',
-    name = 'MaterialFolderCustomOpen',
-  },
-  ['folder-cypress'] = {
-    icon = '\u{F0048}',
-    color = '#009688',
-    name = 'MaterialFolderCypress',
-  },
-  ['folder-cypress-open'] = {
-    icon = '\u{F0049}',
-    color = '#009688',
-    name = 'MaterialFolderCypressOpen',
-  },
-  ['folder-dal'] = {
-    icon = '\u{F19F9}',
-    color = '#F44336',
-    name = 'MaterialFolderDal',
-  },
-  ['folder-dal-open'] = {
-    icon = '\u{F19FA}',
-    color = '#F44336',
-    name = 'MaterialFolderDalOpen',
-  },
-  ['folder-dart'] = {
-    icon = '\u{F19FB}',
-    color = '#2196F3',
-    name = 'MaterialFolderDart',
-  },
-  ['folder-dart-open'] = {
-    icon = '\u{F19FC}',
-    color = '#2196F3',
-    name = 'MaterialFolderDartOpen',
-  },
-  ['folder-database'] = {
-    icon = '\u{EACE}',
-    color = '#FFCA28',
-    name = 'MaterialFolderDatabase',
-  },
-  ['folder-database-open'] = {
-    icon = '\u{F472}',
-    color = '#FFCA28',
-    name = 'MaterialFolderDatabaseOpen',
-  },
-  ['folder-debug'] = {
-    icon = '\u{EAA6}',
-    color = '#F9A825',
-    name = 'MaterialFolderDebug',
-  },
-  ['folder-debug-open'] = {
-    icon = '\u{EAA7}',
-    color = '#F9A825',
-    name = 'MaterialFolderDebugOpen',
-  },
-  ['folder-decorators'] = {
-    icon = '\u{F0AF1}',
-    color = '#AB47BC',
-    name = 'MaterialFolderDecorators',
-  },
-  ['folder-decorators-open'] = {
-    icon = '\u{F0B0B}',
-    color = '#AB47BC',
-    name = 'MaterialFolderDecoratorsOpen',
-  },
-  ['folder-delta'] = {
-    icon = '\u{F01C2}',
-    color = '#EC407A',
-    name = 'MaterialFolderDelta',
-  },
-  ['folder-delta-open'] = {
-    icon = '\u{F19FD}',
-    color = '#EC407A',
-    name = 'MaterialFolderDeltaOpen',
-  },
-  ['folder-deprecated-open.clone'] = {
-    icon = '\u{F004A}',
-    color = '#616161',
-    name = 'MaterialFolderDeprecatedOpenClone',
-  },
-  ['folder-deprecated.clone'] = {
-    icon = '\u{F004B}',
-    color = '#616161',
-    name = 'MaterialFolderDeprecatedClone',
-  },
-  ['folder-desktop'] = {
-    icon = '\u{F498}',
-    color = '#039BE5',
-    name = 'MaterialFolderDesktop',
-  },
-  ['folder-desktop-open'] = {
-    icon = '\u{F4A9}',
-    color = '#039BE5',
-    name = 'MaterialFolderDesktopOpen',
-  },
-  ['folder-development-open.clone'] = {
-    icon = '\u{F0BF4}',
-    color = '#0288D1',
-    name = 'MaterialFolderDevelopmentOpenClone',
-  },
-  ['folder-development.clone'] = {
-    icon = '\u{F0BF5}',
-    color = '#0288D1',
-    name = 'MaterialFolderDevelopmentClone',
-  },
-  ['folder-directive'] = {
-    icon = '\u{F0BF6}',
-    color = '#F44336',
-    name = 'MaterialFolderDirective',
-  },
-  ['folder-directive-open'] = {
-    icon = '\u{F0006}',
-    color = '#F44336',
-    name = 'MaterialFolderDirectiveOpen',
-  },
-  ['folder-dist'] = {
-    icon = '\u{F024C}',
-    color = '#E57373',
-    name = 'MaterialFolderDist',
-  },
-  ['folder-dist-open'] = {
-    icon = '\u{F024D}',
-    color = '#E57373',
-    name = 'MaterialFolderDistOpen',
-  },
-  ['folder-docker'] = {
-    icon = '\u{E650}',
-    color = '#039BE5',
-    name = 'MaterialFolderDocker',
-  },
-  ['folder-docker-open'] = {
-    icon = '\u{E7B0}',
-    color = '#039BE5',
-    name = 'MaterialFolderDockerOpen',
-  },
-  ['folder-docs'] = {
-    icon = '\u{E5FD}',
-    color = '#0277BD',
-    name = 'MaterialFolderDocs',
-  },
-  ['folder-docs-open'] = {
-    icon = '\u{E613}',
-    color = '#0277BD',
-    name = 'MaterialFolderDocsOpen',
-  },
-  ['folder-download'] = {
-    icon = '\u{EA78}',
-    color = '#4CAF50',
-    name = 'MaterialFolderDownload',
-  },
-  ['folder-download-open'] = {
-    icon = '\u{EAC2}',
-    color = '#4CAF50',
-    name = 'MaterialFolderDownloadOpen',
-  },
-  ['folder-drizzle'] = {
-    icon = '\u{F004C}',
-    color = '#4CAF50',
-    name = 'MaterialFolderDrizzle',
-  },
-  ['folder-drizzle-open'] = {
-    icon = '\u{F004D}',
-    color = '#4CAF50',
-    name = 'MaterialFolderDrizzleOpen',
-  },
-  ['folder-dump'] = {
-    icon = '\u{F0C67}',
-    color = '#757575',
-    name = 'MaterialFolderDump',
-  },
-  ['folder-dump-open'] = {
-    icon = '\u{F0007}',
-    color = '#757575',
-    name = 'MaterialFolderDumpOpen',
-  },
-  ['folder-eas-open.clone'] = {
-    icon = '\u{F004E}',
-    color = '#424242',
-    name = 'MaterialFolderEasOpenClone',
-  },
-  ['folder-eas.clone'] = {
-    icon = '\u{F004F}',
-    color = '#424242',
-    name = 'MaterialFolderEasClone',
-  },
-  ['folder-element'] = {
-    icon = '\u{F0AF2}',
-    color = '#AB47BC',
-    name = 'MaterialFolderElement',
-  },
-  ['folder-element-open'] = {
-    icon = '\u{F0B0C}',
-    color = '#AB47BC',
-    name = 'MaterialFolderElementOpen',
-  },
-  ['folder-enum'] = {
-    icon = '\u{EA95}',
-    color = '#26A69A',
-    name = 'MaterialFolderEnum',
-  },
-  ['folder-enum-open'] = {
-    icon = '\u{EB5E}',
-    color = '#26A69A',
-    name = 'MaterialFolderEnumOpen',
-  },
-  ['folder-environment'] = {
-    icon = '\u{F10B6}',
-    color = '#66BB6A',
-    name = 'MaterialFolderEnvironment',
-  },
-  ['folder-environment-open'] = {
-    icon = '\u{F10B7}',
-    color = '#66BB6A',
-    name = 'MaterialFolderEnvironmentOpen',
-  },
-  ['folder-error'] = {
-    icon = '\u{E654}',
-    color = '#EF5350',
-    name = 'MaterialFolderError',
-  },
-  ['folder-error-open'] = {
-    icon = '\u{EBE6}',
-    color = '#EF5350',
-    name = 'MaterialFolderErrorOpen',
-  },
-  ['folder-eslint'] = {
-    icon = '\u{E7D2}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderEslint',
-  },
-  ['folder-eslint-open'] = {
-    icon = '\u{F10B8}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderEslintOpen',
-  },
-  ['folder-event'] = {
-    icon = '\u{F0BF7}',
-    color = '#FBC02D',
-    name = 'MaterialFolderEvent',
-  },
-  ['folder-event-open'] = {
-    icon = '\u{F0BF8}',
-    color = '#FBC02D',
-    name = 'MaterialFolderEventOpen',
-  },
-  ['folder-examples'] = {
-    icon = '\u{F0968}',
-    color = '#009688',
-    name = 'MaterialFolderExamples',
-  },
-  ['folder-examples-open'] = {
-    icon = '\u{F0969}',
-    color = '#009688',
-    name = 'MaterialFolderExamplesOpen',
-  },
-  ['folder-expo'] = {
-    icon = '\u{F0BF9}',
-    color = '#1976D2',
-    name = 'MaterialFolderExpo',
-  },
-  ['folder-expo-open'] = {
-    icon = '\u{F0009}',
-    color = '#1976D2',
-    name = 'MaterialFolderExpoOpen',
-  },
-  ['folder-export'] = {
-    icon = '\u{EBAC}',
-    color = '#FF8A65',
-    name = 'MaterialFolderExport',
-  },
-  ['folder-export-open'] = {
-    icon = '\u{F0207}',
-    color = '#FF8A65',
-    name = 'MaterialFolderExportOpen',
-  },
-  ['folder-fastlane'] = {
-    icon = '\u{F0BFA}',
-    color = '#1E88E5',
-    name = 'MaterialFolderFastlane',
-  },
-  ['folder-fastlane-open'] = {
-    icon = '\u{F0BFB}',
-    color = '#1E88E5',
-    name = 'MaterialFolderFastlaneOpen',
-  },
-  ['folder-favicon'] = {
-    icon = '\u{F0AF3}',
-    color = '#FBC02D',
-    name = 'MaterialFolderFavicon',
-  },
-  ['folder-favicon-open'] = {
-    icon = '\u{F0B0D}',
-    color = '#FBC02D',
-    name = 'MaterialFolderFaviconOpen',
-  },
-  ['folder-features'] = {
-    icon = '\u{F13D3}',
-    color = '#689F38',
-    name = 'MaterialFolderFeatures',
-  },
-  ['folder-features-open'] = {
-    icon = '\u{F13D4}',
-    color = '#689F38',
-    name = 'MaterialFolderFeaturesOpen',
-  },
-  ['folder-filter'] = {
-    icon = '\u{EAF1}',
-    color = '#7E57C2',
-    name = 'MaterialFolderFilter',
-  },
-  ['folder-filter-open'] = {
-    icon = '\u{EB83}',
-    color = '#7E57C2',
-    name = 'MaterialFolderFilterOpen',
-  },
-  ['folder-firebase'] = {
-    icon = '\u{E787}',
-    color = '#FF9100',
-    name = 'MaterialFolderFirebase',
-  },
-  ['folder-firebase-open'] = {
-    icon = '\u{F0BFC}',
-    color = '#FF9100',
-    name = 'MaterialFolderFirebaseOpen',
-  },
-  ['folder-firestore'] = {
-    icon = '\u{F1AA7}',
-    color = '#2196F3',
-    name = 'MaterialFolderFirestore',
-  },
-  ['folder-firestore-open'] = {
-    icon = '\u{F1AA8}',
-    color = '#2196F3',
-    name = 'MaterialFolderFirestoreOpen',
-  },
-  ['folder-flow'] = {
-    icon = '\u{F1117}',
-    color = '#546E7A',
-    name = 'MaterialFolderFlow',
-  },
-  ['folder-flow-open'] = {
-    icon = '\u{F0050}',
-    color = '#546E7A',
-    name = 'MaterialFolderFlowOpen',
-  },
-  ['folder-flutter'] = {
-    icon = '\u{E7DD}',
-    color = '#03A9F4',
-    name = 'MaterialFolderFlutter',
-  },
-  ['folder-flutter-open'] = {
-    icon = '\u{F0051}',
-    color = '#03A9F4',
-    name = 'MaterialFolderFlutterOpen',
-  },
-  ['folder-font'] = {
-    icon = '\u{F0AF}',
-    color = '#FF5252',
-    name = 'MaterialFolderFont',
-  },
-  ['folder-font-open'] = {
-    icon = '\u{F2B4}',
-    color = '#FF5252',
-    name = 'MaterialFolderFontOpen',
-  },
-  ['folder-forgejo'] = {
-    icon = '\u{E910}',
-    color = '#757575',
-    name = 'MaterialFolderForgejo',
-  },
-  ['folder-forgejo-open'] = {
-    icon = '\u{F335}',
-    color = '#757575',
-    name = 'MaterialFolderForgejoOpen',
-  },
-  ['folder-form'] = {
-    icon = '\u{F060E}',
-    color = '#9C27B0',
-    name = 'MaterialFolderForm',
-  },
-  ['folder-form-open'] = {
-    icon = '\u{F07F5}',
-    color = '#9C27B0',
-    name = 'MaterialFolderFormOpen',
-  },
-  ['folder-functions'] = {
-    icon = '\u{E6AD}',
-    color = '#0288D1',
-    name = 'MaterialFolderFunctions',
-  },
-  ['folder-functions-open'] = {
-    icon = '\u{EA80}',
-    color = '#0288D1',
-    name = 'MaterialFolderFunctionsOpen',
-  },
-  ['folder-gamemaker'] = {
-    icon = '\u{F0B0E}',
-    color = '#26A69A',
-    name = 'MaterialFolderGamemaker',
-  },
-  ['folder-gamemaker-open'] = {
-    icon = '\u{F0BFD}',
-    color = '#26A69A',
-    name = 'MaterialFolderGamemakerOpen',
-  },
-  ['folder-gemini-ai'] = {
-    icon = '\u{F0A81}',
-    color = '#42A5F5',
-    name = 'MaterialFolderGeminiAi',
-  },
-  ['folder-gemini-ai-open'] = {
-    icon = '\u{F0AF4}',
-    color = '#42A5F5',
-    name = 'MaterialFolderGeminiAiOpen',
-  },
-  ['folder-generator'] = {
-    icon = '\u{F0ABA}',
-    color = '#EF5350',
-    name = 'MaterialFolderGenerator',
-  },
-  ['folder-generator-open'] = {
-    icon = '\u{F0ABB}',
-    color = '#EF5350',
-    name = 'MaterialFolderGeneratorOpen',
-  },
-  ['folder-gh-workflows'] = {
-    icon = '\u{F0052}',
-    color = '#546E7A',
-    name = 'MaterialFolderGhWorkflows',
-  },
-  ['folder-gh-workflows-open'] = {
-    icon = '\u{F0053}',
-    color = '#546E7A',
-    name = 'MaterialFolderGhWorkflowsOpen',
-  },
-  ['folder-git'] = {
-    icon = '\u{E65D}',
-    color = '#FF7043',
-    name = 'MaterialFolderGit',
-  },
-  ['folder-git-open'] = {
-    icon = '\u{E726}',
-    color = '#FF7043',
-    name = 'MaterialFolderGitOpen',
-  },
-  ['folder-gitea'] = {
-    icon = '\u{F0056}',
-    color = '#689F38',
-    name = 'MaterialFolderGitea',
-  },
-  ['folder-gitea-open'] = {
-    icon = '\u{F0057}',
-    color = '#689F38',
-    name = 'MaterialFolderGiteaOpen',
-  },
-  ['folder-gitea-workflows-open.clone'] = {
-    icon = '\u{F0058}',
-    color = '#689F38',
-    name = 'MaterialFolderGiteaWorkflowsOpenClone',
-  },
-  ['folder-gitea-workflows.clone'] = {
-    icon = '\u{F0059}',
-    color = '#689F38',
-    name = 'MaterialFolderGiteaWorkflowsClone',
-  },
-  ['folder-github'] = {
-    icon = '\u{E65B}',
-    color = '#546E7A',
-    name = 'MaterialFolderGithub',
-  },
-  ['folder-github-open'] = {
-    icon = '\u{E717}',
-    color = '#546E7A',
-    name = 'MaterialFolderGithubOpen',
-  },
-  ['folder-gitlab'] = {
-    icon = '\u{E65C}',
-    color = '#757575',
-    name = 'MaterialFolderGitlab',
-  },
-  ['folder-gitlab-open'] = {
-    icon = '\u{E7EB}',
-    color = '#757575',
-    name = 'MaterialFolderGitlabOpen',
-  },
-  ['folder-global'] = {
-    icon = '\u{F005A}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderGlobal',
-  },
-  ['folder-global-open'] = {
-    icon = '\u{F005B}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderGlobalOpen',
-  },
-  ['folder-go'] = {
-    icon = '\u{E724}',
-    color = '#00ACC1',
-    name = 'MaterialFolderGo',
-  },
-  ['folder-go-open'] = {
-    icon = '\u{EC0B}',
-    color = '#00ACC1',
-    name = 'MaterialFolderGoOpen',
-  },
-  ['folder-godot'] = {
-    icon = '\u{E7EE}',
-    color = '#42A5F5',
-    name = 'MaterialFolderGodot',
-  },
-  ['folder-godot-open'] = {
-    icon = '\u{F0BFE}',
-    color = '#42A5F5',
-    name = 'MaterialFolderGodotOpen',
-  },
-  ['folder-gradle'] = {
-    icon = '\u{E7F2}',
-    color = '#0097A7',
-    name = 'MaterialFolderGradle',
-  },
-  ['folder-gradle-open'] = {
-    icon = '\u{F005C}',
-    color = '#0097A7',
-    name = 'MaterialFolderGradleOpen',
-  },
-  ['folder-graphql'] = {
-    icon = '\u{E662}',
-    color = '#EC407A',
-    name = 'MaterialFolderGraphql',
-  },
-  ['folder-graphql-open'] = {
-    icon = '\u{E7F4}',
-    color = '#EC407A',
-    name = 'MaterialFolderGraphqlOpen',
-  },
-  ['folder-guard'] = {
-    icon = '\u{F0BFF}',
-    color = '#43A047',
-    name = 'MaterialFolderGuard',
-  },
-  ['folder-guard-open'] = {
-    icon = '\u{F000A}',
-    color = '#43A047',
-    name = 'MaterialFolderGuardOpen',
-  },
-  ['folder-gulp'] = {
-    icon = '\u{E763}',
-    color = '#FF5252',
-    name = 'MaterialFolderGulp',
-  },
-  ['folder-gulp-open'] = {
-    icon = '\u{F2E4}',
-    color = '#FF5252',
-    name = 'MaterialFolderGulpOpen',
-  },
-  ['folder-helm'] = {
-    icon = '\u{E7FB}',
-    color = '#00ACC1',
-    name = 'MaterialFolderHelm',
-  },
-  ['folder-helm-open'] = {
-    icon = '\u{F0AF5}',
-    color = '#00ACC1',
-    name = 'MaterialFolderHelmOpen',
-  },
-  ['folder-helper'] = {
-    icon = '\u{F2E6}',
-    color = '#AFB42B',
-    name = 'MaterialFolderHelper',
-  },
-  ['folder-helper-open'] = {
-    icon = '\u{F00AD}',
-    color = '#AFB42B',
-    name = 'MaterialFolderHelperOpen',
-  },
-  ['folder-home'] = {
-    icon = '\u{EB06}',
-    color = '#FF5252',
-    name = 'MaterialFolderHome',
-  },
-  ['folder-home-open'] = {
-    icon = '\u{F46D}',
-    color = '#FF5252',
-    name = 'MaterialFolderHomeOpen',
-  },
-  ['folder-hook'] = {
-    icon = '\u{F06E3}',
-    color = '#7E57C2',
-    name = 'MaterialFolderHook',
-  },
-  ['folder-hook-open'] = {
-    icon = '\u{F0B0F}',
-    color = '#7E57C2',
-    name = 'MaterialFolderHookOpen',
-  },
-  ['folder-husky'] = {
-    icon = '\u{F0C00}',
-    color = '#607D8B',
-    name = 'MaterialFolderHusky',
-  },
-  ['folder-husky-open'] = {
-    icon = '\u{F0C01}',
-    color = '#607D8B',
-    name = 'MaterialFolderHuskyOpen',
-  },
-  ['folder-i18n'] = {
-    icon = '\u{EAF6}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderI18n',
-  },
-  ['folder-i18n-open'] = {
-    icon = '\u{EB45}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderI18nOpen',
-  },
-  ['folder-images'] = {
-    icon = '\u{F00F}',
-    color = '#009688',
-    name = 'MaterialFolderImages',
-  },
-  ['folder-images-open'] = {
-    icon = '\u{E5FA}',
-    color = '#009688',
-    name = 'MaterialFolderImagesOpen',
-  },
-  ['folder-import'] = {
-    icon = '\u{F058B}',
-    color = '#AFB42B',
-    name = 'MaterialFolderImport',
-  },
-  ['folder-import-open'] = {
-    icon = '\u{F0896}',
-    color = '#AFB42B',
-    name = 'MaterialFolderImportOpen',
-  },
-  ['folder-include'] = {
-    icon = '\u{F0FB6}',
-    color = '#039BE5',
-    name = 'MaterialFolderInclude',
-  },
-  ['folder-include-open'] = {
-    icon = '\u{F0FB7}',
-    color = '#039BE5',
-    name = 'MaterialFolderIncludeOpen',
-  },
-  ['folder-input'] = {
-    icon = '\u{F083F}',
-    color = '#00ACC1',
-    name = 'MaterialFolderInput',
-  },
-  ['folder-input-open'] = {
-    icon = '\u{F0840}',
-    color = '#00ACC1',
-    name = 'MaterialFolderInputOpen',
-  },
-  ['folder-instructions-open.clone'] = {
-    icon = '\u{F0AF6}',
-    color = '#00B8D4',
-    name = 'MaterialFolderInstructionsOpenClone',
-  },
-  ['folder-instructions.clone'] = {
-    icon = '\u{F0B10}',
-    color = '#00B8D4',
-    name = 'MaterialFolderInstructionsClone',
-  },
-  ['folder-intellij'] = {
-    icon = '\u{E7B5}',
-    color = '#546E7A',
-    name = 'MaterialFolderIntellij',
-  },
-  ['folder-intellij-open'] = {
-    icon = '\u{F005D}',
-    color = '#546E7A',
-    name = 'MaterialFolderIntellijOpen',
-  },
-  ['folder-intellij-open_light'] = {
-    icon = '\u{F0105}',
-    color = '#B0BEC5',
-    name = 'MaterialFolderIntellijOpenLight',
-  },
-  ['folder-intellij_light'] = {
-    icon = '\u{F0106}',
-    color = '#B0BEC5',
-    name = 'MaterialFolderIntellijLight',
-  },
-  ['folder-interceptor'] = {
-    icon = '\u{F0C03}',
-    color = '#FF9800',
-    name = 'MaterialFolderInterceptor',
-  },
-  ['folder-interceptor-open'] = {
-    icon = '\u{F0C04}',
-    color = '#FF9800',
-    name = 'MaterialFolderInterceptorOpen',
-  },
-  ['folder-interface'] = {
-    icon = '\u{EB61}',
-    color = '#1976D2',
-    name = 'MaterialFolderInterface',
-  },
-  ['folder-interface-open'] = {
-    icon = '\u{F0C05}',
-    color = '#1976D2',
-    name = 'MaterialFolderInterfaceOpen',
-  },
-  ['folder-ios'] = {
-    icon = '\u{F005E}',
-    color = '#78909C',
-    name = 'MaterialFolderIos',
-  },
-  ['folder-ios-open'] = {
-    icon = '\u{F005F}',
-    color = '#78909C',
-    name = 'MaterialFolderIosOpen',
-  },
-  ['folder-java'] = {
-    icon = '\u{E66D}',
-    color = '#EF5350',
-    name = 'MaterialFolderJava',
-  },
-  ['folder-java-open'] = {
-    icon = '\u{EDAF}',
-    color = '#EF5350',
-    name = 'MaterialFolderJavaOpen',
-  },
-  ['folder-javascript'] = {
-    icon = '\u{E781}',
-    color = '#FFCA28',
-    name = 'MaterialFolderJavascript',
-  },
-  ['folder-javascript-open'] = {
-    icon = '\u{F10E9}',
-    color = '#FFCA28',
-    name = 'MaterialFolderJavascriptOpen',
-  },
-  ['folder-jinja'] = {
-    icon = '\u{F0AF7}',
-    color = '#E0E0E0',
-    name = 'MaterialFolderJinja',
-  },
-  ['folder-jinja-open'] = {
-    icon = '\u{F0B11}',
-    color = '#E0E0E0',
-    name = 'MaterialFolderJinjaOpen',
-  },
-  ['folder-jinja-open_light'] = {
-    icon = '\u{F0107}',
-    color = '#616161',
-    name = 'MaterialFolderJinjaOpenLight',
-  },
-  ['folder-jinja_light'] = {
-    icon = '\u{F0108}',
-    color = '#616161',
-    name = 'MaterialFolderJinjaLight',
-  },
-  ['folder-job'] = {
-    icon = '\u{F0C06}',
-    color = '#FFA000',
-    name = 'MaterialFolderJob',
-  },
-  ['folder-job-open'] = {
-    icon = '\u{F0C07}',
-    color = '#FFA000',
-    name = 'MaterialFolderJobOpen',
-  },
-  ['folder-json'] = {
-    icon = '\u{E80B}',
-    color = '#F9A825',
-    name = 'MaterialFolderJson',
-  },
-  ['folder-json-open'] = {
-    icon = '\u{EB0F}',
-    color = '#F9A825',
-    name = 'MaterialFolderJsonOpen',
-  },
-  ['folder-jupyter'] = {
-    icon = '\u{F147E}',
-    color = '#FF9800',
-    name = 'MaterialFolderJupyter',
-  },
-  ['folder-jupyter-open'] = {
-    icon = '\u{F147F}',
-    color = '#FF9800',
-    name = 'MaterialFolderJupyterOpen',
-  },
-  ['folder-keys'] = {
-    icon = '\u{EA65}',
-    color = '#26A69A',
-    name = 'MaterialFolderKeys',
-  },
-  ['folder-keys-open'] = {
-    icon = '\u{F0B9C}',
-    color = '#26A69A',
-    name = 'MaterialFolderKeysOpen',
-  },
-  ['folder-kotlin'] = {
-    icon = '\u{E81B}',
-    color = '#9C27B0',
-    name = 'MaterialFolderKotlin',
-  },
-  ['folder-kotlin-open'] = {
-    icon = '\u{F1219}',
-    color = '#9C27B0',
-    name = 'MaterialFolderKotlinOpen',
-  },
-  ['folder-kubernetes'] = {
-    icon = '\u{F0AF8}',
-    color = '#448AFF',
-    name = 'MaterialFolderKubernetes',
-  },
-  ['folder-kubernetes-open'] = {
-    icon = '\u{F0C09}',
-    color = '#448AFF',
-    name = 'MaterialFolderKubernetesOpen',
-  },
-  ['folder-kusto'] = {
-    icon = '\u{F0C0A}',
-    color = '#1E88E5',
-    name = 'MaterialFolderKusto',
-  },
-  ['folder-kusto-open'] = {
-    icon = '\u{F0C0B}',
-    color = '#1E88E5',
-    name = 'MaterialFolderKustoOpen',
-  },
-  ['folder-layout'] = {
-    icon = '\u{EAE3}',
-    color = '#039BE5',
-    name = 'MaterialFolderLayout',
-  },
-  ['folder-layout-open'] = {
-    icon = '\u{EBEB}',
-    color = '#039BE5',
-    name = 'MaterialFolderLayoutOpen',
-  },
-  ['folder-lefthook'] = {
-    icon = '\u{F0C0C}',
-    color = '#607D8B',
-    name = 'MaterialFolderLefthook',
-  },
-  ['folder-lefthook-open'] = {
-    icon = '\u{F0C0D}',
-    color = '#607D8B',
-    name = 'MaterialFolderLefthookOpen',
-  },
-  ['folder-less'] = {
-    icon = '\u{E758}',
-    color = '#0277BD',
-    name = 'MaterialFolderLess',
-  },
-  ['folder-less-open'] = {
-    icon = '\u{EFC3}',
-    color = '#0277BD',
-    name = 'MaterialFolderLessOpen',
-  },
-  ['folder-lib'] = {
-    icon = '\u{EEC6}',
-    color = '#C0CA33',
-    name = 'MaterialFolderLib',
-  },
-  ['folder-lib-open'] = {
-    icon = '\u{EEC7}',
-    color = '#C0CA33',
-    name = 'MaterialFolderLibOpen',
-  },
-  ['folder-license'] = {
-    icon = '\u{F0FC3}',
-    color = '#FF5722',
-    name = 'MaterialFolderLicense',
-  },
-  ['folder-license-open'] = {
-    icon = '\u{F0C0E}',
-    color = '#FF5722',
-    name = 'MaterialFolderLicenseOpen',
-  },
-  ['folder-link'] = {
-    icon = '\u{EB14}',
-    color = '#7E57C2',
-    name = 'MaterialFolderLink',
-  },
-  ['folder-link-open'] = {
-    icon = '\u{EB15}',
-    color = '#7E57C2',
-    name = 'MaterialFolderLinkOpen',
-  },
-  ['folder-linux'] = {
-    icon = '\u{E712}',
-    color = '#F9A825',
-    name = 'MaterialFolderLinux',
-  },
-  ['folder-linux-open'] = {
-    icon = '\u{F033D}',
-    color = '#F9A825',
-    name = 'MaterialFolderLinuxOpen',
-  },
-  ['folder-liquibase'] = {
-    icon = '\u{F0060}',
-    color = '#F44336',
-    name = 'MaterialFolderLiquibase',
-  },
-  ['folder-liquibase-open'] = {
-    icon = '\u{F0061}',
-    color = '#F44336',
-    name = 'MaterialFolderLiquibaseOpen',
-  },
-  ['folder-log'] = {
-    icon = '\u{EAAA}',
-    color = '#AFB42B',
-    name = 'MaterialFolderLog',
-  },
-  ['folder-log-open'] = {
-    icon = '\u{F4ED}',
-    color = '#AFB42B',
-    name = 'MaterialFolderLogOpen',
-  },
-  ['folder-lottie'] = {
-    icon = '\u{F0AF9}',
-    color = '#00BFA5',
-    name = 'MaterialFolderLottie',
-  },
-  ['folder-lottie-open'] = {
-    icon = '\u{F0B13}',
-    color = '#00BFA5',
-    name = 'MaterialFolderLottieOpen',
-  },
-  ['folder-lua'] = {
-    icon = '\u{E826}',
-    color = '#42A5F5',
-    name = 'MaterialFolderLua',
-  },
-  ['folder-lua-open'] = {
-    icon = '\u{F0062}',
-    color = '#42A5F5',
-    name = 'MaterialFolderLuaOpen',
-  },
-  ['folder-luau'] = {
-    icon = '\u{F0063}',
-    color = '#42A5F5',
-    name = 'MaterialFolderLuau',
-  },
-  ['folder-luau-open'] = {
-    icon = '\u{F0064}',
-    color = '#42A5F5',
-    name = 'MaterialFolderLuauOpen',
-  },
-  ['folder-macos'] = {
-    icon = '\u{F024E}',
-    color = '#546E7A',
-    name = 'MaterialFolderMacos',
-  },
-  ['folder-macos-open'] = {
-    icon = '\u{F024F}',
-    color = '#546E7A',
-    name = 'MaterialFolderMacosOpen',
-  },
-  ['folder-mail'] = {
-    icon = '\u{EB1B}',
-    color = '#FF5252',
-    name = 'MaterialFolderMail',
-  },
-  ['folder-mail-open'] = {
-    icon = '\u{EB1C}',
-    color = '#FF5252',
-    name = 'MaterialFolderMailOpen',
-  },
-  ['folder-mappings'] = {
-    icon = '\u{F0C0F}',
-    color = '#AFB42B',
-    name = 'MaterialFolderMappings',
-  },
-  ['folder-mappings-open'] = {
-    icon = '\u{F0C10}',
-    color = '#AFB42B',
-    name = 'MaterialFolderMappingsOpen',
-  },
-  ['folder-markdown'] = {
-    icon = '\u{E73E}',
-    color = '#0277BD',
-    name = 'MaterialFolderMarkdown',
-  },
-  ['folder-markdown-open'] = {
-    icon = '\u{EEAB}',
-    color = '#0277BD',
-    name = 'MaterialFolderMarkdownOpen',
-  },
-  ['folder-mercurial'] = {
-    icon = '\u{F0AFA}',
-    color = '#78909C',
-    name = 'MaterialFolderMercurial',
-  },
-  ['folder-mercurial-open'] = {
-    icon = '\u{F0B14}',
-    color = '#78909C',
-    name = 'MaterialFolderMercurialOpen',
-  },
-  ['folder-messages'] = {
-    icon = '\u{F0255}',
-    color = '#FF9800',
-    name = 'MaterialFolderMessages',
-  },
-  ['folder-messages-open'] = {
-    icon = '\u{F0257}',
-    color = '#FF9800',
-    name = 'MaterialFolderMessagesOpen',
-  },
-  ['folder-meta'] = {
-    icon = '\u{F0C11}',
-    color = '#7CB342',
-    name = 'MaterialFolderMeta',
-  },
-  ['folder-meta-open'] = {
-    icon = '\u{F000B}',
-    color = '#7CB342',
-    name = 'MaterialFolderMetaOpen',
-  },
-  ['folder-metro'] = {
-    icon = '\u{F0065}',
-    color = '#EF5350',
-    name = 'MaterialFolderMetro',
-  },
-  ['folder-metro-open'] = {
-    icon = '\u{F0067}',
-    color = '#EF5350',
-    name = 'MaterialFolderMetroOpen',
-  },
-  ['folder-middleware'] = {
-    icon = '\u{F0F5D}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderMiddleware',
-  },
-  ['folder-middleware-open'] = {
-    icon = '\u{F0F5E}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderMiddlewareOpen',
-  },
-  ['folder-migrations'] = {
-    icon = '\u{F000C}',
-    color = '#EC407A',
-    name = 'MaterialFolderMigrations',
-  },
-  ['folder-migrations-open'] = {
-    icon = '\u{F000D}',
-    color = '#EC407A',
-    name = 'MaterialFolderMigrationsOpen',
-  },
-  ['folder-mjml'] = {
-    icon = '\u{F006B}',
-    color = '#FF5722',
-    name = 'MaterialFolderMjml',
-  },
-  ['folder-mjml-open'] = {
-    icon = '\u{F006C}',
-    color = '#FF5722',
-    name = 'MaterialFolderMjmlOpen',
-  },
-  ['folder-mobile'] = {
-    icon = '\u{EADB}',
-    color = '#FF5252',
-    name = 'MaterialFolderMobile',
-  },
-  ['folder-mobile-open'] = {
-    icon = '\u{ED07}',
-    color = '#FF5252',
-    name = 'MaterialFolderMobileOpen',
-  },
-  ['folder-mock'] = {
-    icon = '\u{F0258}',
-    color = '#8D6E63',
-    name = 'MaterialFolderMock',
-  },
-  ['folder-mock-open'] = {
-    icon = '\u{F0259}',
-    color = '#8D6E63',
-    name = 'MaterialFolderMockOpen',
-  },
-  ['folder-mojo'] = {
-    icon = '\u{F006D}',
-    color = '#FF7043',
-    name = 'MaterialFolderMojo',
-  },
-  ['folder-mojo-open'] = {
-    icon = '\u{F0070}',
-    color = '#FF7043',
-    name = 'MaterialFolderMojoOpen',
-  },
-  ['folder-molecule'] = {
-    icon = '\u{E225}',
-    color = '#FF9800',
-    name = 'MaterialFolderMolecule',
-  },
-  ['folder-molecule-open'] = {
-    icon = '\u{F07E4}',
-    color = '#FF9800',
-    name = 'MaterialFolderMoleculeOpen',
-  },
-  ['folder-moon'] = {
-    icon = '\u{E38E}',
-    color = '#7E57C2',
-    name = 'MaterialFolderMoon',
-  },
-  ['folder-moon-open'] = {
-    icon = '\u{E38F}',
-    color = '#7E57C2',
-    name = 'MaterialFolderMoonOpen',
-  },
-  ['folder-netlify'] = {
-    icon = '\u{F0B15}',
-    color = '#26A69A',
-    name = 'MaterialFolderNetlify',
-  },
-  ['folder-netlify-open'] = {
-    icon = '\u{F0C12}',
-    color = '#26A69A',
-    name = 'MaterialFolderNetlifyOpen',
-  },
-  ['folder-next'] = {
-    icon = '\u{F0661}',
-    color = '#546E7A',
-    name = 'MaterialFolderNext',
-  },
-  ['folder-next-open'] = {
-    icon = '\u{F0662}',
-    color = '#546E7A',
-    name = 'MaterialFolderNextOpen',
-  },
-  ['folder-nginx'] = {
-    icon = '\u{F0C13}',
-    color = '#388E3C',
-    name = 'MaterialFolderNginx',
-  },
-  ['folder-nginx-open'] = {
-    icon = '\u{F0C14}',
-    color = '#388E3C',
-    name = 'MaterialFolderNginxOpen',
-  },
-  ['folder-ngrx-actions-open.clone'] = {
-    icon = '\u{E83F}',
-    color = '#AB47BC',
-    name = 'MaterialFolderNgrxActionsOpenClone',
-  },
-  ['folder-ngrx-actions.clone'] = {
-    icon = '\u{F0109}',
-    color = '#AB47BC',
-    name = 'MaterialFolderNgrxActionsClone',
-  },
-  ['folder-ngrx-effects-open.clone'] = {
-    icon = '\u{F010B}',
-    color = '#00BCD4',
-    name = 'MaterialFolderNgrxEffectsOpenClone',
-  },
-  ['folder-ngrx-effects.clone'] = {
-    icon = '\u{F010C}',
-    color = '#00BCD4',
-    name = 'MaterialFolderNgrxEffectsClone',
-  },
-  ['folder-ngrx-entities-open.clone'] = {
-    icon = '\u{F010D}',
-    color = '#FBC02D',
-    name = 'MaterialFolderNgrxEntitiesOpenClone',
-  },
-  ['folder-ngrx-entities.clone'] = {
-    icon = '\u{F010E}',
-    color = '#FBC02D',
-    name = 'MaterialFolderNgrxEntitiesClone',
-  },
-  ['folder-ngrx-reducer-open.clone'] = {
-    icon = '\u{F010F}',
-    color = '#EF5350',
-    name = 'MaterialFolderNgrxReducerOpenClone',
-  },
-  ['folder-ngrx-reducer.clone'] = {
-    icon = '\u{F0110}',
-    color = '#EF5350',
-    name = 'MaterialFolderNgrxReducerClone',
-  },
-  ['folder-ngrx-selectors-open.clone'] = {
-    icon = '\u{F0111}',
-    color = '#FF6E40',
-    name = 'MaterialFolderNgrxSelectorsOpenClone',
-  },
-  ['folder-ngrx-selectors.clone'] = {
-    icon = '\u{F0112}',
-    color = '#FF6E40',
-    name = 'MaterialFolderNgrxSelectorsClone',
-  },
-  ['folder-ngrx-state-open.clone'] = {
-    icon = '\u{F11EF}',
-    color = '#9E9D24',
-    name = 'MaterialFolderNgrxStateOpenClone',
-  },
-  ['folder-ngrx-state.clone'] = {
-    icon = '\u{F0113}',
-    color = '#9E9D24',
-    name = 'MaterialFolderNgrxStateClone',
-  },
-  ['folder-ngrx-store'] = {
-    icon = '\u{EE17}',
-    color = '#8BC34A',
-    name = 'MaterialFolderNgrxStore',
-  },
-  ['folder-ngrx-store-open'] = {
-    icon = '\u{F04DC}',
-    color = '#8BC34A',
-    name = 'MaterialFolderNgrxStoreOpen',
-  },
-  ['folder-node'] = {
-    icon = '\u{ED44}',
-    color = '#8BC34A',
-    name = 'MaterialFolderNode',
-  },
-  ['folder-node-open'] = {
-    icon = '\u{F0AFB}',
-    color = '#8BC34A',
-    name = 'MaterialFolderNodeOpen',
-  },
-  ['folder-nuxt'] = {
-    icon = '\u{E931}',
-    color = '#546E7A',
-    name = 'MaterialFolderNuxt',
-  },
-  ['folder-nuxt-open'] = {
-    icon = '\u{F0071}',
-    color = '#546E7A',
-    name = 'MaterialFolderNuxtOpen',
-  },
-  ['folder-obsidian'] = {
-    icon = '\u{E6BB}',
-    color = '#673AB7',
-    name = 'MaterialFolderObsidian',
-  },
-  ['folder-obsidian-open'] = {
-    icon = '\u{F0C15}',
-    color = '#673AB7',
-    name = 'MaterialFolderObsidianOpen',
-  },
-  ['folder-open'] = {
-    icon = '\u{F0114}',
-    color = '#90A4AE',
-    name = 'MaterialFolderOpen',
-  },
-  ['folder-opencode'] = {
-    icon = '\u{F0C16}',
-    color = '#607D8B',
-    name = 'MaterialFolderOpencode',
-  },
-  ['folder-opencode-open'] = {
-    icon = '\u{F0C17}',
-    color = '#607D8B',
-    name = 'MaterialFolderOpencodeOpen',
-  },
-  ['folder-organism'] = {
-    icon = '\u{F0AFC}',
-    color = '#009688',
-    name = 'MaterialFolderOrganism',
-  },
-  ['folder-organism-open'] = {
-    icon = '\u{F0B16}',
-    color = '#009688',
-    name = 'MaterialFolderOrganismOpen',
-  },
-  ['folder-other'] = {
-    icon = '\u{F0B9D}',
-    color = '#FF7043',
-    name = 'MaterialFolderOther',
-  },
-  ['folder-other-open'] = {
-    icon = '\u{F0B9E}',
-    color = '#FF7043',
-    name = 'MaterialFolderOtherOpen',
-  },
-  ['folder-packages'] = {
-    icon = '\u{F0B9F}',
-    color = '#1E88E5',
-    name = 'MaterialFolderPackages',
-  },
-  ['folder-packages-open'] = {
-    icon = '\u{F0C80}',
-    color = '#1E88E5',
-    name = 'MaterialFolderPackagesOpen',
-  },
-  ['folder-pdf'] = {
-    icon = '\u{E67D}',
-    color = '#EF5350',
-    name = 'MaterialFolderPdf',
-  },
-  ['folder-pdf-open'] = {
-    icon = '\u{F0AFD}',
-    color = '#EF5350',
-    name = 'MaterialFolderPdfOpen',
-  },
-  ['folder-pdm'] = {
-    icon = '\u{F0B17}',
-    color = '#9575CD',
-    name = 'MaterialFolderPdm',
-  },
-  ['folder-pdm-open'] = {
-    icon = '\u{F0C18}',
-    color = '#9575CD',
-    name = 'MaterialFolderPdmOpen',
-  },
-  ['folder-php'] = {
-    icon = '\u{ED6D}',
-    color = '#1E88E5',
-    name = 'MaterialFolderPhp',
-  },
-  ['folder-php-open'] = {
-    icon = '\u{F09E6}',
-    color = '#1E88E5',
-    name = 'MaterialFolderPhpOpen',
-  },
-  ['folder-phpmailer'] = {
-    icon = '\u{F0072}',
-    color = '#616161',
-    name = 'MaterialFolderPhpmailer',
-  },
-  ['folder-phpmailer-open'] = {
-    icon = '\u{F0073}',
-    color = '#616161',
-    name = 'MaterialFolderPhpmailerOpen',
-  },
-  ['folder-pipe'] = {
-    icon = '\u{F07E5}',
-    color = '#00897B',
-    name = 'MaterialFolderPipe',
-  },
-  ['folder-pipe-open'] = {
-    icon = '\u{F07E6}',
-    color = '#00897B',
-    name = 'MaterialFolderPipeOpen',
-  },
-  ['folder-plastic'] = {
-    icon = '\u{F0074}',
-    color = '#FF9800',
-    name = 'MaterialFolderPlastic',
-  },
-  ['folder-plastic-open'] = {
-    icon = '\u{F0075}',
-    color = '#FF9800',
-    name = 'MaterialFolderPlasticOpen',
-  },
-  ['folder-plugin'] = {
-    icon = '\u{EB46}',
-    color = '#0288D1',
-    name = 'MaterialFolderPlugin',
-  },
-  ['folder-plugin-open'] = {
-    icon = '\u{EBDF}',
-    color = '#0288D1',
-    name = 'MaterialFolderPluginOpen',
-  },
-  ['folder-policy'] = {
-    icon = '\u{F0C19}',
-    color = '#0288D1',
-    name = 'MaterialFolderPolicy',
-  },
-  ['folder-policy-open'] = {
-    icon = '\u{F0C1A}',
-    color = '#0288D1',
-    name = 'MaterialFolderPolicyOpen',
-  },
-  ['folder-postman'] = {
-    icon = '\u{E86B}',
-    color = '#FF6E40',
-    name = 'MaterialFolderPostman',
-  },
-  ['folder-postman-open'] = {
-    icon = '\u{F0076}',
-    color = '#FF6E40',
-    name = 'MaterialFolderPostmanOpen',
-  },
-  ['folder-powershell'] = {
-    icon = '\u{E683}',
-    color = '#03A9F4',
-    name = 'MaterialFolderPowershell',
-  },
-  ['folder-powershell-open'] = {
-    icon = '\u{E86C}',
-    color = '#03A9F4',
-    name = 'MaterialFolderPowershellOpen',
-  },
-  ['folder-prisma'] = {
-    icon = '\u{E86E}',
-    color = '#00BFA5',
-    name = 'MaterialFolderPrisma',
-  },
-  ['folder-prisma-open'] = {
-    icon = '\u{F000E}',
-    color = '#00BFA5',
-    name = 'MaterialFolderPrismaOpen',
-  },
-  ['folder-private'] = {
-    icon = '\u{F0077}',
-    color = '#FF5252',
-    name = 'MaterialFolderPrivate',
-  },
-  ['folder-private-open'] = {
-    icon = '\u{F0078}',
-    color = '#FF5252',
-    name = 'MaterialFolderPrivateOpen',
-  },
-  ['folder-project'] = {
-    icon = '\u{E601}',
-    color = '#1E88E5',
-    name = 'MaterialFolderProject',
-  },
-  ['folder-project-open'] = {
-    icon = '\u{EB30}',
-    color = '#1E88E5',
-    name = 'MaterialFolderProjectOpen',
-  },
-  ['folder-prompts'] = {
-    icon = '\u{F000F}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderPrompts',
-  },
-  ['folder-prompts-open'] = {
-    icon = '\u{F0010}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderPromptsOpen',
-  },
-  ['folder-proto'] = {
-    icon = '\u{F178A}',
-    color = '#FF7043',
-    name = 'MaterialFolderProto',
-  },
-  ['folder-proto-open'] = {
-    icon = '\u{F178B}',
-    color = '#FF7043',
-    name = 'MaterialFolderProtoOpen',
-  },
-  ['folder-public'] = {
-    icon = '\u{F0542}',
-    color = '#039BE5',
-    name = 'MaterialFolderPublic',
-  },
-  ['folder-public-open'] = {
-    icon = '\u{F069D}',
-    color = '#039BE5',
-    name = 'MaterialFolderPublicOpen',
-  },
-  ['folder-python'] = {
-    icon = '\u{EC39}',
-    color = '#42A5F5',
-    name = 'MaterialFolderPython',
-  },
-  ['folder-python-open'] = {
-    icon = '\u{F0320}',
-    color = '#42A5F5',
-    name = 'MaterialFolderPythonOpen',
-  },
-  ['folder-pytorch'] = {
-    icon = '\u{F0011}',
-    color = '#F4511E',
-    name = 'MaterialFolderPytorch',
-  },
-  ['folder-pytorch-open'] = {
-    icon = '\u{F0012}',
-    color = '#F4511E',
-    name = 'MaterialFolderPytorchOpen',
-  },
-  ['folder-quasar'] = {
-    icon = '\u{F0AFE}',
-    color = '#1976D2',
-    name = 'MaterialFolderQuasar',
-  },
-  ['folder-quasar-open'] = {
-    icon = '\u{F0B18}',
-    color = '#1976D2',
-    name = 'MaterialFolderQuasarOpen',
-  },
-  ['folder-queue'] = {
-    icon = '\u{F4DB}',
-    color = '#039BE5',
-    name = 'MaterialFolderQueue',
-  },
-  ['folder-queue-open'] = {
-    icon = '\u{F1571}',
-    color = '#039BE5',
-    name = 'MaterialFolderQueueOpen',
-  },
-  ['folder-r'] = {
-    icon = '\u{E881}',
-    color = '#1976D2',
-    name = 'MaterialFolderR',
-  },
-  ['folder-r-open'] = {
-    icon = '\u{EDC1}',
-    color = '#1976D2',
-    name = 'MaterialFolderROpen',
-  },
-  ['folder-react-components'] = {
-    icon = '\u{F0708}',
-    color = '#00BCD4',
-    name = 'MaterialFolderReactComponents',
-  },
-  ['folder-react-components-open'] = {
-    icon = '\u{F0115}',
-    color = '#00BCD4',
-    name = 'MaterialFolderReactComponentsOpen',
-  },
-  ['folder-redis-open.clone'] = {
-    icon = '\u{E76D}',
-    color = '#EF5350',
-    name = 'MaterialFolderRedisOpenClone',
-  },
-  ['folder-redis.clone'] = {
-    icon = '\u{F0AFF}',
-    color = '#EF5350',
-    name = 'MaterialFolderRedisClone',
-  },
-  ['folder-redux-actions-open.clone'] = {
-    icon = '\u{E88C}',
-    color = '#AB47BC',
-    name = 'MaterialFolderReduxActionsOpenClone',
-  },
-  ['folder-redux-actions.clone'] = {
-    icon = '\u{F0116}',
-    color = '#AB47BC',
-    name = 'MaterialFolderReduxActionsClone',
-  },
-  ['folder-redux-reducer'] = {
-    icon = '\u{F0117}',
-    color = '#EF5350',
-    name = 'MaterialFolderReduxReducer',
-  },
-  ['folder-redux-reducer-open'] = {
-    icon = '\u{F0118}',
-    color = '#EF5350',
-    name = 'MaterialFolderReduxReducerOpen',
-  },
-  ['folder-redux-selector-open.clone'] = {
-    icon = '\u{F0119}',
-    color = '#FF6E40',
-    name = 'MaterialFolderReduxSelectorOpenClone',
-  },
-  ['folder-redux-selector.clone'] = {
-    icon = '\u{F011A}',
-    color = '#FF6E40',
-    name = 'MaterialFolderReduxSelectorClone',
-  },
-  ['folder-redux-store-open.clone'] = {
-    icon = '\u{F04DD}',
-    color = '#8BC34A',
-    name = 'MaterialFolderReduxStoreOpenClone',
-  },
-  ['folder-redux-store.clone'] = {
-    icon = '\u{F1361}',
-    color = '#8BC34A',
-    name = 'MaterialFolderReduxStoreClone',
-  },
-  ['folder-redux-toolkit-open.clone'] = {
-    icon = '\u{F011C}',
-    color = '#BA68C8',
-    name = 'MaterialFolderReduxToolkitOpenClone',
-  },
-  ['folder-redux-toolkit.clone'] = {
-    icon = '\u{F011D}',
-    color = '#BA68C8',
-    name = 'MaterialFolderReduxToolkitClone',
-  },
-  ['folder-repository'] = {
-    icon = '\u{F0CCF}',
-    color = '#43A047',
-    name = 'MaterialFolderRepository',
-  },
-  ['folder-repository-open'] = {
-    icon = '\u{F0CD0}',
-    color = '#43A047',
-    name = 'MaterialFolderRepositoryOpen',
-  },
-  ['folder-resolver'] = {
-    icon = '\u{F0B19}',
-    color = '#43A047',
-    name = 'MaterialFolderResolver',
-  },
-  ['folder-resolver-open'] = {
-    icon = '\u{F0C1E}',
-    color = '#43A047',
-    name = 'MaterialFolderResolverOpen',
-  },
-  ['folder-resource'] = {
-    icon = '\u{F0749}',
-    color = '#FBC02D',
-    name = 'MaterialFolderResource',
-  },
-  ['folder-resource-open'] = {
-    icon = '\u{F07B9}',
-    color = '#FBC02D',
-    name = 'MaterialFolderResourceOpen',
-  },
-  ['folder-review'] = {
-    icon = '\u{EC37}',
-    color = '#2196F3',
-    name = 'MaterialFolderReview',
-  },
-  ['folder-review-open'] = {
-    icon = '\u{F0C81}',
-    color = '#2196F3',
-    name = 'MaterialFolderReviewOpen',
-  },
-  ['folder-robot'] = {
-    icon = '\u{EC20}',
-    color = '#FF5252',
-    name = 'MaterialFolderRobot',
-  },
-  ['folder-robot-open'] = {
-    icon = '\u{F070D}',
-    color = '#FF5252',
-    name = 'MaterialFolderRobotOpen',
-  },
-  ['folder-root'] = {
-    icon = '\u{EEE0}',
-    color = '#90A4AE',
-    name = 'MaterialFolderRoot',
-  },
-  ['folder-root-open'] = {
-    icon = '\u{F0784}',
-    color = '#90A4AE',
-    name = 'MaterialFolderRootOpen',
-  },
-  ['folder-routes'] = {
-    icon = '\u{F1059}',
-    color = '#43A047',
-    name = 'MaterialFolderRoutes',
-  },
-  ['folder-routes-open'] = {
-    icon = '\u{F107D}',
-    color = '#43A047',
-    name = 'MaterialFolderRoutesOpen',
-  },
-  ['folder-rules'] = {
-    icon = '\u{F107E}',
-    color = '#EF5350',
-    name = 'MaterialFolderRules',
-  },
-  ['folder-rules-open'] = {
-    icon = '\u{F107F}',
-    color = '#EF5350',
-    name = 'MaterialFolderRulesOpen',
-  },
-  ['folder-rust'] = {
-    icon = '\u{F1617}',
-    color = '#FF7043',
-    name = 'MaterialFolderRust',
-  },
-  ['folder-rust-open'] = {
-    icon = '\u{F0C1F}',
-    color = '#FF7043',
-    name = 'MaterialFolderRustOpen',
-  },
-  ['folder-salt'] = {
-    icon = '\u{F0C21}',
-    color = '#03A9F4',
-    name = 'MaterialFolderSalt',
-  },
-  ['folder-salt-open'] = {
-    icon = '\u{F0C22}',
-    color = '#03A9F4',
-    name = 'MaterialFolderSaltOpen',
-  },
-  ['folder-sandbox'] = {
-    icon = '\u{F179E}',
-    color = '#1E88E5',
-    name = 'MaterialFolderSandbox',
-  },
-  ['folder-sandbox-open'] = {
-    icon = '\u{F197E}',
-    color = '#1E88E5',
-    name = 'MaterialFolderSandboxOpen',
-  },
-  ['folder-sass'] = {
-    icon = '\u{E74B}',
-    color = '#F06292',
-    name = 'MaterialFolderSass',
-  },
-  ['folder-sass-open'] = {
-    icon = '\u{ED49}',
-    color = '#F06292',
-    name = 'MaterialFolderSassOpen',
-  },
-  ['folder-scala'] = {
-    icon = '\u{F0083}',
-    color = '#F44336',
-    name = 'MaterialFolderScala',
-  },
-  ['folder-scala-open'] = {
-    icon = '\u{F0084}',
-    color = '#F44336',
-    name = 'MaterialFolderScalaOpen',
-  },
-  ['folder-scons'] = {
-    icon = '\u{F0B00}',
-    color = '#EF5350',
-    name = 'MaterialFolderScons',
-  },
-  ['folder-scons-open'] = {
-    icon = '\u{F0B1A}',
-    color = '#EF5350',
-    name = 'MaterialFolderSconsOpen',
-  },
-  ['folder-scrap-open.clone'] = {
-    icon = '\u{F0085}',
-    color = '#616161',
-    name = 'MaterialFolderScrapOpenClone',
-  },
-  ['folder-scrap.clone'] = {
-    icon = '\u{F0086}',
-    color = '#616161',
-    name = 'MaterialFolderScrapClone',
-  },
-  ['folder-scripts'] = {
-    icon = '\u{F197F}',
-    color = '#546E7A',
-    name = 'MaterialFolderScripts',
-  },
-  ['folder-scripts-open'] = {
-    icon = '\u{F19CA}',
-    color = '#546E7A',
-    name = 'MaterialFolderScriptsOpen',
-  },
-  ['folder-secure'] = {
-    icon = '\u{EF81}',
-    color = '#F9A825',
-    name = 'MaterialFolderSecure',
-  },
-  ['folder-secure-open'] = {
-    icon = '\u{F07B}',
-    color = '#F9A825',
-    name = 'MaterialFolderSecureOpen',
-  },
-  ['folder-seeders'] = {
-    icon = '\u{F19CB}',
-    color = '#43A047',
-    name = 'MaterialFolderSeeders',
-  },
-  ['folder-seeders-open'] = {
-    icon = '\u{F19E8}',
-    color = '#43A047',
-    name = 'MaterialFolderSeedersOpen',
-  },
-  ['folder-server'] = {
-    icon = '\u{EB50}',
-    color = '#FBC02D',
-    name = 'MaterialFolderServer',
-  },
-  ['folder-server-open'] = {
-    icon = '\u{EBA3}',
-    color = '#FBC02D',
-    name = 'MaterialFolderServerOpen',
-  },
-  ['folder-serverless'] = {
-    icon = '\u{F0087}',
-    color = '#EF5350',
-    name = 'MaterialFolderServerless',
-  },
-  ['folder-serverless-open'] = {
-    icon = '\u{F0088}',
-    color = '#EF5350',
-    name = 'MaterialFolderServerlessOpen',
-  },
-  ['folder-shader'] = {
-    icon = '\u{F19E9}',
-    color = '#AB47BC',
-    name = 'MaterialFolderShader',
-  },
-  ['folder-shader-open'] = {
-    icon = '\u{F19EA}',
-    color = '#AB47BC',
-    name = 'MaterialFolderShaderOpen',
-  },
-  ['folder-shared'] = {
-    icon = '\u{F0C23}',
-    color = '#AB47BC',
-    name = 'MaterialFolderShared',
-  },
-  ['folder-shared-open'] = {
-    icon = '\u{F0013}',
-    color = '#AB47BC',
-    name = 'MaterialFolderSharedOpen',
-  },
-  ['folder-simulations'] = {
-    icon = '\u{F19EB}',
-    color = '#AB47BC',
-    name = 'MaterialFolderSimulations',
-  },
-  ['folder-simulations-open'] = {
-    icon = '\u{F19EC}',
-    color = '#AB47BC',
-    name = 'MaterialFolderSimulationsOpen',
-  },
-  ['folder-skills'] = {
-    icon = '\u{F0014}',
-    color = '#FF8F00',
-    name = 'MaterialFolderSkills',
-  },
-  ['folder-skills-open'] = {
-    icon = '\u{F0015}',
-    color = '#FF8F00',
-    name = 'MaterialFolderSkillsOpen',
-  },
-  ['folder-snapcraft'] = {
-    icon = '\u{F0016}',
-    color = '#66BB6A',
-    name = 'MaterialFolderSnapcraft',
-  },
-  ['folder-snapcraft-open'] = {
-    icon = '\u{F0017}',
-    color = '#66BB6A',
-    name = 'MaterialFolderSnapcraftOpen',
-  },
-  ['folder-snippet'] = {
-    icon = '\u{EB66}',
-    color = '#FF9800',
-    name = 'MaterialFolderSnippet',
-  },
-  ['folder-snippet-open'] = {
-    icon = '\u{F0018}',
-    color = '#FF9800',
-    name = 'MaterialFolderSnippetOpen',
-  },
-  ['folder-src'] = {
-    icon = '\u{F10EA}',
-    color = '#4CAF50',
-    name = 'MaterialFolderSrc',
-  },
-  ['folder-src-open'] = {
-    icon = '\u{F10EB}',
-    color = '#4CAF50',
-    name = 'MaterialFolderSrcOpen',
-  },
-  ['folder-src-tauri'] = {
-    icon = '\u{F0089}',
-    color = '#455A64',
-    name = 'MaterialFolderSrcTauri',
-  },
-  ['folder-src-tauri-open'] = {
-    icon = '\u{F008A}',
-    color = '#455A64',
-    name = 'MaterialFolderSrcTauriOpen',
-  },
-  ['folder-stack'] = {
-    icon = '\u{F16C}',
-    color = '#FFA726',
-    name = 'MaterialFolderStack',
-  },
-  ['folder-stack-open'] = {
-    icon = '\u{F18D}',
-    color = '#FFA726',
-    name = 'MaterialFolderStackOpen',
-  },
-  ['folder-stencil'] = {
-    icon = '\u{F008B}',
-    color = '#448AFF',
-    name = 'MaterialFolderStencil',
-  },
-  ['folder-stencil-open'] = {
-    icon = '\u{F008C}',
-    color = '#448AFF',
-    name = 'MaterialFolderStencilOpen',
-  },
-  ['folder-store'] = {
-    icon = '\u{F165E}',
-    color = '#FF7043',
-    name = 'MaterialFolderStore',
-  },
-  ['folder-store-open'] = {
-    icon = '\u{F165F}',
-    color = '#FF7043',
-    name = 'MaterialFolderStoreOpen',
-  },
-  ['folder-storybook'] = {
-    icon = '\u{F0019}',
-    color = '#FF4081',
-    name = 'MaterialFolderStorybook',
-  },
-  ['folder-storybook-open'] = {
-    icon = '\u{F001A}',
-    color = '#FF4081',
-    name = 'MaterialFolderStorybookOpen',
-  },
-  ['folder-stylus'] = {
-    icon = '\u{F008D}',
-    color = '#C0CA33',
-    name = 'MaterialFolderStylus',
-  },
-  ['folder-stylus-open'] = {
-    icon = '\u{F008F}',
-    color = '#C0CA33',
-    name = 'MaterialFolderStylusOpen',
-  },
-  ['folder-sublime'] = {
-    icon = '\u{F0090}',
-    color = '#616161',
-    name = 'MaterialFolderSublime',
-  },
-  ['folder-sublime-open'] = {
-    icon = '\u{F0091}',
-    color = '#616161',
-    name = 'MaterialFolderSublimeOpen',
-  },
-  ['folder-supabase'] = {
-    icon = '\u{F0092}',
-    color = '#66BB6A',
-    name = 'MaterialFolderSupabase',
-  },
-  ['folder-supabase-open'] = {
-    icon = '\u{F0093}',
-    color = '#66BB6A',
-    name = 'MaterialFolderSupabaseOpen',
-  },
-  ['folder-svelte'] = {
-    icon = '\u{E8B7}',
-    color = '#FF5722',
-    name = 'MaterialFolderSvelte',
-  },
-  ['folder-svelte-open'] = {
-    icon = '\u{F001B}',
-    color = '#FF5722',
-    name = 'MaterialFolderSvelteOpen',
-  },
-  ['folder-svg'] = {
-    icon = '\u{E698}',
-    color = '#FFB300',
-    name = 'MaterialFolderSvg',
-  },
-  ['folder-svg-open'] = {
-    icon = '\u{F19ED}',
-    color = '#FFB300',
-    name = 'MaterialFolderSvgOpen',
-  },
-  ['folder-syntax'] = {
-    icon = '\u{F19EE}',
-    color = '#EF5350',
-    name = 'MaterialFolderSyntax',
-  },
-  ['folder-syntax-open'] = {
-    icon = '\u{F19EF}',
-    color = '#EF5350',
-    name = 'MaterialFolderSyntaxOpen',
-  },
-  ['folder-target'] = {
-    icon = '\u{EBF8}',
-    color = '#546E7A',
-    name = 'MaterialFolderTarget',
-  },
-  ['folder-target-open'] = {
-    icon = '\u{F04FE}',
-    color = '#546E7A',
-    name = 'MaterialFolderTargetOpen',
-  },
-  ['folder-taskfile'] = {
-    icon = '\u{F0B01}',
-    color = '#4DB6AC',
-    name = 'MaterialFolderTaskfile',
-  },
-  ['folder-taskfile-open'] = {
-    icon = '\u{F0C24}',
-    color = '#4DB6AC',
-    name = 'MaterialFolderTaskfileOpen',
-  },
-  ['folder-tasks'] = {
-    icon = '\u{F0C25}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderTasks',
-  },
-  ['folder-tasks-open'] = {
-    icon = '\u{F0C26}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderTasksOpen',
-  },
-  ['folder-television'] = {
-    icon = '\u{F0502}',
-    color = '#FBC02D',
-    name = 'MaterialFolderTelevision',
-  },
-  ['folder-television-open'] = {
-    icon = '\u{F0503}',
-    color = '#FBC02D',
-    name = 'MaterialFolderTelevisionOpen',
-  },
-  ['folder-temp'] = {
-    icon = '\u{F19F0}',
-    color = '#0097A7',
-    name = 'MaterialFolderTemp',
-  },
-  ['folder-temp-open'] = {
-    icon = '\u{F19F1}',
-    color = '#0097A7',
-    name = 'MaterialFolderTempOpen',
-  },
-  ['folder-template'] = {
-    icon = '\u{EBBF}',
-    color = '#8D6E63',
-    name = 'MaterialFolderTemplate',
-  },
-  ['folder-template-open'] = {
-    icon = '\u{F505}',
-    color = '#8D6E63',
-    name = 'MaterialFolderTemplateOpen',
-  },
-  ['folder-terraform'] = {
-    icon = '\u{E8BD}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderTerraform',
-  },
-  ['folder-terraform-open'] = {
-    icon = '\u{F1062}',
-    color = '#5C6BC0',
-    name = 'MaterialFolderTerraformOpen',
-  },
-  ['folder-test'] = {
-    icon = '\u{F0912}',
-    color = '#00BFA5',
-    name = 'MaterialFolderTest',
-  },
-  ['folder-test-open'] = {
-    icon = '\u{F0C82}',
-    color = '#00BFA5',
-    name = 'MaterialFolderTestOpen',
-  },
-  ['folder-theme'] = {
-    icon = '\u{F050E}',
-    color = '#1E88E5',
-    name = 'MaterialFolderTheme',
-  },
-  ['folder-theme-open'] = {
-    icon = '\u{F06EB}',
-    color = '#1E88E5',
-    name = 'MaterialFolderThemeOpen',
-  },
-  ['folder-toc'] = {
-    icon = '\u{F001C}',
-    color = '#2196F3',
-    name = 'MaterialFolderToc',
-  },
-  ['folder-toc-open'] = {
-    icon = '\u{F001D}',
-    color = '#2196F3',
-    name = 'MaterialFolderTocOpen',
-  },
-  ['folder-tools'] = {
-    icon = '\u{EB6D}',
-    color = '#1E88E5',
-    name = 'MaterialFolderTools',
-  },
-  ['folder-tools-open'] = {
-    icon = '\u{F1064}',
-    color = '#1E88E5',
-    name = 'MaterialFolderToolsOpen',
-  },
-  ['folder-trash'] = {
-    icon = '\u{EA81}',
-    color = '#F44336',
-    name = 'MaterialFolderTrash',
-  },
-  ['folder-trash-open'] = {
-    icon = '\u{EF90}',
-    color = '#F44336',
-    name = 'MaterialFolderTrashOpen',
-  },
-  ['folder-trigger'] = {
-    icon = '\u{F001E}',
-    color = '#FFC107',
-    name = 'MaterialFolderTrigger',
-  },
-  ['folder-trigger-open'] = {
-    icon = '\u{F001F}',
-    color = '#FFC107',
-    name = 'MaterialFolderTriggerOpen',
-  },
-  ['folder-turborepo'] = {
-    icon = '\u{F0094}',
-    color = '#546E7A',
-    name = 'MaterialFolderTurborepo',
-  },
-  ['folder-turborepo-open'] = {
-    icon = '\u{F0095}',
-    color = '#546E7A',
-    name = 'MaterialFolderTurborepoOpen',
-  },
-  ['folder-typescript'] = {
-    icon = '\u{E8CA}',
-    color = '#0288D1',
-    name = 'MaterialFolderTypescript',
-  },
-  ['folder-typescript-open'] = {
-    icon = '\u{F0C83}',
-    color = '#0288D1',
-    name = 'MaterialFolderTypescriptOpen',
-  },
-  ['folder-ui'] = {
-    icon = '\u{F0357}',
-    color = '#AB47BC',
-    name = 'MaterialFolderUi',
-  },
-  ['folder-ui-open'] = {
-    icon = '\u{F19F2}',
-    color = '#AB47BC',
-    name = 'MaterialFolderUiOpen',
-  },
-  ['folder-unity'] = {
-    icon = '\u{F0B02}',
-    color = '#2196F3',
-    name = 'MaterialFolderUnity',
-  },
-  ['folder-unity-open'] = {
-    icon = '\u{F0B1C}',
-    color = '#2196F3',
-    name = 'MaterialFolderUnityOpen',
-  },
-  ['folder-update'] = {
-    icon = '\u{F19F3}',
-    color = '#43A047',
-    name = 'MaterialFolderUpdate',
-  },
-  ['folder-update-open'] = {
-    icon = '\u{F19F4}',
-    color = '#43A047',
-    name = 'MaterialFolderUpdateOpen',
-  },
-  ['folder-upload'] = {
-    icon = '\u{EAC3}',
-    color = '#FF7043',
-    name = 'MaterialFolderUpload',
-  },
-  ['folder-upload-open'] = {
-    icon = '\u{F093}',
-    color = '#FF7043',
-    name = 'MaterialFolderUploadOpen',
-  },
-  ['folder-utils'] = {
-    icon = '\u{F19F5}',
-    color = '#7CB342',
-    name = 'MaterialFolderUtils',
-  },
-  ['folder-utils-open'] = {
-    icon = '\u{F19F6}',
-    color = '#7CB342',
-    name = 'MaterialFolderUtilsOpen',
-  },
-  ['folder-vercel'] = {
-    icon = '\u{F0B03}',
-    color = '#546E7A',
-    name = 'MaterialFolderVercel',
-  },
-  ['folder-vercel-open'] = {
-    icon = '\u{F0B1D}',
-    color = '#546E7A',
-    name = 'MaterialFolderVercelOpen',
-  },
-  ['folder-verdaccio'] = {
-    icon = '\u{F0C2A}',
-    color = '#00897B',
-    name = 'MaterialFolderVerdaccio',
-  },
-  ['folder-verdaccio-open'] = {
-    icon = '\u{F0C2B}',
-    color = '#00897B',
-    name = 'MaterialFolderVerdaccioOpen',
-  },
-  ['folder-video'] = {
-    icon = '\u{EAD9}',
-    color = '#FF9800',
-    name = 'MaterialFolderVideo',
-  },
-  ['folder-video-open'] = {
-    icon = '\u{EDAD}',
-    color = '#FF9800',
-    name = 'MaterialFolderVideoOpen',
-  },
-  ['folder-views'] = {
-    icon = '\u{F0870}',
-    color = '#FF7043',
-    name = 'MaterialFolderViews',
-  },
-  ['folder-views-open'] = {
-    icon = '\u{F08AC}',
-    color = '#FF7043',
-    name = 'MaterialFolderViewsOpen',
-  },
-  ['folder-vm'] = {
-    icon = '\u{EA7A}',
-    color = '#039BE5',
-    name = 'MaterialFolderVm',
-  },
-  ['folder-vm-open'] = {
-    icon = '\u{EB79}',
-    color = '#039BE5',
-    name = 'MaterialFolderVmOpen',
-  },
-  ['folder-vscode'] = {
-    icon = '\u{EC29}',
-    color = '#42A5F5',
-    name = 'MaterialFolderVscode',
-  },
-  ['folder-vscode-open'] = {
-    icon = '\u{EC2A}',
-    color = '#42A5F5',
-    name = 'MaterialFolderVscodeOpen',
-  },
-  ['folder-vue'] = {
-    icon = '\u{F0C2C}',
-    color = '#009688',
-    name = 'MaterialFolderVue',
-  },
-  ['folder-vue-directives'] = {
-    icon = '\u{F011E}',
-    color = '#00838F',
-    name = 'MaterialFolderVueDirectives',
-  },
-  ['folder-vue-directives-open'] = {
-    icon = '\u{F011F}',
-    color = '#00838F',
-    name = 'MaterialFolderVueDirectivesOpen',
-  },
-  ['folder-vue-open'] = {
-    icon = '\u{F0096}',
-    color = '#009688',
-    name = 'MaterialFolderVueOpen',
-  },
-  ['folder-vuepress'] = {
-    icon = '\u{F0097}',
-    color = '#41B883',
-    name = 'MaterialFolderVuepress',
-  },
-  ['folder-vuepress-open'] = {
-    icon = '\u{F0098}',
-    color = '#41B883',
-    name = 'MaterialFolderVuepressOpen',
-  },
-  ['folder-vuex-store'] = {
-    icon = '\u{F1660}',
-    color = '#009688',
-    name = 'MaterialFolderVuexStore',
-  },
-  ['folder-vuex-store-open'] = {
-    icon = '\u{F18C1}',
-    color = '#009688',
-    name = 'MaterialFolderVuexStoreOpen',
-  },
-  ['folder-wakatime'] = {
-    icon = '\u{F0B04}',
-    color = '#455A64',
-    name = 'MaterialFolderWakatime',
-  },
-  ['folder-wakatime-open'] = {
-    icon = '\u{F0B1E}',
-    color = '#455A64',
-    name = 'MaterialFolderWakatimeOpen',
-  },
-  ['folder-webpack'] = {
-    icon = '\u{E8E3}',
-    color = '#03A9F4',
-    name = 'MaterialFolderWebpack',
-  },
-  ['folder-webpack-open'] = {
-    icon = '\u{F0C2D}',
-    color = '#03A9F4',
-    name = 'MaterialFolderWebpackOpen',
-  },
-  ['folder-windows'] = {
-    icon = '\u{E62A}',
-    color = '#2196F3',
-    name = 'MaterialFolderWindows',
-  },
-  ['folder-windows-open'] = {
-    icon = '\u{EB23}',
-    color = '#2196F3',
-    name = 'MaterialFolderWindowsOpen',
-  },
-  ['folder-wordpress'] = {
-    icon = '\u{E70B}',
-    color = '#0277BD',
-    name = 'MaterialFolderWordpress',
-  },
-  ['folder-wordpress-open'] = {
-    icon = '\u{ED3D}',
-    color = '#0277BD',
-    name = 'MaterialFolderWordpressOpen',
-  },
-  ['folder-yarn'] = {
-    icon = '\u{E8EC}',
-    color = '#0288D1',
-    name = 'MaterialFolderYarn',
-  },
-  ['folder-yarn-open'] = {
-    icon = '\u{EF75}',
-    color = '#0288D1',
-    name = 'MaterialFolderYarnOpen',
-  },
-  ['folder-zeabur'] = {
-    icon = '\u{F0B07}',
-    color = '#7E57C2',
-    name = 'MaterialFolderZeabur',
-  },
-  ['folder-zeabur-open'] = {
-    icon = '\u{F0B21}',
-    color = '#7E57C2',
-    name = 'MaterialFolderZeaburOpen',
-  },
-  ['folder-zed'] = {
-    icon = '\u{F0C36}',
-    color = '#536DFE',
-    name = 'MaterialFolderZed',
-  },
-  ['folder-zed-open'] = {
-    icon = '\u{F0C37}',
-    color = '#536DFE',
-    name = 'MaterialFolderZedOpen',
   },
   font = {
     icon = '\u{F031}',
@@ -4005,11 +975,6 @@ return {
     color = '#EC407A',
     name = 'MaterialGoMod',
   },
-  go_gopher = {
-    icon = '\u{F0121}',
-    color = '#4DD0E1',
-    name = 'MaterialGoGopher',
-  },
   godot = {
     icon = '\u{F00A0}',
     color = '#42A5F5',
@@ -4125,11 +1090,6 @@ return {
     color = '#ECEFF1',
     name = 'MaterialHcl',
   },
-  hcl_light = {
-    icon = '\u{F0122}',
-    color = '#455A64',
-    name = 'MaterialHclLight',
-  },
   helm = {
     icon = '\u{F00A3}',
     color = '#00ACC1',
@@ -4170,11 +1130,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialHosts',
   },
-  hosts_light = {
-    icon = '\u{F0123}',
-    color = '#455A64',
-    name = 'MaterialHostsLight',
-  },
   hpp = {
     icon = '\u{F0FD}',
     color = '#0288D1',
@@ -4194,11 +1149,6 @@ return {
     icon = '\u{F0858}',
     color = '#CFD8DC',
     name = 'MaterialHuff',
-  },
-  huff_light = {
-    icon = '\u{F0125}',
-    color = '#607D8B',
-    name = 'MaterialHuffLight',
   },
   hurl = {
     icon = '\u{F0EC}',
@@ -4295,11 +1245,6 @@ return {
     color = '#BDBDBD',
     name = 'MaterialJinja',
   },
-  jinja_light = {
-    icon = '\u{F0126}',
-    color = '#616161',
-    name = 'MaterialJinjaLight',
-  },
   jsconfig = {
     icon = '\u{F103E}',
     color = '#757575',
@@ -4319,11 +1264,6 @@ return {
     icon = '\u{F1079}',
     color = '#FDD835',
     name = 'MaterialJsr',
-  },
-  jsr_light = {
-    icon = '\u{F0128}',
-    color = '#37474F',
-    name = 'MaterialJsrLight',
   },
   julia = {
     icon = '\u{E624}',
@@ -4680,11 +1620,6 @@ return {
     color = '#B0BEC5',
     name = 'MaterialNanoStaged',
   },
-  ['nano-staged_light'] = {
-    icon = '\u{F012B}',
-    color = '#546E7A',
-    name = 'MaterialNanoStagedLight',
-  },
   ndst = {
     icon = '\u{F0C7D}',
     color = '#0097A7',
@@ -4755,20 +1690,10 @@ return {
     color = '#00BFA5',
     name = 'MaterialNetlify',
   },
-  netlify_light = {
-    icon = '\u{F012D}',
-    color = '#00BFA5',
-    name = 'MaterialNetlifyLight',
-  },
   next = {
     icon = '\u{E83E}',
     color = '#CFD8DC',
     name = 'MaterialNext',
-  },
-  next_light = {
-    icon = '\u{F071C}',
-    color = '#455A64',
-    name = 'MaterialNextLight',
   },
   nextflow = {
     icon = '\u{F00C3}',
@@ -4779,36 +1704,6 @@ return {
     icon = '\u{E776}',
     color = '#43A047',
     name = 'MaterialNginx',
-  },
-  ['ngrx-actions'] = {
-    icon = '\u{F012E}',
-    color = '#AB47BC',
-    name = 'MaterialNgrxActions',
-  },
-  ['ngrx-effects'] = {
-    icon = '\u{F012F}',
-    color = '#26C6DA',
-    name = 'MaterialNgrxEffects',
-  },
-  ['ngrx-entity'] = {
-    icon = '\u{F0130}',
-    color = '#FBC02D',
-    name = 'MaterialNgrxEntity',
-  },
-  ['ngrx-reducer'] = {
-    icon = '\u{F0132}',
-    color = '#E53935',
-    name = 'MaterialNgrxReducer',
-  },
-  ['ngrx-selectors'] = {
-    icon = '\u{F0133}',
-    color = '#FF6E40',
-    name = 'MaterialNgrxSelectors',
-  },
-  ['ngrx-state'] = {
-    icon = '\u{F0134}',
-    color = '#9CCC65',
-    name = 'MaterialNgrxState',
   },
   nim = {
     icon = '\u{E677}',
@@ -4824,11 +1719,6 @@ return {
     icon = '\u{E71E}',
     color = '#8BC34A',
     name = 'MaterialNodejs',
-  },
-  nodejs_alt = {
-    icon = '\u{E719}',
-    color = '#388E3C',
-    name = 'MaterialNodejsAlt',
   },
   nodemon = {
     icon = '\u{E844}',
@@ -4900,30 +1790,15 @@ return {
     color = '#8BC34A',
     name = 'MaterialOpenapi',
   },
-  openapi_light = {
-    icon = '\u{F0135}',
-    color = '#8BC34A',
-    name = 'MaterialOpenapiLight',
-  },
   opencode = {
     icon = '\u{F11E7}',
     color = '#CFD8DC',
     name = 'MaterialOpencode',
   },
-  opencode_light = {
-    icon = '\u{F0136}',
-    color = '#607D8B',
-    name = 'MaterialOpencodeLight',
-  },
   opentofu = {
     icon = '\u{F00C8}',
     color = '#FFCA28',
     name = 'MaterialOpentofu',
-  },
-  opentofu_light = {
-    icon = '\u{F0137}',
-    color = '#263238',
-    name = 'MaterialOpentofuLight',
   },
   otne = {
     icon = '\u{F00C9}',
@@ -4970,11 +1845,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialPayload',
   },
-  payload_light = {
-    icon = '\u{F0138}',
-    color = '#455A64',
-    name = 'MaterialPayloadLight',
-  },
   pdf = {
     icon = '\u{EAEB}',
     color = '#EF5350',
@@ -5009,16 +1879,6 @@ return {
     icon = '\u{E63D}',
     color = '#FF7043',
     name = 'MaterialPhpCsFixer',
-  },
-  php_elephant = {
-    icon = '\u{F07C6}',
-    color = '#0288D1',
-    name = 'MaterialPhpElephant',
-  },
-  php_elephant_pink = {
-    icon = '\u{F0139}',
-    color = '#EC407A',
-    name = 'MaterialPhpElephantPink',
   },
   phpstan = {
     icon = '\u{F0C7E}',
@@ -5069,11 +1929,6 @@ return {
     icon = '\u{E865}',
     color = '#E0E0E0',
     name = 'MaterialPnpm',
-  },
-  pnpm_light = {
-    icon = '\u{F013A}',
-    color = '#757575',
-    name = 'MaterialPnpmLight',
   },
   poetry = {
     icon = '\u{E867}',
@@ -5195,11 +2050,6 @@ return {
     color = '#FF6D00',
     name = 'MaterialQuokka',
   },
-  qwik = {
-    icon = '\u{E880}',
-    color = '#29B6F6',
-    name = 'MaterialQwik',
-  },
   r = {
     icon = '\u{F07D4}',
     color = '#1976D2',
@@ -5255,26 +2105,6 @@ return {
     color = '#FBC02D',
     name = 'MaterialRed',
   },
-  ['redux-action'] = {
-    icon = '\u{EAFF}',
-    color = '#AB47BC',
-    name = 'MaterialReduxAction',
-  },
-  ['redux-reducer'] = {
-    icon = '\u{F013B}',
-    color = '#EF5350',
-    name = 'MaterialReduxReducer',
-  },
-  ['redux-selector'] = {
-    icon = '\u{F013C}',
-    color = '#FF6E40',
-    name = 'MaterialReduxSelector',
-  },
-  ['redux-store'] = {
-    icon = '\u{F18C2}',
-    color = '#8BC34A',
-    name = 'MaterialReduxStore',
-  },
   regedit = {
     icon = '\u{F00D1}',
     color = '#039BE5',
@@ -5289,11 +2119,6 @@ return {
     icon = '\u{E93E}',
     color = '#B0BEC5',
     name = 'MaterialRemix',
-  },
-  remix_light = {
-    icon = '\u{E296}',
-    color = '#455A64',
-    name = 'MaterialRemixLight',
   },
   renovate = {
     icon = '\u{F0218}',
@@ -5350,11 +2175,6 @@ return {
     color = '#EF5350',
     name = 'MaterialRocket',
   },
-  rojo = {
-    icon = '\u{F013D}',
-    color = '#E53935',
-    name = 'MaterialRojo',
-  },
   rolldown = {
     icon = '\u{F481}',
     color = '#F4511E',
@@ -5370,11 +2190,6 @@ return {
     color = '#546E7A',
     name = 'MaterialRome',
   },
-  routing = {
-    icon = '\u{F013E}',
-    color = '#43A047',
-    name = 'MaterialRouting',
-  },
   rspec = {
     icon = '\u{E894}',
     color = '#FF1744',
@@ -5389,11 +2204,6 @@ return {
     icon = '\u{F0D78}',
     color = '#B0BEC5',
     name = 'MaterialRubocop',
-  },
-  rubocop_light = {
-    icon = '\u{F013F}',
-    color = '#455A64',
-    name = 'MaterialRubocopLight',
   },
   ruby = {
     icon = '\u{E791}',
@@ -5455,11 +2265,6 @@ return {
     color = '#C62828',
     name = 'MaterialScons',
   },
-  scons_light = {
-    icon = '\u{F0140}',
-    color = '#C62828',
-    name = 'MaterialSconsLight',
-  },
   screwdriver = {
     icon = '\u{EE13}',
     color = '#0288D1',
@@ -5474,11 +2279,6 @@ return {
     icon = '\u{F1316}',
     color = '#F5F5F5',
     name = 'MaterialSemanticRelease',
-  },
-  ['semantic-release_light'] = {
-    icon = '\u{F0143}',
-    color = '#455A64',
-    name = 'MaterialSemanticReleaseLight',
   },
   semgrep = {
     icon = '\u{F12E2}',
@@ -5514,16 +2314,6 @@ return {
     icon = '\u{F13D2}',
     color = '#E0E0E0',
     name = 'MaterialShellcheck',
-  },
-  shellcheck_light = {
-    icon = '\u{F0144}',
-    color = '#BDBDBD',
-    name = 'MaterialShellcheckLight',
-  },
-  silverstripe = {
-    icon = '\u{F0145}',
-    color = '#0288D1',
-    name = 'MaterialSilverstripe',
   },
   simulink = {
     icon = '\u{F00D6}',
@@ -5585,11 +2375,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialSnowpack',
   },
-  snowpack_light = {
-    icon = '\u{F0146}',
-    color = '#607D8B',
-    name = 'MaterialSnowpackLight',
-  },
   snyk = {
     icon = '\u{F00D9}',
     color = '#607D8B',
@@ -5635,11 +2420,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialStitches',
   },
-  stitches_light = {
-    icon = '\u{F0148}',
-    color = '#546E7A',
-    name = 'MaterialStitchesLight',
-  },
   storybook = {
     icon = '\u{E8B3}',
     color = '#FF4081',
@@ -5664,11 +2444,6 @@ return {
     icon = '\u{E695}',
     color = '#CFD8DC',
     name = 'MaterialStylelint',
-  },
-  stylelint_light = {
-    icon = '\u{F0149}',
-    color = '#546E7A',
-    name = 'MaterialStylelintLight',
   },
   stylus = {
     icon = '\u{E600}',
@@ -5749,11 +2524,6 @@ return {
     icon = '\u{F014A}',
     color = '#00E676',
     name = 'MaterialSystemd',
-  },
-  systemd_light = {
-    icon = '\u{F014B}',
-    color = '#00C853',
-    name = 'MaterialSystemdLight',
   },
   table = {
     icon = '\u{F021B}',
@@ -5845,11 +2615,6 @@ return {
     color = '#B0BEC5',
     name = 'MaterialTldraw',
   },
-  tldraw_light = {
-    icon = '\u{F014C}',
-    color = '#455A64',
-    name = 'MaterialTldrawLight',
-  },
   tobi = {
     icon = '\u{F00E5}',
     color = '#C2185B',
@@ -5874,11 +2639,6 @@ return {
     icon = '\u{E6B2}',
     color = '#CFD8DC',
     name = 'MaterialToml',
-  },
-  toml_light = {
-    icon = '\u{F014F}',
-    color = '#455A64',
-    name = 'MaterialTomlLight',
   },
   toon = {
     icon = '\u{F00E8}',
@@ -5930,11 +2690,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialTurborepo',
   },
-  turborepo_light = {
-    icon = '\u{F0150}',
-    color = '#455A64',
-    name = 'MaterialTurborepoLight',
-  },
   twig = {
     icon = '\u{E61C}',
     color = '#8BC34A',
@@ -5979,11 +2734,6 @@ return {
     icon = '\u{F021D}',
     color = '#B39DDB',
     name = 'MaterialUml',
-  },
-  uml_light = {
-    icon = '\u{F0C29}',
-    color = '#9575CD',
-    name = 'MaterialUmlLight',
   },
   unity = {
     icon = '\u{E721}',
@@ -6050,11 +2800,6 @@ return {
     color = '#CFD8DC',
     name = 'MaterialVercel',
   },
-  vercel_light = {
-    icon = '\u{F0151}',
-    color = '#455A64',
-    name = 'MaterialVercelLight',
-  },
   verdaccio = {
     icon = '\u{F00ED}',
     color = '#00897B',
@@ -6074,11 +2819,6 @@ return {
     icon = '\u{F00EE}',
     color = '#CFD8DC',
     name = 'MaterialVerse',
-  },
-  verse_light = {
-    icon = '\u{F0152}',
-    color = '#546E7A',
-    name = 'MaterialVerseLight',
   },
   vfl = {
     icon = '\u{F193E}',
@@ -6135,20 +2875,10 @@ return {
     color = '#757575',
     name = 'MaterialVueConfig',
   },
-  ['vuex-store'] = {
-    icon = '\u{F18C3}',
-    color = '#41B883',
-    name = 'MaterialVuexStore',
-  },
   wakatime = {
     icon = '\u{F193F}',
     color = '#F5F5F5',
     name = 'MaterialWakatime',
-  },
-  wakatime_light = {
-    icon = '\u{F0153}',
-    color = '#455A64',
-    name = 'MaterialWakatimeLight',
   },
   wallaby = {
     icon = '\u{F1940}',
@@ -6164,11 +2894,6 @@ return {
     icon = '\u{F0C2F}',
     color = '#CFD8DC',
     name = 'MaterialWarp',
-  },
-  warp_light = {
-    icon = '\u{F0154}',
-    color = '#546E7A',
-    name = 'MaterialWarpLight',
   },
   watchman = {
     icon = '\u{F00EF}',
@@ -6259,11 +2984,6 @@ return {
     icon = '\u{F1C7}',
     color = '#CFD8DC',
     name = 'MaterialZeabur',
-  },
-  zeabur_light = {
-    icon = '\u{F0C38}',
-    color = '#263238',
-    name = 'MaterialZeaburLight',
   },
   zig = {
     icon = '\u{E6A9}',

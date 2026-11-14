@@ -50,8 +50,7 @@ function M.convert_completion_kind_names_on_init(client)
   end
 end
 
----@param lsp_name string
----@param config vim.lsp.Config|nil
+---@param config vim.lsp.Config
 function M.record_lsp(config)
   local lsp_name = lang_registry.resolve_lsp_name(helpers.get_caller_filename())
   if vim.list_contains(recorded_lsps, lsp_name) then return end

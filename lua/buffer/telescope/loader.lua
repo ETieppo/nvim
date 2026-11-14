@@ -15,7 +15,7 @@ plugins.record {
     },
   },
   enabled = true,
-  event = 'VimEnter',
+  event = 'VeryLazy',
   config = function()
     require('telescope').setup {
       defaults = {

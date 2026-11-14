@@ -25,24 +25,39 @@ local FLOATING_CMDLINE_KEYMAPS = {
     desc = 'Open floating backward search',
   },
 }
+
 local pending_initial_text = nil
 local native_win_gettype = vim.fn.win_gettype
+---@type integer|nil
+local cmdwin_window = nil
 local floating_cmdline_group =
   vim.api.nvim_create_augroup('floating-cmdline', { clear = true })
 
-local function is_current_window(window)
-  return window == nil
-    or window == 0
-    or window == vim.api.nvim_get_current_win()
-    or window == vim.fn.winnr()
+---@param window integer|nil
+---@return integer
+local function resolve_window_id(window)
+  if window == nil or window == 0 then return vim.api.nvim_get_current_win() end
+  if vim.api.nvim_win_is_valid(window) then return window end
+  return vim.fn.win_getid(window)
 end
 
-rawset(vim.fn, 'win_gettype', function(window)
-  if vim.fn.getcmdwintype() ~= '' and is_current_window(window) then
-    return 'command'
-  end
+---@param window integer|nil
+---@return string
+local function get_cmdwin_aware_window_type(window)
+  if resolve_window_id(window) == cmdwin_window then return 'command' end
   return native_win_gettype(window)
-end)
+end
+
+---@param window integer
+local function enable_cmdwin_window_type(window)
+  cmdwin_window = window
+  rawset(vim.fn, 'win_gettype', get_cmdwin_aware_window_type)
+end
+
+local function restore_native_window_type()
+  cmdwin_window = nil
+  rawset(vim.fn, 'win_gettype', native_win_gettype)
+end
 
 local function is_visual_mode() return vim.fn.mode():match '[vV\22]' ~= nil end
 local function is_macro_active()
@@ -94,12 +109,20 @@ vim.api.nvim_create_autocmd('CmdwinLeave', {
   callback = cmdline_preview.detach,
 })
 
+vim.api.nvim_create_autocmd('CmdwinLeave', {
+  desc = 'Restore the native window type outside the command-line window',
+  group = floating_cmdline_group,
+  callback = restore_native_window_type,
+})
+
 vim.api.nvim_create_autocmd('CmdwinEnter', {
   desc = 'Turn the command-line window into a prompt bar',
   group = floating_cmdline_group,
   callback = function(event)
+    local cmdwin = vim.api.nvim_get_current_win()
+    enable_cmdwin_window_type(cmdwin)
     local source_window = vim.fn.win_getid(vim.fn.winnr '#')
-    turn_cmdwin_into_prompt_bar(vim.api.nvim_get_current_win())
+    turn_cmdwin_into_prompt_bar(cmdwin)
     vim.keymap.set('n', '<Esc>', '<cmd>quit<CR>', { buffer = event.buf })
     cmdline_history.attach(event.buf)
 

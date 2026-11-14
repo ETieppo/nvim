@@ -47,11 +47,10 @@ local navigation_keymaps = {
 
 ---@param line string
 ---@param prefix string
+---@param should_ignore_case boolean
 ---@return boolean
-function M.matches_prefix(line, prefix)
-  if search_case.should_ignore_case(prefix) then
-    return vim.startswith(line:lower(), prefix:lower())
-  end
+function M.matches_prefix(line, prefix, should_ignore_case)
+  if should_ignore_case then return vim.startswith(line:lower(), prefix) end
   return vim.startswith(line, prefix)
 end
 
@@ -62,9 +61,14 @@ end
 ---@param step integer
 ---@return integer|nil
 function M.find_match(lines, editing_row, prefix, start_index, step)
+  local should_ignore_case = search_case.should_ignore_case(prefix)
+  local normalized_prefix = should_ignore_case and prefix:lower() or prefix
   local index = start_index + step
   while index >= 1 and index <= #lines do
-    if index ~= editing_row and M.matches_prefix(lines[index], prefix) then
+    if
+      index ~= editing_row
+      and M.matches_prefix(lines[index], normalized_prefix, should_ignore_case)
+    then
       return index
     end
     index = index + step

@@ -50,9 +50,9 @@ end
 ---@return boolean
 local function is_unused_empty_buffer(buffer)
   return vim.api.nvim_buf_is_valid(buffer)
+    and vim.api.nvim_buf_get_name(buffer) == ''
     and vim.bo[buffer].buflisted
     and vim.bo[buffer].buftype == ''
-    and vim.api.nvim_buf_get_name(buffer) == ''
     and not vim.bo[buffer].modified
     and #vim.fn.win_findbuf(buffer) == 0
 end

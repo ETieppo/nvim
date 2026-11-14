@@ -2,19 +2,6 @@ local plugins = require 'deps.plugins'
 local SIGN_CHAR = '¦'
 local STAGED_CHAR = '┆'
 
--- ---@module 'nui.tree'
--- ---@class (partial) NeoTreeIconProps : neotree.Component.Common.Icon
-local M = {}
-
----@return integer|nil
-local function find_neotree_window()
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'neo-tree' then
-      return win
-    end
-  end
-end
-
 vim.keymap.set('n', '\\', function()
   if not require('layout.database_manager.ui').focus() then
     vim.cmd 'Neotree reveal'
@@ -31,10 +18,6 @@ plugins.record {
   dependencies = { 'MunifTanjim/nui.nvim' },
   version = '*',
   cmd = 'Neotree',
-  -- config = function(_, opts)
-  --   require('components.material_icons').setup()
-  --   require('neo-tree').setup(opts)
-  -- end,
   ---@module 'neo-tree'
   ---@type neotree.Config
   opts = {
@@ -43,16 +26,6 @@ plugins.record {
     close_if_last_window = true,
     default_component_configs = {
       indent = { with_expanders = false },
-      -- ---@type NeoTreeIconProps
-      -- icon = {
-      --   provider = function(icon, node, state)
-      --     local defaults = require 'neo-tree.defaults'
-      --     defaults.default_component_configs.icon.provider(icon, node, state)
-      --     if node.type == 'directory' then
-      --       require('layout.icons.loader').apply_folder_icon(icon, node)
-      --     end
-      --   end,
-      -- },
       git_status = {
         symbols = {
           added = SIGN_CHAR,
@@ -99,5 +72,3 @@ plugins.record {
     },
   },
 }
-
-return M

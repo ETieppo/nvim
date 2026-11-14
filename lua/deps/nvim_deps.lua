@@ -55,7 +55,9 @@ deps_command.create_deps_user_command {
   },
 }
 
-vim.api.nvim_create_autocmd('VimEnter', {
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'VeryLazy',
+  once = true,
   callback = function()
     local missing_deps = deps_mod.find_missing(nvim_deps)
     vim.schedule(

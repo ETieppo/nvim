@@ -1,7 +1,7 @@
 local lsp = require 'core.lsp.registry'
 local plugins = require 'deps.plugins'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
-local profile = require 'deps.profile'
+local DATA_DIRECTORY_PATTERN = '/data/'
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   error('Error cloning lazy.nvim:\n' .. vim.fn.system {
@@ -29,6 +29,7 @@ do
     entry_type == 'file'
     and name:sub(-4) == '.lua'
     and name ~= 'loader.lua'
+    and not name:find(DATA_DIRECTORY_PATTERN, 1, true)
   then
     require((name:sub(1, -5)):gsub('/', '.'))
   end

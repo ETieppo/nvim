@@ -11,7 +11,6 @@ plugins.record {
   'folke/snacks.nvim',
   opts = {
     animate = { enabled = true },
-    notifier = { enabled = true, timeout = 5000 },
     bigfile = { enabled = true },
     bufdelete = { enabled = true },
     debug = { enabled = true },

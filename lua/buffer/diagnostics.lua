@@ -1,5 +1,6 @@
-local diagnostic_prefix = '🭰'
-local diagnostic_suffix = '🭵'
+local DIAGNOSTIC_PREFIX = '🭰'
+local DIAGNOSTIC_SUFFIX = '🭵'
+local DIAGNOSTIC_PREFIX_WIDTH = vim.api.nvim_strwidth(DIAGNOSTIC_PREFIX)
 
 local function wrap_virtual_diagnostic(diagnostic)
   local win = vim.fn.bufwinid(diagnostic.bufnr)
@@ -11,16 +12,17 @@ local function wrap_virtual_diagnostic(diagnostic)
 
   local lines = {}
   for _, paragraph in ipairs(vim.split(diagnostic.message, '\n')) do
-    local line = diagnostic_prefix
+    local line, line_width = DIAGNOSTIC_PREFIX, DIAGNOSTIC_PREFIX_WIDTH
     for word in paragraph:gmatch '%S+' do
-      if line ~= '' and vim.fn.strdisplaywidth(line .. ' ' .. word) > width then
+      local word_width = vim.api.nvim_strwidth(word)
+      if line_width + 1 + word_width > width then
         table.insert(lines, line)
-        line = word
+        line, line_width = word, word_width
       else
-        line = line == '' and word or (line .. ' ' .. word)
+        line, line_width = line .. ' ' .. word, line_width + 1 + word_width
       end
     end
-    table.insert(lines, line .. diagnostic_suffix)
+    table.insert(lines, line .. DIAGNOSTIC_SUFFIX)
   end
 
   return table.concat(lines, '\n')
@@ -84,10 +86,10 @@ vim.diagnostic.config {
   underline = false,
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = diagnostic_prefix,
-      [vim.diagnostic.severity.WARN] = diagnostic_prefix,
-      [vim.diagnostic.severity.HINT] = diagnostic_prefix,
-      [vim.diagnostic.severity.INFO] = diagnostic_prefix,
+      [vim.diagnostic.severity.ERROR] = DIAGNOSTIC_PREFIX,
+      [vim.diagnostic.severity.WARN] = DIAGNOSTIC_PREFIX,
+      [vim.diagnostic.severity.HINT] = DIAGNOSTIC_PREFIX,
+      [vim.diagnostic.severity.INFO] = DIAGNOSTIC_PREFIX,
     },
   },
 }

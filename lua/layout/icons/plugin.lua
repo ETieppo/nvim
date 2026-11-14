@@ -54,7 +54,6 @@ local function build_language_icons()
 end
 
 local custom_icons = {
-  default_icon = material_icons.get_default_file_icon(),
   tl = {
     icon = '\u{F08B1}',
     color = '#00B1BC',
@@ -80,6 +79,7 @@ local custom_icons = {
 plugins.record {
   'DaikyXendo/nvim-material-icon',
   enabled = vim.g.have_nerd_font,
+  lazy = true,
   config = function(_, opts)
     local devicons = require 'nvim-web-devicons'
     devicons.setup(opts)
@@ -87,16 +87,23 @@ plugins.record {
     material_icons.pad_icons(devicons.get_icons_by_filename())
     material_icons.pad_icons(devicons.get_icons_by_extension())
   end,
-  opts = {
-    default = true,
-    color_icons = true,
-    override = custom_icons,
-    override_by_filename = material_icons.get_icons_by_filename(),
-    override_by_extension = vim.tbl_extend(
+  opts = function()
+    local override = vim.tbl_extend(
       'force',
-      build_language_icons(),
-      material_icons.get_icons_by_extension(),
+      { default_icon = material_icons.get_default_file_icon() },
       custom_icons
-    ),
-  },
+    )
+    return {
+      default = true,
+      color_icons = true,
+      override = override,
+      override_by_filename = material_icons.get_icons_by_filename(),
+      override_by_extension = vim.tbl_extend(
+        'force',
+        build_language_icons(),
+        material_icons.get_icons_by_extension(),
+        override
+      ),
+    }
+  end,
 }

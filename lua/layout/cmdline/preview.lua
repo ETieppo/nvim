@@ -9,6 +9,7 @@
 ---@field saved_view vim.fn.winsaveview.ret
 ---@field match_ids integer[]
 ---@field saved_window_options? CmdlinePreviewWindowOptionsProps
+---@field last_line? string
 
 ---@class SubstituteProps
 ---@field pattern string
@@ -286,19 +287,17 @@ end
 
 ---@return string
 local function evaluate_replacement()
-  ---@type string[]
-  local submatches = {}
-
-  for group = 0, 9 do
-    submatches[#submatches + 1] = vim.fn.submatch(group)
-  end
-
   if current_replacement:sub(1, 2) == '\\=' then
     local success, value = pcall(vim.fn.eval, current_replacement:sub(3))
     if not success then return '' end
     return (tostring(value):gsub('\n', LINE_BREAK_SYMBOL))
   end
 
+  ---@type string[]
+  local submatches = {}
+  for group = 0, 9 do
+    submatches[#submatches + 1] = vim.fn.submatch(group)
+  end
   return expand_replacement(current_replacement, submatches)
 end
 
@@ -561,7 +560,10 @@ function M.attach(cmdwin_buffer, source_window, cmdline_type)
     buffer = cmdwin_buffer,
     callback = function()
       if active_preview ~= preview then return true end
-      update_preview(preview, vim.api.nvim_get_current_line())
+      local line = vim.api.nvim_get_current_line()
+      if line == preview.last_line then return end
+      preview.last_line = line
+      update_preview(preview, line)
     end,
   })
 end

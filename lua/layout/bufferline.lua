@@ -1,6 +1,17 @@
 local plugins = require 'deps.plugins'
 local helpers = require 'utils.helpers'
 
+---@class DiagnosticIndicatorIconProps
+---@field severity string
+---@field icon string
+
+---@type DiagnosticIndicatorIconProps[]
+local DIAGNOSTIC_INDICATOR_ICONS = {
+  { severity = 'error', icon = ' ' },
+  { severity = 'warning', icon = ' ' },
+  { severity = 'info', icon = ' ' },
+}
+
 helpers.set_alt_and_cmd_keymap(
   'n',
   '<M-l>',
@@ -25,7 +36,7 @@ vim.keymap.set(
 plugins.record {
   'akinsho/bufferline.nvim',
   version = '*',
-  dependencies = { 'nvim-tree/nvim-web-devicons' },
+  dependencies = { 'DaikyXendo/nvim-material-icon' },
   event = 'VeryLazy',
   opts = function()
     local p = require('theme.loader').get_theme_colors()
@@ -39,14 +50,12 @@ plugins.record {
       show_close_icon = false,
       color_icons = true,
       diagnostics = 'nvim_lsp',
-      diagnostics_indicator = function(_, _, diag)
-        local icons = { error = ' ', warning = ' ', info = ' ' }
+      diagnostics_indicator = function(_, _, diagnostics_count)
         ---@type string[]
         local parts = {}
-        for kind, icon in pairs(icons) do
-          if (diag[kind] or 0) > 0 then
-            parts[#parts + 1] = icon .. diag[kind]
-          end
+        for _, indicator in ipairs(DIAGNOSTIC_INDICATOR_ICONS) do
+          local count = diagnostics_count[indicator.severity] or 0
+          if count > 0 then parts[#parts + 1] = indicator.icon .. count end
         end
         return table.concat(parts, ' ')
       end,
