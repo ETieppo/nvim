@@ -1,4 +1,3 @@
-
 ---@class MaterialIconProps
 ---@field icon string
 ---@field color string

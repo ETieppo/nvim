@@ -6,7 +6,9 @@ local LAZY_LOADED_EVENT = 'VeryLazy'
 
 ---@return string[]
 local function get_parsers_to_install()
-  if not os_mod.has_executable 'gcc' or not os_mod.has_executable 'tree-sitter' then
+  if
+    not os_mod.has_executable 'gcc' or not os_mod.has_executable 'tree-sitter'
+  then
     return {}
   end
   return treesitter.get_treesitters_to_install()

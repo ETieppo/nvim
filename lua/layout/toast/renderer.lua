@@ -288,7 +288,11 @@ local function create_toast(id)
     zindex = toast_config.zindex,
     noautocmd = true,
   })
-  vim.api.nvim_set_option_value('winblend', toast_config.blend, { win = window })
+  vim.api.nvim_set_option_value(
+    'winblend',
+    toast_config.blend,
+    { win = window }
+  )
   vim.api.nvim_set_option_value('wrap', false, { win = window })
 
   local toast = {
