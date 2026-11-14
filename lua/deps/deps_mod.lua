@@ -239,7 +239,7 @@ end
 
 ---@param deps DepProps[]
 function M.add_to_session_path(deps)
-  for _, dep in ipairs(deps) do
+  for _, dep in ipairs(filter_supported(deps, os_mod.get_name())) do
     if dep.push_env_source then
       os_mod.add_to_path(os_mod.expand_home_path(dep.push_env_source))
     end

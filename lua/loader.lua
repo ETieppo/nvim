@@ -1,6 +1,7 @@
 local lsp = require 'core.lsp.registry'
 local plugins = require 'deps.plugins'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
+local profile = require 'deps.profile'
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   error('Error cloning lazy.nvim:\n' .. vim.fn.system {

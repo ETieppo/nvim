@@ -41,16 +41,21 @@ local function find_dotnet_root()
   return vim.fs.dirname(sdk_dir)
 end
 
+local ROSLYN_COMMAND = {
+  'roslyn-language-server',
+  '--stdio',
+  '--autoLoadProjects',
+}
+
 lsp.record_lsp {
-  cmd = {
-    'roslyn-language-server',
-    '--stdio',
-    '--autoLoadProjects',
-  },
+  cmd = function(dispatchers, config)
+    return vim.lsp.rpc.start(ROSLYN_COMMAND, dispatchers, {
+      cwd = config.cmd_cwd or config.root_dir,
+      env = { DOTNET_ROOT = find_dotnet_root() or '' },
+      detached = config.detached,
+    })
+  end,
   filetypes = { lang_name },
-  cmd_env = {
-    DOTNET_ROOT = find_dotnet_root(),
-  },
   root_dir = function(bufnr, on_dir)
     local root = vim.fs.root(
       bufnr,
