@@ -10,14 +10,14 @@ local p = {
   ornamentInactiveBg = '#06171f',
 
   -- Errors / Diagnostics
-  errorFg = '#730030',
-  errorBg = '#100708',
-  warningFg = '#4e3000',
-  warnBg = '#0e0803',
-  infoFg = '#0a3467',
-  infoBg = '#050910',
-  hintFg = '#00424d',
-  hintBg = '#020b0c',
+  errorFg = '#d15583',
+  errorBg = '#1a0100',
+  warningFg = '#9c8700',
+  warnBg = '#171000',
+  infoFg = '#7dcfff',
+  infoBg = '#00262f',
+  hintFg = '#85d0b7',
+  hintBg = '#0c1618',
 
   fg = '#787c99',
   fgDim = '#303040',
