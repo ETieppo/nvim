@@ -8,6 +8,7 @@ local filetypes = { lang_name, 'c' }
 
 deps.record_lang_deps {
   treesitter = filetypes,
+  short = 'c',
   deps = {
     {
       cmd = 'clangd',

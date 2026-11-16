@@ -13,12 +13,16 @@ plugins.record {
   keys = {
     {
       '<leader>da',
-      function() require('dap').continue() end,
+      function()
+        vim.notify.info 'trigger dap attachment'
+        require('dap').continue()
+      end,
       desc = '[D]ebugger [A]ttach',
     },
     {
       '<leader>dk',
       function()
+        vim.notify.info("dap has been killed")
         require('dap').terminate()
         require('dapui').close()
       end,
