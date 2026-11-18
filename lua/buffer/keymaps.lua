@@ -1,4 +1,4 @@
-local file = require 'buffer.file'
+local file = require 'buffer.files.helpers'
 local helpers = require 'utils.helpers'
 local os_mod = require 'deps.sys'
 
