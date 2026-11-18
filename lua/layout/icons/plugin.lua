@@ -1,5 +1,4 @@
 local plugins = require 'deps.plugins'
-local material_icons = require 'layout.icons.loader'
 
 local type_colors = {
   { file_type = 'adapter', color = '#8D6E63' },
@@ -37,8 +36,30 @@ local apply_langs = {
   { suffix = 'ts', icon_prefix = 'Nest', icon = '\u{E83B}' },
 }
 
+local custom_icons = {
+  tl = {
+    icon = '\u{100000}',
+    color = '#00B1BC',
+    name = 'Teal',
+  },
+  kof = {
+    icon = '\u{100001}',
+    color = '#FFFFFF',
+    name = 'Kf',
+  },
+  kf = {
+    icon = '\u{100001}',
+    color = '#FFFFFF',
+    name = 'Kof',
+  },
+  ['ng-template'] = {
+    icon = '\u{E83B}',
+    color = '#E63936',
+    name = 'NestTemplate',
+  },
+}
+
 local function build_language_icons()
-  ---@type table<string, MaterialIconProps>
   local icons = {}
   for _, lang in ipairs(apply_langs) do
     for _, type_color in ipairs(type_colors) do
@@ -53,56 +74,20 @@ local function build_language_icons()
   return icons
 end
 
-local custom_icons = {
-  tl = {
-    icon = '\u{F08B1}',
-    color = '#00B1BC',
-    name = 'Teal',
-  },
-  kof = {
-    icon = '\u{F0B12}',
-    color = '#FFFFFF',
-    name = 'Kf',
-  },
-  kf = {
-    icon = '\u{F0B12}',
-    color = '#FFFFFF',
-    name = 'Kof',
-  },
-  ['ng-template'] = {
-    icon = '\u{E83B}',
-    color = '#E63936',
-    name = 'NestTemplate',
-  },
-}
-
 plugins.record {
   'DaikyXendo/nvim-material-icon',
   enabled = vim.g.have_nerd_font,
   lazy = true,
-  config = function(_, opts)
-    local devicons = require 'nvim-web-devicons'
-    devicons.setup(opts)
-    material_icons.pad_icons(devicons.get_icons())
-    material_icons.pad_icons(devicons.get_icons_by_filename())
-    material_icons.pad_icons(devicons.get_icons_by_extension())
-  end,
+  main = 'nvim-web-devicons',
   opts = function()
-    local override = vim.tbl_extend(
-      'force',
-      { default_icon = material_icons.get_default_file_icon() },
-      custom_icons
-    )
     return {
       default = true,
       color_icons = true,
-      override = override,
-      override_by_filename = material_icons.get_icons_by_filename(),
+      override = custom_icons,
       override_by_extension = vim.tbl_extend(
         'force',
         build_language_icons(),
-        material_icons.get_icons_by_extension(),
-        override
+        custom_icons
       ),
     }
   end,
