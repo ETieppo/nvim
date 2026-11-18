@@ -1,4 +1,51 @@
 local plugins = require 'deps.plugins'
+local picker = require 'buffer.telescope.finder'
+
+--- TODO: Refact it to be an helper
+---@param doc_dir string
+---@param file_path string
+---@return string
+local function format_doc_title(doc_dir, file_path)
+  local title = file_path
+    :sub(#doc_dir + 2)
+    :gsub('/?index%.md$', '')
+    :gsub('%.md$', '')
+    :gsub('[/_-]', ' ')
+    :gsub(
+      '(%S)(%S*)',
+      function(first, rest) return first:upper() .. rest:lower() end
+    )
+  title = vim.trim(title)
+  return title ~= '' and title or 'Index'
+end
+
+---@param doc string
+---@return picker.Source
+local function doc_files(doc)
+  local devdocs = require 'devdocs'
+  local doc_dir = devdocs.GetDocDir(doc)
+  return {
+    prompt = ('Select Doc (%s)'):format(doc),
+    items = devdocs.GetDoc(doc) or {},
+    format = function(file_path) return format_doc_title(doc_dir, file_path) end,
+  }
+end
+
+local function search_doc()
+  picker:find {
+    prompt = 'Select Language',
+    items = require('devdocs').GetInstalledDocs(),
+    steps = { doc_files, picker.find, picker.readonly },
+  }
+end
+
+local function grep_doc()
+  picker:find {
+    prompt = 'Select Language',
+    items = require('devdocs').GetInstalledDocs(),
+    steps = { require('devdocs').GetDocDir, picker.grep, picker.readonly },
+  }
+end
 
 ---@class LatestDocProps
 ---@field slug string
@@ -12,7 +59,7 @@ plugins.record {
     {
       '<leader>dds',
       mode = 'n',
-      '<cmd>DevDocs get<cr>',
+      search_doc,
       desc = '[D]ev [D]ocs [S]earch',
     },
     {
@@ -30,19 +77,7 @@ plugins.record {
     {
       '<leader>ddg',
       mode = 'n',
-      function()
-        local devdocs = require 'devdocs'
-        local installed = devdocs.GetInstalledDocs()
-        vim.ui.select(
-          installed,
-          { prompt = 'Grep em qual doc?' },
-          function(selected)
-            if not selected then return end
-            local doc_dir = devdocs.GetDocDir(selected)
-            require('telescope.builtin').live_grep { cwd = doc_dir }
-          end
-        )
-      end,
+      grep_doc,
       desc = '[D]ev [D]ocs [G]rep',
     },
   },
