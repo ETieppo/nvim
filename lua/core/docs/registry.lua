@@ -13,12 +13,11 @@ local ignored_docs = {}
 function M.record_docs(docs)
   for _, doc in ipairs(docs) do
     if
-      vim.list_contains(ignored_docs, doc)
-      or vim.list_contains(recorded_docs, doc)
+      not vim.list_contains(ignored_docs, doc)
+      and not vim.list_contains(recorded_docs, doc)
     then
-      return
+      table.insert(recorded_docs, doc)
     end
-    table.insert(recorded_docs, doc)
   end
 end
 

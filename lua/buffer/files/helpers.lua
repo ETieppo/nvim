@@ -44,12 +44,12 @@ local function prepare_destination(path, source_path)
 end
 
 ---@param path string
-local function open_file(path) vim.cmd('edit ' .. vim.fn.fnameescape(path)) end
+function M.open_file(path) vim.cmd('edit ' .. vim.fn.fnameescape(path)) end
 
 ---@param path string
 function M.create_file(path)
   local destination = prepare_destination(path)
-  if destination then open_file(destination) end
+  if destination then M.open_file(destination) end
 end
 
 ---@param source_path string
@@ -58,7 +58,7 @@ function M.move_file(source_path, path)
   local destination = prepare_destination(path, source_path)
   if not destination then return end
   vim.fn.rename(source_path, destination)
-  open_file(destination)
+  M.open_file(destination)
   vim.cmd 'bdelete! #'
 end
 
@@ -68,7 +68,7 @@ function M.copy_file(source_path, path)
   local destination = prepare_destination(path, source_path)
   if not destination then return end
   if vim.uv.fs_copyfile(source_path, destination) then
-    open_file(destination)
+    M.open_file(destination)
   else
     vim.notify('Error at file clone.', vim.log.levels.ERROR)
   end
@@ -135,13 +135,11 @@ function M.trash_current_file()
   vim.notify('Trashed ' .. file)
 end
 
----@param buf_id integer
-function M.mark_buffer_as_readonly(buf_id)
-  vim.bo.readonly = true
-  vim.bo.modifiable = false
-  vim.diagnostic.enable(false, { bufnr = 0 })
-  vim.bo[buf_id].readonly = true
-  vim.bo[buf_id].modifiable = false
+---@param buffer integer
+function M.mark_buffer_as_readonly(buffer)
+  vim.bo[buffer].readonly = true
+  vim.bo[buffer].modifiable = false
+  vim.diagnostic.enable(false, { bufnr = buffer })
 end
 
 return M

@@ -3,6 +3,7 @@ local library = require 'layout.music.library'
 local music_config = require 'layout.music.config'
 local player = require 'layout.music.player'
 local soloist = require 'layout.music.soloist'
+local telescope_picker = require 'buffer.telescope.picker'
 local web_api = require 'layout.music.web_api'
 
 ---@class MusicTrackEntryValueProps
@@ -126,48 +127,34 @@ local function get_selected_value(prompt_bufnr)
   return entry and entry.value
 end
 
+---@param playlist MusicPlaylistProps
+---@return string
+local function format_playlist(playlist) return playlist.name end
+
+---@param playlist MusicPlaylistProps
+---@return string display
+---@return table highlights
+local function display_playlist(playlist)
+  local count = tostring(#playlist.track_uris)
+  local count_start = #playlist.name + #DETAIL_SEPARATOR
+  return playlist.name .. DETAIL_SEPARATOR .. count,
+    { { { count_start, count_start + #count }, DETAIL_HIGHLIGHT } }
+end
+
 ---@param title string
 ---@param playlists MusicPlaylistProps[]
 ---@param on_pick fun(playlist: MusicPlaylistProps)
 local function pick_playlist(title, playlists, on_pick)
-  local actions = require 'telescope.actions'
-  local entries = {}
-  for index, playlist in ipairs(playlists) do
-    local count = tostring(#playlist.track_uris)
-    entries[index] = {
-      value = playlist,
-      ordinal = playlist.name,
-      display = function()
-        return playlist.name .. DETAIL_SEPARATOR .. count,
-          {
-            {
-              {
-                #playlist.name + #DETAIL_SEPARATOR,
-                #playlist.name + #DETAIL_SEPARATOR + #count,
-              },
-              DETAIL_HIGHLIGHT,
-            },
-          }
-      end,
+  async.run(function()
+    local playlist = telescope_picker.find {
+      prompt = title,
+      items = playlists,
+      should_keep_order = true,
+      format = format_playlist,
+      display = display_playlist,
     }
-  end
-
-  require('telescope.pickers')
-    .new({}, {
-      prompt_title = title,
-      finder = create_static_finder(entries),
-      sorter = require('telescope.config').values.generic_sorter {},
-      attach_mappings = function(prompt_bufnr)
-        actions.select_default:replace(function()
-          local playlist = get_selected_value(prompt_bufnr)
-          if not playlist then return end
-          actions.close(prompt_bufnr)
-          on_pick(playlist --[[@as MusicPlaylistProps]])
-        end)
-        return true
-      end,
-    })
-    :find()
+    if playlist then on_pick(playlist) end
+  end)
 end
 
 ---@param value MusicTrackEntryValueProps
@@ -252,16 +239,9 @@ local function open_track_picker(title, entries, options)
       or require('telescope.config').values.generic_sorter {},
     attach_mappings = function(prompt_bufnr, map)
       attach_track_actions(prompt_bufnr, map)
-      resolve_on_clone(
-
-      )
-      vim.api.nvim_create_autocmd('BufWipeout', {
-        buffer = prompt_bufnr,
-        once = true,
-        callback = function()
-          if active_picker == picker then active_picker = nil end
-        end,
-      })
+      telescope_picker.on_prompt_close(prompt_bufnr, function()
+        if active_picker == picker then active_picker = nil end
+      end)
       if options.on_attach then options.on_attach(prompt_bufnr, picker) end
       return true
     end,
@@ -326,13 +306,9 @@ local function attach_catalog_search(prompt_bufnr, picker)
       timer:start(music_config.search_debounce_ms, 0, vim.schedule_wrap(search))
     end,
   })
-  vim.api.nvim_create_autocmd('BufWipeout', {
-    buffer = prompt_bufnr,
-    once = true,
-    callback = function()
-      if not timer:is_closing() then timer:close() end
-    end,
-  })
+  telescope_picker.on_prompt_close(prompt_bufnr, function()
+    if not timer:is_closing() then timer:close() end
+  end)
 end
 
 function M.open_library()

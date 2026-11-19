@@ -6,14 +6,17 @@ local files = require 'buffer.files.helpers'
 ---@class Picker.Source
 ---@field prompt? string
 ---@field cwd? string
----@field items? string[]
----@field format? fun(item: string): string
+---@field items? any[]
+---@field format? fun(item: any): string
+---@field display? fun(item: any): string, table
+---@field should_keep_order? boolean
 ---@field steps? Picker.Step[]
 
 ---@class Picker
----@field find fun(self: Picker, source?: Picker.Source|string): string|nil
+---@field find fun(self: Picker, source?: Picker.Source|string): any
 ---@field grep fun(self: Picker, source?: Picker.Source|string): string|nil
 ---@field readonly fun(self: Picker, target: Picker.Source|string): string|nil
+---@field on_prompt_close fun(prompt_bufnr: integer, callback: fun())
 local M = {}
 
 ---@param fn async fun(argument: any): any
@@ -22,49 +25,61 @@ local function entry_point(fn)
   return function(receiver, argument)
     if receiver ~= M then argument = receiver end
     if async.current_coroutine() then return fn(argument) end
-    coroutine.wrap(fn)(argument)
+    async.run(fn, argument)
   end
 end
 
 ---@param prompt_bufnr integer
----@param resolve fun()
-local function resolve_on_close(prompt_bufnr, resolve)
+---@param callback fun()
+function M.on_prompt_close(prompt_bufnr, callback)
   vim.api.nvim_create_autocmd('BufWipeout', {
     buffer = prompt_bufnr,
     once = true,
-    callback = function() vim.schedule(resolve) end,
+    callback = function() vim.schedule(callback) end,
   })
+end
+
+---@param source Picker.Source
+---@return any[]
+local function prepare_items(source)
+  local items = vim.list_extend({}, source.items)
+  if not source.should_keep_order then table.sort(items) end
+  return items
+end
+
+---@param source Picker.Source
+---@param item any
+---@return table
+local function create_entry(source, item)
+  local label = (source.format or tostring)(item)
+  local display = source.display
+      and function() return source.display(item) end
+    or label
+  return { value = item, display = display, ordinal = label }
 end
 
 ---@async
 ---@param source Picker.Source
----@return string|nil item
+---@return any item
 local function pick_item(source)
   local prompt = source.prompt or 'Select'
-  local format = source.format or tostring
-
   if #source.items == 0 then
     vim.notify.warn(('No items found for %s'):format(prompt))
     return nil
   end
 
-  local sorted_items = vim.list_extend({}, source.items)
-  table.sort(sorted_items)
-
+  local items = prepare_items(source)
   return async.await(function(resolve)
     local actions = require 'telescope.actions'
     local item_picker = require('telescope.pickers').new({}, {
       prompt_title = prompt,
       finder = require('telescope.finders').new_table {
-        results = sorted_items,
-        entry_maker = function(item)
-          local label = format(item)
-          return { value = item, display = label, ordinal = label }
-        end,
+        results = items,
+        entry_maker = function(item) return create_entry(source, item) end,
       },
       sorter = require('telescope.config').values.generic_sorter {},
       attach_mappings = function(prompt_bufnr)
-        resolve_on_close(prompt_bufnr, resolve)
+        M.on_prompt_close(prompt_bufnr, resolve)
         actions.select_default:replace(function()
           local entry = require('telescope.actions.state').get_selected_entry()
           if not entry then return end
@@ -88,7 +103,7 @@ local function pick_file(builtin, source)
       cwd = source.cwd,
       prompt_title = source.prompt,
       attach_mappings = function(prompt_bufnr)
-        resolve_on_close(prompt_bufnr, resolve)
+        M.on_prompt_close(prompt_bufnr, resolve)
         require('telescope.actions.set').select:enhance {
           post = function()
             local bufnr = vim.api.nvim_get_current_buf()
@@ -123,7 +138,7 @@ end
 
 ---@async
 ---@param source Picker.Source|string|nil
----@return string|nil selection
+---@return any selection
 local function find(source)
   source = to_source(source)
   if source.items then return run_steps(pick_item(source), source.steps) end
@@ -146,12 +161,8 @@ local function readonly(target)
   if type(target) == 'table' then path = find(target) end
   if not path then return nil end
 
-  if vim.api.nvim_buf_get_name(0) ~= path then
-    files.open_file_as_readonly(path)
-  end
-  local bufnr = vim.api.nvim_get_current_buf()
-  files.mark_buffer_as_readonly(bufnr)
-  vim.diagnostic.enable(false, { bufnr = bufnr })
+  if vim.api.nvim_buf_get_name(0) ~= path then files.open_file(path) end
+  files.mark_buffer_as_readonly(vim.api.nvim_get_current_buf())
   return path
 end
 
