@@ -23,6 +23,7 @@
 ---@field soloist_poll_interval_ms integer
 ---@field device_lookup_delay_ms integer
 ---@field login_timeout_ms integer
+---@field notify_options ToastNotifyOptsProps
 
 local home_directory = vim.uv.os_homedir() or ''
 
@@ -64,4 +65,5 @@ return {
   soloist_poll_interval_ms = 100,
   device_lookup_delay_ms = 1000,
   login_timeout_ms = 300000,
+  notify_options = { title = 'Music' },
 }

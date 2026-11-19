@@ -36,7 +36,7 @@ local LISTEN_ADDRESS = '127.0.0.1:0'
 local DEFAULT_HOST = '127.0.0.1'
 local HOST_PORT_PATTERN = '^(.-):(%d+)$'
 local BUILD_EXPIRED_EXIT_CODE = 10
-local NOTIFY_OPTIONS = { title = 'Music' }
+local NOTIFY_OPTIONS = music_config.notify_options
 local COMMAND_MESSAGE_TYPE = 'command'
 ---@type SoloistStateProps
 local state = {
@@ -103,28 +103,38 @@ local function apply_auth_state(event)
 end
 
 ---@param event table
-local function apply_playback_state(event)
-  state.status = event.status
-  state.is_shuffling = event.options and event.options.shuffle == true
+local function apply_track_change(event)
   set_playing_uri(read_item_uri(event.item))
+end
+
+---@param event table
+local function apply_playback_change(event) state.status = event.status end
+
+---@param event table
+local function apply_options_change(event)
+  state.is_shuffling = event.options ~= nil and event.options.shuffle == true
+end
+
+---@param event table
+local function notify_error(event)
+  vim.notify.error(tostring(event.message), NOTIFY_OPTIONS)
+end
+
+---@param event table
+local function apply_playback_state(event)
+  apply_playback_change(event)
+  apply_options_change(event)
+  apply_track_change(event)
 end
 
 ---@type table<SoloistEventEnum, fun(event: table)>
 local EVENT_HANDLERS = {
   [SoloistEventEnum.auth_state] = apply_auth_state,
   [SoloistEventEnum.playback_state] = apply_playback_state,
-  [SoloistEventEnum.track_changed] = function(event)
-    set_playing_uri(read_item_uri(event.item))
-  end,
-  [SoloistEventEnum.playback_changed] = function(event)
-    state.status = event.status
-  end,
-  [SoloistEventEnum.options_changed] = function(event)
-    state.is_shuffling = event.options and event.options.shuffle == true
-  end,
-  [SoloistEventEnum.error] = function(event)
-    vim.notify.error(tostring(event.message), NOTIFY_OPTIONS)
-  end,
+  [SoloistEventEnum.track_changed] = apply_track_change,
+  [SoloistEventEnum.playback_changed] = apply_playback_change,
+  [SoloistEventEnum.options_changed] = apply_options_change,
+  [SoloistEventEnum.error] = notify_error,
 }
 
 ---@param text string

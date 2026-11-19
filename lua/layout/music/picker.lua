@@ -30,7 +30,7 @@ local DETAIL_HIGHLIGHT = 'Comment'
 local ARTIST_SEPARATOR = ' • '
 local DETAIL_SEPARATOR = '  '
 local PLAYLIST_NAMES_SEPARATOR = ', '
-local NOTIFY_OPTIONS = { title = 'Music' }
+local NOTIFY_OPTIONS = music_config.notify_options
 ---@type table|nil
 local active_picker = nil
 local is_listening_track_changes = false

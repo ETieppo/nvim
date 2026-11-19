@@ -10,7 +10,7 @@ local M = {}
 local LIKED_ID = music_config.liked_playlist_id
 local PLAYLIST_URI_PREFIX = 'spotify:playlist:'
 local NOT_FOUND_STATUS = 404
-local NOTIFY_OPTIONS = { title = 'Music' }
+local NOTIFY_OPTIONS = music_config.notify_options
 ---@type string|nil
 local device_id = nil
 

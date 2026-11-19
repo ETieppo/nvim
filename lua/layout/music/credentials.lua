@@ -59,7 +59,7 @@ function M.replace()
   cached_credentials = nil
   storage.remove(CREDENTIALS_PATH)
   if M.resolve() then
-    vim.notify.success('Credentials saved', { title = 'Music' })
+    vim.notify.success('Credentials saved', music_config.notify_options)
   end
 end
 

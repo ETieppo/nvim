@@ -32,7 +32,11 @@ local RATE_LIMITED_STATUS = 429
 local DEFAULT_RETRY_AFTER_SECONDS = 1
 local MILLISECONDS_PER_SECOND = 1000
 local SECONDS_PER_HOUR = 3600
-local QUOTA_NOTIFICATION_ID = 'music-quota-exceeded'
+local QUOTA_NOTIFY_OPTIONS = vim.tbl_extend(
+  'force',
+  music_config.notify_options,
+  { id = 'music-quota-exceeded' }
+)
 local PLAYLIST_ITEMS_FIELDS =
   'items(added_at,is_local,item(uri,name,is_local,artists(name),album(name)))'
 local UNAUTHENTICATED_RESPONSE =
@@ -46,7 +50,7 @@ local function notify_quota_exceeded(retry_after_seconds)
     ('Spotify quota exceeded, it resets in about %dh'):format(
       math.ceil(retry_after_seconds / SECONDS_PER_HOUR)
     ),
-    { title = 'Music', id = QUOTA_NOTIFICATION_ID }
+    QUOTA_NOTIFY_OPTIONS
   )
 end
 
@@ -287,10 +291,11 @@ function M.create_private_playlist(name)
 end
 
 ---@async
+---@param method HttpMethodEnum
 ---@param uris string[]
 ---@return boolean
-function M.save_to_library(uris)
-  return M.request(HttpMethodEnum.put, 'me/library', {
+local function change_library(method, uris)
+  return M.request(method, 'me/library', {
     query = { uris = table.concat(uris, ',') },
     json_body = {},
   }) ~= nil
@@ -299,11 +304,15 @@ end
 ---@async
 ---@param uris string[]
 ---@return boolean
+function M.save_to_library(uris)
+  return change_library(HttpMethodEnum.put, uris)
+end
+
+---@async
+---@param uris string[]
+---@return boolean
 function M.remove_from_library(uris)
-  return M.request(HttpMethodEnum.delete, 'me/library', {
-    query = { uris = table.concat(uris, ',') },
-    json_body = {},
-  }) ~= nil
+  return change_library(HttpMethodEnum.delete, uris)
 end
 
 return M

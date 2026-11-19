@@ -4,11 +4,7 @@ local music_dtos = require 'layout.music.dtos'
 local storage = require 'utils.storage'
 local web_api = require 'layout.music.web_api'
 
----@class MusicPlaylistProps
----@field id string
----@field name string
----@field owner_id string|nil
----@field snapshot_id string|nil
+---@class MusicPlaylistProps : PlaylistDto
 ---@field track_uris string[]
 
 ---@class MusicLibraryProps
@@ -32,7 +28,7 @@ local SPOTIFY_PLAYER_PLAYLISTS_PATH = vim.fs.joinpath(
 )
 local LIKED_ID = music_config.liked_playlist_id
 local SYNC_DATE_FORMAT = '%Y-%m-%d'
-local NOTIFY_OPTIONS = { title = 'Music' }
+local NOTIFY_OPTIONS = music_config.notify_options
 local TrackDto = music_dtos.TrackDto
 local PlaylistDto = music_dtos.PlaylistDto
 ---@type MusicLibraryProps|nil
@@ -146,9 +142,6 @@ function M.get()
 end
 
 function M.save() storage.write_json(LIBRARY_PATH, M.get(), false) end
-
----@return string|nil
-function M.get_synced_on() return M.get().synced_on end
 
 ---@param playlist_id string
 ---@return MusicPlaylistProps|nil

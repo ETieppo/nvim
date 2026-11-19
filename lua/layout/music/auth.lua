@@ -11,7 +11,7 @@ local M = {}
 local TOKEN_PATH = vim.fs.joinpath(music_config.state_directory, 'token.json')
 local AUTHORIZE_URL = 'https://accounts.spotify.com/authorize'
 local TOKEN_URL = 'https://accounts.spotify.com/api/token'
-local NOTIFY_OPTIONS = { title = 'Music' }
+local NOTIFY_OPTIONS = music_config.notify_options
 local EXPIRY_MARGIN_SECONDS = 60
 local VERIFIER_BYTES = 32
 local STATE_BYTES = 16

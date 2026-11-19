@@ -36,7 +36,7 @@ plugins.record {
   ft = 'lua',
   opts = {
     library = {
-      { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+      { path = '${3rd}/luv/library', words = { 'vim%.uv', 'uv%.uv_' } },
       '${3rd}/busted/library',
       '${3rd}/luassert/library',
       { path = 'lazy.nvim', words = { 'LazySpec' } },
