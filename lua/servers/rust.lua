@@ -115,7 +115,7 @@ dap.record_dap {
 }
 
 lsp.record_lsp {
-  cmd = { vim.fn.expand 'rust-analyzer' },
+  cmd = { 'rust-analyzer' },
   filetypes = { lang_name },
   root_markers = {
     'Cargo.toml',

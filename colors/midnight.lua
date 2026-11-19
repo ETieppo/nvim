@@ -1,11 +1,9 @@
 ---@type ThemeProps
 local p = {
-  transparent = '#000000',
   bg = '#08080b',
   bg1 = '#0e0e12',
   bg2 = '#1a1a1d',
 
-  -- Errors / Diagnostics
   errorFg = '#b8697f',
   errorBg = '#1a0d10',
   warningFg = '#a8966a',
@@ -15,12 +13,10 @@ local p = {
   hintFg = '#8abeb7',
   hintBg = '#0e1615',
   debugFg = '#9b8fbf',
-  debugBg = '#13111a',
 
   fg = '#686868',
   fgDim = '#29292b',
 
-  -- Syntax — Core
   keyword = '#95a7d0',
   keywordAlt = '#d1d6db',
   func = '#5378a2',
@@ -31,12 +27,10 @@ local p = {
   constant = '#6c6c93',
   builtin = '#c6e7e2',
   strings = '#5b8b84',
-  stringAlt = '#8abeb7',
   comment = '#455665',
   tag = '#435a58',
   tagAttr = '#66798a',
 
-  -- bracket and ornament
   ornamentActiveFg = '#7ba9a3',
   ornamentActiveBg = '#174540',
   ornamentInactiveFg = '#435a58',

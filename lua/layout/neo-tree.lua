@@ -1,6 +1,5 @@
 local plugins = require 'deps.plugins'
-local SIGN_CHAR = '¦'
-local STAGED_CHAR = '┆'
+local sign_chars = require 'layout.git.sign_chars'
 
 vim.keymap.set('n', '\\', function()
   if not require('layout.database_manager.ui').focus() then
@@ -28,15 +27,15 @@ plugins.record {
       indent = { with_expanders = false },
       git_status = {
         symbols = {
-          added = SIGN_CHAR,
-          deleted = SIGN_CHAR,
-          modified = SIGN_CHAR,
-          renamed = SIGN_CHAR,
-          untracked = SIGN_CHAR,
-          ignored = SIGN_CHAR,
-          unstaged = SIGN_CHAR,
-          conflict = SIGN_CHAR,
-          staged = STAGED_CHAR,
+          added = sign_chars.unstaged,
+          deleted = sign_chars.unstaged,
+          modified = sign_chars.unstaged,
+          renamed = sign_chars.unstaged,
+          untracked = sign_chars.unstaged,
+          ignored = sign_chars.unstaged,
+          unstaged = sign_chars.unstaged,
+          conflict = sign_chars.unstaged,
+          staged = sign_chars.staged,
         },
       },
     },

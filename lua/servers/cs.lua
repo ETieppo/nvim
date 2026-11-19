@@ -4,6 +4,11 @@ local docs = require 'core.docs.registry'
 local fmt = require 'core.formatter.registry'
 local os_mod = require 'deps.sys'
 local lang_name = require('utils.helpers').get_this_filename()
+local ROSLYN_COMMAND = {
+  'roslyn-language-server',
+  '--stdio',
+  '--autoLoadProjects',
+}
 
 docs.docs_ignore()
 
@@ -40,12 +45,6 @@ local function find_dotnet_root()
 
   return vim.fs.dirname(sdk_dir)
 end
-
-local ROSLYN_COMMAND = {
-  'roslyn-language-server',
-  '--stdio',
-  '--autoLoadProjects',
-}
 
 lsp.record_lsp {
   cmd = function(dispatchers, config)

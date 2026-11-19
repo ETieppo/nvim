@@ -4,6 +4,15 @@ local fmt = require 'core.formatter.registry'
 local docs = require 'core.docs.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
+---@param rock string
+---@return OsInstructionProps
+local function luarocks_install(rock)
+  return {
+    unix = 'sudo luarocks install ' .. rock,
+    windows = 'luarocks install ' .. rock,
+  }
+end
+
 docs.docs_ignore()
 
 deps.record_lang_deps {
@@ -12,31 +21,19 @@ deps.record_lang_deps {
     { cmd = 'luarocks' },
     {
       cmd = 'tl',
-      os = {
-        unix = 'sudo luarocks install tl',
-        windows = 'luarocks install tl',
-      },
+      os = luarocks_install 'tl',
     },
     {
       cmd = 'cyan',
-      os = {
-        unix = 'sudo luarocks install cyan',
-        windows = 'luarocks install cyan',
-      },
+      os = luarocks_install 'cyan',
     },
     {
       cmd = 'teal-language-server',
-      os = {
-        unix = 'sudo luarocks install teal-language-server',
-        windows = 'luarocks install teal-language-server',
-      },
+      os = luarocks_install 'teal-language-server',
     },
     {
       cmd = 'ceru',
-      os = {
-        unix = 'sudo luarocks install cerulean',
-        windows = 'luarocks install cerulean',
-      },
+      os = luarocks_install 'cerulean',
     },
   },
 }

@@ -11,6 +11,9 @@ local DIAGNOSTIC_INDICATOR_ICONS = {
   { severity = 'warning', icon = ' ' },
   { severity = 'info', icon = ' ' },
 }
+local SELECTED_BUFFER_BACKGROUND = {
+  bg = { attribute = 'bg', highlight = 'BufferLineBufferSelected' },
+}
 
 helpers.set_alt_and_cmd_keymap(
   'n',
@@ -64,15 +67,9 @@ plugins.record {
           filetype = 'neo-tree',
           text = '',
           highlight = {
-            buffer_selected = {
-              bg = { attribute = 'bg', highlight = 'BufferLineBufferSelected' },
-            },
-            buffer_visible = {
-              bg = { attribute = 'bg', highlight = 'BufferLineBufferSelected' },
-            },
-            background = {
-              bg = { attribute = 'bg', highlight = 'BufferLineBufferSelected' },
-            },
+            buffer_selected = SELECTED_BUFFER_BACKGROUND,
+            buffer_visible = SELECTED_BUFFER_BACKGROUND,
+            background = SELECTED_BUFFER_BACKGROUND,
           },
           separator = true,
         },

@@ -18,12 +18,7 @@ treesitter.record_treesitter 'html'
 
 deps.record_lang_deps {
   short = 'ts',
-  filetypes = {
-    'javascript',
-    'javascriptreact',
-    'typescript',
-    'typescriptreact',
-  },
+  filetypes = javascript_filetypes,
   depends_on = {
     'emmet',
     'oxlint',

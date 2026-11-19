@@ -1,7 +1,8 @@
 local buffer = require 'buffer.buffer'
+local DatabaseFiletypeEnum =
+  require('layout.database_manager.enums').DatabaseFiletypeEnum
 
 local M = {}
-M.has_open_dbui = false
 
 ---@return integer
 local function find_fallback_buffer()
@@ -14,7 +15,7 @@ local function close_database_buffers()
   local fallback
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.api.nvim_buf_is_valid(buf) and buffer.is_database_buffer(buf) then
-      local is_result = vim.bo[buf].filetype == 'dbout'
+      local is_result = vim.bo[buf].filetype == DatabaseFiletypeEnum.result
 
       if vim.bo[buf].modified then
         pcall(
@@ -46,7 +47,10 @@ end
 ---@return integer|nil
 local function find_drawer_window()
   for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'dbui' then
+    if
+      vim.bo[vim.api.nvim_win_get_buf(win)].filetype
+      == DatabaseFiletypeEnum.drawer
+    then
       return win
     end
   end

@@ -2,7 +2,6 @@ local file = require 'buffer.files.helpers'
 local helpers = require 'utils.helpers'
 local os_mod = require 'deps.sys'
 
--- Several --------------------------------------------------------------------
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<leader>l', '<cmd>Lazy<CR>', { desc = '[L]azy [O]pen' })
 vim.keymap.set(
@@ -18,7 +17,6 @@ vim.keymap.set(
   { desc = 'Exit terminal mode' }
 )
 
--- Line Operations -----------------------------------------------------------
 helpers.set_alt_and_cmd_keymap(
   'n',
   '<M-j>',
@@ -44,7 +42,6 @@ helpers.set_alt_and_cmd_keymap(
   { desc = 'Move selection up' }
 )
 
--- Neovim Config Operations ---------------------------------------------------
 vim.keymap.set('n', '<leader>cn', function()
   local config_lua_path = os_mod.normalize_os_path(vim.fn.stdpath 'config')
     .. '/'

@@ -382,12 +382,6 @@ function M.show(request)
   schedule_flush()
 end
 
-function M.dismiss_all()
-  for index = #active_toasts, 1, -1 do
-    dismiss_toast(active_toasts[index])
-  end
-end
-
 vim.api.nvim_create_autocmd('CmdwinLeave', {
   desc = 'Render toasts queued while the command-line window was open',
   group = toast_group,

@@ -56,12 +56,8 @@ dap.record_dap {
 }
 
 lsp.record_lsp {
-  cmd = { vim.fn.expand 'gopls' },
+  cmd = { 'gopls' },
   filetypes = { lang_name, 'gomod' },
-  ['gopls'] = {
-    rootPatterns = { 'go.work', 'go.mod', '.vim/', '.git/', '.hg/' },
-    initializationOptions = {
-      usePlaceholders = true,
-    },
-  },
+  root_markers = { 'go.work', 'go.mod', '.git', '.hg' },
+  init_options = { usePlaceholders = true },
 }

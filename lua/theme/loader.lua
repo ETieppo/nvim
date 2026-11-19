@@ -11,7 +11,6 @@
 ---@field warningFg string
 ---@field warnBg string
 ---@field debugFg string
----@field debugBg string
 ---@field fg string
 ---@field fgDim string
 ---@field keyword string
@@ -23,7 +22,6 @@
 ---@field variable string
 ---@field constant string
 ---@field strings string
----@field stringAlt string
 ---@field builtin string
 ---@field comment string
 ---@field tag string

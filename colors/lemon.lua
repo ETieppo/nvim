@@ -9,7 +9,6 @@ local p = {
   ornamentInactiveFg = '#8a4020',
   ornamentInactiveBg = '#24120a',
 
-  -- Errors / Diagnostics
   errorFg = '#d15583',
   errorBg = '#1a0100',
   warningFg = '#b87a00',
@@ -19,12 +18,10 @@ local p = {
   hintFg = '#85d0b7',
   hintBg = '#0c1618',
   debugFg = '#a77bdb',
-  debugBg = '#160b24',
 
   fg = '#787c99',
   fgDim = '#303040',
 
-  -- Syntax — Core
   keyword = '#d4b81e',
   keywordAlt = '#c45a2a',
   func = '#4a7ac8',
@@ -35,7 +32,6 @@ local p = {
   constant = '#7a3a5a',
   builtin = '#d8d0ff',
   strings = '#03826b',
-  stringAlt = '#85d0b7',
   comment = '#3d4357',
   tag = '#86001c',
   tagAttr = '#556779',

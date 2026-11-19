@@ -63,7 +63,11 @@ lsp.record_lsp {
   filetypes = { lang_name },
   root_dir = function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
-    if vim.fs.root(fname, 'codeterraform-workspace.json') then return end
+    local codeterraform_config = vim.lsp.config.codeterraform
+    local codeterraform_markers = codeterraform_config
+        and codeterraform_config.root_markers
+      or {}
+    if vim.fs.root(fname, codeterraform_markers) then return end
     on_dir(vim.fs.root(fname, {
       'pyproject.toml',
       'setup.py',

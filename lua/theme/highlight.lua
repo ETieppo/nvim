@@ -15,7 +15,6 @@ function M.load(p)
     'a:Cursor',
   }
 
-  -- UI / Editor
   set(0, 'Cursor', { fg = p.keyword, bg = invert_color(p.keyword) })
   set(0, 'TermCursor', { reverse = true })
   set(0, 'WinSeparator', { fg = p.bg })
@@ -52,7 +51,6 @@ function M.load(p)
   set(0, 'FloatShadowThrough', { blend = 100 })
   set(0, 'Whitespace', { fg = p.bg2 })
 
-  -- notifications
   set(0, 'ToastBody', { fg = p.fg, bg = p.bg1 })
   set(0, 'ToastErrorBorder', { fg = p.errorFg, bg = p.bg1 })
   set(0, 'ToastErrorTitle', { fg = p.errorFg, bg = p.bg1, bold = true })
@@ -74,7 +72,6 @@ function M.load(p)
   set(0, 'MsgArea', { fg = p.fg, bg = p.bg })
   set(0, 'MsgSeparator', { fg = p.bg2, bg = p.bg })
 
-  -- Syntax (fallback sem Treesitter)
   set(0, 'Comment', { fg = p.comment, italic = true })
   set(0, 'Keyword', { fg = p.keyword })
   set(0, 'Identifier', { fg = p.fg })
@@ -122,7 +119,6 @@ function M.load(p)
   set(0, 'DiagnosticVirtualTextOk', { fg = p.hintFg, bg = p.hintBg })
   set(0, 'DiagnosticDeprecated', { strikethrough = true })
 
-  -- Git / Diff
   set(0, 'DiffAdd', { bg = p.hintBg })
   set(0, 'DiffDelete', { bg = p.errorBg })
   set(0, 'DiffChange', { bg = p.warnBg })
@@ -137,7 +133,6 @@ function M.load(p)
   set(0, 'GitSignsStagedChange', { fg = p.infoFg })
   set(0, 'GitSignsStagedDelete', { fg = p.errorFg })
 
-  -- LSP
   set(0, '@namespace', { fg = p.fg })
   set(0, '@constructor', { fg = p.types })
   set(0, '@parameter', { fg = p.keywordAlt })
@@ -286,7 +281,6 @@ function M.load(p)
   set(0, '@tag.attribute', { fg = p.tagAttr, italic = true })
   set(0, '@tag.delimiter', { fg = p.fg })
 
-  -- Neotest
   set(0, 'NeotestPassed', { fg = p.infoFg })
   set(0, 'NeotestFailed', { fg = p.errorFg })
   set(0, 'NeotestSkipped', { fg = p.keywordAlt })
@@ -298,7 +292,6 @@ function M.load(p)
   set(0, 'NeotestFile', { fg = p.fg })
   set(0, 'NeotestAdapterName', { fg = p.fg, bold = true })
 
-  -- Neo-tree
   set(0, 'NeoTreeNormal', { fg = p.fg, bg = p.bg })
   set(0, 'NeoTreeTitleBar', { fg = p.bg, bg = p.fg })
   set(0, 'NeoTreeFloatTitle', { fg = p.fg })
@@ -327,7 +320,6 @@ function M.load(p)
   set(0, 'NeoTreeTabSeparatorInactive', { fg = p.bg, bg = p.bg1 })
   set(0, 'NeoTreeModified', { fg = p.infoFg })
 
-  -- Telescope
   set(0, 'TelescopeBorder', { fg = p.bg1, bg = p.bg1 })
   set(0, 'TelescopePromptBorder', { fg = p.bg2, bg = p.bg2 })
   set(0, 'TelescopePromptNormal', { fg = p.fg, bg = p.bg2 })
@@ -350,7 +342,6 @@ function M.load(p)
   set(0, 'MusicPlaying', { fg = p.hintFg, bold = true })
   set(0, 'MusicSeparator', { fg = p.tag, bold = true })
 
-  -- DAP UI
   set(0, 'DapUINormalNC', { bg = p.bg1 })
   set(0, 'DapUIStepBackNC', { bg = p.bg1 })
   set(0, 'DapUIStepIntoNC', { bg = p.bg1 })
@@ -376,7 +367,6 @@ function M.load(p)
   set(0, 'DapBreak', { fg = p.errorFg })
   set(0, 'DapStop', { fg = p.fg })
 
-  -- Blink Cmp
   set(0, 'BlinkCmpKindDefault', { fg = p.fg })
   set(0, 'BlinkCmpKindSnippet', { fg = p.fg })
   set(0, 'BlinkCmpLabel', { fg = p.fg })
@@ -385,7 +375,6 @@ function M.load(p)
   set(0, 'BlinkCmpDoc', { fg = p.fg, bg = p.bg })
   set(0, 'BlinkCmpDocBorder', { fg = p.bg2, bg = p.bg })
 
-  -- slimline
   set(0, 'Slimline', { fg = p.fg, bg = p.bg })
   set(0, 'SlimlineInactive', { fg = p.fg, bg = p.bg })
   set(0, 'SlimlineModeNormal', { fg = p.keyword, bg = p.bg2, bold = true })
@@ -434,9 +423,6 @@ function M.load(p)
   set(0, 'SlimlineDiagnosticsHint', { fg = p.hintFg, bg = p.hintBg })
   set(0, 'SlimlineDiagnosticsHintSep', { fg = p.hintBg, bg = p.bg })
 
-  -- ============================================================================
-  -- Additional
-  -- ============================================================================
   set(0, 'Todo', { fg = p.bg, bg = p.infoFg })
   set(0, 'TodoFgTODO', { fg = p.infoFg })
   set(0, 'TodoFgFIX', { fg = p.errorFg })

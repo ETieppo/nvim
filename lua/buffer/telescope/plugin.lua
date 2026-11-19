@@ -1,7 +1,5 @@
 local plugins = require 'deps.plugins'
 local ripgrep = require 'utils.ripgrep'
----@type table<string, boolean>
-local disabled_arrow_mappings = {}
 
 plugins.record {
   'nvim-telescope/telescope.nvim',
@@ -19,10 +17,6 @@ plugins.record {
   config = function()
     require('telescope').setup {
       defaults = {
-        mappings = {
-          i = vim.deepcopy(disabled_arrow_mappings),
-          n = vim.deepcopy(disabled_arrow_mappings),
-        },
         vimgrep_arguments = ripgrep.build_command {
           '--color=never',
           '--no-heading',

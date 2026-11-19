@@ -1,7 +1,5 @@
 local plugins = require 'deps.plugins'
-
-local sign_char = '¦'
-local staged_char = '┆'
+local sign_chars = require 'layout.git.sign_chars'
 
 ---@class (partial) GitsignsSignProps : Gitsigns.SignConfig
 
@@ -117,20 +115,20 @@ plugins.record {
   ---@type GitsignsOptsProps
   opts = {
     signs = {
-      add = { text = sign_char },
-      change = { text = sign_char },
-      delete = { text = sign_char },
-      topdelete = { text = sign_char },
-      changedelete = { text = sign_char },
-      untracked = { text = sign_char },
+      add = { text = sign_chars.unstaged },
+      change = { text = sign_chars.unstaged },
+      delete = { text = sign_chars.unstaged },
+      topdelete = { text = sign_chars.unstaged },
+      changedelete = { text = sign_chars.unstaged },
+      untracked = { text = sign_chars.unstaged },
     },
     signs_staged = {
-      add = { text = staged_char },
-      change = { text = staged_char },
-      delete = { text = staged_char },
-      topdelete = { text = staged_char },
-      changedelete = { text = staged_char },
-      untracked = { text = staged_char },
+      add = { text = sign_chars.staged },
+      change = { text = sign_chars.staged },
+      delete = { text = sign_chars.staged },
+      topdelete = { text = sign_chars.staged },
+      changedelete = { text = sign_chars.staged },
+      untracked = { text = sign_chars.staged },
     },
   },
 }

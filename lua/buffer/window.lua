@@ -1,8 +1,10 @@
+local DatabaseFiletypeEnum =
+  require('layout.database_manager.enums').DatabaseFiletypeEnum
 local DASHBOARD_FILETYPE = 'snacks_dashboard'
 local DASHBOARD_CLOSING_FILETYPES = {
   'neo-tree',
-  'dbui',
-  'dbout',
+  DatabaseFiletypeEnum.drawer,
+  DatabaseFiletypeEnum.result,
 }
 local WINDOW_FOCUS_DIRECTIONS = {
   h = 'left',

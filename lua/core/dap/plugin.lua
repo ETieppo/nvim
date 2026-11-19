@@ -76,9 +76,6 @@ plugins.record {
     end
     dap.listeners.before.event_exited.dapui_config = function() dapui.close() end
 
-    vim.api.nvim_set_hl(0, 'DapBreak', { fg = '#e51400' })
-    vim.api.nvim_set_hl(0, 'DapStop', { fg = '#ffcc00' })
-
     local icons = {
       Breakpoint = '⫩',
       BreakpointCondition = 'ᚳ',

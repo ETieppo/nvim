@@ -1,3 +1,5 @@
+local DatabaseFiletypeEnum =
+  require('layout.database_manager.enums').DatabaseFiletypeEnum
 local IMAGE_FILETYPE = 'image'
 local AUTOSAVE_EVENTS = {
   'InsertLeave',
@@ -34,7 +36,8 @@ end
 ---@param buf integer
 ---@return boolean
 function M.is_database_buffer(buf)
-  return vim.bo[buf].filetype == 'dbout' or vim.b[buf].dbui_db_key_name ~= nil
+  return vim.bo[buf].filetype == DatabaseFiletypeEnum.result
+    or vim.b[buf].dbui_db_key_name ~= nil
 end
 
 ---@param buffer integer

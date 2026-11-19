@@ -4,10 +4,9 @@ local os_mod = require 'deps.sys'
 local profile = require 'deps.profile'
 local OsNameEnum = require('deps.enums').OsNameEnum
 
-local M = {}
-
----@type string
-local dep_user_command_name = 'Deps'
+local DEPS_USER_COMMAND_NAME = 'Deps'
+local HOMEBREW_INSTALL_COMMAND =
+  '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"'
 local SOLOIST_DOWNLOAD_URL =
   'https://soloist-builds.spotifycdn.com/soloist_release_%s.tar.gz'
 local SOLOIST_INSTALL_STEPS = {
@@ -35,13 +34,13 @@ local nvim_deps = {
     cmd = 'brew',
     supported_os = { OsNameEnum.linux },
     push_env_source = '/home/linuxbrew/.linuxbrew/bin',
-    install_command = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+    install_command = HOMEBREW_INSTALL_COMMAND,
   },
   {
     cmd = 'brew',
     supported_os = { OsNameEnum.macos },
     push_env_source = '/opt/homebrew/bin',
-    install_command = '/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"',
+    install_command = HOMEBREW_INSTALL_COMMAND,
   },
   { cmd = 'git' },
   { cmd = 'rg', install_command = 'ripgrep' },
@@ -92,7 +91,7 @@ end
 deps_mod.add_to_session_path(nvim_deps)
 
 deps_command.create_deps_user_command {
-  name = dep_user_command_name,
+  name = DEPS_USER_COMMAND_NAME,
   desc = 'Install minimal needed dependencies X_X',
   subcommands = {
     install = {
@@ -113,11 +112,9 @@ vim.api.nvim_create_autocmd('User', {
           title = 'Neovim setup',
           subject = 'Neovim',
           missing_deps = missing_deps,
-          install_command = ':' .. dep_user_command_name .. ' i',
+          install_command = ':' .. DEPS_USER_COMMAND_NAME .. ' i',
         }
       end
     )
   end,
 })
-
-return M

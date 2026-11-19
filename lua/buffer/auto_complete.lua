@@ -1,6 +1,8 @@
 local plugins = require 'deps.plugins'
 local profile_mod = require 'deps.profile'
 
+local snippets = profile_mod.is_max_profile() and { preset = 'luasnip' } or nil
+
 local function notify(msg, level)
   vim.schedule(
     function()
@@ -12,8 +14,6 @@ local function notify(msg, level)
     end
   )
 end
-
-local snippets = profile_mod.is_max_profile() and { preset = 'luasnip' } or nil
 
 ---@param fn function?
 local function print_to_notify(fn)
