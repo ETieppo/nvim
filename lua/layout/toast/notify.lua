@@ -14,11 +14,13 @@ local toast_renderer = require 'layout.toast.renderer'
 ---@field warn ToastLevelNotifierProps
 ---@field info ToastLevelNotifierProps
 ---@field debug ToastLevelNotifierProps
+---@field success ToastLevelNotifierProps
+---@field trace ToastLevelNotifierProps
 
 local ToastLevelEnum = toast_enums.ToastLevelEnum
 ---@type table<integer, ToastLevelEnum>
 local TOAST_LEVEL_BY_LOG_LEVEL = {
-  [vim.log.levels.TRACE] = ToastLevelEnum.debug,
+  [vim.log.levels.TRACE] = ToastLevelEnum.trace,
   [vim.log.levels.DEBUG] = ToastLevelEnum.debug,
   [vim.log.levels.INFO] = ToastLevelEnum.info,
   [vim.log.levels.WARN] = ToastLevelEnum.warn,
@@ -26,40 +28,46 @@ local TOAST_LEVEL_BY_LOG_LEVEL = {
 }
 
 ---@param message any
----@param level integer|nil
+---@param toast_level ToastLevelEnum
 ---@param opts ToastNotifyOptsProps|nil
-local function show_notification(message, level, opts)
-  if level == vim.log.levels.OFF then return end
+local function show_notification(message, toast_level, opts)
   opts = opts or {}
   toast_renderer.show {
     message = tostring(message),
-    level = TOAST_LEVEL_BY_LOG_LEVEL[level] or ToastLevelEnum.info,
+    level = toast_level,
     title = opts.title,
     id = opts.id,
     timeout = opts.timeout,
   }
 end
 
----@param level integer
+---@param toast_level ToastLevelEnum
 ---@return ToastLevelNotifierProps
-local function create_level_notifier(level)
-  return function(message, opts) show_notification(message, level, opts) end
+local function create_level_notifier(toast_level)
+  return function(message, opts) show_notification(message, toast_level, opts) end
 end
 
 ---@param _ ToastNotifierProps
 ---@param message any
----@param level integer|nil
+---@param log_level integer|nil
 ---@param opts ToastNotifyOptsProps|nil
-local function call_notifier(_, message, level, opts)
-  show_notification(message, level, opts)
+local function call_notifier(_, message, log_level, opts)
+  if log_level == vim.log.levels.OFF then return end
+  show_notification(
+    message,
+    TOAST_LEVEL_BY_LOG_LEVEL[log_level] or ToastLevelEnum.trace,
+    opts
+  )
 end
 
 ---@type ToastNotifierProps
 local M = {
-  error = create_level_notifier(vim.log.levels.ERROR),
-  warn = create_level_notifier(vim.log.levels.WARN),
-  info = create_level_notifier(vim.log.levels.INFO),
-  debug = create_level_notifier(vim.log.levels.DEBUG),
+  error = create_level_notifier(ToastLevelEnum.error),
+  warn = create_level_notifier(ToastLevelEnum.warn),
+  info = create_level_notifier(ToastLevelEnum.info),
+  debug = create_level_notifier(ToastLevelEnum.debug),
+  success = create_level_notifier(ToastLevelEnum.success),
+  trace = create_level_notifier(ToastLevelEnum.trace),
 }
 
 setmetatable(M, { __call = call_notifier })

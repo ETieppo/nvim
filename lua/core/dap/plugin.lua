@@ -22,7 +22,7 @@ plugins.record {
     {
       '<leader>dk',
       function()
-        vim.notify.info("dap has been killed")
+        vim.notify.info 'dap has been killed'
         require('dap').terminate()
         require('dapui').close()
       end,

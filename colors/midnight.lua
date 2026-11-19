@@ -14,6 +14,8 @@ local p = {
   infoBg = '#0f1c1b',
   hintFg = '#8abeb7',
   hintBg = '#0e1615',
+  debugFg = '#9b8fbf',
+  debugBg = '#13111a',
 
   fg = '#686868',
   fgDim = '#29292b',

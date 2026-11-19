@@ -18,6 +18,8 @@ local p = {
   infoBg = '#00262f',
   hintFg = '#85d0b7',
   hintBg = '#0c1618',
+  debugFg = '#a77bdb',
+  debugBg = '#160b24',
 
   fg = '#787c99',
   fgDim = '#303040',

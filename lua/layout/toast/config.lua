@@ -67,5 +67,17 @@ return {
       border_highlight = 'ToastDebugBorder',
       title_highlight = 'ToastDebugTitle',
     },
+    [ToastLevelEnum.success] = {
+      icon = 'SUCCESS',
+      body_highlight = 'ToastBody',
+      border_highlight = 'ToastSuccessBorder',
+      title_highlight = 'ToastSuccessTitle',
+    },
+    [ToastLevelEnum.trace] = {
+      icon = 'TRACE',
+      body_highlight = 'ToastBody',
+      border_highlight = 'ToastTraceBorder',
+      title_highlight = 'ToastTraceTitle',
+    },
   },
 }

@@ -4,7 +4,8 @@ local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 local DATA_DIRECTORY_PATTERN = '/data/'
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
-  error('Error cloning lazy.nvim:\n' .. vim.fn.system {
+  vim.notify.info 'No lazy.vim installed, installing...'
+  local clone_out = error('Error cloning lazy.nvim:\n' .. vim.fn.system {
     'git',
     'clone',
     '--filter=blob:none',
@@ -12,6 +13,11 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
     'https://github.com/folke/lazy.nvim.git',
     lazypath,
   })
+  if vim.v.shell_error ~= 0 then
+    error('Error cloning lazy.nvim:\n' .. clone_out)
+  else
+    vim.notify.success 'lazy.vim successfully installed!'
+  end
 end
 
 ---@type vim.Option
