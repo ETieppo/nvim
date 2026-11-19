@@ -1,6 +1,6 @@
 local async = require 'utils.async'
 local music_config = require 'layout.music.config'
-local storage = require 'layout.music.storage'
+local storage = require 'utils.storage'
 
 ---@class MusicCredentialsProps
 ---@field client_id string

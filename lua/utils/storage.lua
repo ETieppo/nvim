@@ -46,4 +46,14 @@ end
 ---@param path string
 function M.remove(path) vim.uv.fs_unlink(path) end
 
+---@param path string
+---@return string|nil
+function M.read_first_line(path)
+  local file = io.open(path, 'r')
+  if not file then return nil end
+  local line = file:read '*l'
+  file:close()
+  return line and vim.trim(line)
+end
+
 return M

@@ -1,5 +1,6 @@
 local toast_config = require 'layout.toast.config'
 local toast_enums = require 'layout.toast.enums'
+local uv_handle = require 'utils.uv_handle'
 
 ---@class ToastRequestProps
 ---@field message string
@@ -230,10 +231,7 @@ end
 
 ---@param toast ToastProps
 local function destroy_toast(toast)
-  if not toast.timer:is_closing() then
-    toast.timer:stop()
-    toast.timer:close()
-  end
+  uv_handle.close(toast.timer)
   if vim.api.nvim_win_is_valid(toast.window) then
     vim.api.nvim_win_close(toast.window, true)
   end

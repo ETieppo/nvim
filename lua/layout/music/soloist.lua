@@ -2,12 +2,11 @@ local async = require 'utils.async'
 local credentials = require 'layout.music.credentials'
 local music_config = require 'layout.music.config'
 local music_enums = require 'layout.music.enums'
-local storage = require 'layout.music.storage'
+local storage = require 'utils.storage'
 local websocket = require 'utils.websocket'
 
 ---@class SoloistStateProps
 ---@field connection WebSocketConnectionProps|nil
----@field is_connecting boolean
 ---@field is_logged_in boolean
 ---@field has_auth_state boolean
 ---@field has_warned_pairing boolean
@@ -42,7 +41,6 @@ local COMMAND_MESSAGE_TYPE = 'command'
 ---@type SoloistStateProps
 local state = {
   connection = nil,
-  is_connecting = false,
   is_logged_in = false,
   has_auth_state = false,
   has_warned_pairing = false,
@@ -52,34 +50,22 @@ local state = {
 }
 ---@type SoloistTrackListenerProps[]
 local track_listeners = {}
----@type fun(is_ready: boolean)[]
-local waiting_resolvers = {}
 ---@type fun()|nil
 local resolve_auth_state = nil
 
----@param path string
----@return string|nil
-local function read_first_line(path)
-  local file = io.open(path, 'r')
-  if not file then return nil end
-  local line = file:read '*l'
-  file:close()
-  return line and vim.trim(line)
-end
-
 ---@return SoloistEndpointProps|nil
 local function read_endpoint()
-  local port = tonumber(read_first_line(PORT_PATH) or '')
+  local port = tonumber(storage.read_first_line(PORT_PATH) or '')
   if not port then return nil end
 
-  local address = read_first_line(ADDRESS_PATH) or DEFAULT_HOST
+  local address = storage.read_first_line(ADDRESS_PATH) or DEFAULT_HOST
   local host = address:match(HOST_PORT_PATTERN) or address
   return { host = host ~= '' and host or DEFAULT_HOST, port = port }
 end
 
 ---@return integer|nil
 local function find_running_pid()
-  local pid = tonumber(read_first_line(PID_PATH) or '')
+  local pid = tonumber(storage.read_first_line(PID_PATH) or '')
   if pid and vim.uv.kill(pid, 0) == 0 then return pid end
   return nil
 end
@@ -298,27 +284,20 @@ end
 ---@async
 ---@param should_start boolean
 ---@return boolean
+local establish_connection = async.single_flight(function(should_start)
+  local is_connected = connect(should_start)
+  if is_connected then start_mpris_adapter() end
+  return is_connected
+end)
+
+---@async
+---@param should_start boolean
+---@return boolean
 local function ensure_connection(should_start)
   if state.connection and websocket.is_open(state.connection) then
     return true
   end
-  if state.is_connecting then
-    return async.await(
-      function(resolve) waiting_resolvers[#waiting_resolvers + 1] = resolve end
-    ) == true
-  end
-
-  state.is_connecting = true
-  local is_connected = connect(should_start)
-  state.is_connecting = false
-  if is_connected then start_mpris_adapter() end
-
-  local resolvers = waiting_resolvers
-  waiting_resolvers = {}
-  for _, resolve in ipairs(resolvers) do
-    resolve(is_connected)
-  end
-  return is_connected
+  return establish_connection(should_start) == true
 end
 
 ---@async

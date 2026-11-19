@@ -1,4 +1,5 @@
 local plugins = require 'deps.plugins'
+local uv_handle = require 'utils.uv_handle'
 
 ---@class SlimlineSpinnerProps
 ---@field tokens table<integer|string, boolean>
@@ -50,8 +51,7 @@ plugins.record {
 
     local function stop_timer()
       if spinner.timer then
-        spinner.timer:stop()
-        spinner.timer:close()
+        uv_handle.close(spinner.timer)
         spinner.timer = nil
         vim.cmd 'redrawstatus'
       end

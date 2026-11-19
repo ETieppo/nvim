@@ -4,6 +4,7 @@ local dap = require 'core.dap.registry'
 local fmt = require 'core.formatter.registry'
 local lang_deps = require 'core.lang.registry'
 local os_mod = require 'deps.sys'
+local storage = require 'utils.storage'
 local lang_name = require('utils.helpers').get_this_filename()
 
 ---@class CargoTargetProps
@@ -68,9 +69,8 @@ local function build_cargo_debug_program()
   }
   if not metadata then return nil end
 
-  local is_valid_json, cargo_metadata = pcall(vim.json.decode, metadata)
-  if not is_valid_json then return nil end
-  ---@cast cargo_metadata CargoMetadataProps
+  local cargo_metadata = storage.decode_json(metadata) --[[@as CargoMetadataProps|nil]]
+  if not cargo_metadata then return nil end
 
   for _, package in ipairs(cargo_metadata.packages or {}) do
     for _, target in ipairs(package.targets or {}) do

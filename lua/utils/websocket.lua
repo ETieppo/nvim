@@ -1,4 +1,5 @@
 local bit = require 'bit'
+local uv_handle = require 'utils.uv_handle'
 local WebSocketOpcodeEnum = require('utils.enums').WebSocketOpcodeEnum
 
 ---@class WebSocketHandlersProps
@@ -150,7 +151,7 @@ end
 local function close_connection(connection, reason)
   if connection.is_closed then return end
   connection.is_closed = true
-  if not connection.tcp:is_closing() then connection.tcp:close() end
+  uv_handle.close(connection.tcp)
   vim.schedule(function() connection.handlers.on_close(reason) end)
 end
 

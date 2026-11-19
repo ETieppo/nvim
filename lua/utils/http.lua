@@ -1,3 +1,4 @@
+local async = require 'utils.async'
 local HttpResponseDto = require('utils.dtos').HttpResponseDto
 
 ---@class HttpRequestProps
@@ -127,6 +128,13 @@ function M.request(request, on_response)
   if not ok then
     on_response(HttpResponseDto.failure(false, tostring(error_message)))
   end
+end
+
+---@async
+---@param request HttpRequestProps
+---@return HttpResponseDto
+function M.request_async(request)
+  return async.await(function(resolve) M.request(request, resolve) end) --[[@as HttpResponseDto]]
 end
 
 return M

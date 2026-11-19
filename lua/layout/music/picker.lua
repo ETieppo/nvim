@@ -4,6 +4,7 @@ local music_config = require 'layout.music.config'
 local player = require 'layout.music.player'
 local soloist = require 'layout.music.soloist'
 local telescope_picker = require 'buffer.telescope.picker'
+local uv_handle = require 'utils.uv_handle'
 local web_api = require 'layout.music.web_api'
 
 ---@class MusicTrackEntryValueProps
@@ -306,9 +307,10 @@ local function attach_catalog_search(prompt_bufnr, picker)
       timer:start(music_config.search_debounce_ms, 0, vim.schedule_wrap(search))
     end,
   })
-  telescope_picker.on_prompt_close(prompt_bufnr, function()
-    if not timer:is_closing() then timer:close() end
-  end)
+  telescope_picker.on_prompt_close(
+    prompt_bufnr,
+    function() uv_handle.close(timer) end
+  )
 end
 
 function M.open_library()

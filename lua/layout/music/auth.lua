@@ -2,9 +2,9 @@ local async = require 'utils.async'
 local credentials = require 'layout.music.credentials'
 local http = require 'utils.http'
 local music_config = require 'layout.music.config'
-local storage = require 'layout.music.storage'
+local storage = require 'utils.storage'
+local uv_handle = require 'utils.uv_handle'
 local HttpMethodEnum = require('utils.enums').HttpMethodEnum
-local HttpResponseDto = require('utils.dtos').HttpResponseDto
 local TokenDto = require('layout.music.dtos').TokenDto
 
 local M = {}
@@ -19,7 +19,6 @@ local LISTEN_BACKLOG = 8
 local REQUEST_TERMINATOR = '\r\n\r\n'
 local REQUEST_TARGET_PATTERN = '^GET (%S+)'
 local SUCCESS_PAGE = 'Spotify connected. You can close this tab.'
-local MISSING_RESPONSE = HttpResponseDto.failure(false, 'No token response')
 local CALLBACK_RESPONSE =
   'HTTP/1.1 %s\r\nContent-Type: text/plain\r\nContent-Length: %d\r\nConnection: close\r\n\r\n%s'
 local REDIRECT_URI = ('http://%s:%d%s'):format(
@@ -29,9 +28,6 @@ local REDIRECT_URI = ('http://%s:%d%s'):format(
 )
 ---@type TokenDto|nil
 local cached_token = nil
-local is_authorizing = false
----@type fun(access_token: string|nil)[]
-local waiting_resolvers = {}
 
 ---@param count integer
 ---@return string
@@ -71,9 +67,10 @@ end
 local function respond_to_callback(client, is_accepted)
   local body = is_accepted and SUCCESS_PAGE or ''
   local status = is_accepted and '200 OK' or '404 Not Found'
-  client:write(CALLBACK_RESPONSE:format(status, #body, body), function()
-    if not client:is_closing() then client:close() end
-  end)
+  client:write(
+    CALLBACK_RESPONSE:format(status, #body, body),
+    function() uv_handle.close(client) end
+  )
 end
 
 ---@async
@@ -85,8 +82,8 @@ local function await_authorization_code(expected_state)
     local timer = assert(vim.uv.new_timer())
 
     local function finish(code)
-      if not timer:is_closing() then timer:close() end
-      if not server:is_closing() then server:close() end
+      uv_handle.close(timer)
+      uv_handle.close(server)
       resolve(code)
     end
 
@@ -107,10 +104,7 @@ local function await_authorization_code(expected_state)
 
       local request = ''
       client:read_start(function(read_error, chunk)
-        if read_error or not chunk then
-          if not client:is_closing() then client:close() end
-          return
-        end
+        if read_error or not chunk then return uv_handle.close(client) end
         request = request .. chunk
         if not request:find(REQUEST_TERMINATOR, 1, true) then return end
 
@@ -135,15 +129,11 @@ end
 ---@return TokenDto|nil token
 ---@return HttpResponseDto response
 local function request_token(form, previous_refresh_token)
-  local response = async.await(
-    function(resolve)
-      http.request({
-        method = HttpMethodEnum.post,
-        url = TOKEN_URL,
-        form_body = form,
-      }, resolve)
-    end
-  ) or MISSING_RESPONSE
+  local response = http.request_async {
+    method = HttpMethodEnum.post,
+    url = TOKEN_URL,
+    form_body = form,
+  }
   local decoded = storage.decode_json(response.body)
   if not decoded then return nil, response end
   return TokenDto.from_api(decoded, previous_refresh_token), response
@@ -214,7 +204,7 @@ end
 
 ---@async
 ---@return TokenDto|nil
-local function authorize()
+local authorize = async.single_flight(function()
   cached_token = cached_token or storage.read_json(TOKEN_PATH) --[[@as TokenDto|nil]]
   if is_usable(cached_token) then return cached_token end
 
@@ -230,32 +220,16 @@ local function authorize()
   cached_token = token
   storage.write_json(TOKEN_PATH, token, true)
   return token
-end
+end)
 
 ---@async
 ---@return string|nil
 function M.get_access_token()
-  local current_token = cached_token
-  if current_token and is_usable(current_token) then
-    return current_token.access_token
+  if cached_token and is_usable(cached_token) then
+    return cached_token.access_token
   end
-  if is_authorizing then
-    return async.await(
-      function(resolve) waiting_resolvers[#waiting_resolvers + 1] = resolve end
-    )
-  end
-
-  is_authorizing = true
   local token = authorize()
-  local access_token = token and token.access_token
-  is_authorizing = false
-
-  local resolvers = waiting_resolvers
-  waiting_resolvers = {}
-  for _, resolve in ipairs(resolvers) do
-    resolve(access_token)
-  end
-  return access_token
+  return token and token.access_token
 end
 
 function M.invalidate()

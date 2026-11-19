@@ -32,6 +32,35 @@ function M.sleep(milliseconds)
   M.await(function(resolve) vim.defer_fn(resolve, milliseconds) end)
 end
 
+---@generic T
+---@param fn async fun(...): T
+---@return async fun(...): T
+function M.single_flight(fn)
+  local is_running = false
+  ---@type fun(value: any)[]
+  local waiting_resolvers = {}
+
+  return function(...)
+    if is_running then
+      return M.await(
+        function(resolve) waiting_resolvers[#waiting_resolvers + 1] = resolve end
+      )
+    end
+
+    is_running = true
+    local ok, result = pcall(fn, ...)
+    is_running = false
+
+    local resolvers = waiting_resolvers
+    waiting_resolvers = {}
+    for _, resolve in ipairs(resolvers) do
+      resolve(ok and result or nil)
+    end
+    if not ok then error(result, 0) end
+    return result
+  end
+end
+
 ---@param fn async fun(...)
 ---@param ... any
 function M.run(fn, ...)

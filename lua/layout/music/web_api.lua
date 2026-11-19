@@ -2,7 +2,7 @@ local async = require 'utils.async'
 local auth = require 'layout.music.auth'
 local http = require 'utils.http'
 local music_config = require 'layout.music.config'
-local storage = require 'layout.music.storage'
+local storage = require 'utils.storage'
 local HttpMethodEnum = require('utils.enums').HttpMethodEnum
 local HttpResponseDto = require('utils.dtos').HttpResponseDto
 local music_dtos = require 'layout.music.dtos'
@@ -65,17 +65,13 @@ function M.request(method, endpoint, options)
     local access_token = auth.get_access_token()
     if not access_token then return nil, UNAUTHENTICATED_RESPONSE end
 
-    response = async.await(
-      function(resolve)
-        http.request({
-          method = method,
-          url = API_BASE_URL .. endpoint,
-          query = request_options.query,
-          json_body = request_options.json_body,
-          headers = { Authorization = 'Bearer ' .. access_token },
-        }, resolve)
-      end
-    ) or UNAUTHENTICATED_RESPONSE
+    response = http.request_async {
+      method = method,
+      url = API_BASE_URL .. endpoint,
+      query = request_options.query,
+      json_body = request_options.json_body,
+      headers = { Authorization = 'Bearer ' .. access_token },
+    }
 
     if response.status == UNAUTHORIZED_STATUS and not has_refreshed_token then
       has_refreshed_token = true
