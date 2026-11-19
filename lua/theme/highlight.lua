@@ -347,6 +347,8 @@ function M.load(p)
   set(0, 'TelescopeSelection', { fg = 'NONE', bg = p.bg2 })
   set(0, 'TelescopePreviewLine', { fg = 'NONE', bg = p.ornamentActiveBg })
   set(0, 'TelescopeMatching', { fg = p.keyword, bold = true, italic = true })
+  set(0, 'MusicPlaying', { fg = p.hintFg, bold = true })
+  set(0, 'MusicSeparator', { fg = p.tag, bold = true })
 
   -- DAP UI
   set(0, 'DapUINormalNC', { bg = p.bg1 })

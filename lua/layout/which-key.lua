@@ -20,6 +20,8 @@ plugins.record {
       { '<leader>kc', group = 'card' },
       { '<leader>kd', group = 'date' },
       { '<leader>kl', group = 'list' },
+      { '<leader>m', group = '[M]usic' },
+      { '<leader>mt', group = '[M]usic [T]oggle' },
     },
   },
 }

@@ -1,11 +1,33 @@
 local deps_mod = require 'deps.deps_mod'
 local deps_command = require 'deps.commands'
+local os_mod = require 'deps.sys'
+local profile = require 'deps.profile'
 local OsNameEnum = require('deps.enums').OsNameEnum
 
 local M = {}
 
 ---@type string
 local dep_user_command_name = 'Deps'
+local SOLOIST_DOWNLOAD_URL =
+  'https://soloist-builds.spotifycdn.com/soloist_release_%s.tar.gz'
+local SOLOIST_INSTALL_STEPS = {
+  'dir=$(mktemp -d)',
+  'curl -fsSL -o "$dir/soloist.tar.gz" %s',
+  'tar -xzf "$dir/soloist.tar.gz" -C "$dir"',
+  'sudo install -m 755 "$dir/soloist" /usr/local/bin/soloist',
+  'rm -rf "$dir"',
+}
+local MPRIS_ADAPTER_INSTALL_COMMAND =
+  'cargo install --locked --path "$HOME/soloist_mpris_adapter" --root "$HOME/.local"'
+---@type table<string, table<string, string>>
+local SOLOIST_ARCHIVE_BY_OS_AND_MACHINE = {
+  [OsNameEnum.linux] = {
+    aarch64 = 'arm64',
+    armv7l = 'arm32',
+    x86_64 = 'x86_64',
+  },
+  [OsNameEnum.macos] = { arm64 = 'osx_arm64' },
+}
 
 ---@type DepProps[]
 local nvim_deps = {
@@ -41,6 +63,31 @@ local nvim_deps = {
     os = { unix = 'lldb', macos = 'llvm' },
   },
 }
+
+---@return DepProps[]
+local function build_max_profile_deps()
+  local archives = SOLOIST_ARCHIVE_BY_OS_AND_MACHINE[os_mod.get_name() or '']
+  local archive = archives and archives[vim.uv.os_uname().machine]
+  if not archive then return {} end
+
+  return {
+    {
+      cmd = 'soloist',
+      install_command = table
+        .concat(SOLOIST_INSTALL_STEPS, ' && ')
+        :format(SOLOIST_DOWNLOAD_URL:format(archive)),
+    },
+    {
+      cmd = 'soloist_mpris_adapter',
+      supported_os = { OsNameEnum.linux },
+      install_command = MPRIS_ADAPTER_INSTALL_COMMAND,
+    },
+  }
+end
+
+if profile.is_max_profile() then
+  vim.list_extend(nvim_deps, build_max_profile_deps())
+end
 
 deps_mod.add_to_session_path(nvim_deps)
 
