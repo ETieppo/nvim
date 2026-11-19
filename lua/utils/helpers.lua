@@ -67,4 +67,21 @@ function M.ensure_list(value)
   return { value }
 end
 
+---@param doc_dir string|nil
+---@param file_path string
+---@return string
+function M.format_filename_as_title(file_path, doc_dir)
+  file_path = doc_dir and file_path:sub(#doc_dir + 2) or file_path
+  local title = file_path
+    :gsub('/?index%.md$', '')
+    :gsub('%.md$', '')
+    :gsub('[/_-]', ' ')
+    :gsub(
+      '(%S)(%S*)',
+      function(first, rest) return first:upper() .. rest:lower() end
+    )
+  title = vim.trim(title)
+  return title ~= '' and title or 'Index'
+end
+
 return M

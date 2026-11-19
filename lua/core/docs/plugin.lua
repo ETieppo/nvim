@@ -1,33 +1,18 @@
 local plugins = require 'deps.plugins'
-local picker = require 'buffer.telescope.finder'
-
---- TODO: Refact it to be an helper
----@param doc_dir string
----@param file_path string
----@return string
-local function format_doc_title(doc_dir, file_path)
-  local title = file_path
-    :sub(#doc_dir + 2)
-    :gsub('/?index%.md$', '')
-    :gsub('%.md$', '')
-    :gsub('[/_-]', ' ')
-    :gsub(
-      '(%S)(%S*)',
-      function(first, rest) return first:upper() .. rest:lower() end
-    )
-  title = vim.trim(title)
-  return title ~= '' and title or 'Index'
-end
+local picker = require 'buffer.telescope.picker'
+local helpers = require 'utils.helpers'
 
 ---@param doc string
----@return picker.Source
+---@return Picker.Source
 local function doc_files(doc)
   local devdocs = require 'devdocs'
   local doc_dir = devdocs.GetDocDir(doc)
   return {
     prompt = ('Select Doc (%s)'):format(doc),
     items = devdocs.GetDoc(doc) or {},
-    format = function(file_path) return format_doc_title(doc_dir, file_path) end,
+    format = function(file_path)
+      return helpers.format_filename_as_title(file_path, doc_dir)
+    end,
   }
 end
 

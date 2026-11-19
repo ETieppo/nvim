@@ -1,54 +1,29 @@
+local async = require 'utils.async'
 local files = require 'buffer.files.helpers'
 
----@alias picker.Step fun(previous: any): any
+---@alias Picker.Step fun(previous: any): any
 
----@class picker.Source
+---@class Picker.Source
 ---@field prompt? string
 ---@field cwd? string
 ---@field items? string[]
 ---@field format? fun(item: string): string
----@field steps? picker.Step[]
+---@field steps? Picker.Step[]
 
----@class picker
----@field find fun(self: picker, source?: picker.Source|string): string|nil
----@field grep fun(self: picker, source?: picker.Source|string): string|nil
----@field readonly fun(self: picker, target: picker.Source|string): string|nil
+---@class Picker
+---@field find fun(self: Picker, source?: Picker.Source|string): string|nil
+---@field grep fun(self: Picker, source?: Picker.Source|string): string|nil
+---@field readonly fun(self: Picker, target: Picker.Source|string): string|nil
 local M = {}
-
----@return thread|nil
-local function current_coroutine()
-  local co, is_main = coroutine.running()
-  return not is_main and co or nil
-end
 
 ---@param fn async fun(argument: any): any
 ---@return function
 local function entry_point(fn)
   return function(receiver, argument)
     if receiver ~= M then argument = receiver end
-    if current_coroutine() then return fn(argument) end
+    if async.current_coroutine() then return fn(argument) end
     coroutine.wrap(fn)(argument)
   end
-end
-
----@async
----@generic T
----@param open fun(resolve: fun(value?: T))
----@return T|nil
-local function await(open)
-  local co = coroutine.running()
-  local settled = false
-
-  open(function(value)
-    if settled then return end
-    settled = true
-    vim.schedule(function()
-      local ok, err = coroutine.resume(co, value)
-      if not ok then vim.notify.error(debug.traceback(co, tostring(err))) end
-    end)
-  end)
-
-  return coroutine.yield()
 end
 
 ---@param prompt_bufnr integer
@@ -62,7 +37,7 @@ local function resolve_on_close(prompt_bufnr, resolve)
 end
 
 ---@async
----@param source picker.Source
+---@param source Picker.Source
 ---@return string|nil item
 local function pick_item(source)
   local prompt = source.prompt or 'Select'
@@ -76,7 +51,7 @@ local function pick_item(source)
   local sorted_items = vim.list_extend({}, source.items)
   table.sort(sorted_items)
 
-  return await(function(resolve)
+  return async.await(function(resolve)
     local actions = require 'telescope.actions'
     local item_picker = require('telescope.pickers').new({}, {
       prompt_title = prompt,
@@ -105,10 +80,10 @@ end
 
 ---@async
 ---@param builtin 'find_files'|'live_grep'
----@param source picker.Source
+---@param source Picker.Source
 ---@return string|nil path
 local function pick_file(builtin, source)
-  return await(function(resolve)
+  return async.await(function(resolve)
     require('telescope.builtin')[builtin] {
       cwd = source.cwd,
       prompt_title = source.prompt,
@@ -127,8 +102,8 @@ local function pick_file(builtin, source)
   end)
 end
 
----@param source picker.Source|string|nil
----@return picker.Source
+---@param source Picker.Source|string|nil
+---@return Picker.Source
 local function to_source(source)
   if type(source) == 'string' then return { cwd = source } end
   return source or {}
@@ -136,7 +111,7 @@ end
 
 ---@async
 ---@param selection any
----@param steps picker.Step[]|nil
+---@param steps Picker.Step[]|nil
 ---@return any
 local function run_steps(selection, steps)
   for _, step in ipairs(steps or {}) do
@@ -147,7 +122,7 @@ local function run_steps(selection, steps)
 end
 
 ---@async
----@param source picker.Source|string|nil
+---@param source Picker.Source|string|nil
 ---@return string|nil selection
 local function find(source)
   source = to_source(source)
@@ -156,7 +131,7 @@ local function find(source)
 end
 
 ---@async
----@param source picker.Source|string|nil
+---@param source Picker.Source|string|nil
 ---@return string|nil path
 local function grep(source)
   source = to_source(source)
@@ -164,7 +139,7 @@ local function grep(source)
 end
 
 ---@async
----@param target picker.Source|string
+---@param target Picker.Source|string
 ---@return string|nil path
 local function readonly(target)
   local path = target
