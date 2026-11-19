@@ -1,10 +1,148 @@
 local M = {}
 
+local TOAST_LEVEL_COLOR_KEYS = {
+  Error = 'errorFg',
+  Warn = 'warningFg',
+  Info = 'infoFg',
+  Debug = 'debugFg',
+  Success = 'hintFg',
+  Trace = 'comment',
+}
+local DIAGNOSTIC_SEVERITY_COLOR_KEYS = {
+  Error = { fg = 'errorFg', bg = 'errorBg' },
+  Warn = { fg = 'warningFg', bg = 'warnBg' },
+  Info = { fg = 'infoFg', bg = 'infoBg' },
+  Hint = { fg = 'hintFg', bg = 'hintBg' },
+  Ok = { fg = 'hintFg', bg = 'hintBg' },
+}
+local SLIMLINE_DIAGNOSTIC_SEVERITIES = { 'Error', 'Warn', 'Info', 'Hint' }
+local SLIMLINE_MODES =
+  { 'Normal', 'Insert', 'Visual', 'Replace', 'Command', 'Other' }
+local SLIMLINE_COMPONENTS = { 'Git', 'Path', 'Filetype_lsp' }
+local DAP_UI_INACTIVE_GROUPS = {
+  'DapUINormalNC',
+  'DapUIStepBackNC',
+  'DapUIStepIntoNC',
+  'DapUIStepOverNC',
+  'DapUIStepOutNC',
+  'DapUIRestartNC',
+  'DapUIPlayPauseNC',
+  'DapUIStopNC',
+  'DapUIUnavailableNC',
+}
+local TODO_KEYWORD_COLOR_KEYS = {
+  TODO = 'infoFg',
+  FIX = 'errorFg',
+  WARN = 'warningFg',
+  NOTE = 'keyword',
+  TEST = 'fg',
+  PERF = 'func',
+  HACK = 'keywordAlt',
+}
+
 local function invert_color(hex)
   local n = tonumber(hex:gsub('#', ''), 16)
   return string.format('#%06x', 0xFFFFFF - n)
 end
 
+---@param p ThemeProps
+local function set_toast_highlights(p)
+  for level, color_key in pairs(TOAST_LEVEL_COLOR_KEYS) do
+    local color = p[color_key]
+    vim.api.nvim_set_hl(
+      0,
+      'Toast' .. level .. 'Border',
+      { fg = color, bg = p.bg1 }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      'Toast' .. level .. 'Title',
+      { fg = color, bg = p.bg1, bold = true }
+    )
+  end
+end
+
+---@param p ThemeProps
+local function set_diagnostic_highlights(p)
+  for severity, color_keys in pairs(DIAGNOSTIC_SEVERITY_COLOR_KEYS) do
+    local fg, bg = p[color_keys.fg], p[color_keys.bg]
+    vim.api.nvim_set_hl(0, 'Diagnostic' .. severity, { fg = fg })
+    vim.api.nvim_set_hl(
+      0,
+      'DiagnosticUnderline' .. severity,
+      { undercurl = true, sp = fg }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      'DiagnosticVirtualText' .. severity,
+      { fg = fg, bg = bg }
+    )
+  end
+end
+
+---@param p ThemeProps
+local function set_dap_ui_inactive_highlights(p)
+  for _, group in ipairs(DAP_UI_INACTIVE_GROUPS) do
+    vim.api.nvim_set_hl(0, group, { bg = p.bg1 })
+  end
+end
+
+---@param p ThemeProps
+local function set_slimline_separator_highlights(p)
+  local separator = { fg = p.bg2, bg = p.bg }
+  local secondary_separator = { fg = p.bg2, bg = p.bg2 }
+
+  for _, mode in ipairs(SLIMLINE_MODES) do
+    vim.api.nvim_set_hl(0, 'SlimlineMode' .. mode .. 'Sep', separator)
+    vim.api.nvim_set_hl(
+      0,
+      'SlimlineMode' .. mode .. 'Sep2Sec',
+      secondary_separator
+    )
+  end
+  vim.api.nvim_set_hl(0, 'SlimlineModeSecondarySep', separator)
+
+  for _, component in ipairs(SLIMLINE_COMPONENTS) do
+    vim.api.nvim_set_hl(0, 'Slimline' .. component .. 'PrimarySep', separator)
+    vim.api.nvim_set_hl(
+      0,
+      'Slimline' .. component .. 'PrimarySep2Sec',
+      secondary_separator
+    )
+    vim.api.nvim_set_hl(0, 'Slimline' .. component .. 'SecondarySep', separator)
+  end
+
+  for _, severity in ipairs(SLIMLINE_DIAGNOSTIC_SEVERITIES) do
+    local color_keys = DIAGNOSTIC_SEVERITY_COLOR_KEYS[severity]
+    local fg, bg = p[color_keys.fg], p[color_keys.bg]
+    vim.api.nvim_set_hl(
+      0,
+      'SlimlineDiagnostics' .. severity,
+      { fg = fg, bg = bg }
+    )
+    vim.api.nvim_set_hl(
+      0,
+      'SlimlineDiagnostics' .. severity .. 'Sep',
+      { fg = bg, bg = p.bg }
+    )
+  end
+end
+
+---@param p ThemeProps
+local function set_todo_highlights(p)
+  for keyword, color_key in pairs(TODO_KEYWORD_COLOR_KEYS) do
+    local color = p[color_key]
+    vim.api.nvim_set_hl(0, 'TodoFg' .. keyword, { fg = color })
+    vim.api.nvim_set_hl(
+      0,
+      'TodoBg' .. keyword,
+      { fg = p.bg, bg = color, bold = true }
+    )
+    vim.api.nvim_set_hl(0, 'TodoSign' .. keyword, { fg = color })
+  end
+end
+
+---@param p ThemeProps
 function M.load(p)
   local set = vim.api.nvim_set_hl
 
@@ -52,18 +190,7 @@ function M.load(p)
   set(0, 'Whitespace', { fg = p.bg2 })
 
   set(0, 'ToastBody', { fg = p.fg, bg = p.bg1 })
-  set(0, 'ToastErrorBorder', { fg = p.errorFg, bg = p.bg1 })
-  set(0, 'ToastErrorTitle', { fg = p.errorFg, bg = p.bg1, bold = true })
-  set(0, 'ToastWarnBorder', { fg = p.warningFg, bg = p.bg1 })
-  set(0, 'ToastWarnTitle', { fg = p.warningFg, bg = p.bg1, bold = true })
-  set(0, 'ToastInfoBorder', { fg = p.infoFg, bg = p.bg1 })
-  set(0, 'ToastInfoTitle', { fg = p.infoFg, bg = p.bg1, bold = true })
-  set(0, 'ToastDebugBorder', { fg = p.debugFg, bg = p.bg1 })
-  set(0, 'ToastDebugTitle', { fg = p.debugFg, bg = p.bg1, bold = true })
-  set(0, 'ToastSuccessBorder', { fg = p.hintFg, bg = p.bg1 })
-  set(0, 'ToastSuccessTitle', { fg = p.hintFg, bg = p.bg1, bold = true })
-  set(0, 'ToastTraceBorder', { fg = p.comment, bg = p.bg1 })
-  set(0, 'ToastTraceTitle', { fg = p.comment, bg = p.bg1, bold = true })
+  set_toast_highlights(p)
   set(0, 'ErrorMsg', { fg = p.errorFg, bold = true })
   set(0, 'WarningMsg', { fg = p.warningFg })
   set(0, 'MoreMsg', { fg = p.infoFg })
@@ -102,21 +229,7 @@ function M.load(p)
   set(0, 'Italic', { italic = true })
   set(0, 'Directory', { fg = p.fg })
 
-  set(0, 'DiagnosticError', { fg = p.errorFg })
-  set(0, 'DiagnosticWarn', { fg = p.warningFg })
-  set(0, 'DiagnosticInfo', { fg = p.infoFg })
-  set(0, 'DiagnosticHint', { fg = p.hintFg })
-  set(0, 'DiagnosticOk', { fg = p.hintFg })
-  set(0, 'DiagnosticUnderlineError', { undercurl = true, sp = p.errorFg })
-  set(0, 'DiagnosticUnderlineWarn', { undercurl = true, sp = p.warningFg })
-  set(0, 'DiagnosticUnderlineInfo', { undercurl = true, sp = p.infoFg })
-  set(0, 'DiagnosticUnderlineHint', { undercurl = true, sp = p.hintFg })
-  set(0, 'DiagnosticUnderlineOk', { undercurl = true, sp = p.hintFg })
-  set(0, 'DiagnosticVirtualTextError', { fg = p.errorFg, bg = p.errorBg })
-  set(0, 'DiagnosticVirtualTextWarn', { fg = p.warningFg, bg = p.warnBg })
-  set(0, 'DiagnosticVirtualTextInfo', { fg = p.infoFg, bg = p.infoBg })
-  set(0, 'DiagnosticVirtualTextHint', { fg = p.hintFg, bg = p.hintBg })
-  set(0, 'DiagnosticVirtualTextOk', { fg = p.hintFg, bg = p.hintBg })
+  set_diagnostic_highlights(p)
   set(0, 'DiagnosticDeprecated', { strikethrough = true })
 
   set(0, 'DiffAdd', { bg = p.hintBg })
@@ -342,15 +455,7 @@ function M.load(p)
   set(0, 'MusicPlaying', { fg = p.hintFg, bold = true })
   set(0, 'MusicSeparator', { fg = p.tag, bold = true })
 
-  set(0, 'DapUINormalNC', { bg = p.bg1 })
-  set(0, 'DapUIStepBackNC', { bg = p.bg1 })
-  set(0, 'DapUIStepIntoNC', { bg = p.bg1 })
-  set(0, 'DapUIStepOverNC', { bg = p.bg1 })
-  set(0, 'DapUIStepOutNC', { bg = p.bg1 })
-  set(0, 'DapUIRestartNC', { bg = p.bg1 })
-  set(0, 'DapUIPlayPauseNC', { bg = p.bg1 })
-  set(0, 'DapUIStopNC', { bg = p.bg1 })
-  set(0, 'DapUIUnavailableNC', { bg = p.bg1 })
+  set_dap_ui_inactive_highlights(p)
   set(0, 'DapUIVariable', { fg = p.fg })
   set(0, 'DapUIValue', { fg = p.fg })
   set(0, 'DapUIModifiedValue', { fg = p.keyword, bold = true })
@@ -384,67 +489,18 @@ function M.load(p)
   set(0, 'SlimlineModeCommand', { fg = p.fg, bg = p.bg2, bold = true })
   set(0, 'SlimlineModeOther', { fg = p.fg, bg = p.bg2, bold = true })
   set(0, 'SlimlineModeSecondary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlineModeNormalSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeInsertSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeVisualSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeReplaceSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeCommandSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeOtherSep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeSecondarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineModeNormalSep2Sec', { fg = p.bg2, bg = p.bg2 })
-  set(0, 'SlimlineModeInsertSep2Sec', { fg = p.bg2, bg = p.bg2 })
-  set(0, 'SlimlineModeVisualSep2Sec', { fg = p.bg2, bg = p.bg2 })
-  set(0, 'SlimlineModeReplaceSep2Sec', { fg = p.bg2, bg = p.bg2 })
-  set(0, 'SlimlineModeCommandSep2Sec', { fg = p.bg2, bg = p.bg2 })
-  set(0, 'SlimlineModeOtherSep2Sec', { fg = p.bg2, bg = p.bg2 })
+  set_slimline_separator_highlights(p)
   set(0, 'SlimlineGitPrimary', { fg = p.warningFg, bg = p.bg2 })
-  set(0, 'SlimlineGitPrimarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineGitPrimarySep2Sec', { fg = p.bg2, bg = p.bg2 })
   set(0, 'SlimlineGitSecondary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlineGitSecondarySep', { fg = p.bg2, bg = p.bg })
   set(0, 'SlimlinePathPrimary', { fg = p.tag, bg = p.bg2 })
-  set(0, 'SlimlinePathPrimarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlinePathPrimarySep2Sec', { fg = p.bg2, bg = p.bg2 })
   set(0, 'SlimlinePathSecondary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlinePathSecondarySep', { fg = p.bg2, bg = p.bg })
   set(0, 'SlimlineFiletype_lspPrimary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlineFiletype_lspPrimarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineFiletype_lspPrimarySep2Sec', { fg = p.bg2, bg = p.bg2 })
   set(0, 'SlimlineFiletype_lspSecondary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlineFiletype_lspSecondarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineDiagnosticsError', { fg = p.errorFg, bg = p.errorBg })
-  set(0, 'SlimlineDiagnosticsWarn', { fg = p.warningFg, bg = p.warnBg })
   set(0, 'SlimlineDiagnosticsSecondary', { fg = p.fg, bg = p.bg2 })
-  set(0, 'SlimlineDiagnosticsErrorSep', { fg = p.errorBg, bg = p.bg })
-  set(0, 'SlimlineDiagnosticsWarnSep', { fg = p.warnBg, bg = p.bg })
-  set(0, 'SlimlineDiagnosticsInfoSep', { fg = p.infoBg, bg = p.bg })
   set(0, 'SlimlineDiagnosticsSecondarySep', { fg = p.bg2, bg = p.bg })
-  set(0, 'SlimlineDiagnosticsInfo', { fg = p.infoFg, bg = p.infoBg })
-  set(0, 'SlimlineDiagnosticsHint', { fg = p.hintFg, bg = p.hintBg })
-  set(0, 'SlimlineDiagnosticsHintSep', { fg = p.hintBg, bg = p.bg })
 
   set(0, 'Todo', { fg = p.bg, bg = p.infoFg })
-  set(0, 'TodoFgTODO', { fg = p.infoFg })
-  set(0, 'TodoFgFIX', { fg = p.errorFg })
-  set(0, 'TodoFgWARN', { fg = p.warningFg })
-  set(0, 'TodoFgNOTE', { fg = p.keyword })
-  set(0, 'TodoFgTEST', { fg = p.fg })
-  set(0, 'TodoFgPERF', { fg = p.func })
-  set(0, 'TodoFgHACK', { fg = p.keywordAlt })
-  set(0, 'TodoBgTODO', { fg = p.bg, bg = p.infoFg, bold = true })
-  set(0, 'TodoBgFIX', { fg = p.bg, bg = p.errorFg, bold = true })
-  set(0, 'TodoBgWARN', { fg = p.bg, bg = p.warningFg, bold = true })
-  set(0, 'TodoBgNOTE', { fg = p.bg, bg = p.keyword, bold = true })
-  set(0, 'TodoBgTEST', { fg = p.bg, bg = p.fg, bold = true })
-  set(0, 'TodoBgPERF', { fg = p.bg, bg = p.func, bold = true })
-  set(0, 'TodoBgHACK', { fg = p.bg, bg = p.keywordAlt, bold = true })
-  set(0, 'TodoSignTODO', { fg = p.infoFg })
-  set(0, 'TodoSignFIX', { fg = p.errorFg })
-  set(0, 'TodoSignWARN', { fg = p.warningFg })
-  set(0, 'TodoSignNOTE', { fg = p.keyword })
-  set(0, 'TodoSignTEST', { fg = p.fg })
-  set(0, 'TodoSignPERF', { fg = p.func })
-  set(0, 'TodoSignHACK', { fg = p.keywordAlt })
+  set_todo_highlights(p)
 
   set(0, 'SnacksImageMath', { fg = p.fg })
   set(0, 'SnacksIndent', { fg = p.fgDim })

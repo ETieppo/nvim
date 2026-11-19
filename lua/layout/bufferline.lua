@@ -1,6 +1,13 @@
 local plugins = require 'deps.plugins'
 local helpers = require 'utils.helpers'
 
+---@class BufferlineElementProps
+---@field name string
+---@field base_name? string
+---@field base? table
+---@field visible? table
+---@field selected? table
+
 ---@class DiagnosticIndicatorIconProps
 ---@field severity string
 ---@field icon string
@@ -14,6 +21,61 @@ local DIAGNOSTIC_INDICATOR_ICONS = {
 local SELECTED_BUFFER_BACKGROUND = {
   bg = { attribute = 'bg', highlight = 'BufferLineBufferSelected' },
 }
+local DIAGNOSTIC_SEVERITIES = { 'error', 'warning', 'info', 'hint' }
+local BOLD = { bold = true }
+local ITALIC = { italic = true }
+local BOLD_ITALIC = { bold = true, italic = true }
+
+---@return BufferlineElementProps[]
+local function list_elements()
+  ---@type BufferlineElementProps[]
+  local elements = {
+    {
+      name = 'buffer',
+      base_name = 'background',
+      base = BOLD,
+      selected = BOLD_ITALIC,
+    },
+    { name = 'duplicate', base = ITALIC, visible = ITALIC, selected = ITALIC },
+    { name = 'close_button' },
+    { name = 'modified' },
+  }
+  for _, severity in ipairs(DIAGNOSTIC_SEVERITIES) do
+    table.insert(
+      elements,
+      { name = severity, base = BOLD, selected = BOLD_ITALIC }
+    )
+    table.insert(
+      elements,
+      { name = severity .. '_diagnostic', selected = ITALIC }
+    )
+  end
+  return elements
+end
+
+---@param p ThemeProps
+---@return table<string, table>
+local function build_highlights(p)
+  local inactive = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg }
+  local active = { fg = p.ornamentActiveFg, bg = p.ornamentActiveBg }
+  local highlights = {
+    fill = { bg = p.bg },
+    separator = { fg = p.bg, bg = p.ornamentInactiveBg },
+    separator_visible = { fg = p.bg, bg = p.ornamentInactiveBg },
+    separator_selected = { fg = p.bg, bg = p.ornamentActiveBg },
+    indicator_selected = vim.deepcopy(active),
+  }
+
+  for _, element in ipairs(list_elements()) do
+    highlights[element.base_name or element.name] =
+      vim.tbl_extend('force', inactive, element.base or {})
+    highlights[element.name .. '_visible'] =
+      vim.tbl_extend('force', inactive, element.visible or {})
+    highlights[element.name .. '_selected'] =
+      vim.tbl_extend('force', active, element.selected or {})
+  end
+  return highlights
+end
 
 helpers.set_alt_and_cmd_keymap(
   'n',
@@ -78,166 +140,6 @@ plugins.record {
 
     if not p then return { options = options } end
 
-    return {
-      options = options,
-      highlights = {
-        fill = { bg = p.bg },
-        background = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          bold = true,
-        },
-        buffer_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        buffer_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          bold = true,
-          italic = true,
-        },
-        duplicate = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          italic = true,
-        },
-        duplicate_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          italic = true,
-        },
-        duplicate_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          italic = true,
-        },
-        separator = { fg = p.bg, bg = p.ornamentInactiveBg },
-        separator_visible = { fg = p.bg, bg = p.ornamentInactiveBg },
-        separator_selected = { fg = p.bg, bg = p.ornamentActiveBg },
-        close_button = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
-        close_button_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        close_button_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-        },
-        modified = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
-        modified_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        modified_selected = { fg = p.ornamentActiveFg, bg = p.ornamentActiveBg },
-        indicator_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-        },
-        error = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          bold = true,
-        },
-        error_visible = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
-        error_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          bold = true,
-          italic = true,
-        },
-        error_diagnostic = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        error_diagnostic_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        error_diagnostic_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          italic = true,
-        },
-        warning = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          bold = true,
-        },
-        warning_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        warning_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          bold = true,
-          italic = true,
-        },
-        warning_diagnostic = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        warning_diagnostic_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        warning_diagnostic_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          italic = true,
-        },
-        info = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          bold = true,
-        },
-        info_visible = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
-        info_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          bold = true,
-          italic = true,
-        },
-        info_diagnostic = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        info_diagnostic_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        info_diagnostic_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          italic = true,
-        },
-        hint = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-          bold = true,
-        },
-        hint_visible = { fg = p.ornamentInactiveFg, bg = p.ornamentInactiveBg },
-        hint_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          bold = true,
-          italic = true,
-        },
-        hint_diagnostic = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        hint_diagnostic_visible = {
-          fg = p.ornamentInactiveFg,
-          bg = p.ornamentInactiveBg,
-        },
-        hint_diagnostic_selected = {
-          fg = p.ornamentActiveFg,
-          bg = p.ornamentActiveBg,
-          italic = true,
-        },
-      },
-    }
+    return { options = options, highlights = build_highlights(p) }
   end,
 }

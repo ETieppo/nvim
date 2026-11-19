@@ -36,22 +36,20 @@ local apply_langs = {
   { suffix = 'ts', icon_prefix = 'Nest', icon = '\u{E83B}' },
 }
 
+local KOF_ICON = {
+  icon = '\u{100001}',
+  color = '#FFFFFF',
+  name = 'Kof',
+}
+
 local custom_icons = {
   tl = {
     icon = '\u{100000}',
     color = '#00B1BC',
     name = 'Teal',
   },
-  kof = {
-    icon = '\u{100001}',
-    color = '#FFFFFF',
-    name = 'Kf',
-  },
-  kf = {
-    icon = '\u{100001}',
-    color = '#FFFFFF',
-    name = 'Kof',
-  },
+  kof = KOF_ICON,
+  kf = KOF_ICON,
   ['ng-template'] = {
     icon = '\u{E83B}',
     color = '#E63936',
