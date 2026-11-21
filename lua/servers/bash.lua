@@ -17,7 +17,7 @@ deps.record_lang_deps {
 
 lsp.record_lsp {
   cmd = { 'bash-language-server', 'start' },
-  filetypes = { lang_name, 'sh', 'zsh' },
+  filetypes = { lang_name, 'sh' },
   root_markers = { '.git' },
   settings = {
     bashIde = {
