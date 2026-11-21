@@ -8,7 +8,10 @@ plugins.record {
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lint = require 'lint'
-    lint.linters_by_ft = linters
+    lint.linters_by_ft = linters.linkers
+    for linter_name, linter_config in pairs(linters.configs) do
+      lint.linters[linter_name] = linter_config
+    end
 
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
