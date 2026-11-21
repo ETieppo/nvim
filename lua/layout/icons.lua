@@ -1,5 +1,20 @@
 local plugins = require 'deps.plugins'
 
+---@class IconOverwriteProps
+---@field file_type string
+---@field color string
+
+---@class IconLangDefinition
+---@field icon_prefix string
+---@field suffix string
+---@field icon string
+
+---@class CustomIconDefinition
+---@field icon string
+---@field color string
+---@field name string
+
+---@type IconOverwriteProps[]
 local type_colors = {
   { file_type = 'adapter', color = '#8D6E63' },
   { file_type = 'component', color = '#1976D3' },
@@ -8,6 +23,8 @@ local type_colors = {
   { file_type = 'decorator', color = '#C0CA33' },
   { file_type = 'directive', color = '#AB48BC' },
   { file_type = 'dto', color = '#9CCC65' },
+  { file_type = 'const', color = '#9A5B13' },
+  { file_type = 'enum', color = '#4F46E5' },
   { file_type = 'entity', color = '#BCAAA4' },
   { file_type = 'event', color = '#F06292' },
   { file_type = 'exception', color = '#FF8A80' },
@@ -17,9 +34,11 @@ local type_colors = {
   { file_type = 'interceptor', color = '#26A69A' },
   { file_type = 'interface', color = '#90A4AE' },
   { file_type = 'listener', color = '#F48FB1' },
+  { file_type = 'plugin', color = '#8B5CF6' },
   { file_type = 'middleware', color = '#7E57C2' },
   { file_type = 'module', color = '#E63936' },
   { file_type = 'mod', color = '#E63936' },
+  { file_type = 'init', color = '#E63936' },
   { file_type = 'pipe', color = '#FF7043' },
   { file_type = 'processor', color = '#FFB74D' },
   { file_type = 'provider', color = '#FFE082' },
@@ -31,9 +50,11 @@ local type_colors = {
   { file_type = 'subscriber', color = '#4DD0E1' },
 }
 
+---@type IconLangDefinition[]
 local apply_langs = {
   { suffix = 'rs', icon_prefix = 'Rust', icon = '\u{E68B}' },
   { suffix = 'ts', icon_prefix = 'Nest', icon = '\u{E83B}' },
+  { suffix = 'lua', icon_prefix = 'Lua', icon = '\u{E620}' },
 }
 
 local KOF_ICON = {
@@ -42,6 +63,7 @@ local KOF_ICON = {
   name = 'Kof',
 }
 
+---@type CustomIconDefinition[]
 local custom_icons = {
   tl = {
     icon = '\u{100000}',
@@ -56,6 +78,23 @@ local custom_icons = {
     name = 'NestTemplate',
   },
 }
+
+local function pad_devicons(devicons)
+  local padded_icons = {}
+  for name, icon_props in pairs(devicons.get_icons()) do
+    if type(name) == 'string' then
+      padded_icons[name] =
+        vim.tbl_extend('force', icon_props, { icon = icon_props.icon .. ' ' })
+    end
+  end
+  devicons.set_icon(padded_icons)
+  local default_icon = devicons.get_default_icon()
+  devicons.set_default_icon(
+    default_icon.icon .. ' ',
+    default_icon.color,
+    default_icon.cterm_color
+  )
+end
 
 local function build_language_icons()
   local icons = {}
@@ -88,5 +127,10 @@ plugins.record {
         custom_icons
       ),
     }
+  end,
+  config = function(_, opts)
+    local devicons = require 'nvim-web-devicons'
+    devicons.setup(opts)
+    pad_devicons(devicons)
   end,
 }
