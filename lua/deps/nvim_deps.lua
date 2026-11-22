@@ -33,13 +33,13 @@ local nvim_deps = {
   {
     cmd = 'brew',
     supported_os = { OsNameEnum.linux },
-    push_env_source = '/home/linuxbrew/.linuxbrew/bin',
+    push_to_path = '/home/linuxbrew/.linuxbrew/bin',
     install_command = HOMEBREW_INSTALL_COMMAND,
   },
   {
     cmd = 'brew',
     supported_os = { OsNameEnum.macos },
-    push_env_source = '/opt/homebrew/bin',
+    push_to_path = '/opt/homebrew/bin',
     install_command = HOMEBREW_INSTALL_COMMAND,
   },
   { cmd = 'git' },
@@ -60,6 +60,13 @@ local nvim_deps = {
     cmd = 'lldb-dap',
     install_command = 'llvm',
     os = { unix = 'lldb', macos = 'llvm' },
+  },
+  {
+    cmd = 'pixterm',
+    depends_on = 'go',
+    push_env = 'export GOPATH="$HOME/.go"',
+    push_to_path = '.go/bin',
+    install_command = 'go install github.com/eliukblau/pixterm/cmd/pixterm@latest',
   },
 }
 

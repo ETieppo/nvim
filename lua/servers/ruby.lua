@@ -10,7 +10,7 @@ lang_deps.record_lang_deps {
     {
       cmd = 'ruby',
       min_version = '3',
-      push_env_source = '.rbenv/shims',
+      push_to_path = '.rbenv/shims',
       os = {
         unix = 'rbenv install -s ruby && rbenv global "$(ruby-build --resolve ruby)"',
       },

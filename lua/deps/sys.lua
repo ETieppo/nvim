@@ -11,6 +11,10 @@ local os_name = sysname == 'Darwin' and OsNameEnum.macos
 
 local path_separator = package.config:sub(1, 1)
 local path_list_separator = os_name == OsNameEnum.windows and ';' or ':'
+local inherited_path = vim.env.PATH or ''
+
+---@type table<string, boolean>|nil
+local inherited_path_entries
 
 ---@type table<string, string|false>
 local resolved_executables = {}
@@ -82,15 +86,29 @@ function M.clear_cache() resolved_executables = {} end
 
 ---@param dir string
 ---@return boolean
+function M.is_in_inherited_path(dir)
+  if not inherited_path_entries then
+    inherited_path_entries = {}
+    for _, entry in
+      ipairs(vim.split(inherited_path, path_list_separator, { plain = true }))
+    do
+      inherited_path_entries[vim.fs.normalize(entry)] = true
+    end
+  end
+  return inherited_path_entries[vim.fs.normalize(dir)] == true
+end
+
+---@param dir string
+---@return boolean
 function M.add_to_path(dir)
   if vim.fn.isdirectory(dir) == 0 then return false end
-
   local current_path = vim.env.PATH or ''
   local entries = vim.split(current_path, path_list_separator, { plain = true })
-  if vim.list_contains(entries, dir) then return false end
 
+  if vim.list_contains(entries, dir) then return false end
   vim.env.PATH = current_path == '' and dir
     or dir .. path_list_separator .. current_path
+
   M.clear_cache()
   return true
 end

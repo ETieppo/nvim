@@ -28,7 +28,7 @@ deps.record_lang_deps {
     {
       cmd = 'roslyn-language-server',
       install_command = 'dotnet tool install --global roslyn-language-server --prerelease',
-      push_env_source = '.dotnet/tools',
+      push_to_path = '.dotnet/tools',
     },
   },
 }

@@ -11,7 +11,7 @@ deps.record_lang_deps {
     {
       cmd = 'gopls',
       install_command = 'go install golang.org/x/tools/gopls@latest',
-      push_env_source = 'go/bin',
+      push_to_path = '.go/bin',
     },
     { cmd = 'dlv', install_command = 'delve' },
   },

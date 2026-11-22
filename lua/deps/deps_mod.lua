@@ -31,7 +31,8 @@ local InstallPlanDto = require('deps.dtos').InstallPlanDto
 ---@field os? OsInstructionProps
 ---@field depends_on? string
 ---@field min_version? string
----@field push_env_source? string
+---@field push_env? string
+---@field push_to_path? string
 ---@field release? ReleaseProps
 ---@field supported_os? OsNameEnum[]
 
@@ -139,13 +140,22 @@ local function is_installed(dep, environment)
   return version ~= nil and not vim.version.lt(version, dep.min_version)
 end
 
+---@param references string[]|nil
+---@param shell Shell
+---@return boolean
+local function lacks_rc_entry(references, shell)
+  return references ~= nil
+    and shell.rc_file ~= nil
+    and not shell:has_rc_entry(references)
+end
+
 ---@param source string|nil
 ---@param shell Shell
 ---@return boolean
 local function lacks_path_export(source, shell)
   return source ~= nil
-    and shell.rc_file ~= nil
-    and not shell:has_path_export(source)
+    and not os_mod.is_in_inherited_path(os_mod.expand_home_path(source))
+    and lacks_rc_entry(shell.get_path_references(source), shell)
 end
 
 ---@param cmd string
@@ -230,8 +240,10 @@ function M.find_missing(deps, environment)
     ---@param dep DepProps
     ---@return boolean
     function(dep)
+      local shell = active_environment.shell
       return not is_installed(dep, active_environment)
-        or lacks_path_export(dep.push_env_source, active_environment.shell)
+        or lacks_path_export(dep.push_to_path, shell)
+        or lacks_rc_entry(dep.push_env and { dep.push_env }, shell)
     end,
     filter_supported(deps, active_environment.os_name)
   )
@@ -240,8 +252,8 @@ end
 ---@param deps DepProps[]
 function M.add_to_session_path(deps)
   for _, dep in ipairs(filter_supported(deps, os_mod.get_name())) do
-    if dep.push_env_source then
-      os_mod.add_to_path(os_mod.expand_home_path(dep.push_env_source))
+    if dep.push_to_path then
+      os_mod.add_to_path(os_mod.expand_home_path(dep.push_to_path))
     end
     if dep.release then
       os_mod.add_to_path(
@@ -261,29 +273,43 @@ function M.plan(deps, environment)
   local plan = InstallPlanDto.new()
   local shell = environment.shell
   ---@type table<string, boolean>
-  local exported_sources = {}
+  local exported_entries = {}
 
   for _, dep in ipairs(filter_supported(deps, environment.os_name)) do
-    local command, package_manager = nil, nil
+    local install_command, package_manager = nil, nil
     local installed = is_installed(dep, environment)
     if not installed then
-      command, package_manager = build_install_command(dep, environment)
+      install_command, package_manager =
+        build_install_command(dep, environment)
     end
 
-    local source = dep.push_env_source
-    local exports_path = not exported_sources[source or '']
-      and lacks_path_export(source, shell)
+    local label = (dep.lang or dep.cmd):upper()
+    local env_line, path_source = dep.push_env, dep.push_to_path
+    local reachable = installed or install_command ~= nil
+    local exports_env = reachable
+      and not exported_entries[env_line or '']
+      and lacks_rc_entry(env_line and { env_line }, shell)
+    local exports_path = reachable
+      and not exported_entries[path_source or '']
+      and lacks_path_export(path_source, shell)
+    ---@type string[]
+    local steps = {}
 
-    if source and shell.rc_file and (command or installed and exports_path) then
-      exported_sources[source] = true
-      command = shell:append_env_source(
-        command,
-        source,
-        (dep.lang or dep.cmd):upper(),
-        exports_path
-      )
+    if exports_env then
+      exported_entries[env_line] = true
+      table.insert(steps, shell:build_rc_append(label, env_line))
+      table.insert(steps, shell:build_rc_source())
+    end
+    if install_command then table.insert(steps, install_command) end
+    if exports_path then
+      exported_entries[path_source] = true
+      table.insert(steps, shell:build_path_export(label, path_source))
+    end
+    if path_source and shell.rc_file and (install_command or exports_path) then
+      table.insert(steps, shell:build_rc_source())
     end
 
+    local command = #steps > 0 and shell:chain(steps) or nil
     if command then
       table.insert(plan.commands, command)
       plan.uses_package_manager = plan.uses_package_manager

@@ -10,7 +10,7 @@ lang_deps.record_lang_deps {
   deps = {
     {
       cmd = 'qmlls6',
-      push_env_source = '/usr/lib/qt6/bin',
+      push_to_path = '/usr/lib/qt6/bin',
       os = { linux = 'qt6-languageserver' },
     },
     {
