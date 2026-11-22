@@ -1,7 +1,18 @@
+require 'layout.toast.notify'
 local lsp = require 'core.lsp.registry'
 local plugins = require 'deps.plugins'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 local DATA_DIRECTORY_PATTERN = '/data/'
+local min_nvim_version = 11
+
+if vim.version().minor < min_nvim_version then
+  print(
+    'Nvim version not supported (>='
+      .. min_nvim_version
+      .. ')\nCowardly refusing to boot'
+  )
+  return
+end
 
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.notify.info 'No lazy.vim installed, installing...'

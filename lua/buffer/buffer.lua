@@ -105,7 +105,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     'highlight-yanked-text',
     { clear = true }
   ),
-  callback = function() vim.hl.hl_op { timeout = 300 } end,
+  callback = function()
+    -- TODO:
+    -- HACK: remove when 0.13 get stable
+    if vim.version().minor < 13 then
+      vim.hl.on_yank { timeout = 300 }
+    else
+      vim.hl.hl_op { timeout = 300 }
+    end
+  end,
 })
 
 return M

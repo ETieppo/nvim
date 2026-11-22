@@ -46,6 +46,7 @@ vim.opt.relativenumber = true
 vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
 vim.opt.fillchars:append 'eob: '
 vim.opt.shortmess:append 'W'
+-- vim.opt.messagesopt:append 'timeout:4000'
 
 vim.cmd 'syntax on'
 vim.cmd 'filetype plugin indent on'
