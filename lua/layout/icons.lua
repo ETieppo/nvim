@@ -81,19 +81,12 @@ local custom_icons = {
 
 local function pad_devicons(devicons)
   local padded_icons = {}
-  for name, icon_props in pairs(devicons.get_icons()) do
-    if type(name) == 'string' then
-      padded_icons[name] =
-        vim.tbl_extend('force', icon_props, { icon = icon_props.icon .. ' ' })
+  for _, icon_props in pairs(devicons.get_icons()) do
+    if not padded_icons[icon_props] then
+      icon_props.icon = icon_props.icon .. ' '
+      padded_icons[icon_props] = true
     end
   end
-  devicons.set_icon(padded_icons)
-  local default_icon = devicons.get_default_icon()
-  devicons.set_default_icon(
-    default_icon.icon .. ' ',
-    default_icon.color,
-    default_icon.cterm_color
-  )
 end
 
 local function build_language_icons()

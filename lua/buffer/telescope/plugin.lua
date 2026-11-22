@@ -13,7 +13,18 @@ plugins.record {
     },
   },
   enabled = true,
-  event = 'VeryLazy',
+  lazy = true,
+  init = function()
+    local native_select = vim.ui.select
+    local function select_after_loading_telescope(...)
+      require('lazy').load { plugins = { 'telescope.nvim' } }
+      if vim.ui.select == select_after_loading_telescope then
+        rawset(vim.ui, 'select', native_select)
+      end
+      return vim.ui.select(...)
+    end
+    rawset(vim.ui, 'select', select_after_loading_telescope)
+  end,
   config = function()
     require('telescope').setup {
       defaults = {
