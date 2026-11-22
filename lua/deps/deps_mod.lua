@@ -279,8 +279,7 @@ function M.plan(deps, environment)
     local install_command, package_manager = nil, nil
     local installed = is_installed(dep, environment)
     if not installed then
-      install_command, package_manager =
-        build_install_command(dep, environment)
+      install_command, package_manager = build_install_command(dep, environment)
     end
 
     local label = (dep.lang or dep.cmd):upper()

@@ -304,9 +304,7 @@ end
 ---@async
 ---@param uris string[]
 ---@return boolean
-function M.save_to_library(uris)
-  return change_library(HttpMethodEnum.put, uris)
-end
+function M.save_to_library(uris) return change_library(HttpMethodEnum.put, uris) end
 
 ---@async
 ---@param uris string[]

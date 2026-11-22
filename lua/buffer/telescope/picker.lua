@@ -52,8 +52,7 @@ end
 ---@return table
 local function create_entry(source, item)
   local label = (source.format or tostring)(item)
-  local display = source.display
-      and function() return source.display(item) end
+  local display = source.display and function() return source.display(item) end
     or label
   return { value = item, display = display, ordinal = label }
 end
