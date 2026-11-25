@@ -33,6 +33,7 @@ lang_deps.record_lang_deps {
     { cmd = 'rustup' },
     {
       cmd = 'cargo',
+      push_to_path = '.cargo/bin',
       install_command = 'rustup toolchain install stable',
     },
     {
