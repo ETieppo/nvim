@@ -102,7 +102,7 @@ plugins.record {
   'akinsho/bufferline.nvim',
   version = '*',
   dependencies = { 'DaikyXendo/nvim-material-icon' },
-  event = 'VeryLazy',
+  event = { 'User SnacksDashboardClosed', 'BufReadPost', 'BufNewFile' },
   opts = function()
     local p = require('theme.loader').get_theme_colors()
     ---@cast p -nil
