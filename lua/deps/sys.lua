@@ -26,6 +26,9 @@ function M.get_name() return os_name end
 function M.is_macos() return os_name == OsNameEnum.macos end
 
 ---@return boolean
+function M.is_linux() return os_name == OsNameEnum.linux end
+
+---@return boolean
 function M.is_windows() return os_name == OsNameEnum.windows end
 
 ---@param path string
