@@ -32,7 +32,7 @@ local InstallPlanDto = require('deps.dtos').InstallPlanDto
 ---@field depends_on? string
 ---@field min_version? string
 ---@field push_env? string
----@field push_to_path? string
+---@field push_to_path? string|OsInstructionProps
 ---@field release? ReleaseProps
 ---@field supported_os? OsNameEnum[]
 
@@ -231,6 +231,13 @@ local function build_install_command(dep, environment)
     resolution.package_manager
 end
 
+---@param input string|OsInstructionProps|nil
+---@return string|nil
+local function get_extracted_env_path(input)
+  if not input or type(input) == 'string' then return input end
+  return input[os_mod.get_name()]
+end
+
 ---@param deps DepProps[]
 ---@param environment? InstallEnvironmentProps
 ---@return DepProps[]
@@ -242,7 +249,7 @@ function M.find_missing(deps, environment)
     function(dep)
       local shell = active_environment.shell
       return not is_installed(dep, active_environment)
-        or lacks_path_export(dep.push_to_path, shell)
+        or lacks_path_export(get_extracted_env_path(dep.push_to_path), shell)
         or lacks_rc_entry(dep.push_env and { dep.push_env }, shell)
     end,
     filter_supported(deps, active_environment.os_name)
@@ -252,9 +259,8 @@ end
 ---@param deps DepProps[]
 function M.add_to_session_path(deps)
   for _, dep in ipairs(filter_supported(deps, os_mod.get_name())) do
-    if dep.push_to_path then
-      os_mod.add_to_path(os_mod.expand_home_path(dep.push_to_path))
-    end
+    local path = get_extracted_env_path(dep.push_to_path)
+    if path then os_mod.add_to_path(os_mod.expand_home_path(path)) end
     if dep.release then
       os_mod.add_to_path(
         vim.fs.joinpath(
@@ -290,7 +296,7 @@ function M.plan(deps, environment)
       and lacks_rc_entry(env_line and { env_line }, shell)
     local exports_path = reachable
       and not exported_entries[path_source or '']
-      and lacks_path_export(path_source, shell)
+      and lacks_path_export(get_extracted_env_path(path_source), shell)
     ---@type string[]
     local steps = {}
 
