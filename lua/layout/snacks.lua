@@ -1,11 +1,8 @@
 local plugins = require 'deps.plugins'
 local prompt_bar = require 'layout.cmdline.prompt_bar'
+local art = require 'layout.dash_art'
 math.randomseed(os.time())
 
-local path = vim.fn.stdpath 'config' .. '/assets/'
----@type string[]
-local dir_files = vim.fn.readdir(path)
-local wall_selection = dir_files[math.random(#dir_files)]
 
 plugins.record {
   'folke/snacks.nvim',
@@ -36,17 +33,7 @@ plugins.record {
       width = vim.o.columns,
       sections = {
         gap = 1,
-        {
-          section = 'terminal',
-          cmd = 'bash -c "pixterm -d 2 -s 1 '
-            .. path
-            .. wall_selection
-            .. '; cat"',
-          width = vim.o.columns,
-          height = math.floor(vim.o.lines * 0.90),
-          padding = 0,
-          indent = 0,
-        },
+        art,
         {
           align = 'center',
           height = math.floor(vim.o.lines * 0.10),
