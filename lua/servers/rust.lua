@@ -30,7 +30,12 @@ lang_deps.record_lang_deps {
   short = 'rs',
   lsp = 'rust-analyzer',
   deps = {
-    { cmd = 'rustup' },
+    {
+      cmd = 'rustup',
+      os = {
+        unix = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
+      },
+    },
     {
       cmd = 'cargo',
       push_to_path = '.cargo/bin',
