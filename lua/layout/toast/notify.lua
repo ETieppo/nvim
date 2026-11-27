@@ -1,5 +1,4 @@
 local toast_enums = require 'layout.toast.enums'
-local toast_renderer = require 'layout.toast.renderer'
 
 ---@class ToastNotifyOptsProps
 ---@field title string|nil
@@ -32,7 +31,7 @@ local TOAST_LEVEL_BY_LOG_LEVEL = {
 ---@param opts ToastNotifyOptsProps|nil
 local function show_notification(message, toast_level, opts)
   opts = opts or {}
-  toast_renderer.show {
+  require('layout.toast.renderer').show {
     message = tostring(message),
     level = toast_level,
     title = opts.title,

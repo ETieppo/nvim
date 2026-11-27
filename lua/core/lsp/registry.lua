@@ -2,7 +2,6 @@ local helpers = require 'utils.helpers'
 local lang_registry = require 'core.lang.registry'
 local deps_mod = require 'deps.deps_mod'
 
-local COMPLETION_ITEM_KINDS = vim.lsp.protocol.CompletionItemKind
 ---@type string
 local COMPLETION_RESOLVE_METHOD = 'completionItem/resolve'
 ---@type table<string, boolean>
@@ -13,6 +12,7 @@ local METHODS_RETURNING_COMPLETION_ITEMS = {
 
 ---@class LspProps : vim.lsp.Config
 ---@field deps? ToolDepProps[]
+---@field capabilities? lsp.ClientCapabilities|fun(): lsp.ClientCapabilities
 
 ---@class RawCompletionItemProps
 ---@field kind? string|integer
@@ -22,6 +22,9 @@ local M = {}
 
 ---@type string[]
 local recorded_lsps = {}
+
+---@type table<string, LspProps>
+local recorded_configs = {}
 
 ---@type table<string, DepProps[]>
 local recorded_deps = {}
@@ -35,9 +38,10 @@ local function convert_kind_names_to_numbers(method, result)
   local items = method == COMPLETION_RESOLVE_METHOD and { result }
     or result.items
     or result
+  local completion_item_kinds = vim.lsp.protocol.CompletionItemKind
   for _, item in ipairs(items) do
     if type(item.kind) == 'string' then
-      item.kind = COMPLETION_ITEM_KINDS[item.kind] or COMPLETION_ITEM_KINDS.Text
+      item.kind = completion_item_kinds[item.kind] or completion_item_kinds.Text
     end
   end
 end
@@ -59,7 +63,7 @@ end
 
 ---@param config LspProps
 function M.record_lsp(config)
-  local lang_name = helpers.get_caller_filename()
+  local lang_name = helpers.get_caller_directory_name()
   local lsp_name = lang_registry.resolve_lsp_name(lang_name)
   if vim.list_contains(recorded_lsps, lsp_name) then return end
   deps_mod.record_tool_deps(
@@ -69,7 +73,7 @@ function M.record_lsp(config)
     config.deps
   )
   config.deps = nil
-  vim.lsp.config(lsp_name, config)
+  recorded_configs[lsp_name] = config
   table.insert(recorded_lsps, lsp_name)
 end
 
@@ -77,7 +81,15 @@ end
 ---@return DepProps[]
 function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
 
----@return string[]
-function M.get_lsps() return vim.deepcopy(recorded_lsps) end
+function M.enable_lsps()
+  for _, lsp_name in ipairs(recorded_lsps) do
+    local config = recorded_configs[lsp_name]
+    if type(config.capabilities) == 'function' then
+      config.capabilities = config.capabilities()
+    end
+    vim.lsp.config(lsp_name, config)
+  end
+  vim.lsp.enable(recorded_lsps)
+end
 
 return M

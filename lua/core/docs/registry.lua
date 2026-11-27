@@ -17,7 +17,7 @@ end
 function M.docs_ignore(lang)
   ignorable_registry.ignore(
     docs_registry,
-    lang or helpers.get_caller_filename()
+    lang or helpers.get_caller_directory_name()
   )
 end
 

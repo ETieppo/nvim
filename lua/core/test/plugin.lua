@@ -1,24 +1,17 @@
 local plugins = require 'deps.plugins'
-local test_adapters = require('core.test.registry').get_test_adapters()
-
-local deps = {
-  'nvim-neotest/nvim-nio',
-  'nvim-lua/plenary.nvim',
-  'nvim-treesitter/nvim-treesitter',
-}
-
-for _, a in ipairs(test_adapters) do
-  table.insert(deps, a[1])
-end
 
 plugins.record {
   'nvim-neotest/neotest',
   extra = true,
   cmd = 'Neotest',
-  dependencies = deps,
+  dependencies = {
+    'nvim-neotest/nvim-nio',
+    'nvim-lua/plenary.nvim',
+    'nvim-treesitter/nvim-treesitter',
+  },
   opts = function()
     local adapters = {}
-    for _, a in ipairs(test_adapters) do
+    for _, a in ipairs(require('core.test.registry').get_test_adapters()) do
       ---@type boolean, any
       local ok, adapter = pcall(require, a.module)
       if ok then

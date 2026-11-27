@@ -1,6 +1,4 @@
 local plugins = require 'deps.plugins'
-local picker = require 'buffer.telescope.picker'
-local helpers = require 'utils.helpers'
 
 ---@param doc string
 ---@return Picker.Source
@@ -11,12 +9,16 @@ local function doc_files(doc)
     prompt = ('Select Doc (%s)'):format(doc),
     items = devdocs.GetDoc(doc) or {},
     format = function(file_path)
-      return helpers.format_filename_as_title(file_path, doc_dir)
+      return require('utils.helpers').format_filename_as_title(
+        file_path,
+        doc_dir
+      )
     end,
   }
 end
 
 local function search_doc()
+  local picker = require 'buffer.telescope.picker'
   picker:find {
     prompt = 'Select Language',
     items = require('devdocs').GetInstalledDocs(),
@@ -25,6 +27,7 @@ local function search_doc()
 end
 
 local function grep_doc()
+  local picker = require 'buffer.telescope.picker'
   picker:find {
     prompt = 'Select Language',
     items = require('devdocs').GetInstalledDocs(),

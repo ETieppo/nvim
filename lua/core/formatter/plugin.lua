@@ -1,5 +1,4 @@
 local plugins = require 'deps.plugins'
-local formatters = require('core.formatter.registry').get_formatters()
 
 plugins.record {
   'stevearc/conform.nvim',
@@ -15,10 +14,13 @@ plugins.record {
       desc = '[F]ile [F]ormat',
     },
   },
-  opts = {
-    notify_on_error = false,
-    format_on_save = nil,
-    formatters = formatters.configs,
-    formatters_by_ft = formatters.linkers,
-  },
+  opts = function()
+    local formatters = require('core.formatter.registry').get_formatters()
+    return {
+      notify_on_error = false,
+      format_on_save = nil,
+      formatters = formatters.configs,
+      formatters_by_ft = formatters.linkers,
+    }
+  end,
 }

@@ -1,6 +1,4 @@
 local os_mod = require 'deps.sys'
-local Shell = require 'deps.shell'
-local PackageManager = require 'deps.package_manager'
 local OsNameEnum = require('deps.enums').OsNameEnum
 local InstallPlanDto = require('deps.dtos').InstallPlanDto
 
@@ -85,8 +83,15 @@ local function get_live_environment()
   local os_name = os_mod.get_name()
   return {
     os_name = os_name,
-    package_manager = PackageManager.detect(os_name, os_mod.has_executable),
-    shell = Shell.detect(os_name, vim.o.shell, os_mod.has_executable),
+    package_manager = require('deps.package_manager').detect(
+      os_name,
+      os_mod.has_executable
+    ),
+    shell = require('deps.shell').detect(
+      os_name,
+      vim.o.shell,
+      os_mod.has_executable
+    ),
     has_executable = os_mod.has_executable,
     read_command_output = os_mod.read_command_output,
     confirm_install = confirm_install,

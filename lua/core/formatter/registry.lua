@@ -30,7 +30,7 @@ local recorded_deps = {}
 
 ---@param fmt FormatterProps
 function M.record_fmt(fmt)
-  local caller_lang = helpers.get_caller_filename()
+  local caller_lang = helpers.get_caller_directory_name()
   local lang_names = helpers.ensure_list(fmt.lang or caller_lang)
   deps_mod.record_tool_deps(
     recorded_deps,

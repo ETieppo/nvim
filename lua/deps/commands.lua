@@ -1,4 +1,3 @@
-local helpers = require 'utils.helpers'
 local FACE = '--_--'
 
 ---@class DepsUserCommandProps
@@ -53,8 +52,10 @@ function M.create_deps_user_command(props)
       return
     end
 
-    local subcommand =
-      helpers.find_by_name_or_short(props.subcommands, subcommand_name)
+    local subcommand = require('utils.helpers').find_by_name_or_short(
+      props.subcommands,
+      subcommand_name
+    )
     if subcommand == nil then
       vim.notify(
         'No '

@@ -1,9 +1,9 @@
+local helpers = require 'utils.helpers'
 local deps_mod = require 'deps.deps_mod'
 local deps_command = require 'deps.commands'
 local os_mod = require 'deps.sys'
 local profile = require 'deps.profile'
 local OsNameEnum = require('deps.enums').OsNameEnum
-local lang_deps = require 'deps.language'
 
 local DEPS_USER_COMMAND_NAME = 'Deps'
 local HOMEBREW_INSTALL_COMMAND =
@@ -67,6 +67,17 @@ local nvim_lang = {
   deps = nvim_deps,
 }
 
+local function notify_missing_nvim_deps()
+  deps_command.notify_missing_deps {
+    title = 'Neovim setup',
+    subject = 'Neovim',
+    missing_deps = deps_mod.find_missing(
+      require('deps.language').resolve_lang_deps(nvim_lang).deps
+    ),
+    install_command = ':' .. DEPS_USER_COMMAND_NAME .. ' i',
+  }
+end
+
 if profile.is_max_profile() then
   local archives = SOLOIST_ARCHIVE_BY_OS_AND_MACHINE[os_mod.get_name() or '']
   local archive = archives and archives[vim.uv.os_uname().machine]
@@ -112,27 +123,12 @@ deps_command.create_deps_user_command {
     install = {
       short = 'i',
       run = function()
-        deps_mod.install(lang_deps.resolve_lang_deps(nvim_lang).deps)
+        deps_mod.install(
+          require('deps.language').resolve_lang_deps(nvim_lang).deps
+        )
       end,
     },
   },
 }
 
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'VeryLazy',
-  once = true,
-  callback = function()
-    local missing_deps =
-      deps_mod.find_missing(lang_deps.resolve_lang_deps(nvim_lang).deps)
-    vim.schedule(
-      function()
-        deps_command.notify_missing_deps {
-          title = 'Neovim setup',
-          subject = 'Neovim',
-          missing_deps = missing_deps,
-          install_command = ':' .. DEPS_USER_COMMAND_NAME .. ' i',
-        }
-      end
-    )
-  end,
-})
+helpers.on_very_lazy(notify_missing_nvim_deps)

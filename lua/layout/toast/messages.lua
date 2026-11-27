@@ -1,8 +1,7 @@
 -- HACK: nvim version validation can be removed
 -- created to support old versions
-if vim.version().minor >= 12 then
+if vim.fn.has 'nvim-0.12' == 1 then
   local toast_enums = require 'layout.toast.enums'
-  local toast_renderer = require 'layout.toast.renderer'
   local ui2 = require 'vim._core.ui2'
   local ui2_messages = require 'vim._core.ui2.messages'
 
@@ -85,7 +84,7 @@ if vim.version().minor >= 12 then
       )
     end
 
-    toast_renderer.show {
+    require('layout.toast.renderer').show {
       message = text,
       level = level,
       id = id,

@@ -66,7 +66,7 @@ local recorded_deps = {}
 
 ---@param dap DapProps
 function M.record_dap(dap)
-  local lang_name = dap.lang or helpers.get_caller_filename()
+  local lang_name = dap.lang or helpers.get_caller_directory_name()
   if dap.configurations and dap.provider then
     error(
       lang_name .. ': record_dap needs configurations or provider, not both'

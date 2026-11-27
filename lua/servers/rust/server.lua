@@ -1,0 +1,140 @@
+local lsp = require 'core.lsp.registry'
+local dap = require 'core.dap.registry'
+local fmt = require 'core.formatter.registry'
+local lang_deps = require 'core.lang.registry'
+local os_mod = require 'deps.sys'
+local storage = require 'utils.storage'
+local lang_name = require('utils.helpers').get_this_directory_name()
+
+---@class CargoTargetProps
+---@field name string
+---@field kind? string[]
+
+---@class CargoPackageProps
+---@field targets? CargoTargetProps[]
+
+---@class CargoMetadataProps
+---@field packages? CargoPackageProps[]
+
+fmt.record_fmt {
+  formatter = 'rustfmt',
+  deps = { { install_command = 'rustup component add rustfmt' } },
+}
+
+lang_deps.record_toolchain {
+  short = 'rs',
+  lsp = 'rust-analyzer',
+  deps = {
+    {
+      cmd = 'rustup',
+      os = {
+        unix = "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
+      },
+    },
+    {
+      cmd = 'cargo',
+      push_to_path = '.cargo/bin',
+      install_command = 'rustup toolchain install stable',
+    },
+  },
+}
+
+---@return string|table|nil
+local function build_cargo_debug_program()
+  local cargo = os_mod.which 'cargo'
+  local root = vim.fn.getcwd()
+  if not cargo or vim.fn.filereadable(root .. '/Cargo.toml') == 0 then
+    return nil
+  end
+
+  local build = vim.system({ cargo, 'build' }, { text = true }):wait()
+  if build.code ~= 0 then
+    vim.notify(
+      'cargo build failed:\n' .. (build.stderr or ''),
+      vim.log.levels.ERROR,
+      { title = 'DAP' }
+    )
+    return require('dap').ABORT
+  end
+
+  local metadata = os_mod.read_program_stdout {
+    cargo,
+    'metadata',
+    '--no-deps',
+    '--format-version',
+    '1',
+  }
+  if not metadata then return nil end
+
+  local cargo_metadata = storage.decode_json(metadata) --[[@as CargoMetadataProps|nil]]
+  if not cargo_metadata then return nil end
+
+  for _, package in ipairs(cargo_metadata.packages or {}) do
+    for _, target in ipairs(package.targets or {}) do
+      if vim.list_contains(target.kind or {}, 'bin') then
+        local path = root .. '/target/debug/' .. target.name
+        if vim.fn.executable(path) == 1 then return path end
+      end
+    end
+  end
+
+  return nil
+end
+
+---@return string[]
+local function build_rust_pretty_printer_commands()
+  local rustc = os_mod.which 'rustc'
+  if not rustc then return {} end
+
+  local sysroot = os_mod.read_program_stdout { rustc, '--print', 'sysroot' }
+  if not sysroot then return {} end
+
+  local etc = vim.trim(sysroot) .. '/lib/rustlib/etc'
+  if vim.fn.isdirectory(etc) == 0 then return {} end
+
+  return {
+    ("command script import '%s/lldb_lookup.py'"):format(etc),
+    ("command source -s 0 '%s/lldb_commands'"):format(etc),
+  }
+end
+
+dap.record_dap {
+  adapter = 'lldb',
+  configurations = {
+    {
+      name = 'Debug (cargo)',
+      program = dap.create_program_with_prompt_fallback(
+        build_cargo_debug_program
+      ),
+      initCommands = build_rust_pretty_printer_commands,
+    },
+  },
+}
+
+lsp.record_lsp {
+  deps = { { install_command = 'rustup component add rust-analyzer' } },
+  cmd = { 'rust-analyzer' },
+  filetypes = { lang_name },
+  root_markers = {
+    'Cargo.toml',
+    '.git',
+  },
+  settings = {
+    ['rust-analyzer'] = {
+      checkOnSave = true,
+      check = {
+        command = 'check',
+      },
+      procMacro = {
+        enable = true,
+      },
+      cargo = {
+        buildScripts = { enable = true },
+        targetDir = true,
+      },
+      diagnostics = {
+        enable = true,
+      },
+    },
+  },
+}

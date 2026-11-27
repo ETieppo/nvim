@@ -1,4 +1,5 @@
 local profile = require 'deps.profile'
+local plugins = require 'deps.plugins'
 
 ---@class TestAdapterProps
 ---@field [1] string
@@ -15,6 +16,7 @@ local recorded_test_adapters = {}
 function M.record_test_adapter(test_adapter)
   if profile.is_max_profile() then
     table.insert(recorded_test_adapters, test_adapter)
+    plugins.record { test_adapter[1], lazy = true }
   end
 end
 

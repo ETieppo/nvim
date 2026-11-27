@@ -1,5 +1,4 @@
 local plugins = require 'deps.plugins'
-local linters = require('core.linter.registry').get_linters()
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -8,6 +7,7 @@ plugins.record {
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lint = require 'lint'
+    local linters = require('core.linter.registry').get_linters()
     lint.linters_by_ft = linters.linkers
     for linter_name, linter_config in pairs(linters.configs) do
       lint.linters[linter_name] = linter_config

@@ -24,9 +24,12 @@ local M = {}
 ---@type table<string, RecordedLangProps>
 local recorded_langs = {}
 
+---@type vim.filetype.add.filetypes[]
+local recorded_filetypes = {}
+
 ---@param lang LangDepsProps
 function M.record_toolchain(lang)
-  local lang_name = lang.lang or utils_helpers.get_caller_filename()
+  local lang_name = lang.lang or utils_helpers.get_caller_directory_name()
   docs_mod.record_docs(utils_helpers.ensure_list(lang.doc or lang_name))
 
   for _, treesitter_name in
@@ -45,6 +48,17 @@ function M.record_toolchain(lang)
     lsp = lang.lsp or lang_name,
     filetypes = lang.filetypes,
   }
+end
+
+---@param filetypes vim.filetype.add.filetypes
+function M.record_filetypes(filetypes)
+  table.insert(recorded_filetypes, filetypes)
+end
+
+function M.apply_filetypes()
+  for _, filetypes in ipairs(recorded_filetypes) do
+    vim.filetype.add(filetypes)
+  end
 end
 
 ---@return table<string, RecordedLangProps>

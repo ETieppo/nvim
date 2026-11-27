@@ -1,5 +1,4 @@
 local plugins = require 'deps.plugins'
-local ripgrep = require 'utils.ripgrep'
 
 plugins.record {
   'nvim-telescope/telescope.nvim',
@@ -26,6 +25,7 @@ plugins.record {
     rawset(vim.ui, 'select', select_after_loading_telescope)
   end,
   config = function()
+    local ripgrep = require 'utils.ripgrep'
     require('telescope').setup {
       defaults = {
         vimgrep_arguments = ripgrep.build_command {

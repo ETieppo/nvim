@@ -15,22 +15,22 @@ local M = {}
 
 ---@param stack_level integer
 ---@return string
-local function get_filename_at_stack_level(stack_level)
+local function get_directory_name_at_stack_level(stack_level)
   local source = debug.getinfo(stack_level + 1, 'S').source
-  local filename = vim.fn.fnamemodify(source:sub(2), ':t:r')
-  return filename
+  local directory_name = vim.fn.fnamemodify(source:sub(2), ':h:t')
+  return directory_name
 end
 
 ---@return string
-function M.get_this_filename()
-  local filename = get_filename_at_stack_level(2)
-  return filename
+function M.get_this_directory_name()
+  local directory_name = get_directory_name_at_stack_level(2)
+  return directory_name
 end
 
 ---@return string
-function M.get_caller_filename()
-  local filename = get_filename_at_stack_level(3)
-  return filename
+function M.get_caller_directory_name()
+  local directory_name = get_directory_name_at_stack_level(3)
+  return directory_name
 end
 
 ---@generic T : NamedEntryProps
@@ -45,6 +45,19 @@ function M.find_by_name_or_short(entries, name_or_short)
   end
 
   return nil
+end
+
+---@param callback fun()
+function M.on_very_lazy(callback)
+  if vim.g.did_very_lazy then
+    vim.schedule(callback)
+    return
+  end
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'VeryLazy',
+    once = true,
+    callback = function() vim.schedule(callback) end,
+  })
 end
 
 ---@param mode string|string[]

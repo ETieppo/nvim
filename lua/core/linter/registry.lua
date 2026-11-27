@@ -25,7 +25,7 @@ local recorded_deps = {}
 
 ---@param lint LinterProps
 function M.record_linter(lint)
-  local caller_lang = helpers.get_caller_filename()
+  local caller_lang = helpers.get_caller_directory_name()
   local config_cmd = lint.config and lint.config.cmd
   local lang_names = helpers.ensure_list(lint.lang or caller_lang)
   deps_mod.record_tool_deps(
