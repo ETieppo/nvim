@@ -1,7 +1,5 @@
 vim.loader.enable()
 
-local osc52 = require 'vim.ui.clipboard.osc52'
-
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true
@@ -48,14 +46,13 @@ vim.opt.fillchars:append 'eob: '
 vim.opt.shortmess:append 'W'
 -- vim.opt.messagesopt:append 'timeout:4000'
 
-vim.cmd 'syntax on'
-vim.cmd 'filetype plugin indent on'
 vim.cmd 'autocmd BufRead,BufNewFile *.hurl setfiletype sh'
 vim.cmd.colorscheme 'cherry'
 
 vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
 if vim.env.SSH_TTY then
+  local osc52 = require 'vim.ui.clipboard.osc52'
   vim.g.clipboard = {
     name = 'OSC 52',
     copy = {
