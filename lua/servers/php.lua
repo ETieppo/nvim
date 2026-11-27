@@ -3,35 +3,24 @@ local lsp = require 'core.lsp.registry'
 local deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-deps.record_lang_deps {
-  depends_on = 'bun',
-  deps = {
-    {
-      cmd = 'php-debug-adapter',
-      release = {
-        repo = 'xdebug/vscode-php-debug',
-        asset_pattern = 'php-debug-[^"]+\\.vsix',
-        wrapper = { runtime = 'bun', entry = 'extension/out/phpDebug.js' },
+deps.record_toolchain {}
+
+dap.record_dap {
+  adapter = {
+    name = 'php',
+    cmd = 'php-debug-adapter',
+    deps = {
+      {
+        depends_on = 'bun',
+        release = {
+          repo = 'xdebug/vscode-php-debug',
+          asset_pattern = 'php-debug-[^"]+\\.vsix',
+          wrapper = { runtime = 'bun', entry = 'extension/out/phpDebug.js' },
+        },
       },
     },
   },
-}
-
-dap.record_dap_adapter {
-  name = 'php',
-  cmd = 'php-debug-adapter',
-}
-
-dap.record_dap {
-  adapter = 'php',
-  configurations = {
-    {
-      name = 'Listen for Xdebug',
-      type = 'php',
-      request = 'launch',
-      port = 9003,
-    },
-  },
+  configurations = { { name = 'Listen for Xdebug', port = 9003 } },
 }
 
 lsp.record_lsp {

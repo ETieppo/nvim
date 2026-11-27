@@ -1,5 +1,6 @@
 local helpers = require 'utils.helpers'
 local lang_registry = require 'core.lang.registry'
+local deps_mod = require 'deps.deps_mod'
 
 local COMPLETION_ITEM_KINDS = vim.lsp.protocol.CompletionItemKind
 ---@type string
@@ -10,6 +11,9 @@ local METHODS_RETURNING_COMPLETION_ITEMS = {
   [COMPLETION_RESOLVE_METHOD] = true,
 }
 
+---@class LspProps : vim.lsp.Config
+---@field deps? ToolDepProps[]
+
 ---@class RawCompletionItemProps
 ---@field kind? string|integer
 
@@ -18,6 +22,9 @@ local M = {}
 
 ---@type string[]
 local recorded_lsps = {}
+
+---@type table<string, DepProps[]>
+local recorded_deps = {}
 
 ---@param method string
 ---@param result any
@@ -50,13 +57,25 @@ function M.convert_completion_kind_names_on_init(client)
   end
 end
 
----@param config vim.lsp.Config
+---@param config LspProps
 function M.record_lsp(config)
-  local lsp_name = lang_registry.resolve_lsp_name(helpers.get_caller_filename())
+  local lang_name = helpers.get_caller_filename()
+  local lsp_name = lang_registry.resolve_lsp_name(lang_name)
   if vim.list_contains(recorded_lsps, lsp_name) then return end
+  deps_mod.record_tool_deps(
+    recorded_deps,
+    lang_name,
+    type(config.cmd) == 'table' and config.cmd[1] or nil,
+    config.deps
+  )
+  config.deps = nil
   vim.lsp.config(lsp_name, config)
   table.insert(recorded_lsps, lsp_name)
 end
+
+---@param lang_name string
+---@return DepProps[]
+function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
 
 ---@return string[]
 function M.get_lsps() return vim.deepcopy(recorded_lsps) end

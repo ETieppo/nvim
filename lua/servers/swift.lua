@@ -2,10 +2,7 @@ local dap = require 'core.dap.registry'
 local lsp = require 'core.lsp.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-dap.record_dap {
-  adapter = 'lldb',
-  configurations = { dap.build_lldb_launch_configuration() },
-}
+dap.record_dap { adapter = 'lldb' }
 
 lsp.record_lsp {
   cmd = { 'sourcekit-lsp' },

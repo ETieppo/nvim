@@ -24,9 +24,10 @@ test.record_test_adapter {
 
 fmt.record_fmt {
   formatter = 'rustfmt',
+  deps = { { install_command = 'rustup component add rustfmt' } },
 }
 
-lang_deps.record_lang_deps {
+lang_deps.record_toolchain {
   short = 'rs',
   lsp = 'rust-analyzer',
   deps = {
@@ -40,10 +41,6 @@ lang_deps.record_lang_deps {
       cmd = 'cargo',
       push_to_path = '.cargo/bin',
       install_command = 'rustup toolchain install stable',
-    },
-    {
-      cmd = 'rust-analyzer',
-      install_command = 'rustup component add rust-analyzer',
     },
   },
 }
@@ -110,7 +107,7 @@ end
 dap.record_dap {
   adapter = 'lldb',
   configurations = {
-    dap.build_lldb_launch_configuration {
+    {
       name = 'Debug (cargo)',
       program = dap.create_program_with_prompt_fallback(
         build_cargo_debug_program
@@ -121,6 +118,7 @@ dap.record_dap {
 }
 
 lsp.record_lsp {
+  deps = { { install_command = 'rustup component add rust-analyzer' } },
   cmd = { 'rust-analyzer' },
   filetypes = { lang_name },
   root_markers = {

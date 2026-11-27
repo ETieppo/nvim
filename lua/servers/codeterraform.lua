@@ -13,22 +13,19 @@ local server_dir =
 docs.docs_ignore()
 treesitter.treesitter_ignore()
 
-deps.record_lang_deps {
+deps.record_toolchain {
   short = 'ct',
-  depends_on = 'bun',
   deps = {
     { cmd = 'ruff' },
   },
 }
 
-dap.record_dap_adapter {
-  name = 'codeterraform',
-  cmd = 'bun',
-  args = { server_dir .. '/debug-adapter.cjs' },
-}
-
 dap.record_dap {
-  adapter = 'codeterraform',
+  adapter = {
+    name = 'codeterraform',
+    cmd = 'bun',
+    args = { server_dir .. '/debug-adapter.cjs' },
+  },
   ---@param buffer integer
   ---@return table[]
   provider = function(buffer)

@@ -94,21 +94,11 @@ end
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
-  deps = {
-    {
-      cmd = 'glsl_analyzer',
-      install_command = 'glsl_analyzer-bin',
-    },
-    {
-      cmd = 'glslangValidator',
-      install_command = 'glslang',
-    },
-  },
-}
+deps.record_toolchain {}
 
 lint.record_linter {
   linter = GLSLANG_LINTER_NAME,
+  deps = { { cmd = 'glslangValidator', install_command = 'glslang' } },
   config = {
     name = GLSLANG_LINTER_NAME,
     cmd = 'sh',
@@ -127,6 +117,7 @@ lint.record_linter {
 }
 
 lsp.record_lsp {
+  deps = { { install_command = 'glsl_analyzer-bin' } },
   cmd = { 'glsl_analyzer' },
   filetypes = {
     lang_name,

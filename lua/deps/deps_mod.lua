@@ -36,6 +36,9 @@ local InstallPlanDto = require('deps.dtos').InstallPlanDto
 ---@field release? ReleaseProps
 ---@field supported_os? OsNameEnum[]
 
+---@class ToolDepProps : DepProps
+---@field cmd? string
+
 ---@class InstallEnvironmentProps
 ---@field os_name OsNameEnum|nil
 ---@field package_manager PackageManager|nil
@@ -270,6 +273,33 @@ function M.add_to_session_path(deps)
       )
     end
   end
+end
+
+---@param lang_name string
+---@param deps ToolDepProps[]
+---@param default_cmd? string
+---@return DepProps[]
+function M.normalize_deps(lang_name, deps, default_cmd)
+  for _, dep in ipairs(deps) do
+    dep.cmd = dep.cmd or default_cmd
+    if not dep.cmd then error(lang_name .. ': dep without cmd') end
+    dep.lang = dep.lang or lang_name
+  end
+
+  M.add_to_session_path(deps)
+  ---@cast deps DepProps[]
+  return deps
+end
+
+---@param recorded_deps table<string, DepProps[]>
+---@param lang_name string
+---@param tool_cmd string|nil
+---@param deps ToolDepProps[]|nil
+function M.record_tool_deps(recorded_deps, lang_name, tool_cmd, deps)
+  recorded_deps[lang_name] = vim.list_extend(
+    recorded_deps[lang_name] or {},
+    M.normalize_deps(lang_name, deps or { {} }, tool_cmd)
+  )
 end
 
 ---@param deps DepProps[]

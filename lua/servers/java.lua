@@ -2,7 +2,7 @@ local deps = require 'core.lang.registry'
 local lsp = require 'core.lsp.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-deps.record_lang_deps {
+deps.record_toolchain {
   doc = { 'openjdk' },
   deps = {
     {
@@ -14,7 +14,6 @@ deps.record_lang_deps {
         windows = 'java/openjdk',
       },
     },
-    { cmd = 'jdtls' },
   },
 }
 

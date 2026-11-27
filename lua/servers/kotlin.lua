@@ -3,32 +3,25 @@ local lsp = require 'core.lsp.registry'
 local lang_deps = require 'core.lang.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-lang_deps.record_lang_deps {
-  depends_on = 'java',
-  deps = {
-    {
-      cmd = 'kotlin-debug-adapter',
-      release = {
-        repo = 'fwcd/kotlin-debug-adapter',
-        asset_pattern = 'adapter\\.zip',
-        bin_subdir = 'adapter/bin',
+lang_deps.record_toolchain { depends_on = 'java' }
+
+dap.record_dap {
+  adapter = {
+    name = 'kotlin',
+    cmd = 'kotlin-debug-adapter',
+    deps = {
+      {
+        release = {
+          repo = 'fwcd/kotlin-debug-adapter',
+          asset_pattern = 'adapter\\.zip',
+          bin_subdir = 'adapter/bin',
+        },
       },
     },
   },
-}
-
-dap.record_dap_adapter {
-  name = 'kotlin',
-  cmd = 'kotlin-debug-adapter',
-}
-
-dap.record_dap {
-  adapter = 'kotlin',
   configurations = {
     {
       name = 'Launch',
-      type = 'kotlin',
-      request = 'launch',
       projectRoot = '${workspaceFolder}',
       mainClass = function() return vim.fn.input 'Main class: ' end,
     },

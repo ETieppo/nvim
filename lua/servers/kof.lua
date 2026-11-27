@@ -21,7 +21,7 @@ fmt.record_fmt {
   },
 }
 
-deps.record_lang_deps {
+deps.record_toolchain {
   deps = {
     {
       cmd = 'kfvm',

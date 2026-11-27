@@ -5,18 +5,15 @@ local deps = require 'core.lang.registry'
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
-  short = 'yml',
+deps.record_toolchain { short = 'yml' }
+
+lsp.record_lsp {
   deps = {
     {
-      cmd = 'yaml-language-server',
       depends_on = 'bun',
       install_command = 'bun add -g yaml-language-server',
     },
   },
-}
-
-lsp.record_lsp {
   cmd = { 'yaml-language-server', '--stdio' },
   filetypes = { lang_name, 'yml' },
   root_markers = {},

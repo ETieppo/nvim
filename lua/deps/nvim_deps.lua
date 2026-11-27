@@ -60,6 +60,13 @@ local nvim_deps = {
   },
 }
 
+---@type RecordedLangProps
+local nvim_lang = {
+  lang = 'nvim',
+  lsp = 'nvim',
+  deps = nvim_deps,
+}
+
 if profile.is_max_profile() then
   local archives = SOLOIST_ARCHIVE_BY_OS_AND_MACHINE[os_mod.get_name() or '']
   local archive = archives and archives[vim.uv.os_uname().machine]
@@ -105,11 +112,7 @@ deps_command.create_deps_user_command {
     install = {
       short = 'i',
       run = function()
-        deps_mod.install(lang_deps.resolve_lang_deps({
-          lang = 'nvim',
-          lsp = 'nvim',
-          deps = nvim_deps,
-        }).deps)
+        deps_mod.install(lang_deps.resolve_lang_deps(nvim_lang).deps)
       end,
     },
   },
@@ -119,13 +122,8 @@ vim.api.nvim_create_autocmd('User', {
   pattern = 'VeryLazy',
   once = true,
   callback = function()
-    local missing_deps = deps_mod.find_missing(
-      lang_deps.resolve_lang_deps({
-        lang = 'nvim',
-        lsp = 'nvim',
-        deps = nvim_deps,
-      }).deps
-    )
+    local missing_deps =
+      deps_mod.find_missing(lang_deps.resolve_lang_deps(nvim_lang).deps)
     vim.schedule(
       function()
         deps_command.notify_missing_deps {

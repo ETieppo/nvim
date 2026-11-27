@@ -1,4 +1,5 @@
 local helpers = require 'utils.helpers'
+local deps_mod = require 'deps.deps_mod'
 
 ---@class FormatterConfigProps
 ---@field command string
@@ -9,6 +10,7 @@ local helpers = require 'utils.helpers'
 ---@field lang? string|string[]
 ---@field formatter string
 ---@field config? FormatterConfigProps
+---@field deps? ToolDepProps[]
 
 ---@class FormattersProps
 ---@field linkers table<string, string[]>
@@ -23,10 +25,19 @@ local recorded_formatters = {
   configs = {},
 }
 
+---@type table<string, DepProps[]>
+local recorded_deps = {}
+
 ---@param fmt FormatterProps
 function M.record_fmt(fmt)
-  local lang_names =
-    helpers.ensure_list(fmt.lang or helpers.get_caller_filename())
+  local caller_lang = helpers.get_caller_filename()
+  local lang_names = helpers.ensure_list(fmt.lang or caller_lang)
+  deps_mod.record_tool_deps(
+    recorded_deps,
+    caller_lang,
+    fmt.config and fmt.config.command or fmt.formatter,
+    fmt.deps
+  )
   if fmt.config ~= nil then
     recorded_formatters.configs[fmt.formatter] = fmt.config
   end
@@ -35,6 +46,10 @@ function M.record_fmt(fmt)
     recorded_formatters.linkers[lang_name] = { fmt.formatter }
   end
 end
+
+---@param lang_name string
+---@return DepProps[]
+function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
 
 ---@return FormattersProps
 function M.get_formatters() return vim.deepcopy(recorded_formatters) end

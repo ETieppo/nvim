@@ -4,12 +4,8 @@ local lsp = require 'core.lsp.registry'
 local fmt = require 'core.formatter.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-lang_deps.record_lang_deps {
-  deps = {
-    { cmd = 'lua' },
-    { cmd = 'lua-language-server' },
-    { cmd = 'stylua' },
-  },
+lang_deps.record_toolchain {
+  deps = { { cmd = 'lua' } },
 }
 
 fmt.record_fmt {

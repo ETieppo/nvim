@@ -13,19 +13,14 @@ vim.filetype.add {
 fmt.record_fmt {
   lang = terraform_name,
   formatter = 'tofu_fmt',
+  deps = { { cmd = 'tofu' } },
 }
 
-deps.record_lang_deps {
+deps.record_toolchain {
   treesitter = terraform_name,
   doc = { 'opentofu' },
   short = 'tf',
-  deps = {
-    { cmd = 'tofu-ls' },
-    {
-      cmd = 'tofu',
-      install_command = 'opentofu',
-    },
-  },
+  deps = { { cmd = 'tofu', install_command = 'opentofu' } },
 }
 
 lsp.record_lsp {

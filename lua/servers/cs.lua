@@ -17,18 +17,13 @@ fmt.record_fmt {
   formatter = 'clang-format',
 }
 
-deps.record_lang_deps {
+deps.record_toolchain {
   treesitter = 'c_sharp',
   deps = {
     {
       cmd = 'dotnet',
       install_command = 'dotnet-sdk',
       os = { macos = 'dotnet' },
-    },
-    {
-      cmd = 'roslyn-language-server',
-      install_command = 'dotnet tool install --global roslyn-language-server --prerelease',
-      push_to_path = '.dotnet/tools',
     },
   },
 }
@@ -47,6 +42,13 @@ local function find_dotnet_root()
 end
 
 lsp.record_lsp {
+  deps = {
+    {
+      cmd = 'roslyn-language-server',
+      install_command = 'dotnet tool install --global roslyn-language-server --prerelease',
+      push_to_path = '.dotnet/tools',
+    },
+  },
   cmd = function(dispatchers, config)
     return vim.lsp.rpc.start(ROSLYN_COMMAND, dispatchers, {
       cwd = config.cmd_cwd or config.root_dir,

@@ -3,6 +3,7 @@ local os_mod = require 'deps.sys'
 local treesitter = require 'core.treesitter.registry'
 
 local LAZY_LOADED_EVENT = 'VeryLazy'
+local PARSERS_UPDATE_EVENT = 'TSUpdate'
 
 ---@return string[]
 local function get_parsers_to_install()
@@ -19,6 +20,15 @@ plugins.record {
   lazy = false,
   build = ':TSUpdate',
   config = function()
+    vim.api.nvim_create_autocmd('User', {
+      pattern = PARSERS_UPDATE_EVENT,
+      callback = function()
+        local parsers = require 'nvim-treesitter.parsers'
+        for name, install_info in pairs(treesitter.get_install_infos()) do
+          parsers[name] = { install_info = install_info }
+        end
+      end,
+    })
     vim.api.nvim_create_autocmd('User', {
       pattern = LAZY_LOADED_EVENT,
       once = true,

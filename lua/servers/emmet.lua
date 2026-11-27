@@ -6,17 +6,15 @@ local deps = require 'core.lang.registry'
 treesitter.treesitter_ignore()
 docs.docs_ignore()
 
-deps.record_lang_deps {
+deps.record_toolchain {}
+
+lsp.record_lsp {
   deps = {
     {
-      cmd = 'emmet-language-server',
       depends_on = 'bun',
       install_command = 'bun i -g @olrtg/emmet-language-server',
     },
   },
-}
-
-lsp.record_lsp {
   cmd = { 'emmet-language-server', '--stdio' },
   filetypes = {
     'html',

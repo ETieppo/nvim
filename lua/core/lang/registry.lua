@@ -7,7 +7,7 @@ local deps_mod = require 'deps.deps_mod'
 ---@field lang? string
 ---@field short? string
 ---@field depends_on? string | string[]
----@field deps DepProps[]
+---@field deps? DepProps[]
 ---@field treesitter? string|string[]
 ---@field doc? string|string[]
 ---@field lsp? string
@@ -16,6 +16,7 @@ local deps_mod = require 'deps.deps_mod'
 ---@class RecordedLangProps : LangDepsProps
 ---@field lang string
 ---@field lsp string
+---@field deps DepProps[]
 
 ---@class LangRegistryModProps
 local M = {}
@@ -24,7 +25,7 @@ local M = {}
 local recorded_langs = {}
 
 ---@param lang LangDepsProps
-function M.record_lang_deps(lang)
+function M.record_toolchain(lang)
   local lang_name = lang.lang or utils_helpers.get_caller_filename()
   docs_mod.record_docs(utils_helpers.ensure_list(lang.doc or lang_name))
 
@@ -35,16 +36,11 @@ function M.record_lang_deps(lang)
     treesitter_mod.record_treesitter(treesitter_name)
   end
 
-  for _, dep in ipairs(lang.deps) do
-    dep.lang = dep.lang or lang_name
-  end
-
-  deps_mod.add_to_session_path(lang.deps)
   recorded_langs[lang_name] = {
     lang = lang_name,
     short = lang.short,
     depends_on = lang.depends_on,
-    deps = lang.deps,
+    deps = deps_mod.normalize_deps(lang_name, lang.deps or {}),
     treesitter = lang.treesitter,
     lsp = lang.lsp or lang_name,
     filetypes = lang.filetypes,

@@ -16,7 +16,7 @@ local javascript_filetypes = {
 
 treesitter.record_treesitter 'html'
 
-deps.record_lang_deps {
+deps.record_toolchain {
   short = 'ts',
   filetypes = javascript_filetypes,
   depends_on = {
@@ -31,24 +31,13 @@ deps.record_lang_deps {
         windows = 'powershell -c "irm bun.sh/install.ps1|iex"',
       },
     },
-    {
-      cmd = 'tsc',
-      install_command = 'bun i -g typescript',
-    },
-    {
-      cmd = 'js-debug-adapter',
-      release = {
-        repo = 'microsoft/vscode-js-debug',
-        asset_pattern = 'js-debug-dap-v[^"]+\\.tar\\.gz',
-        wrapper = { runtime = 'bun', entry = 'js-debug/src/dapDebugServer.js' },
-      },
-    },
   },
 }
 
 fmt.record_fmt {
   lang = javascript_filetypes,
   formatter = 'oxfmt',
+  deps = { { depends_on = 'bun', install_command = 'bun i -g oxfmt' } },
 }
 
 lint.record_linter {
@@ -60,46 +49,47 @@ vim.filetype.add {
   pattern = { ['.*%.component%.html'] = 'htmlangular' },
 }
 
-dap.record_dap_adapter {
-  name = 'pwa-node',
-  cmd = 'js-debug-adapter',
-  ---@param path string
-  ---@return dap.Adapter
-  build = function(path)
-    return {
-      type = 'server',
-      host = '127.0.0.1',
-      port = '${port}',
-      executable = {
-        command = path,
-        args = {
-          '${port}',
-          '127.0.0.1',
+dap.record_dap {
+  adapter = {
+    name = 'pwa-node',
+    cmd = 'js-debug-adapter',
+    deps = {
+      {
+        release = {
+          repo = 'microsoft/vscode-js-debug',
+          asset_pattern = 'js-debug-dap-v[^"]+\\.tar\\.gz',
+          wrapper = {
+            runtime = 'bun',
+            entry = 'js-debug/src/dapDebugServer.js',
+          },
         },
       },
-    }
-  end,
-}
-
-dap.record_dap {
-  adapter = 'pwa-node',
+    },
+    configuration_defaults = { sourceMaps = true },
+    ---@param path string
+    ---@return dap.Adapter
+    build = function(path)
+      return {
+        type = 'server',
+        host = '127.0.0.1',
+        port = '${port}',
+        executable = {
+          command = path,
+          args = {
+            '${port}',
+            '127.0.0.1',
+          },
+        },
+      }
+    end,
+  },
   filetypes = javascript_filetypes,
   configurations = {
-    {
-      name = 'Launch file',
-      type = 'pwa-node',
-      request = 'launch',
-      program = '${file}',
-      cwd = '${workspaceFolder}',
-      sourceMaps = true,
-    },
+    { program = '${file}' },
     {
       name = 'Attach to process',
-      type = 'pwa-node',
       request = 'attach',
       processId = function() return require('dap.utils').pick_process() end,
-      cwd = '${workspaceFolder}',
-      sourceMaps = true,
     },
   },
 }
@@ -111,6 +101,7 @@ docs.record_docs {
 }
 
 lsp.record_lsp {
+  deps = { { install_command = 'bun i -g typescript' } },
   cmd = { 'tsc', '--lsp', '--stdio' },
   filetypes = javascript_filetypes,
   root_markers = {

@@ -8,15 +8,7 @@ local filetypes = { 'json', 'jsonc' }
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
-  depends_on = { 'bun', 'oxfmt' },
-  deps = {
-    {
-      cmd = 'vscode-json-language-server',
-      install_command = 'bun add -g vscode-langservers-extracted',
-    },
-  },
-}
+deps.record_toolchain {}
 
 fmt.record_fmt {
   lang = filetypes,
@@ -24,6 +16,12 @@ fmt.record_fmt {
 }
 
 lsp.record_lsp {
+  deps = {
+    {
+      depends_on = 'bun',
+      install_command = 'bun add -g vscode-langservers-extracted',
+    },
+  },
   cmd = { 'vscode-json-language-server', '--stdio' },
   filetypes = filetypes,
   root_markers = { '.git' },

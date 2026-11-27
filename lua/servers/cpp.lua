@@ -6,31 +6,25 @@ local lang_name = require('utils.helpers').get_this_filename()
 ---@type string[]
 local filetypes = { lang_name, 'c' }
 
-deps.record_lang_deps {
+deps.record_toolchain {
   treesitter = filetypes,
   short = 'c',
-  deps = {
-    {
-      cmd = 'clangd',
-      install_command = 'llvm',
-      os = { linux = 'clang' },
-    },
-    { cmd = 'cmake' },
-  },
+  deps = { { cmd = 'cmake' } },
 }
 
 fmt.record_fmt {
   lang = filetypes,
   formatter = 'clang-format',
+  deps = { { os = { linux = 'clang' } } },
 }
 
 dap.record_dap {
   adapter = 'lldb',
   filetypes = filetypes,
-  configurations = { dap.build_lldb_launch_configuration() },
 }
 
 lsp.record_lsp {
+  deps = { { install_command = 'llvm', os = { linux = 'clang' } } },
   cmd = {
     'clangd',
     '--background-index',

@@ -7,21 +7,10 @@ require 'servers.typescript'
 treesitter.treesitter_ignore()
 docs.docs_ignore()
 
-lang_deps.record_lang_deps {
-  depends_on = 'bun',
-  deps = {
-    {
-      cmd = 'oxlint',
-      install_command = 'bun i -g oxlint',
-    },
-    {
-      cmd = 'oxfmt',
-      install_command = 'bun i -g oxfmt',
-    },
-  },
-}
+lang_deps.record_toolchain {}
 
 lsp.record_lsp {
+  deps = { { depends_on = 'bun', install_command = 'bun i -g oxlint' } },
   cmd = { 'oxlint', '--lsp' },
   filetypes = lang_deps.get_lang_filetypes 'typescript',
   root_markers = {

@@ -15,7 +15,7 @@ end
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
+deps.record_toolchain {
   short = 'tl',
   deps = {
     { cmd = 'luarocks' },
@@ -27,19 +27,12 @@ deps.record_lang_deps {
       cmd = 'cyan',
       os = luarocks_install 'cyan',
     },
-    {
-      cmd = 'teal-language-server',
-      os = luarocks_install 'teal-language-server',
-    },
-    {
-      cmd = 'ceru',
-      os = luarocks_install 'cerulean',
-    },
   },
 }
 
 fmt.record_fmt {
   formatter = 'cerulean',
+  deps = { { os = luarocks_install 'cerulean' } },
   config = {
     command = 'ceru',
     stdin = false,
@@ -48,6 +41,7 @@ fmt.record_fmt {
 }
 
 lsp.record_lsp {
+  deps = { { os = luarocks_install 'teal-language-server' } },
   cmd = { 'teal-language-server', '--verbose=false', '--log-mode=none' },
   filetypes = { lang_name },
   root_markers = { '.git', 'tlconfig.lua' },

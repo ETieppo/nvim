@@ -4,7 +4,7 @@ local dap = require 'core.dap.registry'
 local deps = require 'core.lang.registry'
 local zig = vim.fn.exepath 'zig'
 
-deps.record_lang_deps {
+deps.record_toolchain {
   deps = {
     {
       cmd = 'zvm',
@@ -17,19 +17,13 @@ deps.record_lang_deps {
       cmd = 'zig',
       install_command = 'zvm install lts',
     },
-    {
-      cmd = 'zls',
-      install_command = 'zvm install lts --zls',
-    },
   },
 }
 
-dap.record_dap {
-  adapter = 'lldb',
-  configurations = { dap.build_lldb_launch_configuration() },
-}
+dap.record_dap { adapter = 'lldb' }
 
 lsp.record_lsp {
+  deps = { { install_command = 'zvm install lts --zls' } },
   cmd = { 'zls' },
   filetypes = { lang_name, 'zon' },
   root_markers = { 'build.zig', '.git' },

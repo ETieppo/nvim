@@ -12,19 +12,13 @@ local filetypes = {
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
+deps.record_toolchain {
   short = 'wesl',
   deps = {
-    { cmd = 'wgsl-analyzer' },
     {
       cmd = 'wesl',
       depends_on = 'rust',
       install_command = 'cargo install wesl-cli',
-    },
-    {
-      cmd = 'wgslfmt',
-      depends_on = 'cargo',
-      install_command = 'cargo install --git https://github.com/wgsl-analyzer/wgsl-analyzer wgslfmt --locked',
     },
   },
 }
@@ -32,6 +26,12 @@ deps.record_lang_deps {
 fmt.record_fmt {
   lang = filetypes,
   formatter = 'wgslfmt',
+  deps = {
+    {
+      depends_on = 'cargo',
+      install_command = 'cargo install --git https://github.com/wgsl-analyzer/wgsl-analyzer wgslfmt --locked',
+    },
+  },
   config = {
     stdin = true,
     command = 'wgslfmt',

@@ -6,11 +6,7 @@ local lang_name = require('utils.helpers').get_this_filename()
 
 docs.docs_ignore()
 
-deps.record_lang_deps {
-  deps = {
-    { cmd = 'tombi' },
-  },
-}
+deps.record_toolchain {}
 
 fmt.record_fmt {
   formatter = 'tombi',

@@ -5,29 +5,14 @@ local dap = require 'core.dap.registry'
 local test = require 'core.test.registry'
 local lang_name = require('utils.helpers').get_this_filename()
 
-deps.record_lang_deps {
+deps.record_toolchain {
   short = 'py',
-  deps = {
-    { cmd = 'python3', install_command = 'python' },
-    {
-      cmd = 'pyright-langserver',
-      os = { unix = 'pyright' },
-    },
-    { cmd = 'ruff' },
-    {
-      cmd = 'debugpy',
-      check_cmd = 'python3 -c "import debugpy"',
-      install_command = 'python3 -m pip install --user --break-system-packages debugpy',
-      os = {
-        linux = 'python-debugpy',
-        windows = 'python -m pip install debugpy',
-      },
-    },
-  },
+  deps = { { cmd = 'python3', install_command = 'python' } },
 }
 
 fmt.record_fmt {
   formatter = 'ruff_format',
+  deps = { { cmd = 'ruff' } },
 }
 
 test.record_test_adapter {
@@ -36,22 +21,27 @@ test.record_test_adapter {
   opts = { dap = { justMyCode = false } },
 }
 
-dap.record_dap_adapter {
-  name = 'python',
-  cmd = 'python3',
-  availability_check_args = { '-c', 'import debugpy' },
-  args = { '-m', 'debugpy.adapter' },
-}
-
 dap.record_dap {
-  adapter = 'python',
+  adapter = {
+    name = 'python',
+    cmd = 'python3',
+    availability_check_args = { '-c', 'import debugpy' },
+    args = { '-m', 'debugpy.adapter' },
+    deps = {
+      {
+        cmd = 'debugpy',
+        check_cmd = 'python3 -c "import debugpy"',
+        install_command = 'python3 -m pip install --user --break-system-packages debugpy',
+        os = {
+          linux = 'python-debugpy',
+          windows = 'python -m pip install debugpy',
+        },
+      },
+    },
+  },
   configurations = {
     {
-      name = 'Launch file',
-      type = 'python',
-      request = 'launch',
       program = '${file}',
-      cwd = '${workspaceFolder}',
       console = 'integratedTerminal',
       justMyCode = false,
     },
@@ -59,6 +49,7 @@ dap.record_dap {
 }
 
 lsp.record_lsp {
+  deps = { { os = { unix = 'pyright' } } },
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { lang_name },
   root_dir = function(bufnr, on_dir)

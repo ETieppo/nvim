@@ -1,5 +1,6 @@
 local helpers = require 'utils.helpers'
 local os_mod = require 'deps.sys'
+local deps_mod = require 'deps.deps_mod'
 
 ---@class DapAdapterProps
 ---@field name string
@@ -7,10 +8,12 @@ local os_mod = require 'deps.sys'
 ---@field args? string[]
 ---@field availability_check_args? string[]
 ---@field build? fun(path: string): dap.Adapter
+---@field configuration_defaults? table
+---@field deps? ToolDepProps[]
 
 ---@class DapProps
 ---@field lang? string
----@field adapter string
+---@field adapter string|DapAdapterProps
 ---@field filetypes? string[]
 ---@field configurations? table[]
 ---@field provider? fun(buffer: integer): table[]
@@ -24,64 +27,83 @@ local os_mod = require 'deps.sys'
 
 ---@class RecordedDapProps : DapProps
 ---@field lang string
+---@field adapter string
 ---@field filetypes string[]
+
+---@return string
+local function ask_executable()
+  return vim.fn.input('Executable: ', vim.fn.getcwd() .. '/', 'file')
+end
 
 ---@class DapModProps
 local M = {}
+
+local CONFIGURATION_DEFAULTS = {
+  name = 'Launch file',
+  request = 'launch',
+  cwd = '${workspaceFolder}',
+}
 
 ---@type table<string, DapAdapterProps>
 local recorded_adapters = {
   lldb = {
     name = 'lldb',
     cmd = 'lldb-dap',
+    configuration_defaults = {
+      name = 'Debug (lldb)',
+      program = ask_executable,
+      args = {},
+      stopOnEntry = false,
+    },
   },
 }
 
 ---@type table<string, RecordedDapProps>
 local recorded_daps = {}
 
----@param adapter DapAdapterProps
-function M.record_dap_adapter(adapter) recorded_adapters[adapter.name] = adapter end
+---@type table<string, DepProps[]>
+local recorded_deps = {}
 
 ---@param dap DapProps
 function M.record_dap(dap)
   local lang_name = dap.lang or helpers.get_caller_filename()
-  if (dap.configurations == nil) == (dap.provider == nil) then
-    error(lang_name .. ': record_dap needs either configurations or provider')
+  if dap.configurations and dap.provider then
+    error(
+      lang_name .. ': record_dap needs configurations or provider, not both'
+    )
   end
+
+  local adapter = dap.adapter
+  local adapter_name = adapter
+  if type(adapter) == 'table' then
+    adapter_name = adapter.name
+    recorded_adapters[adapter.name] = adapter
+    deps_mod.record_tool_deps(
+      recorded_deps,
+      lang_name,
+      adapter.cmd,
+      adapter.deps
+    )
+  end
+  ---@cast adapter_name string
 
   recorded_daps[lang_name] = {
     lang = lang_name,
-    adapter = dap.adapter,
+    adapter = adapter_name,
     filetypes = dap.filetypes or { lang_name },
     configurations = dap.configurations,
     provider = dap.provider,
   }
 end
 
----@return string
-function M.ask_executable()
-  return vim.fn.input('Executable: ', vim.fn.getcwd() .. '/', 'file')
-end
+---@param lang_name string
+---@return DepProps[]
+function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
 
 ---@param find_program fun(): string|table|nil
 ---@return fun(): string|table
 function M.create_program_with_prompt_fallback(find_program)
-  return function() return find_program() or M.ask_executable() end
-end
-
----@param overrides? table
----@return table
-function M.build_lldb_launch_configuration(overrides)
-  return vim.tbl_extend('force', {
-    name = 'Debug (lldb)',
-    type = 'lldb',
-    request = 'launch',
-    program = M.ask_executable,
-    cwd = '${workspaceFolder}',
-    args = {},
-    stopOnEntry = false,
-  }, overrides or {})
+  return function() return find_program() or ask_executable() end
 end
 
 ---@param adapter DapAdapterProps
@@ -116,9 +138,25 @@ local function register_dap_record(dap, record)
     return
   end
 
+  local adapter_defaults =
+    recorded_adapters[record.adapter].configuration_defaults
+  local configurations = vim.tbl_map(
+    ---@param configuration table
+    ---@return table
+    function(configuration)
+      return vim.tbl_extend(
+        'force',
+        CONFIGURATION_DEFAULTS,
+        { type = record.adapter },
+        adapter_defaults or {},
+        configuration
+      )
+    end,
+    record.configurations or { {} }
+  )
   for _, filetype in ipairs(record.filetypes) do
     dap.configurations[filetype] =
-      vim.list_extend(dap.configurations[filetype] or {}, record.configurations)
+      vim.list_extend(dap.configurations[filetype] or {}, configurations)
   end
 end
 
