@@ -24,6 +24,10 @@ local recorded_language_filetypes = {}
 ---@param treesitter_name string
 ---@param install_info? TreesitterInstallInfoProps
 function M.record_treesitter(treesitter_name, install_info)
+  if not treesitter_name or treesitter_name == '' then
+    vim.notify.error 'No treesitter_name was received, cowardly refused!'
+    return
+  end
   ignorable_registry.record(treesitter_registry, treesitter_name)
   if install_info then
     recorded_install_infos[treesitter_name] = install_info
