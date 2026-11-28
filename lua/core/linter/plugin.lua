@@ -1,4 +1,13 @@
 local plugins = require 'deps.plugins'
+local os_mod = require 'deps.sys'
+
+---@param linter lint.Linter
+---@return boolean
+local function has_linter_executable(linter)
+  local cmd = linter.cmd
+  if type(cmd) == 'function' then cmd = cmd() end
+  return os_mod.has_executable(cmd)
+end
 
 ---@module 'lazy'
 ---@type LazySpec
@@ -17,7 +26,9 @@ plugins.record {
     vim.api.nvim_create_autocmd({ 'BufEnter', 'BufWritePost', 'InsertLeave' }, {
       group = lint_augroup,
       callback = function()
-        if vim.bo.modifiable then lint.try_lint() end
+        if vim.bo.modifiable then
+          lint.try_lint(nil, { filter = has_linter_executable })
+        end
       end,
     })
   end,
