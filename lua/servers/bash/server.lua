@@ -8,7 +8,7 @@ lsp.record_lsp {
   deps = {
     {
       depends_on = 'bun',
-      install_command = 'bun add -g bash-language-server',
+      install_command = 'bun add -g bash-language-server && ln -s "$(which bun)" ~/.bun/bin/node',
     },
     { cmd = 'shellcheck' },
     { cmd = 'shfmt' },
