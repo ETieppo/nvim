@@ -60,6 +60,20 @@ function M.on_very_lazy(callback)
   })
 end
 
+---@param message string
+---@param is_yes_default boolean
+---@return boolean
+function M.confirm(message, is_yes_default)
+  return vim.fn.confirm(message, '&Yes\n&No', is_yes_default and 1 or 2) == 1
+end
+
+function M.save_and_restart()
+  vim.schedule(function()
+    vim.cmd 'silent! wall'
+    vim.cmd 'restart'
+  end)
+end
+
 ---@param mode string|string[]
 ---@param alt_key string
 ---@param rhs string|function

@@ -1,4 +1,5 @@
 local os_mod = require 'deps.sys'
+local helpers = require 'utils.helpers'
 local PROMPT_FILETYPE = 'snacks_input'
 
 local M = {}
@@ -119,9 +120,7 @@ function M.trash_current_file()
     vim.notify('No file to trash', vim.log.levels.WARN)
     return
   end
-  if vim.fn.confirm('Trash file?\n' .. file, '&Yes\n&No', 2) ~= 1 then
-    return
-  end
+  if not helpers.confirm('Trash file?\n' .. file, false) then return end
 
   local result = vim.system(M.build_trash_command(file), { text = true }):wait()
   if result.code ~= 0 then

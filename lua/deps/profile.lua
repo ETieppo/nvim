@@ -1,3 +1,4 @@
+local helpers = require 'utils.helpers'
 local M = {}
 local statefile = vim.fs.joinpath(vim.fn.stdpath 'state', 'profile')
 ---@type string|nil
@@ -28,10 +29,7 @@ local function apply(name)
   else
     vim.fn.writefile({ name }, statefile)
   end
-  vim.schedule(function()
-    vim.cmd 'silent! wall'
-    vim.cmd 'restart'
-  end)
+  helpers.save_and_restart()
 end
 
 vim.api.nvim_create_user_command(

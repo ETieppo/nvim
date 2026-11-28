@@ -6,6 +6,7 @@ local lsp_registry = require 'core.lsp.registry'
 local dap_registry = require 'core.dap.registry'
 local linter_registry = require 'core.linter.registry'
 local formatter_registry = require 'core.formatter.registry'
+local test_registry = require 'core.test.registry'
 local LangDepsResolutionDto = require('deps.dtos').LangDepsResolutionDto
 
 ---@class DepsCollectorProps
@@ -138,7 +139,10 @@ function M.install_lang_deps(name_or_short)
 
   local resolution = M.resolve_lang_deps(lang)
   notify_unresolved_references(resolution)
-  deps_mod.install(resolution.deps)
+  deps_mod.install(
+    resolution.deps,
+    function() test_registry.enable_lang_test_adapters(lang.lang) end
+  )
 end
 
 ---@param filetype string

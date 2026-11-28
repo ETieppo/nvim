@@ -19,7 +19,10 @@ plugins.record {
     local linters = require('core.linter.registry').get_linters()
     lint.linters_by_ft = linters.linkers
     for linter_name, linter_config in pairs(linters.configs) do
-      lint.linters[linter_name] = linter_config
+      local builtin_linter = lint.linters[linter_name]
+      lint.linters[linter_name] = type(builtin_linter) == 'table'
+          and vim.tbl_extend('force', builtin_linter, linter_config)
+        or linter_config
     end
 
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })

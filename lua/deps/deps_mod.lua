@@ -1,6 +1,7 @@
 local os_mod = require 'deps.sys'
 local OsNameEnum = require('deps.enums').OsNameEnum
 local InstallPlanDto = require('deps.dtos').InstallPlanDto
+local helpers = require 'utils.helpers'
 
 ---@alias OsInstructionKeyProps 'unix'|'macos'|'linux'|'windows'
 
@@ -68,14 +69,13 @@ local RELEASE_DOWNLOAD_STEPS = {
 ---@param package_name string
 ---@return boolean
 local function confirm_install(package_manager_name, package_name)
-  return vim.fn.confirm(
+  return helpers.confirm(
     ('Install prebuilt binary %s with %s?'):format(
       package_name,
       package_manager_name
     ),
-    '&Yes\n&No',
-    2
-  ) == 1
+    false
+  )
 end
 
 ---@return InstallEnvironmentProps
@@ -385,12 +385,14 @@ local function notify_plan(plan)
 end
 
 ---@param deps DepProps[]
-function M.install(deps)
+---@param on_installed? fun()
+function M.install(deps, on_installed)
   local environment = get_live_environment()
   local plan = M.plan(deps, environment)
 
   if #plan.commands == 0 and #plan.skipped == 0 then
     vim.notify('All dependencies installed.', vim.log.levels.INFO)
+    if on_installed then on_installed() end
     return
   end
 
@@ -400,6 +402,7 @@ function M.install(deps)
   environment.shell:run_in_terminal(plan.commands, function()
     os_mod.clear_cache()
     M.add_to_session_path(deps)
+    if on_installed and #M.find_missing(deps) == 0 then on_installed() end
   end)
 end
 

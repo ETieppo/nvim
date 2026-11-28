@@ -1,15 +1,18 @@
 local helpers = require 'utils.helpers'
 local deps_mod = require 'deps.deps_mod'
 
+---@class LinterOverrideProps
+---@field cmd? string
+
 ---@class LinterProps
 ---@field lang? string|string[]
 ---@field linter string
----@field config? lint.Linter
+---@field config? lint.Linter|LinterOverrideProps
 ---@field deps? ToolDepProps[]
 
 ---@class LintersProps
 ---@field linkers table<string, string[]>
----@field configs table<string, lint.Linter>
+---@field configs table<string, lint.Linter|LinterOverrideProps>
 
 ---@class LintModProps
 local M = {}

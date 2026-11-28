@@ -30,17 +30,7 @@ lint.record_linter {
       },
     },
   },
-  config = {
-    name = 'ameba',
-    cmd = 'ameba',
-    stdin = false,
-    append_fname = true,
-    args = { '--format', 'json' },
-    ignore_exitcode = true,
-    parser = function(output)
-      return require('lint.linters.ameba').parser(output)
-    end,
-  },
+  config = { cmd = 'ameba' },
 }
 
 lsp.record_lsp {
