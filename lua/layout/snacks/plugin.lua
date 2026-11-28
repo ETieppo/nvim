@@ -29,16 +29,18 @@ plugins.record {
     dashboard = {
       row = 0,
       col = 0,
-      width = vim.o.columns,
-      sections = {
-        gap = 1,
-        art,
-        {
-          align = 'center',
-          height = math.floor(vim.o.lines * 0.10),
-          section = 'startup',
-        },
-      },
+      sections = function(dashboard)
+        dashboard.opts.width = vim.o.columns
+        return {
+          gap = 1,
+          art(),
+          {
+            align = 'center',
+            height = math.floor(vim.o.lines * 0.10),
+            section = 'startup',
+          },
+        }
+      end,
     },
   },
 }
