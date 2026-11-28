@@ -113,7 +113,7 @@ plugins.record {
   ---@module 'gitsigns'
   ---@return GitsignsOptsProps
   opts = function()
-    local sign_chars = require 'layout.git.sign_chars'
+    local sign_chars = require 'layout.git.def'
     return {
       signs = {
         add = { text = sign_chars.unstaged },

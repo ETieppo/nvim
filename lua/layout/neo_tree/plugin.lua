@@ -26,7 +26,7 @@ plugins.record {
   version = '*',
   cmd = 'Neotree',
   opts = function()
-    local sign_chars = require 'layout.git.sign_chars'
+    local sign_chars = require 'layout.git.def'
     return {
       zindex = 100,
       hide_root_node = true,

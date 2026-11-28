@@ -1,6 +1,6 @@
 local async = require 'utils.async'
 local library = require 'layout.music.library'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local soloist = require 'layout.music.soloist'
 local web_api = require 'layout.music.web_api'
 local HttpResponseDto = require('utils.dtos').HttpResponseDto

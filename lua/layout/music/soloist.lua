@@ -1,6 +1,6 @@
 local async = require 'utils.async'
 local credentials = require 'layout.music.credentials'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local music_enums = require 'layout.music.enums'
 local storage = require 'utils.storage'
 local websocket = require 'utils.websocket'

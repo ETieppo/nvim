@@ -38,12 +38,15 @@ function M.record_fmt(fmt)
     fmt.config and fmt.config.command or fmt.formatter,
     fmt.deps
   )
+  local conform = package.loaded.conform
   if fmt.config ~= nil then
     recorded_formatters.configs[fmt.formatter] = fmt.config
+    if conform then conform.formatters[fmt.formatter] = fmt.config end
   end
   for _, lang_name in ipairs(lang_names) do
     ---@cast lang_name string
     recorded_formatters.linkers[lang_name] = { fmt.formatter }
+    if conform then conform.formatters_by_ft[lang_name] = { fmt.formatter } end
   end
 end
 

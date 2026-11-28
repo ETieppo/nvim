@@ -37,13 +37,28 @@ function M.record_linter(lint)
     type(config_cmd) == 'string' and config_cmd or lint.linter,
     lint.deps
   )
+  local nvim_lint = package.loaded.lint
   if lint.config ~= nil then
     recorded_linters.configs[lint.linter] = lint.config
+    if nvim_lint then
+      M.apply_linter_config(nvim_lint, lint.linter, lint.config)
+    end
   end
   for _, lang_name in ipairs(lang_names) do
     ---@cast lang_name string
     recorded_linters.linkers[lang_name] = { lint.linter }
+    if nvim_lint then nvim_lint.linters_by_ft[lang_name] = { lint.linter } end
   end
+end
+
+---@param nvim_lint table
+---@param linter_name string
+---@param linter_config lint.Linter|LinterOverrideProps
+function M.apply_linter_config(nvim_lint, linter_name, linter_config)
+  local builtin_linter = nvim_lint.linters[linter_name]
+  nvim_lint.linters[linter_name] = type(builtin_linter) == 'table'
+      and vim.tbl_extend('force', builtin_linter, linter_config)
+    or linter_config
 end
 
 ---@param lang_name string

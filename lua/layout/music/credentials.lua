@@ -1,5 +1,5 @@
 local async = require 'utils.async'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local storage = require 'utils.storage'
 
 ---@class MusicCredentialsProps

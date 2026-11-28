@@ -1,4 +1,4 @@
-local toast_config = require 'layout.toast.config'
+local toast_config = require 'layout.toast.def'
 local toast_enums = require 'layout.toast.enums'
 local uv_handle = require 'utils.uv_handle'
 

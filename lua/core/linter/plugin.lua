@@ -16,13 +16,11 @@ plugins.record {
   event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local lint = require 'lint'
-    local linters = require('core.linter.registry').get_linters()
+    local linter_registry = require 'core.linter.registry'
+    local linters = linter_registry.get_linters()
     lint.linters_by_ft = linters.linkers
     for linter_name, linter_config in pairs(linters.configs) do
-      local builtin_linter = lint.linters[linter_name]
-      lint.linters[linter_name] = type(builtin_linter) == 'table'
-          and vim.tbl_extend('force', builtin_linter, linter_config)
-        or linter_config
+      linter_registry.apply_linter_config(lint, linter_name, linter_config)
     end
 
     local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })

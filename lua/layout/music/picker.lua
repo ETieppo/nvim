@@ -1,6 +1,6 @@
 local async = require 'utils.async'
 local library = require 'layout.music.library'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local player = require 'layout.music.player'
 local soloist = require 'layout.music.soloist'
 local telescope_picker = require 'buffer.telescope.picker'

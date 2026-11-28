@@ -86,13 +86,6 @@ local function is_buffer_inside_lang_workspace(lang, buffer)
   return vim.fs.root(buffer, lsp_config.root_markers or {}) ~= nil
 end
 
----@param lang_name string
----@return string[]
-function M.get_lang_filetypes(lang_name)
-  local lang = recorded_langs[lang_name]
-  return lang and lang.filetypes or {}
-end
-
 ---@param filetype string
 ---@param buffer integer
 ---@return RecordedLangProps[]

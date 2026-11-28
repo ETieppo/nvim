@@ -64,47 +64,8 @@ local recorded_daps = {}
 ---@type table<string, DepProps[]>
 local recorded_deps = {}
 
----@param dap DapProps
-function M.record_dap(dap)
-  local lang_name = dap.lang or helpers.get_caller_directory_name()
-  if dap.configurations and dap.provider then
-    error(
-      lang_name .. ': record_dap needs configurations or provider, not both'
-    )
-  end
-
-  local adapter = dap.adapter
-  local adapter_name = adapter
-  if type(adapter) == 'table' then
-    adapter_name = adapter.name
-    recorded_adapters[adapter.name] = adapter
-    deps_mod.record_tool_deps(
-      recorded_deps,
-      lang_name,
-      adapter.cmd,
-      adapter.deps
-    )
-  end
-  ---@cast adapter_name string
-
-  recorded_daps[lang_name] = {
-    lang = lang_name,
-    adapter = adapter_name,
-    filetypes = dap.filetypes or { lang_name },
-    configurations = dap.configurations,
-    provider = dap.provider,
-  }
-end
-
----@param lang_name string
----@return DepProps[]
-function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
-
----@param find_program fun(): string|table|nil
----@return fun(): string|table
-function M.create_program_with_prompt_fallback(find_program)
-  return function() return find_program() or ask_executable() end
-end
+---@type table<string, boolean>
+local available_adapters = {}
 
 ---@param adapter DapAdapterProps
 ---@param path string
@@ -160,23 +121,81 @@ local function register_dap_record(dap, record)
   end
 end
 
-function M.setup_dap()
-  local dap = require 'dap'
-  ---@type table<string, boolean>
-  local available_adapters = {}
+---@param dap table
+---@param name string
+---@param adapter DapAdapterProps
+local function register_adapter(dap, name, adapter)
+  local path = resolve_adapter_path(adapter)
+  if not path then return end
+  dap.adapters[name] = build_adapter(adapter, path)
+  available_adapters[name] = true
+end
 
-  for name, adapter in pairs(recorded_adapters) do
-    local path = resolve_adapter_path(adapter)
-    if path then
-      dap.adapters[name] = build_adapter(adapter, path)
-      available_adapters[name] = true
-    end
+---@param dap table
+---@param record RecordedDapProps
+local function register_available_dap_record(dap, record)
+  if available_adapters[record.adapter] then
+    register_dap_record(dap, record)
+  end
+end
+
+---@param dap DapProps
+function M.record_dap(dap)
+  local lang_name = dap.lang or helpers.get_caller_directory_name()
+  if dap.configurations and dap.provider then
+    error(
+      lang_name .. ': record_dap needs configurations or provider, not both'
+    )
   end
 
-  for _, record in pairs(recorded_daps) do
-    if available_adapters[record.adapter] then
-      register_dap_record(dap, record)
+  local adapter = dap.adapter
+  local adapter_name = adapter
+  if type(adapter) == 'table' then
+    adapter_name = adapter.name
+    recorded_adapters[adapter.name] = adapter
+    deps_mod.record_tool_deps(
+      recorded_deps,
+      lang_name,
+      adapter.cmd,
+      adapter.deps
+    )
+  end
+  ---@cast adapter_name string
+
+  recorded_daps[lang_name] = {
+    lang = lang_name,
+    adapter = adapter_name,
+    filetypes = dap.filetypes or { lang_name },
+    configurations = dap.configurations,
+    provider = dap.provider,
+  }
+
+  local nvim_dap = package.loaded.dap
+  if nvim_dap then
+    if type(adapter) == 'table' then
+      register_adapter(nvim_dap, adapter.name, adapter)
     end
+    register_available_dap_record(nvim_dap, recorded_daps[lang_name])
+  end
+end
+
+---@param lang_name string
+---@return DepProps[]
+function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
+
+---@param find_program fun(): string|table|nil
+---@return fun(): string|table
+function M.create_program_with_prompt_fallback(find_program)
+  return function() return find_program() or ask_executable() end
+end
+
+function M.setup_dap()
+  local dap = require 'dap'
+  for name, adapter in pairs(recorded_adapters) do
+    register_adapter(dap, name, adapter)
+  end
+  for _, record in pairs(recorded_daps) do
+    register_available_dap_record(dap, record)
   end
 end
 

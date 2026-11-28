@@ -72,3 +72,10 @@ vim.keymap.set(
   end,
   { desc = '[C]onfig [G]rep' }
 )
+
+vim.keymap.set(
+  'n',
+  '<leader>bd',
+  require('buffer.buffer').delete_current_buffer_keeping_window,
+  { desc = '[B]uffer [D]elete' }
+)

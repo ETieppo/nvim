@@ -131,6 +131,7 @@ end
 
 ---@param name_or_short string
 function M.install_lang_deps(name_or_short)
+  require('core.lang.def_index').load_all_langs()
   local lang = lang_registry.find_lang(name_or_short)
   if not lang then
     vim.notify('No config to install\n' .. name_or_short .. ' deps (#_#)')

@@ -1,4 +1,3 @@
-local helpers = require 'utils.helpers'
 local ignorable_registry = require 'utils.ignorable_registry'
 
 ---@class TreesitterInstallInfoProps
@@ -47,11 +46,9 @@ function M.apply_language_filetypes()
   end
 end
 
-function M.treesitter_ignore()
-  ignorable_registry.ignore(
-    treesitter_registry,
-    helpers.get_caller_directory_name()
-  )
+---@param lang string
+function M.treesitter_ignore(lang)
+  ignorable_registry.ignore(treesitter_registry, lang)
 end
 
 ---@return table<string, TreesitterInstallInfoProps>

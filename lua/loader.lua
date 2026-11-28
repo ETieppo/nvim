@@ -2,11 +2,18 @@ require 'layout.toast.notify'
 require 'layout.toast.messages'
 require 'deps.nvim_deps'
 local plugins = require 'deps.plugins'
+local lang_index = require 'core.lang.def_index'
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 local LUA_DIRECTORY = vim.fn.stdpath 'config' .. '/lua'
 local DATA_DIRECTORY_PATTERN = '/data/'
-local PLUGIN_FILE_NAME = 'plugin.lua'
 local SERVERS_DIRECTORY_PATTERN = '^servers/'
+---@type table<string, boolean>
+local ENTRY_FILE_NAMES = {
+  ['keymaps.lua'] = true,
+  ['auto_cmd.lua'] = true,
+  ['user_commands.lua'] = true,
+  ['setup.lua'] = true,
+}
 local DEFERRED_LOAD_EVENTS = {
   'BufReadPre',
   'BufNewFile',
@@ -15,16 +22,12 @@ local DEFERRED_LOAD_EVENTS = {
 }
 local min_nvim_version = 11
 ---@type string[]
-local server_modules = {}
----@type string[]
 local deferred_modules = {}
 local deferred_group = vim.api.nvim_create_augroup('loader-deferred', {})
 
 local function load_deferred_modules()
   vim.api.nvim_del_augroup_by_id(deferred_group)
-  for _, module_name in ipairs(server_modules) do
-    require(module_name)
-  end
+  lang_index.activate()
   require('core.lang.registry').apply_filetypes()
   require('core.treesitter.registry').apply_language_filetypes()
   require('core.lsp.registry').enable_lsps()
@@ -69,11 +72,12 @@ for name, entry_type in vim.fs.dir(LUA_DIRECTORY, { depth = math.huge }) do
     and not name:find(DATA_DIRECTORY_PATTERN, 1, true)
   then
     local module_name = (name:sub(1, -5):gsub('/', '.'))
-    if vim.fs.basename(name) == PLUGIN_FILE_NAME then
+    local file_name = vim.fs.basename(name)
+    if plugins.is_spec_file(file_name) then
       require(module_name)
-    elseif name:find(SERVERS_DIRECTORY_PATTERN) then
-      server_modules[#server_modules + 1] = module_name
-    else
+    elseif
+      ENTRY_FILE_NAMES[file_name] and not name:find(SERVERS_DIRECTORY_PATTERN)
+    then
       deferred_modules[#deferred_modules + 1] = module_name
     end
   end
@@ -97,6 +101,8 @@ vim.api.nvim_create_autocmd('VimEnter', {
     if #vim.api.nvim_list_uis() == 0 then load_deferred_modules() end
   end,
 })
+
+lang_index.create_filetype_trigger()
 
 require('lazy').setup {
   spec = plugins.get_plugins(),

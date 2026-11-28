@@ -29,6 +29,8 @@ local recorded_configs = {}
 ---@type table<string, DepProps[]>
 local recorded_deps = {}
 
+local are_lsps_enabled = false
+
 ---@param method string
 ---@param result any
 local function convert_kind_names_to_numbers(method, result)
@@ -61,6 +63,15 @@ function M.convert_completion_kind_names_on_init(client)
   end
 end
 
+---@param lsp_name string
+local function apply_lsp_config(lsp_name)
+  local config = recorded_configs[lsp_name]
+  if type(config.capabilities) == 'function' then
+    config.capabilities = config.capabilities()
+  end
+  vim.lsp.config(lsp_name, config)
+end
+
 ---@param config LspProps
 function M.record_lsp(config)
   local lang_name = helpers.get_caller_directory_name()
@@ -75,6 +86,10 @@ function M.record_lsp(config)
   config.deps = nil
   recorded_configs[lsp_name] = config
   table.insert(recorded_lsps, lsp_name)
+  if are_lsps_enabled then
+    apply_lsp_config(lsp_name)
+    vim.lsp.enable(lsp_name)
+  end
 end
 
 ---@param lang_name string
@@ -82,12 +97,9 @@ end
 function M.get_deps(lang_name) return recorded_deps[lang_name] or {} end
 
 function M.enable_lsps()
+  are_lsps_enabled = true
   for _, lsp_name in ipairs(recorded_lsps) do
-    local config = recorded_configs[lsp_name]
-    if type(config.capabilities) == 'function' then
-      config.capabilities = config.capabilities()
-    end
-    vim.lsp.config(lsp_name, config)
+    apply_lsp_config(lsp_name)
   end
   vim.lsp.enable(recorded_lsps)
 end

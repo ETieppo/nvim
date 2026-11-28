@@ -1,7 +1,7 @@
 local async = require 'utils.async'
 local auth = require 'layout.music.auth'
 local http = require 'utils.http'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local storage = require 'utils.storage'
 local HttpMethodEnum = require('utils.enums').HttpMethodEnum
 local HttpResponseDto = require('utils.dtos').HttpResponseDto

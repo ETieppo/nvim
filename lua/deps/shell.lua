@@ -1,5 +1,5 @@
 local os_mod = require 'deps.sys'
-local window = require 'buffer.window'
+local window = require 'buffer.window.dashboard'
 local OsNameEnum = require('deps.enums').OsNameEnum
 local ShellNameEnum = require('deps.enums').ShellNameEnum
 

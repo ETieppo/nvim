@@ -1,5 +1,5 @@
 local async = require 'utils.async'
-local music_config = require 'layout.music.config'
+local music_config = require 'layout.music.def'
 local music_dtos = require 'layout.music.dtos'
 local storage = require 'utils.storage'
 local web_api = require 'layout.music.web_api'
